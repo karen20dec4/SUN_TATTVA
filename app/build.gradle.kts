@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.android.sun"
+    namespace = "com.android.suntattva"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.android.suntime"
+        applicationId = "com.android.suntattva"
         minSdk = 26
         targetSdk = 34
         versionCode = 3
