@@ -1,5 +1,27 @@
 # Project exclude paths
+local.properties
 /.gradle/
 /app/.gradle/
+
+# Build
+build/
+*/build/
 /app/build/
 /app/build/intermediates/javac/debug/classes/
+
+# Android Studio
+.idea/
+.idea/caches/
+.idea/libraries/
+.idea/shelf/
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/.name
+.idea/compiler.xml
+.idea/copyright/
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/scopes/
+.idea/vcs.xml
+*.iml
