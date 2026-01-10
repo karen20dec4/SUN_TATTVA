@@ -266,6 +266,8 @@ class TattvaNotificationService :  Service() {
         val showPlanet = settingsPreferences.getPlanetaryHourNotification()
         
         // Alege iconul în funcție de ce este activat
+        // NOTĂ: Aceasta este iconița mică (drawable) din status bar, NU simbolul Unicode
+        // Simbolurile planetelor (♂, ☿, etc.) apar în TITLUL notificării mai jos
         val iconRes = if (showTattva) {
             // When tattva is enabled (with or without planet), use tattva icon
             when (tattvaType) {
@@ -276,7 +278,8 @@ class TattvaNotificationService :  Service() {
                 TattvaType.AKASHA -> R.drawable.ic_tattva_akasha
             }
         } else {
-            // When only planet is enabled, use generic sun icon
+            // When only planet is enabled, use sun icon for small icon
+            // Simbolul planetei (♂, ☿, etc.) va apărea în titlul notificării
             R.drawable.icon
         }
         
@@ -293,10 +296,13 @@ class TattvaNotificationService :  Service() {
         val planetEmoji = planetType?.code ?: ""
         
         // Build title - collapsed view (symbols only)
+        // Aceste simboluri (🔵, ♂, ☿, etc.) apar în TITLUL notificării din notification shade
         val collapsedTitle = buildString {
             if (showTattva) append(tattvaEmoji)
             if (showPlanet && planetType != null) append(planetEmoji)
         }
+        
+        Log.d(TAG, "📱 Notification Title: '$collapsedTitle' (showTattva=$showTattva, showPlanet=$showPlanet, planet=${planetType?.displayName}, planetSymbol=$planetEmoji)")
         
         // Build expanded content
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
