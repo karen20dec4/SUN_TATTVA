@@ -171,6 +171,8 @@ class TattvaNotificationService :  Service() {
         val showTattva = settingsPreferences.getTattvaNotification()
         val showPlanet = settingsPreferences.getPlanetaryHourNotification()
         
+        Log.d(TAG, "⚙️ Settings: showTattva=$showTattva, showPlanet=$showPlanet")
+        
         // If both are disabled, stop the service
         if (!showTattva && !showPlanet) {
             Log.d(TAG, "Both notifications disabled, stopping service")
@@ -212,6 +214,9 @@ class TattvaNotificationService :  Service() {
             val planetType = planetResult.planet
             val planetName = planetType.displayName
             
+            Log.d(TAG, "🔵 Tattva: $tattvaName ($tattvaType)")
+            Log.d(TAG, "🪐 Planet: $planetName (${planetType.code})")
+            
             // Formatează timpul cu timezone-ul locației
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault()).apply {
                 this.timeZone = locationTimeZone
@@ -233,7 +238,7 @@ class TattvaNotificationService :  Service() {
             val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager.notify(NOTIFICATION_ID, notification)
             
-            Log.d(TAG, "📍 Updated: $tattvaName ends at $tattvaEndsAtFormatted, $planetName ends at $planetEndsAtFormatted (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})")
+            Log.d(TAG, "✅ Notification updated successfully")
             
         } catch (e: Exception) {
             Log.e(TAG, "Failed to update notification", e)
@@ -265,9 +270,9 @@ class TattvaNotificationService :  Service() {
         val showTattva = settingsPreferences.getTattvaNotification()
         val showPlanet = settingsPreferences.getPlanetaryHourNotification()
         
+        Log.d(TAG, "📱 Creating notification: showTattva=$showTattva, showPlanet=$showPlanet")
+        
         // Alege iconul în funcție de ce este activat
-        // NOTĂ: Aceasta este iconița mică (drawable) din status bar, NU simbolul Unicode
-        // Simbolurile planetelor (♂, ☿, etc.) apar în TITLUL notificării mai jos
         val iconRes = if (showTattva) {
             // When tattva is enabled (with or without planet), use tattva icon
             when (tattvaType) {
@@ -278,8 +283,7 @@ class TattvaNotificationService :  Service() {
                 TattvaType.AKASHA -> R.drawable.ic_tattva_akasha
             }
         } else {
-            // When only planet is enabled, use sun icon for small icon
-            // Simbolul planetei (♂, ☿, etc.) va apărea în titlul notificării
+            // When only planet is enabled, use generic sun icon
             R.drawable.icon
         }
         
@@ -296,13 +300,12 @@ class TattvaNotificationService :  Service() {
         val planetEmoji = planetType?.code ?: ""
         
         // Build title - collapsed view (symbols only)
-        // Aceste simboluri (🔵, ♂, ☿, etc.) apar în TITLUL notificării din notification shade
         val collapsedTitle = buildString {
             if (showTattva) append(tattvaEmoji)
             if (showPlanet && planetType != null) append(planetEmoji)
         }
         
-        Log.d(TAG, "📱 Notification Title: '$collapsedTitle' (showTattva=$showTattva, showPlanet=$showPlanet, planet=${planetType?.displayName}, planetSymbol=$planetEmoji)")
+        Log.d(TAG, "📱 Collapsed title: '$collapsedTitle' (tattva=$tattvaEmoji, planet=$planetEmoji)")
         
         // Build expanded content
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
@@ -317,43 +320,29 @@ class TattvaNotificationService :  Service() {
         // Set title and text based on what's enabled
         if (showTattva && showPlanet && planetType != null) {
             // Both enabled
-            // Title for collapsed: only symbols
+            Log.d(TAG, "📱 Mode: BOTH tattva and planet enabled")
             builder.setContentTitle(collapsedTitle)
-            
-            // For collapsed view - shows under title
             builder.setContentText("SUN TATTVA - $locationName")
             
-            // Expanded: full format with location
-            val expandedText = buildString {
-                append("SUN TATTVA - $locationName\n")
-                append("$tattvaEmoji $tattvaName - ends at $tattvaEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})\n")
-                append("$planetEmoji $planetName - ends at $planetEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})")
-            }
             builder.setStyle(NotificationCompat.BigTextStyle()
                 .setBigContentTitle("SUN TATTVA - $locationName")
                 .bigText("$tattvaEmoji $tattvaName - ends at $tattvaEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})\n$planetEmoji $planetName - ends at $planetEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"))
         } else if (showTattva) {
             // Only Tattva
-            // Title for collapsed: only symbol
+            Log.d(TAG, "📱 Mode: ONLY tattva enabled")
             builder.setContentTitle(collapsedTitle)
-            
-            // For collapsed view
             builder.setContentText("SUN TATTVA - $locationName")
             
-            // Expanded: full format
             val expandedText = "$tattvaEmoji $tattvaName - ends at $tattvaEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
             builder.setStyle(NotificationCompat.BigTextStyle()
                 .setBigContentTitle("SUN TATTVA - $locationName")
                 .bigText(expandedText))
         } else if (showPlanet && planetType != null) {
             // Only Planet
-            // Title for collapsed: only symbol
+            Log.d(TAG, "📱 Mode: ONLY planet enabled")
             builder.setContentTitle(collapsedTitle)
-            
-            // For collapsed view
             builder.setContentText("SUN TATTVA - $locationName")
             
-            // Expanded: full format
             val expandedText = "$planetEmoji $planetName - ends at $planetEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
             builder.setStyle(NotificationCompat.BigTextStyle()
                 .setBigContentTitle("SUN TATTVA - $locationName")
