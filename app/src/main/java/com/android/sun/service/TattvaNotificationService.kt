@@ -16,8 +16,11 @@ import androidx.core.app.NotificationCompat
 import com.android.sun.MainActivity
 import com.android.sun.R
 import com.android.sun.domain.calculator.TattvaType
+import com.android.sun.domain.calculator.PlanetType
+import com.android.sun.domain.calculator.PlanetCalculator
 import com.android.sun.data.repository.AstroRepository
 import com.android.sun.data.repository.LocationPreferences
+import com.android.sun.data.preferences.SettingsPreferences
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,12 +51,14 @@ class TattvaNotificationService :  Service() {
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var updateJob: Job?  = null
     private var locationChangeReceiver: BroadcastReceiver? = null
+    private lateinit var settingsPreferences: SettingsPreferences
     
     override fun onBind(intent:  Intent?): IBinder? = null
     
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "🟢 TattvaNotificationService onCreate")
+        settingsPreferences = SettingsPreferences(applicationContext)
         createNotificationChannel()
         registerLocationChangeReceiver()
     }
@@ -65,7 +70,11 @@ class TattvaNotificationService :  Service() {
         val initialNotification = createNotification(
             tattvaName = "Loading...",
             tattvaType = TattvaType.PRITHIVI,
-            endsAt = "",
+            tattvaEndsAt = "",
+            planetName = "",
+            planetType = null,
+            planetEndsAt = "",
+            locationName = "",
             timeZone = 0.0
         )
         startForeground(NOTIFICATION_ID, initialNotification)
@@ -125,10 +134,10 @@ class TattvaNotificationService :  Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "Current Tattva",
+                "Current Tattva & Planetary Hour",
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "Shows the current Tattva element"
+                description = "Shows the current Tattva element and planetary hour"
                 setShowBadge(false)
                 setSound(null, null)
             }
@@ -158,6 +167,17 @@ class TattvaNotificationService :  Service() {
         val repository = AstroRepository(applicationContext)
         val locationPreferences = LocationPreferences(applicationContext)
         
+        // Check settings
+        val showTattva = settingsPreferences.getTattvaNotification()
+        val showPlanet = settingsPreferences.getPlanetaryHourNotification()
+        
+        // If both are disabled, stop the service
+        if (!showTattva && !showPlanet) {
+            Log.d(TAG, "Both notifications disabled, stopping service")
+            stopSelf()
+            return
+        }
+        
         try {
             // Obține locația din LocationPreferences
             val latitude = locationPreferences.getSavedLatitude()
@@ -182,27 +202,38 @@ class TattvaNotificationService :  Service() {
                 locationName = locationName
             )
             
+            // Get Tattva data
             val tattvaResult = astroData.tattva
             val tattvaType = tattvaResult.tattva
             val tattvaName = tattvaType.displayName
+            
+            // Get Planet data
+            val planetResult = astroData.planet
+            val planetType = planetResult.planet
+            val planetName = planetType.displayName
             
             // Formatează timpul cu timezone-ul locației
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault()).apply {
                 this.timeZone = locationTimeZone
             }
-            val endsAtFormatted = timeFormat.format(tattvaResult.endTime.time)
+            val tattvaEndsAtFormatted = timeFormat.format(tattvaResult.endTime.time)
+            val planetEndsAtFormatted = timeFormat.format(planetResult.endTime.time)
             
             val notification = createNotification(
                 tattvaName = tattvaName,
                 tattvaType = tattvaType,
-                endsAt = endsAtFormatted,
+                tattvaEndsAt = tattvaEndsAtFormatted,
+                planetName = planetName,
+                planetType = planetType,
+                planetEndsAt = planetEndsAtFormatted,
+                locationName = locationName,
                 timeZone = timeZone
             )
             
             val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager.notify(NOTIFICATION_ID, notification)
             
-            Log.d(TAG, "📍 Updated:  $tattvaName ends at $endsAtFormatted (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})")
+            Log.d(TAG, "📍 Updated: $tattvaName ends at $tattvaEndsAtFormatted, $planetName ends at $planetEndsAtFormatted (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})")
             
         } catch (e: Exception) {
             Log.e(TAG, "Failed to update notification", e)
@@ -212,7 +243,11 @@ class TattvaNotificationService :  Service() {
     private fun createNotification(
         tattvaName: String,
         tattvaType: TattvaType,
-        endsAt: String,
+        tattvaEndsAt: String,
+        planetName: String,
+        planetType: PlanetType?,
+        planetEndsAt: String,
+        locationName: String,
         timeZone: Double
     ): Notification {
         // Intent pentru a deschide aplicația când se apasă pe notificare
@@ -226,6 +261,10 @@ class TattvaNotificationService :  Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         
+        // Check settings
+        val showTattva = settingsPreferences.getTattvaNotification()
+        val showPlanet = settingsPreferences.getPlanetaryHourNotification()
+        
         // Alege iconul în funcție de tipul de tattva
         val iconRes = when (tattvaType) {
             TattvaType.TEJAS -> R.drawable.ic_tattva_tejas
@@ -236,7 +275,7 @@ class TattvaNotificationService :  Service() {
         }
         
         // Emoji pentru tattva
-        val emoji = when (tattvaType) {
+        val tattvaEmoji = when (tattvaType) {
             TattvaType.TEJAS -> "🔺"
             TattvaType.PRITHIVI -> "🟨"
             TattvaType.APAS -> "🌙"
@@ -244,23 +283,52 @@ class TattvaNotificationService :  Service() {
             TattvaType.AKASHA -> "🟣"
         }
         
-        // Adaugă timezone în notificare pentru debug
-        val contentText = if (endsAt.isNotEmpty()) {
-            "$emoji $tattvaName • ends at $endsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
-        } else {
-            "$emoji $tattvaName"
+        // Planet emoji/symbol
+        val planetEmoji = planetType?.code ?: ""
+        
+        // Build title - collapsed view (symbols only)
+        val collapsedTitle = buildString {
+            if (showTattva) append(tattvaEmoji)
+            if (showPlanet && planetType != null) append(planetEmoji)
         }
         
-        return NotificationCompat.Builder(this, CHANNEL_ID)
+        // Build expanded content
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(iconRes)
-            .setContentTitle("Current Tattva")
-            .setContentText(contentText)
             .setOngoing(true)
             .setShowWhen(false)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_STATUS)
             .setContentIntent(pendingIntent)
             .setSilent(true)
-            .build()
+        
+        // Set title and text based on what's enabled
+        if (showTattva && showPlanet && planetType != null) {
+            // Both enabled
+            builder.setContentTitle("$collapsedTitle SUN TATTVA - $locationName")
+            
+            val expandedText = buildString {
+                append("$tattvaEmoji $tattvaName - ends at $tattvaEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})\n")
+                append("$planetEmoji $planetName - ends at $planetEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})")
+            }
+            builder.setContentText(expandedText)
+            builder.setStyle(NotificationCompat.BigTextStyle().bigText(expandedText))
+        } else if (showTattva) {
+            // Only Tattva
+            builder.setContentTitle("$collapsedTitle SUN TATTVA - $locationName")
+            
+            val expandedText = "$tattvaEmoji $tattvaName - ends at $tattvaEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
+            builder.setContentText(expandedText)
+            builder.setStyle(NotificationCompat.BigTextStyle().bigText(expandedText))
+        } else if (showPlanet && planetType != null) {
+            // Only Planet
+            builder.setContentTitle("$collapsedTitle SUN TATTVA - $locationName")
+            
+            val expandedText = "$planetEmoji $planetName - ends at $planetEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
+            builder.setContentText(expandedText)
+            builder.setStyle(NotificationCompat.BigTextStyle().bigText(expandedText))
+        }
+        
+        return builder.build()
     }
 }
