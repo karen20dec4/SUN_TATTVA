@@ -305,27 +305,40 @@ class TattvaNotificationService :  Service() {
         // Set title and text based on what's enabled
         if (showTattva && showPlanet && planetType != null) {
             // Both enabled
-            builder.setContentTitle("$collapsedTitle SUN TATTVA - $locationName")
+            // Collapsed: only symbols
+            builder.setContentTitle(collapsedTitle)
             
+            // Expanded: full format with location
             val expandedText = buildString {
+                append("SUN TATTVA - $locationName\n")
                 append("$tattvaEmoji $tattvaName - ends at $tattvaEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})\n")
                 append("$planetEmoji $planetName - ends at $planetEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})")
             }
-            builder.setContentText(expandedText)
+            builder.setContentText("SUN TATTVA - $locationName")
             builder.setStyle(NotificationCompat.BigTextStyle().bigText(expandedText))
         } else if (showTattva) {
             // Only Tattva
-            builder.setContentTitle("$collapsedTitle SUN TATTVA - $locationName")
+            // Collapsed: only symbol
+            builder.setContentTitle(collapsedTitle)
             
-            val expandedText = "$tattvaEmoji $tattvaName - ends at $tattvaEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
-            builder.setContentText(expandedText)
+            // Expanded: full format
+            val expandedText = buildString {
+                append("SUN TATTVA - $locationName\n")
+                append("$tattvaEmoji $tattvaName - ends at $tattvaEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})")
+            }
+            builder.setContentText("SUN TATTVA - $locationName")
             builder.setStyle(NotificationCompat.BigTextStyle().bigText(expandedText))
         } else if (showPlanet && planetType != null) {
             // Only Planet
-            builder.setContentTitle("$collapsedTitle SUN TATTVA - $locationName")
+            // Collapsed: only symbol
+            builder.setContentTitle(collapsedTitle)
             
-            val expandedText = "$planetEmoji $planetName - ends at $planetEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
-            builder.setContentText(expandedText)
+            // Expanded: full format
+            val expandedText = buildString {
+                append("SUN TATTVA - $locationName\n")
+                append("$planetEmoji $planetName - ends at $planetEndsAt (GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})")
+            }
+            builder.setContentText("SUN TATTVA - $locationName")
             builder.setStyle(NotificationCompat.BigTextStyle().bigText(expandedText))
         }
         
