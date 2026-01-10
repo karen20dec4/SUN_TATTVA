@@ -100,6 +100,22 @@ class SettingsPreferences(context: Context) {
         _tattvaNotification.value = enabled
     }
     
+	// ═══════════════════════════════════════════════════════════════════
+    // NOTIFICĂRI ORĂ PLANETARĂ (în status bar)
+    // ═══════════════════════════════════════════════════════════════════
+    
+    private val _planetaryHourNotification = MutableStateFlow(getPlanetaryHourNotification())
+    val planetaryHourNotification: StateFlow<Boolean> = _planetaryHourNotification.asStateFlow()
+    
+    fun getPlanetaryHourNotification(): Boolean {
+        return prefs.getBoolean(KEY_PLANETARY_HOUR_NOTIFICATION, false)
+    }
+    
+    fun setPlanetaryHourNotification(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_PLANETARY_HOUR_NOTIFICATION, enabled).apply()
+        _planetaryHourNotification.value = enabled
+    }
+    	
     companion object {
         private const val PREFS_NAME = "sun_settings_prefs"
         
@@ -108,5 +124,6 @@ class SettingsPreferences(context: Context) {
         private const val KEY_TRIPURA_SUNDARI_NOTIFICATION = "tripura_sundari_notification"
         private const val KEY_NEW_MOON_NOTIFICATION = "new_moon_notification"
         private const val KEY_TATTVA_NOTIFICATION = "tattva_notification"
+		private const val KEY_PLANETARY_HOUR_NOTIFICATION = "planetary_hour_notification"
     }
 }

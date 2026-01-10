@@ -37,8 +37,10 @@ fun SettingsScreen(
     onTripuraSundariNotificationChange: (Boolean) -> Unit,
     isNewMoonNotification: Boolean,
     onNewMoonNotificationChange: (Boolean) -> Unit,
-	isTattvaNotification:  Boolean,                    // ADAUGĂ
-    onTattvaNotificationChange:  (Boolean) -> Unit,    // ADAUGĂ
+	isTattvaNotification:  Boolean,                    
+    onTattvaNotificationChange:  (Boolean) -> Unit,    
+    isPlanetaryHourNotification: Boolean,
+    onPlanetaryHourNotificationChange: (Boolean) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) 
@@ -234,6 +236,16 @@ fun SettingsScreen(
 					}
 				)
 				
+				// Planetary Hour Persistent Notification
+				SettingsSwitchItem(
+					icon = Icons.Default.Notifications,
+					title = "Planetary Hour in Status Bar",
+					subtitle = "Show current planetary hour as persistent notification",
+					checked = isPlanetaryHourNotification,
+					onCheckedChange = { enabled ->
+						onPlanetaryHourNotificationChange(enabled)
+					}
+				)
 				
 				
 				

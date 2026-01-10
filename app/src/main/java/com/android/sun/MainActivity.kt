@@ -42,8 +42,8 @@ class MainActivity : ComponentActivity() {
         NotificationHelper(this)
         
         // ADAUGĂ ACEASTA:  Pornește service-ul dacă era activat
-		if (settingsPreferences.getTattvaNotification()) {
-			TattvaNotificationService. start(this)
+		if (settingsPreferences.getTattvaNotification() || settingsPreferences.getPlanetaryHourNotification()) {
+			TattvaNotificationService.start(this)
 		}
 		
 		
@@ -76,6 +76,7 @@ fun AppNavigation(
     isDarkTheme: Boolean
 ) {
     val isTattvaNotification by settingsPreferences.tattvaNotification.collectAsState()
+	val isPlanetaryHourNotification by settingsPreferences.planetaryHourNotification.collectAsState()
 	
 	val context = LocalContext.current  // ADAUGĂ ACEASTA LINIE
 	val navController = rememberNavController()
@@ -173,14 +174,23 @@ fun AppNavigation(
 				isTattvaNotification = isTattvaNotification,  
 				onTattvaNotificationChange = { enabled ->
 					settingsPreferences.setTattvaNotification(enabled)
-					if (enabled) {
-						TattvaNotificationService.start(context)  // Folosește context, nu navController. context
+					if (enabled || isPlanetaryHourNotification) {
+						TattvaNotificationService.start(context)
 					} else {
-						TattvaNotificationService. stop(context)
+						TattvaNotificationService.stop(context)
+							}
+				},
+				isPlanetaryHourNotification = isPlanetaryHourNotification,
+				onPlanetaryHourNotificationChange = { enabled ->
+					settingsPreferences.setPlanetaryHourNotification(enabled)
+					if (enabled || isTattvaNotification) {
+						TattvaNotificationService.start(context)
+					} else {
+						TattvaNotificationService.stop(context)
 					}
 				},
 				onBackClick = {
-					navController. popBackStack()
+					navController.popBackStack()
 				}
 			)
 		}
