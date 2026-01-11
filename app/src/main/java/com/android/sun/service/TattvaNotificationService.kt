@@ -168,11 +168,11 @@ class TattvaNotificationService : Service() {
 		return when (type) {
 			PlanetType.SUN -> "☀️Sun"
 			PlanetType.MOON -> "🌒Moon"
-			PlanetType.MERCURY -> "🟢Mercury"
-			PlanetType.VENUS -> "⚪Venus"
-			PlanetType.MARS -> "🔴Mars"
-			PlanetType.JUPITER -> "🟠Jupiter"
-			PlanetType.SATURN -> "⚫Saturn"
+			PlanetType.MERCURY -> "☿Mercury" 	//🟢
+			PlanetType.VENUS -> "♀Venus"		//⚪
+			PlanetType.MARS -> "♂Mars"			//🔴
+			PlanetType.JUPITER -> "♃Jupiter"	//🟠
+			PlanetType.SATURN -> "♄Saturn"		//⚫
 			else -> "✨"
 		}
 	}
