@@ -79,7 +79,7 @@ class SwissEphWrapper(private val context: Context) {
                 retryCount = 0
                 android.util.Log.d("SwissEphWrapper", "✅ Swiss Ephemeris initialized at:  $ephePath")
             } catch (e: Exception) {
-                android.util. Log.e("SwissEphWrapper", "❌ Failed to initialize Swiss Ephemeris", e)
+                android.util.Log.e("SwissEphWrapper", "❌ Failed to initialize Swiss Ephemeris", e)
                 isInitialized = false
                 throw e
             } finally {
@@ -147,7 +147,7 @@ class SwissEphWrapper(private val context: Context) {
                 android.util.Log.d("SwissEphWrapper", "✅ Swiss Ephemeris successfully reinitialized!")
                 
             } catch (e: Exception) {
-                android.util. Log.e("SwissEphWrapper", "❌ Failed to reinitialize Swiss Ephemeris", e)
+                android.util.Log.e("SwissEphWrapper", "❌ Failed to reinitialize Swiss Ephemeris", e)
                 isInitialized = false
                 throw RuntimeException("Failed to reinitialize Swiss Ephemeris after corruption", e)
             } finally {
@@ -156,56 +156,80 @@ class SwissEphWrapper(private val context: Context) {
         }
     }
 
-		/**
-		 * ✅ Copiază fișierele ephemeris din assets - THREAD-SAFE
-		 * Șterge întotdeauna fișierele existente pentru a preveni corupția
-		 */
-		private fun copyEphemerisFiles(): String {
-			val epheDir = File(context.filesDir, "sweph/data")
-			if (!epheDir.exists()) {
-				epheDir.mkdirs()
-			}
+/**
+ * ✅ Copiază fișierele ephemeris din assets - THREAD-SAFE cu lock global
+ * Șterge întotdeauna fișierele existente pentru a preveni corupția
+ */
+private fun copyEphemerisFiles(): String {
+// ✅ Use global file lock to prevent concurrent file operations across all instances
+fileLock.withLock {
+val epheDir = File(context.filesDir, "sweph/data")
+if (!epheDir.exists()) {
+epheDir.mkdirs()
+}
 
-			val assetManager = context.assets
-			val files = arrayOf("seas_18.se1", "semo_18.se1", "sepl_18.se1")
+val assetManager = context.assets
+val files = arrayOf("seas_18.se1", "semo_18.se1", "sepl_18.se1")
 
-			files.forEach { fileName ->
-				val outFile = File(epheDir, fileName)
-				
-				// ✅ ȘTERGE întotdeauna fișierul existent pentru a evita corupția
-				if (outFile.exists()) {
-					android.util.Log.d("SwissEphWrapper", "Deleting existing $fileName to prevent corruption")
-					outFile. delete()
-				}
-				
-				try {
-					// ✅ Copiază fișierul cu buffer mare pentru performanță
-					assetManager.open("sweph/data/$fileName").use { input ->
-						FileOutputStream(outFile).use { output ->
-							val buffer = ByteArray(8192)
-							var bytesRead: Int
-							while (input.read(buffer).also { bytesRead = it } != -1) {
-								output.write(buffer, 0, bytesRead)
-							}
-							output.flush()
-						}
-					}
-					
-					val size = outFile.length()
-					android.util.Log.d("SwissEphWrapper", "✓ Copied $fileName ($size bytes)")
-					
-					if (size == 0L) {
-						throw RuntimeException("File $fileName is EMPTY after copy!")
-					}
-					
-				} catch (e: Exception) {
-					android.util. Log.e("SwissEphWrapper", "✗ Failed to copy $fileName", e)
-					throw RuntimeException("Failed to copy ephemeris file: $fileName", e)
-				}
-			}
+// ✅ Check if files already exist and are valid
+val allFilesValid = files.all { fileName ->
+val file = File(epheDir, fileName)
+file.exists() && file.length() > 0
+}
 
-			return epheDir.absolutePath
-		}
+if (allFilesValid && !filesNeedCopy) {
+android.util.Log.d("SwissEphWrapper", "✅ All ephemeris files already exist and are valid, skipping copy")
+return epheDir.absolutePath
+}
+
+files.forEach { fileName ->
+val outFile = File(epheDir, fileName)
+
+// ✅ ȘTERGE doar dacă fișierul există și trebuie recopiat
+if (outFile.exists() && filesNeedCopy) {
+android.util.Log.d("SwissEphWrapper", "Deleting existing $fileName to prevent corruption")
+outFile.delete()
+// Wait a bit to ensure filesystem sync
+Thread.sleep(10)
+}
+
+// ✅ Skip copy if file exists and is valid
+if (outFile.exists() && outFile.length() > 0 && !filesNeedCopy) {
+android.util.Log.d("SwissEphWrapper", "✓ $fileName already exists (${outFile.length()} bytes), skipping")
+continue
+}
+
+try {
+// ✅ Copiază fișierul cu buffer mare pentru performanță
+assetManager.open("sweph/data/$fileName").use { input ->
+FileOutputStream(outFile).use { output ->
+val buffer = ByteArray(16384) // Increased buffer size
+var bytesRead: Int
+while (input.read(buffer).also { bytesRead = it } != -1) {
+output.write(buffer, 0, bytesRead)
+}
+output.flush()
+output.fd.sync() // ✅ Force sync to disk
+}
+}
+
+val size = outFile.length()
+android.util.Log.d("SwissEphWrapper", "✓ Copied $fileName ($size bytes)")
+
+if (size == 0L) {
+throw RuntimeException("File $fileName is EMPTY after copy!")
+}
+
+} catch (e: Exception) {
+android.util.Log.e("SwissEphWrapper", "✗ Failed to copy $fileName", e)
+throw RuntimeException("Failed to copy ephemeris file: $fileName", e)
+}
+}
+
+filesNeedCopy = false
+return epheDir.absolutePath
+}
+}
 
     
 	
@@ -283,7 +307,7 @@ class SwissEphWrapper(private val context: Context) {
 
                 if (result < 0) {
                     val errorMsg = serr.toString()
-                    android.util. Log.e("SwissEphWrapper", "Rise/Set error: $errorMsg")
+                    android.util.Log.e("SwissEphWrapper", "Rise/Set error: $errorMsg")
                     
                     // ✅ Detectează corupție și reinițializează
                     if (isCorruptionError(errorMsg) && retryCount < maxRetries) {
@@ -313,7 +337,7 @@ class SwissEphWrapper(private val context: Context) {
                 throw RuntimeException("NullPointerException after $maxRetries retries", e)
                 
             } catch (e: ArrayIndexOutOfBoundsException) {
-                android.util. Log.e("SwissEphWrapper", "❌ ArrayIndexOutOfBoundsException - corrupted ephemeris!", e)
+                android.util.Log.e("SwissEphWrapper", "❌ ArrayIndexOutOfBoundsException - corrupted ephemeris!", e)
                 
                 if (retryCount < maxRetries) {
                     retryCount++
@@ -380,7 +404,7 @@ class SwissEphWrapper(private val context: Context) {
      * ✅ Calculează poziția corpului ceresc cu AUTO-RECOVERY - THREAD-SAFE
      */
     fun calculateBodyPosition(julianDay: Double, body: Int): Double {
-        lock. withLock {
+        lock.withLock {
             if (!isInitialized || swissEph == null) {
                 if (! isInitializing) {
                     android.util.Log.w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
