@@ -4,6 +4,10 @@
 -keep class swisseph.** { *; }
 -dontwarn swisseph.**
 
+# Keep ViewModels (important for AndroidViewModel instantiation)
+-keep class * extends androidx.lifecycle.ViewModel { *; }
+-keep class * extends androidx.lifecycle.AndroidViewModel { *; }
+
 # Keep Room Database
 -keep class * extends androidx.room.RoomDatabase
 -keep @androidx.room.Entity class *
