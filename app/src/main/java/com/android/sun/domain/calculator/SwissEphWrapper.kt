@@ -60,12 +60,12 @@ class SwissEphWrapper(private val context: Context) {
     private fun initializeSwissEph() {
         initLock.withLock {
             if (isInitialized) {
-                android.util.Log. d("SwissEphWrapper", "✅ Already initialized, skipping")
+                android.util.Log.d("SwissEphWrapper", "✅ Already initialized, skipping")
                 return
             }
             
             if (isInitializing) {
-                android.util.Log. d("SwissEphWrapper", "⏳ Already initializing, waiting...")
+                android.util.Log.d("SwissEphWrapper", "⏳ Already initializing, waiting...")
                 return
             }
             
@@ -101,7 +101,7 @@ class SwissEphWrapper(private val context: Context) {
                 return
             }
             
-            android.util.Log. w("SwissEphWrapper", "⚠️ Reinitializing Swiss Ephemeris (attempt ${retryCount}/$maxRetries)...")
+            android.util.Log.w("SwissEphWrapper", "⚠️ Reinitializing Swiss Ephemeris (attempt ${retryCount}/$maxRetries)...")
             
             isInitializing = true
             isInitialized = false
@@ -112,7 +112,7 @@ class SwissEphWrapper(private val context: Context) {
                 try {
                     swissEph?.swe_close()
                 } catch (e: Exception) {
-                    android.util.Log. w("SwissEphWrapper", "Warning closing SwissEph: ${e.message}")
+                    android.util.Log.w("SwissEphWrapper", "Warning closing SwissEph: ${e.message}")
                 }
                 swissEph = null
                 
@@ -125,7 +125,7 @@ class SwissEphWrapper(private val context: Context) {
                             if (file.name.endsWith(".se1")) {
                                 try {
                                     val deleted = file.delete()
-                                    android.util.Log. d("SwissEphWrapper", "Deleted corrupted file: ${file.name} -> $deleted")
+                                    android.util.Log.d("SwissEphWrapper", "Deleted corrupted file: ${file.name} -> $deleted")
                                 } catch (e: Exception) {
                                     android.util.Log.w("SwissEphWrapper", "Failed to delete ${file.name}: ${e.message}")
                                 }
@@ -144,7 +144,7 @@ class SwissEphWrapper(private val context: Context) {
                 isInitialized = true
                 filesNeedCopy = false
                 
-                android.util.Log. d("SwissEphWrapper", "✅ Swiss Ephemeris successfully reinitialized!")
+                android.util.Log.d("SwissEphWrapper", "✅ Swiss Ephemeris successfully reinitialized!")
                 
             } catch (e: Exception) {
                 android.util. Log.e("SwissEphWrapper", "❌ Failed to reinitialize Swiss Ephemeris", e)
@@ -243,7 +243,7 @@ class SwissEphWrapper(private val context: Context) {
         lock.withLock {
             if (! isInitialized || swissEph == null) {
                 if (! isInitializing) {
-                    android.util.Log. w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
+                    android.util.Log.w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
                     try {
                         initializeSwissEph()
                     } catch (e: Exception) {
@@ -383,7 +383,7 @@ class SwissEphWrapper(private val context: Context) {
         lock. withLock {
             if (!isInitialized || swissEph == null) {
                 if (! isInitializing) {
-                    android.util.Log. w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
+                    android.util.Log.w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
                     try {
                         initializeSwissEph()
                     } catch (e: Exception) {
@@ -438,7 +438,7 @@ class SwissEphWrapper(private val context: Context) {
                 throw RuntimeException("NullPointerException after $maxRetries retries", e)
                 
             } catch (e: ArrayIndexOutOfBoundsException) {
-                android.util.Log. e("SwissEphWrapper", "❌ ArrayIndexOutOfBoundsException - corrupted ephemeris!", e)
+                android.util.Log.e("SwissEphWrapper", "❌ ArrayIndexOutOfBoundsException - corrupted ephemeris!", e)
                 
                 if (retryCount < maxRetries) {
                     retryCount++
@@ -497,7 +497,7 @@ class SwissEphWrapper(private val context: Context) {
             }
             swissEph = null
             isInitialized = false
-            android.util.Log. d("SwissEphWrapper", "Swiss Ephemeris closed")
+            android.util.Log.d("SwissEphWrapper", "Swiss Ephemeris closed")
         }
     }
 }

@@ -27,7 +27,6 @@ import com.android.sun.viewmodel.LocationViewModel
 import com.android.sun.viewmodel.MainViewModel
 import com.android.sun.service.TattvaNotificationService
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 
 class MainActivity : ComponentActivity() {
     
