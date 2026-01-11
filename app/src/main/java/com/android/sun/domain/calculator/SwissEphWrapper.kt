@@ -27,10 +27,28 @@ class SwissEphWrapper(private val context: Context) {
     
     private var retryCount = 0
     private val maxRetries = 2
+    
+    @Volatile
+    private var filesNeedCopy = true
 
     // ✅ Lock pentru thread-safety
     private val lock = ReentrantLock()
     private val initLock = ReentrantLock()
+    
+    // ✅ Lock global pentru file operations (static)
+    companion object {
+        private val fileLock = ReentrantLock()
+        
+        const val SEFLG_SWIEPH = 2
+        
+        const val SE_SUN = 0
+        const val SE_MOON = 1
+        const val SE_MERCURY = 2
+        const val SE_VENUS = 3
+        const val SE_MARS = 4
+        const val SE_JUPITER = 5
+        const val SE_SATURN = 6
+    }
 
     init {
         initializeSwissEph()
@@ -87,6 +105,7 @@ class SwissEphWrapper(private val context: Context) {
             
             isInitializing = true
             isInitialized = false
+            filesNeedCopy = true // ✅ Force recopy of files
             
             try {
                 // Închide instanța curentă
@@ -97,29 +116,33 @@ class SwissEphWrapper(private val context: Context) {
                 }
                 swissEph = null
                 
-                // Șterge fișierele corupte
-                val epheDir = File(context.filesDir, "sweph/data")
-                if (epheDir.exists()) {
-                    epheDir.listFiles()?.forEach { file ->
-                        if (file.name.endsWith(".se1")) {
-                            try {
-                                val deleted = file.delete()
-                                android.util.Log. d("SwissEphWrapper", "Deleted corrupted file: ${file.name} -> $deleted")
-                            } catch (e: Exception) {
-                                android.util.Log.w("SwissEphWrapper", "Failed to delete ${file.name}: ${e.message}")
+                // ✅ Use global lock for file deletion
+                fileLock.withLock {
+                    // Șterge fișierele corupte
+                    val epheDir = File(context.filesDir, "sweph/data")
+                    if (epheDir.exists()) {
+                        epheDir.listFiles()?.forEach { file ->
+                            if (file.name.endsWith(".se1")) {
+                                try {
+                                    val deleted = file.delete()
+                                    android.util.Log. d("SwissEphWrapper", "Deleted corrupted file: ${file.name} -> $deleted")
+                                } catch (e: Exception) {
+                                    android.util.Log.w("SwissEphWrapper", "Failed to delete ${file.name}: ${e.message}")
+                                }
                             }
                         }
                     }
                 }
                 
                 // Așteaptă puțin pentru a permite sistemului să elibereze resursele
-                Thread.sleep(50)
+                Thread.sleep(100)
                 
                 // Reinițializează
                 ephePath = copyEphemerisFiles()
                 swissEph = SwissEph()
                 swissEph?.swe_set_ephe_path(ephePath)
                 isInitialized = true
+                filesNeedCopy = false
                 
                 android.util.Log. d("SwissEphWrapper", "✅ Swiss Ephemeris successfully reinitialized!")
                 
@@ -476,17 +499,5 @@ class SwissEphWrapper(private val context: Context) {
             isInitialized = false
             android.util.Log. d("SwissEphWrapper", "Swiss Ephemeris closed")
         }
-    }
-
-    companion object {
-        const val SEFLG_SWIEPH = 2
-        
-        const val SE_SUN = 0
-        const val SE_MOON = 1
-        const val SE_MERCURY = 2
-        const val SE_VENUS = 3
-        const val SE_MARS = 4
-        const val SE_JUPITER = 5
-        const val SE_SATURN = 6
     }
 }

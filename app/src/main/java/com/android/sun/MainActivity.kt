@@ -27,6 +27,7 @@ import com.android.sun.viewmodel.LocationViewModel
 import com.android.sun.viewmodel.MainViewModel
 import com.android.sun.service.TattvaNotificationService
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 
 class MainActivity : ComponentActivity() {
     
@@ -78,11 +79,17 @@ fun AppNavigation(
     val isTattvaNotification by settingsPreferences.tattvaNotification.collectAsState()
 	val isPlanetaryHourNotification by settingsPreferences.planetaryHourNotification.collectAsState()
 	
-	val context = LocalContext.current  // ADAUGĂ ACEASTA LINIE
+	val context = LocalContext.current
 	val navController = rememberNavController()
-    val mainViewModel: MainViewModel = viewModel()
-    val locationViewModel: LocationViewModel = viewModel()
-    val astroViewModel: AstroViewModel = viewModel()
+    
+    // ✅ FIX: Use AndroidViewModelFactory for AndroidViewModel instances
+    val factory = androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.getInstance(
+        context.applicationContext as android.app.Application
+    )
+    
+    val mainViewModel: MainViewModel = viewModel(factory = factory)
+    val locationViewModel: LocationViewModel = viewModel(factory = factory)
+    val astroViewModel: AstroViewModel = viewModel(factory = factory)
     
     val astroData by mainViewModel.astroData.collectAsState()
     val isLoading by mainViewModel.isLoading.collectAsState()
