@@ -155,11 +155,11 @@ class TattvaNotificationService : Service() {
 
     private fun getTattvaEmoji(type: TattvaType): String {
         return when (type) {
-            TattvaType.TEJAS -> "🔺"
-            TattvaType.PRITHIVI -> "🟨"
-            TattvaType.APAS -> "🌙"
-            TattvaType.VAYU -> "🔵"
-            TattvaType.AKASHA -> "🟣"
+            TattvaType.TEJAS -> "🔺 TEJAS"
+            TattvaType.PRITHIVI -> "🟨 PRITHIVI"
+            TattvaType.APAS -> "🌙 APAS"
+            TattvaType.VAYU -> "🔵 VAYU"
+            TattvaType.AKASHA -> "🟣 AKASHA"
         }
     }
 	
