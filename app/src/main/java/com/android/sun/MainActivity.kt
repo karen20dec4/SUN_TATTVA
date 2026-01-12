@@ -58,6 +58,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     AppNavigation(
+                        application = application,
                         settingsPreferences = settingsPreferences,
                         notificationScheduler = notificationScheduler,
                         isDarkTheme = isDarkTheme
@@ -71,6 +72,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AppNavigation(
+    application: android.app.Application,
     settingsPreferences: SettingsPreferences,
     notificationScheduler: NotificationScheduler,
     isDarkTheme: Boolean
@@ -81,10 +83,8 @@ fun AppNavigation(
 	val context = LocalContext.current
 	val navController = rememberNavController()
     
-    // ✅ FIX: Use AndroidViewModelFactory for AndroidViewModel instances
-    val factory = androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.getInstance(
-        context.applicationContext as android.app.Application
-    )
+    // ✅ FIX: Use AndroidViewModelFactory with Application from Activity
+    val factory = androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.getInstance(application)
     
     val mainViewModel: MainViewModel = viewModel(factory = factory)
     val locationViewModel: LocationViewModel = viewModel(factory = factory)
