@@ -428,7 +428,7 @@ return epheDir.absolutePath
      */
     fun calculateBodyPosition(julianDay: Double, body: Int): Double {
         lock.withLock {
-            if (!isInitialized || swissEph == null) {
+            if (!globalIsInitialized || swissEph == null) {
                 if (!globalIsInitializing) {
                     android.util.Log.w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
                     try {
@@ -439,7 +439,7 @@ return epheDir.absolutePath
                     }
                 } else {
                     Thread.sleep(100)
-                    if (! isInitialized) {
+                    if (!globalIsInitialized) {
                         throw RuntimeException("Swiss Ephemeris not initialized")
                     }
                 }
