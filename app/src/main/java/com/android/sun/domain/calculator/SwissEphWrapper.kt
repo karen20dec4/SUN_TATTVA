@@ -19,25 +19,28 @@ class SwissEphWrapper(private val context: Context) {
     private var swissEph:  SwissEph?  = null
     private var ephePath: String = ""
     
-    @Volatile
-    private var isInitialized = false
-    
-    @Volatile
-    private var isInitializing = false
-    
     private var retryCount = 0
     private val maxRetries = 2
-    
-    @Volatile
-    private var filesNeedCopy = true
 
     // ✅ Lock pentru thread-safety
     private val lock = ReentrantLock()
-    private val initLock = ReentrantLock()
     
-    // ✅ Lock global pentru file operations (static)
+    // ✅ Locks and state global pentru file operations (static) - shared across all instances
     companion object {
         private val fileLock = ReentrantLock()
+        private val initLock = ReentrantLock()
+        
+        @Volatile
+        private var globalIsInitialized = false
+        
+        @Volatile
+        private var globalIsInitializing = false
+        
+        @Volatile
+        private var filesNeedCopy = true
+        
+        @Volatile
+        private var globalEphePath: String = ""
         
         const val SEFLG_SWIEPH = 2
         
@@ -55,35 +58,54 @@ class SwissEphWrapper(private val context: Context) {
     }
 
     /**
-     * ✅ Inițializează Swiss Ephemeris - THREAD-SAFE
+     * ✅ Inițializează Swiss Ephemeris - THREAD-SAFE cu wait pentru alte thread-uri
      */
     private fun initializeSwissEph() {
         initLock.withLock {
-            if (isInitialized) {
-                android.util.Log.d("SwissEphWrapper", "✅ Already initialized, skipping")
+            // Check if already initialized globally
+            if (globalIsInitialized) {
+                android.util.Log.d("SwissEphWrapper", "✅ Already initialized globally, reusing path")
+                ephePath = globalEphePath
+                swissEph = SwissEph()
+                swissEph?.swe_set_ephe_path(ephePath)
                 return
             }
             
-            if (isInitializing) {
-                android.util.Log.d("SwissEphWrapper", "⏳ Already initializing, waiting...")
-                return
+            // If another thread is initializing, wait for it
+            while (globalIsInitializing) {
+                android.util.Log.d("SwissEphWrapper", "⏳ Another thread is initializing, waiting...")
+                try {
+                    Thread.sleep(100)
+                    if (globalIsInitialized) {
+                        android.util.Log.d("SwissEphWrapper", "✅ Initialization completed by other thread")
+                        ephePath = globalEphePath
+                        swissEph = SwissEph()
+                        swissEph?.swe_set_ephe_path(ephePath)
+                        return
+                    }
+                } catch (e: InterruptedException) {
+                    android.util.Log.e("SwissEphWrapper", "Interrupted while waiting", e)
+                    throw e
+                }
             }
             
-            isInitializing = true
+            // This thread will do the initialization
+            globalIsInitializing = true
             
             try {
                 ephePath = copyEphemerisFiles()
+                globalEphePath = ephePath
                 swissEph = SwissEph()
-                swissEph?. swe_set_ephe_path(ephePath)
-                isInitialized = true
+                swissEph?.swe_set_ephe_path(ephePath)
+                globalIsInitialized = true
                 retryCount = 0
                 android.util.Log.d("SwissEphWrapper", "✅ Swiss Ephemeris initialized at:  $ephePath")
             } catch (e: Exception) {
                 android.util.Log.e("SwissEphWrapper", "❌ Failed to initialize Swiss Ephemeris", e)
-                isInitialized = false
+                globalIsInitialized = false
                 throw e
             } finally {
-                isInitializing = false
+                globalIsInitializing = false
             }
         }
     }
@@ -94,7 +116,7 @@ class SwissEphWrapper(private val context: Context) {
     private fun reinitializeSwissEph() {
         initLock.withLock {
             // Verifică din nou după ce am obținut lock-ul
-            if (isInitializing) {
+            if (globalIsInitializing) {
                 android.util.Log.d("SwissEphWrapper", "⏳ Another thread is reinitializing, waiting...")
                 // Așteaptă puțin și returnează
                 Thread.sleep(100)
@@ -103,8 +125,8 @@ class SwissEphWrapper(private val context: Context) {
             
             android.util.Log.w("SwissEphWrapper", "⚠️ Reinitializing Swiss Ephemeris (attempt ${retryCount}/$maxRetries)...")
             
-            isInitializing = true
-            isInitialized = false
+            globalIsInitializing = true
+            globalIsInitialized = false
             filesNeedCopy = true // ✅ Force recopy of files
             
             try {
@@ -139,19 +161,20 @@ class SwissEphWrapper(private val context: Context) {
                 
                 // Reinițializează
                 ephePath = copyEphemerisFiles()
+                globalEphePath = ephePath
                 swissEph = SwissEph()
                 swissEph?.swe_set_ephe_path(ephePath)
-                isInitialized = true
+                globalIsInitialized = true
                 filesNeedCopy = false
                 
                 android.util.Log.d("SwissEphWrapper", "✅ Swiss Ephemeris successfully reinitialized!")
                 
             } catch (e: Exception) {
                 android.util.Log.e("SwissEphWrapper", "❌ Failed to reinitialize Swiss Ephemeris", e)
-                isInitialized = false
+                globalIsInitialized = false
                 throw RuntimeException("Failed to reinitialize Swiss Ephemeris after corruption", e)
             } finally {
-                isInitializing = false
+                globalIsInitializing = false
             }
         }
     }
@@ -196,7 +219,7 @@ Thread.sleep(10)
 // ✅ Skip copy if file exists and is valid
 if (outFile.exists() && outFile.length() > 0 && !filesNeedCopy) {
 android.util.Log.d("SwissEphWrapper", "✓ $fileName already exists (${outFile.length()} bytes), skipping")
-continue
+return@forEach
 }
 
 try {
@@ -265,8 +288,8 @@ return epheDir.absolutePath
         riseSetFlag: Int
     ): Double {
         lock.withLock {
-            if (! isInitialized || swissEph == null) {
-                if (! isInitializing) {
+            if (!globalIsInitialized || swissEph == null) {
+                if (!globalIsInitializing) {
                     android.util.Log.w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
                     try {
                         initializeSwissEph()
@@ -277,7 +300,7 @@ return epheDir.absolutePath
                 } else {
                     // Așteaptă să se termine inițializarea
                     Thread.sleep(100)
-                    if (!isInitialized) {
+                    if (!globalIsInitialized) {
                         throw RuntimeException("Swiss Ephemeris not initialized")
                     }
                 }
@@ -406,7 +429,7 @@ return epheDir.absolutePath
     fun calculateBodyPosition(julianDay: Double, body: Int): Double {
         lock.withLock {
             if (!isInitialized || swissEph == null) {
-                if (! isInitializing) {
+                if (!globalIsInitializing) {
                     android.util.Log.w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
                     try {
                         initializeSwissEph()
@@ -510,7 +533,8 @@ return epheDir.absolutePath
     }
 
     /**
-     * ✅ Închide Swiss Ephemeris
+    /**
+     * ✅ Închide Swiss Ephemeris (instance local, nu modifică starea globală)
      */
     fun close() {
         lock.withLock {
@@ -520,8 +544,8 @@ return epheDir.absolutePath
                 android.util.Log.w("SwissEphWrapper", "Warning closing SwissEph:  ${e.message}")
             }
             swissEph = null
-            isInitialized = false
-            android.util.Log.d("SwissEphWrapper", "Swiss Ephemeris closed")
+            // Note: Nu resetăm globalIsInitialized pentru că alte instanțe pot folosi fișierele
+            android.util.Log.d("SwissEphWrapper", "Swiss Ephemeris closed for this instance")
         }
     }
 }
