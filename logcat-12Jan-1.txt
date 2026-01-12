@@ -1,0 +1,547 @@
+2026-01-12 03:15:43.214 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  === SUBTATTVA DEBUG START ===
+2026-01-12 03:15:43.215 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Current time: 2026-01-12 03:15:43
+2026-01-12 03:15:43.215 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Sunrise time: 2026-01-11 07:19:10
+2026-01-12 03:15:43.215 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Elapsed since sunrise: 46592 seconds
+2026-01-12 03:15:43.216 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva index from sunrise: 161
+2026-01-12 03:15:43.216 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva index in Tattva: 1
+2026-01-12 03:15:43.216 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Current SubTattva: Vayu
+2026-01-12 03:15:43.217 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva starts at: 2026-01-12 03:11:58
+2026-01-12 03:15:43.217 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva ends at: 2026-01-12 03:16:46
+2026-01-12 03:15:43.217 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Current millis: 1768180543174
+2026-01-12 03:15:43.217 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva end millis: 1768180606769
+2026-01-12 03:15:43.217 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Remaining millis: 63595
+2026-01-12 03:15:43.217 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Remaining: 1m 3s
+2026-01-12 03:15:43.217 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  === SUBTATTVA DEBUG END ===
+2026-01-12 03:15:43.217 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=154.2833°, current=285.302488521644°
+2026-01-12 03:15:43.218 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 228.98081147835597°, estimated days: 18
+2026-01-12 03:15:43.219 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-01-31 01:15:43 UTC
+2026-01-12 03:15:43.220 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-01-31 00:15:43 UTC
+2026-01-12 03:15:43.227 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 154.2833° (UTC):  2026-01-30 23:52:43 UTC, diff=6.805611511708776E-4°
+2026-01-12 03:15:43.228 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Location: 2026-01-30 18:52:43 Location
+2026-01-12 03:15:43.228 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=180.0°, current=285.302488521644°
+2026-01-12 03:15:43.229 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 254.69751147835598°, estimated days: 20
+2026-01-12 03:15:43.230 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-02-02 01:15:43 UTC
+2026-01-12 03:15:43.233 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-02-01 22:15:43 UTC
+2026-01-12 03:15:43.235 16646-16646 SwissEphWrapper         com.android.sun.tattva               D  ✓ Copied semo_18.se1 (1304771 bytes)
+2026-01-12 03:15:43.235 16646-16646 SwissEphWrapper         com.android.sun.tattva               D  Deleting existing sepl_18.se1 to prevent corruption
+2026-01-12 03:15:43.253 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 180.0° (UTC):  2026-02-01 22:08:43 UTC, diff=0.0030529935503125216°
+2026-01-12 03:15:43.253 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Location: 2026-02-01 17:08:43 Location
+2026-01-12 03:15:43.253 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=0.0°, current=285.302488521644°
+2026-01-12 03:15:43.254 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 74.69751147835598°, estimated days: 6
+2026-01-12 03:15:43.254 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-01-19 01:15:43 UTC
+2026-01-12 03:15:43.259 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-01-18 20:15:43 UTC
+2026-01-12 03:15:43.260 16646-16646 SwissEphWrapper         com.android.sun.tattva               D  ✓ Copied sepl_18.se1 (484055 bytes)
+2026-01-12 03:15:43.260 16646-16773 SwissEphWrapper         com.android.sun.tattva               E  ❌ NullPointerException - corrupted ephemeris!
+                                                                                                    java.lang.NullPointerException: Attempt to invoke virtual method 'double swisseph.SwissLib.swi_epsiln(double, int)' on a null object reference
+                                                                                                    	at swisseph.SwissEph.calc_epsilon(SwissEph.java:3704)
+                                                                                                    	at swisseph.SwissEph.swi_check_ecliptic(SwissEph.java:7488)
+                                                                                                    	at swisseph.SwissEph.swecalc(SwissEph.java:3076)
+                                                                                                    	at swisseph.SwissEph._calc(SwissEph.java:433)
+                                                                                                    	at swisseph.SwissEph.swe_calc(SwissEph.java:316)
+                                                                                                    	at swisseph.SweDate.setGlobalTidalAcc(SweDate.java:948)
+                                                                                                    	at swisseph.SweDate.swi_set_tid_acc(SweDate.java:894)
+                                                                                                    	at swisseph.SwissEph.swe_calc_ut(SwissEph.java:269)
+                                                                                                    	at com.android.sun.domain.calculator.SwissEphWrapper.calculateBodyPosition(SwissEphWrapper.kt:429)
+                                                                                                    	at com.android.sun.domain.calculator.AstroCalculator.calculateSunLongitude(AstroCalculator.kt:108)
+                                                                                                    	at com.android.sun.domain.calculator.MoonPhaseCalculator.getCurrentPhaseAngle(MoonPhaseCalculator.kt:177)
+                                                                                                    	at com.android.sun.domain.calculator.MoonPhaseCalculator.findNextPhase(MoonPhaseCalculator.kt:142)
+                                                                                                    	at com.android.sun.domain.calculator.MoonPhaseCalculator.calculateMoonPhase(MoonPhaseCalculator.kt:37)
+                                                                                                    	at com.android.sun.data.repository.AstroRepository.calculateAstroDataForTime(AstroRepository.kt:177)
+                                                                                                    	at com.android.sun.data.repository.AstroRepository.access$calculateAstroDataForTime(AstroRepository.kt:19)
+                                                                                                    	at com.android.sun.data.repository.AstroRepository$calculateAstroData$2.invokeSuspend(AstroRepository.kt:40)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:106)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2026-01-12 03:15:43.261 16646-16646 SwissEphWrapper         com.android.sun.tattva               D  ✅ Swiss Ephemeris initialized at:  /data/user/0/com.android.sun.tattva/files/sweph/data
+2026-01-12 03:15:43.261 16646-16773 SwissEphWrapper         com.android.sun.tattva               D  Deleted corrupted file: seas_18.se1 -> true
+2026-01-12 03:15:43.262 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵 init called
+2026-01-12 03:15:43.262 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵 loadSavedLocationSync() called
+2026-01-12 03:15:43.262 16646-16646 MainViewModel           com.android.sun.tattva               D  ✅ Loaded saved location: New York, USA (40.712799072265625, -74.00599670410156)
+2026-01-12 03:15:43.262 16646-16646 MainViewModel           com.android.sun.tattva               D  ───────────────────────────────────────
+2026-01-12 03:15:43.263 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵 calculateAstroData() START
+2026-01-12 03:15:43.263 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵 Using location: New York, USA
+2026-01-12 03:15:43.263 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵   Lat: 40.712799072265625, Lon: -74.00599670410156
+2026-01-12 03:15:43.263 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵   TimeZone: -5.0
+2026-01-12 03:15:43.264 16646-16646 LocationViewModel       com.android.sun.tattva               D  ℹ️ No saved GPS location found
+2026-01-12 03:15:43.265 16646-16646 LocationViewModel       com.android.sun.tattva               D  🔵 loadGPSLocation() CALLED
+2026-01-12 03:15:43.265 16646-16773 SwissEphWrapper         com.android.sun.tattva               D  Deleted corrupted file: semo_18.se1 -> true
+2026-01-12 03:15:43.265 16646-16773 SwissEphWrapper         com.android.sun.tattva               D  Deleted corrupted file: sepl_18.se1 -> true
+2026-01-12 03:15:43.266 16646-16646 LocationViewModel       com.android.sun.tattva               D  🔵 Starting GPS location request...
+2026-01-12 03:15:43.267 16646-16775 LocationRepository      com.android.sun.tattva               D  🟡 getCurrentLocation() called
+2026-01-12 03:15:43.267 16646-16775 LocationRepository      com.android.sun.tattva               E  ❌ No location permission!
+2026-01-12 03:15:43.273 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.274 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:43.274 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:43.274 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:43.274 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 7:18:53
+2026-01-12 03:15:43.274 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.279 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.279 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:43.279 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:43.279 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:43.279 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 7:19:10
+2026-01-12 03:15:43.280 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.281 16646-16646 SwissEphWrapper         com.android.sun.tattva               D  ✓ Copied seas_18.se1 (223002 bytes)
+2026-01-12 03:15:43.286 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.287 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:43.287 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:43.287 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:43.287 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 16:49:6
+2026-01-12 03:15:43.287 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.292 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.292 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:43.292 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:43.292 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:43.292 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 16:48:3
+2026-01-12 03:15:43.293 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.296 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.296 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:43.296 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:43.296 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:43.297 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 7:18:53
+2026-01-12 03:15:43.297 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.297 16646-16775 TattvaCalculator        com.android.sun.tattva               D  === TATTVA DEBUG START ===
+2026-01-12 03:15:43.297 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Current time: 2026-01-12 03:15:43
+2026-01-12 03:15:43.297 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Sunrise time: 2026-01-11 07:19:10
+2026-01-12 03:15:43.297 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Elapsed since sunrise: 776 minutes
+2026-01-12 03:15:43.307 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Tattva index from sunrise: 32
+2026-01-12 03:15:43.307 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Cycle number: 6
+2026-01-12 03:15:43.307 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Tattva index in cycle: 2
+2026-01-12 03:15:43.307 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Current Tattva: Tejas
+2026-01-12 03:15:43.307 16646-16646 SwissEphWrapper         com.android.sun.tattva               D  ✓ Copied semo_18.se1 (1304771 bytes)
+2026-01-12 03:15:43.307 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Tattva starts at: 2026-01-12 03:07:10
+2026-01-12 03:15:43.307 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Tattva ends at: 2026-01-12 03:31:10
+2026-01-12 03:15:43.307 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Current millis: 1768180543267
+2026-01-12 03:15:43.307 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Tattva end millis: 1768181470769
+2026-01-12 03:15:43.307 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Remaining millis: 927502
+2026-01-12 03:15:43.307 16646-16775 TattvaCalculator        com.android.sun.tattva               D  Remaining: 15m 27s
+2026-01-12 03:15:43.307 16646-16775 TattvaCalculator        com.android.sun.tattva               D  === TATTVA DEBUG END ===
+2026-01-12 03:15:43.308 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  === SUBTATTVA DEBUG START ===
+2026-01-12 03:15:43.308 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  Current time: 2026-01-12 03:15:43
+2026-01-12 03:15:43.308 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  Sunrise time: 2026-01-11 07:19:10
+2026-01-12 03:15:43.308 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  Elapsed since sunrise: 46592 seconds
+2026-01-12 03:15:43.308 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva index from sunrise: 161
+2026-01-12 03:15:43.308 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva index in Tattva: 1
+2026-01-12 03:15:43.308 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  Current SubTattva: Vayu
+2026-01-12 03:15:43.308 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva starts at: 2026-01-12 03:11:58
+2026-01-12 03:15:43.308 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva ends at: 2026-01-12 03:16:46
+2026-01-12 03:15:43.308 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  Current millis: 1768180543267
+2026-01-12 03:15:43.308 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva end millis: 1768180606769
+2026-01-12 03:15:43.309 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  Remaining millis: 63502
+2026-01-12 03:15:43.309 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  Remaining: 1m 3s
+2026-01-12 03:15:43.309 16646-16775 SubTattvaCalculator     com.android.sun.tattva               D  === SUBTATTVA DEBUG END ===
+2026-01-12 03:15:43.309 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=154.2833°, current=285.302488521644°
+2026-01-12 03:15:43.309 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 228.98081147835597°, estimated days: 18
+2026-01-12 03:15:43.310 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-01-31 01:15:43 UTC
+2026-01-12 03:15:43.310 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-01-31 00:15:43 UTC
+2026-01-12 03:15:43.315 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 154.2833° (UTC):  2026-01-30 23:52:43 UTC, diff=6.805611511708776E-4°
+2026-01-12 03:15:43.316 16646-16646 SwissEphWrapper         com.android.sun.tattva               D  ✓ Copied sepl_18.se1 (484055 bytes)
+2026-01-12 03:15:43.318 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Location: 2026-01-30 18:52:43 Location
+2026-01-12 03:15:43.319 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=180.0°, current=285.302488521644°
+2026-01-12 03:15:43.319 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 254.69751147835598°, estimated days: 20
+2026-01-12 03:15:43.323 16646-16646 SwissEphWrapper         com.android.sun.tattva               D  ✅ Swiss Ephemeris initialized at:  /data/user/0/com.android.sun.tattva/files/sweph/data
+2026-01-12 03:15:43.347 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-02-02 01:15:43 UTC
+2026-01-12 03:15:43.348 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-02-01 22:15:43 UTC
+2026-01-12 03:15:43.365 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 180.0° (UTC):  2026-02-01 22:08:43 UTC, diff=0.0030529935503125216°
+2026-01-12 03:15:43.373 16646-16726 OpenGLRenderer          com.android.sun.tattva               E  Unable to match the desired swap behavior.
+2026-01-12 03:15:43.373 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Location: 2026-02-01 17:08:43 Location
+2026-01-12 03:15:43.373 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=0.0°, current=285.302488521644°
+2026-01-12 03:15:43.374 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 74.69751147835598°, estimated days: 6
+2026-01-12 03:15:43.376 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-01-19 01:15:43 UTC
+2026-01-12 03:15:43.378 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-01-18 20:15:43 UTC
+2026-01-12 03:15:43.387 16646-16773 SwissEphWrapper         com.android.sun.tattva               D  Deleting existing seas_18.se1 to prevent corruption
+2026-01-12 03:15:43.388 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 0.0° (UTC):  2026-01-18 19:51:43 UTC, diff=5.862650944550296E-4°
+2026-01-12 03:15:43.388 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Location: 2026-01-18 14:51:43 Location
+2026-01-12 03:15:43.388 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  === MOON PHASE DEBUG ===
+2026-01-12 03:15:43.388 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  Location TZ: Location
+2026-01-12 03:15:43.388 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  Moon:      218.1238064808483°, Sun:   291.9148344361295°
+2026-01-12 03:15:43.388 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  Phase angle: 286.20897204471873°
+2026-01-12 03:15:43.388 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  Illumination:  40%
+2026-01-12 03:15:43.388 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  Next Tripura Sundari: 2026-01-30 18:52:43 Location
+2026-01-12 03:15:43.389 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  Next Full Moon:    2026-02-01 17:08:43 Location
+2026-01-12 03:15:43.389 16646-16775 MoonPhaseCalculator     com.android.sun.tattva               D  Next New Moon:   2026-01-18 14:51:43 Location
+2026-01-12 03:15:43.405 16646-16646 LocationViewModel       com.android.sun.tattva               D  🔵 GPS result: null
+2026-01-12 03:15:43.406 16646-16646 LocationViewModel       com.android.sun.tattva               D  ℹ️ No saved GPS location found
+2026-01-12 03:15:43.406 16646-16646 LocationViewModel       com.android.sun.tattva               E  ❌ GPS returned null and no saved location
+2026-01-12 03:15:43.406 16646-16646 LocationViewModel       com.android.sun.tattva               D  🔵 GPS request finished
+2026-01-12 03:15:43.431 16646-16775 PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.432 16646-16775 PlanetDebug             com.android.sun.tattva               D  🔍 PLANETARY HOUR CALCULATION START
+2026-01-12 03:15:43.432 16646-16775 PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.456 16646-16775 PlanetDebug             com.android.sun.tattva               D  📅 currentTime:     2026-01-12 03:15:43
+2026-01-12 03:15:43.457 16646-16775 PlanetDebug             com.android.sun.tattva               D  🌅 sunrise:         2026-01-11 14:19:10
+2026-01-12 03:15:43.457 16646-16775 PlanetDebug             com.android.sun.tattva               D  🌇 sunset:          2026-01-11 23:49:06
+2026-01-12 03:15:43.458 16646-16775 PlanetDebug             com.android.sun.tattva               D  🌇 previousSunset:  2026-01-10 23:48:03
+2026-01-12 03:15:43.459 16646-16775 PlanetDebug             com.android.sun.tattva               D  🌅 nextSunrise:     2026-01-12 14:18:53
+2026-01-12 03:15:43.460 16646-16775 PlanetDebug             com.android.sun.tattva               D  ☀️ isDayTime: false
+2026-01-12 03:15:43.460 16646-16775 PlanetDebug             com.android.sun.tattva               D  🌙 NIGHT (after sunset): from sunset to nextSunrise
+2026-01-12 03:15:43.462 16646-16775 PlanetDebug             com.android.sun.tattva               D  ⏰ startMillis: 1768168146320 (2026-01-11 23:49:06)
+2026-01-12 03:15:43.462 16646-16775 PlanetDebug             com.android.sun.tattva               D  ⏰ endMillis:   1768220333493 (2026-01-12 14:18:53)
+2026-01-12 03:15:43.463 16646-16775 PlanetDebug             com.android.sun.tattva               D  ⏱ totalDuration: 869.7862166666666 minutes
+2026-01-12 03:15:43.465 16646-16775 PlanetDebug             com.android.sun.tattva               D  ⏱ planetaryHourDuration: 72.48218333333334 minutes
+2026-01-12 03:15:43.465 16646-16775 PlanetDebug             com.android.sun.tattva               D  ⏱ elapsedTime: 206.61578333333333 minutes
+2026-01-12 03:15:43.465 16646-16775 PlanetDebug             com.android.sun.tattva               D  🔢 hourIndex: 2 (hour 3 of 12)
+2026-01-12 03:15:43.466 16646-16775 PlanetDebug             com.android.sun.tattva               D  🌙 NIGHT: globalHourIndex = 14 (hours 13-24 of day)
+2026-01-12 03:15:43.467 16646-16775 PlanetDebug             com.android.sun.tattva               D  ⏰ hourStart: 2026-01-12 02:14:04
+2026-01-12 03:15:43.467 16646-16775 PlanetDebug             com.android.sun.tattva               D  ⏰ hourEnd:   2026-01-12 03:26:33
+2026-01-12 03:15:43.467 16646-16775 PlanetDebug             com.android.sun.tattva               D  📅 referenceDay: 2026-01-11 14:19:10
+2026-01-12 03:15:43.467 16646-16775 PlanetDebug             com.android.sun.tattva               D  📅 dayOfWeek: 0 (SUN)
+2026-01-12 03:15:43.468 16646-16775 PlanetDebug             com.android.sun.tattva               D  📅 dayRuler: Sun
+2026-01-12 03:15:43.469 16646-16775 PlanetDebug             com.android.sun.tattva               D  🔢 globalHourIndex: 14 (hour 15 of 24)
+2026-01-12 03:15:43.469 16646-16775 PlanetDebug             com.android.sun.tattva               D  🔍 getPlanetForHour: dayOfWeek=0, globalHourIndex=14
+2026-01-12 03:15:43.469 16646-16775 PlanetDebug             com.android.sun.tattva               D  🔍 startPlanet: Soare (index 3 in chaldeanOrder)
+2026-01-12 03:15:43.469 16646-16773 SwissEphWrapper         com.android.sun.tattva               D  ✓ Copied seas_18.se1 (223002 bytes)
+2026-01-12 03:15:43.470 16646-16773 SwissEphWrapper         com.android.sun.tattva               D  Deleting existing semo_18.se1 to prevent corruption
+2026-01-12 03:15:43.471 16646-16775 PlanetDebug             com.android.sun.tattva               D  🔍 planetIndex: (3 + 14) % 7 = 3
+2026-01-12 03:15:43.473 16646-16775 PlanetDebug             com.android.sun.tattva               D  🔍 result: Soare
+2026-01-12 03:15:43.473 16646-16775 PlanetDebug             com.android.sun.tattva               D  🪐 RESULT: Soare (☉)
+2026-01-12 03:15:43.473 16646-16775 PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.474 16646-16775 NityaDebug              com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.474 16646-16775 NityaDebug              com.android.sun.tattva               D  🌙 NITYA CALCULATION START
+2026-01-12 03:15:43.474 16646-16775 NityaDebug              com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.474 16646-16775 NityaDebug              com.android.sun.tattva               D  Moon Longitude: 218.12°
+2026-01-12 03:15:43.474 16646-16775 NityaDebug              com.android.sun.tattva               D  Sun Longitude:  291.91°
+2026-01-12 03:15:43.475 16646-16775 NityaDebug              com.android.sun.tattva               D  Difference:     286.21°
+2026-01-12 03:15:43.475 16646-16775 NityaDebug              com.android.sun.tattva               D  Tithi Index:    23 (raw)
+2026-01-12 03:15:43.475 16646-16775 NityaDebug              com.android.sun.tattva               D  Paksha:         Krishna (Dark)
+2026-01-12 03:15:43.475 16646-16775 NityaDebug              com.android.sun.tattva               D  Nitya Index:    6 (adjusted)
+2026-01-12 03:15:43.475 16646-16775 NityaDebug              com.android.sun.tattva               D  Nitya Result:   7 - Sivaduti
+2026-01-12 03:15:43.476 16646-16775 NityaDebug              com.android.sun.tattva               D  Tithi Progress: 85.07% (10.21° in current Tithi)
+2026-01-12 03:15:43.477 16646-16775 NityaDebug              com.android.sun.tattva               D  Hours elapsed:  20.08 hours
+2026-01-12 03:15:43.478 16646-16775 NityaDebug              com.android.sun.tattva               D  Hours remaining: 3.52 hours
+2026-01-12 03:15:43.479 16646-16775 NityaDebug              com.android.sun.tattva               D  Start Time:     Sun Jan 11 07:11:43 GMT+02:00 2026
+2026-01-12 03:15:43.479 16646-16775 NityaDebug              com.android.sun.tattva               D  End Time:       Mon Jan 12 06:46:43 GMT+02:00 2026
+2026-01-12 03:15:43.479 16646-16775 NityaDebug              com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.480 16646-16775 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:43.480 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Moon: 208.2024595842952°, Sun:  291.06816540454804°
+2026-01-12 03:15:43.481 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Diff: 82.86570582025286°, Paksha: Krishna
+2026-01-12 03:15:43.482 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Nitya: 7, nn: 2 (PAR)
+2026-01-12 03:15:43.482 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Sunrise Polarity: (+) Pingala
+2026-01-12 03:15:43.482 16646-16775 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:43.482 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Moon: 212.93892109706226°, Sun:  291.4714455891223°
+2026-01-12 03:15:43.483 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Diff: 78.53252449206008°, Paksha: Krishna
+2026-01-12 03:15:43.483 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Nitya: 7, nn: 2 (PAR)
+2026-01-12 03:15:43.483 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Sunset Polarity: (-) Ida
+2026-01-12 03:15:43.485 16646-16775 AstroRepository         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.486 16646-16775 AstroRepository         com.android.sun.tattva               D  📍 Location: New York, USA
+2026-01-12 03:15:43.487 16646-16775 AstroRepository         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:43.488 16646-16775 AstroRepository         com.android.sun.tattva               D  📍 LocationTimeZone: Location
+2026-01-12 03:15:43.488 16646-16775 AstroRepository         com.android.sun.tattva               D  🌅 Sunrise formatted: 07:19:10
+2026-01-12 03:15:43.488 16646-16775 AstroRepository         com.android.sun.tattva               D  🌇 Sunset formatted:  16:49:06
+2026-01-12 03:15:43.489 16646-16775 AstroRepository         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.489 16646-16775 AstroRepository         com.android.sun.tattva               D  🌙 Zodiac:  lon=291.9148344361295° → 291.9148344361295° → Capricorn 21°
+2026-01-12 03:15:43.489 16646-16775 AstroRepository         com.android.sun.tattva               D  🌙 Zodiac:  lon=218.1238064808483° → 218.1238064808483° → Scorpion 8°
+2026-01-12 03:15:43.503 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.504 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:43.505 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:43.505 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:43.505 16646-16775 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 16:50:10
+2026-01-12 03:15:43.505 16646-16775 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.506 16646-16775 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:43.506 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Moon: 220.13087310554528°, Sun:  292.0868969566006°
+2026-01-12 03:15:43.506 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Diff: 71.95602385105525°, Paksha: Krishna
+2026-01-12 03:15:43.506 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Nitya: 6, nn: 1 (IMPAR)
+2026-01-12 03:15:43.506 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Sunrise Polarity: (-) Ida
+2026-01-12 03:15:43.506 16646-16775 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:43.507 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Moon: 224.83815337198956°, Sun:  292.4911307839785°
+2026-01-12 03:15:43.507 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Diff: 67.6529774119889°, Paksha: Krishna
+2026-01-12 03:15:43.507 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Nitya: 6, nn: 1 (IMPAR)
+2026-01-12 03:15:43.507 16646-16775 PolarityCalculator      com.android.sun.tattva               D  Sunset Polarity: (+) Pingala
+2026-01-12 03:15:43.509 16646-16646 MainViewModel           com.android.sun.tattva               D  ✅ Calculation completed!
+2026-01-12 03:15:43.509 16646-16646 MainViewModel           com.android.sun.tattva               D  ✅ Result: sunrise=07:19:10
+2026-01-12 03:15:43.509 16646-16646 MainViewModel           com.android.sun.tattva               D  ✅ Location in result: New York, USA
+2026-01-12 03:15:43.513 16646-16646 MainViewModel           com.android.sun.tattva               D  📍 Broadcast sent after calculation complete
+2026-01-12 03:15:43.513 16646-16646 MainViewModel           com.android.sun.tattva               D  ───────────────────────────────────────
+2026-01-12 03:15:43.514 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵 isLoading set to false
+2026-01-12 03:15:43.515 16646-16773 SwissEphWrapper         com.android.sun.tattva               D  ✓ Copied semo_18.se1 (1304771 bytes)
+2026-01-12 03:15:43.518 16646-16773 SwissEphWrapper         com.android.sun.tattva               D  Deleting existing sepl_18.se1 to prevent corruption
+2026-01-12 03:15:43.547 16646-16773 SwissEphWrapper         com.android.sun.tattva               D  ✓ Copied sepl_18.se1 (484055 bytes)
+2026-01-12 03:15:43.548 16646-16773 SwissEphWrapper         com.android.sun.tattva               D  ✅ Swiss Ephemeris successfully reinitialized!
+2026-01-12 03:15:43.558 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 0.0° (UTC):  2026-01-18 19:51:43 UTC, diff=5.862650944550296E-4°
+2026-01-12 03:15:43.560 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Location: 2026-01-18 14:51:43 Location
+2026-01-12 03:15:43.560 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  === MOON PHASE DEBUG ===
+2026-01-12 03:15:43.560 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Location TZ: Location
+2026-01-12 03:15:43.560 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Moon:      218.1238064808483°, Sun:   291.9148344361295°
+2026-01-12 03:15:43.561 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Phase angle: 286.20897204471873°
+2026-01-12 03:15:43.561 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Illumination:  40%
+2026-01-12 03:15:43.562 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Next Tripura Sundari: 2026-01-30 18:52:43 Location
+2026-01-12 03:15:43.563 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Next Full Moon:    2026-02-01 17:08:43 Location
+2026-01-12 03:15:43.564 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Next New Moon:   2026-01-18 14:51:43 Location
+2026-01-12 03:15:43.565 16646-16773 PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.565 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔍 PLANETARY HOUR CALCULATION START
+2026-01-12 03:15:43.565 16646-16773 PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.571 16646-16646 MoonPhaseCard           com.android.sun.tattva               D  🕐 Tripura Sundari: Calendar TZ: Location, millis: 1769817163267
+2026-01-12 03:15:43.572 16646-16646 MoonPhaseCard           com.android.sun.tattva               D  🕐 Full moon: Calendar TZ: Location, millis: 1769983723267
+2026-01-12 03:15:43.576 16646-16773 PlanetDebug             com.android.sun.tattva               D  📅 currentTime:     2026-01-12 03:15:43
+2026-01-12 03:15:43.576 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌅 sunrise:         2026-01-11 14:19:10
+2026-01-12 03:15:43.576 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌇 sunset:          2026-01-11 23:49:06
+2026-01-12 03:15:43.576 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌇 previousSunset:  2026-01-10 23:48:03
+2026-01-12 03:15:43.577 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌅 nextSunrise:     2026-01-12 14:18:53
+2026-01-12 03:15:43.577 16646-16773 PlanetDebug             com.android.sun.tattva               D  ☀️ isDayTime: false
+2026-01-12 03:15:43.578 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌙 NIGHT (after sunset): from sunset to nextSunrise
+2026-01-12 03:15:43.578 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏰ startMillis: 1768168146320 (2026-01-11 23:49:06)
+2026-01-12 03:15:43.579 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏰ endMillis:   1768220333493 (2026-01-12 14:18:53)
+2026-01-12 03:15:43.579 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏱ totalDuration: 869.7862166666666 minutes
+2026-01-12 03:15:43.580 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏱ planetaryHourDuration: 72.48218333333334 minutes
+2026-01-12 03:15:43.580 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏱ elapsedTime: 206.61423333333335 minutes
+2026-01-12 03:15:43.580 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔢 hourIndex: 2 (hour 3 of 12)
+2026-01-12 03:15:43.580 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌙 NIGHT: globalHourIndex = 14 (hours 13-24 of day)
+2026-01-12 03:15:43.581 16646-16646 MoonPhaseCard           com.android.sun.tattva               D  🕐 New moon: Calendar TZ: Location, millis: 1768765903267
+2026-01-12 03:15:43.581 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏰ hourStart: 2026-01-12 02:14:04
+2026-01-12 03:15:43.581 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏰ hourEnd:   2026-01-12 03:26:33
+2026-01-12 03:15:43.582 16646-16773 PlanetDebug             com.android.sun.tattva               D  📅 referenceDay: 2026-01-11 14:19:10
+2026-01-12 03:15:43.582 16646-16773 PlanetDebug             com.android.sun.tattva               D  📅 dayOfWeek: 0 (SUN)
+2026-01-12 03:15:43.582 16646-16773 PlanetDebug             com.android.sun.tattva               D  📅 dayRuler: Sun
+2026-01-12 03:15:43.582 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔢 globalHourIndex: 14 (hour 15 of 24)
+2026-01-12 03:15:43.586 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔍 getPlanetForHour: dayOfWeek=0, globalHourIndex=14
+2026-01-12 03:15:43.587 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔍 startPlanet: Soare (index 3 in chaldeanOrder)
+2026-01-12 03:15:43.587 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔍 planetIndex: (3 + 14) % 7 = 3
+2026-01-12 03:15:43.587 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔍 result: Soare
+2026-01-12 03:15:43.589 16646-16773 PlanetDebug             com.android.sun.tattva               D  🪐 RESULT: Soare (☉)
+2026-01-12 03:15:43.589 16646-16773 PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.589 16646-16773 NityaDebug              com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.589 16646-16773 NityaDebug              com.android.sun.tattva               D  🌙 NITYA CALCULATION START
+2026-01-12 03:15:43.589 16646-16773 NityaDebug              com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.589 16646-16773 NityaDebug              com.android.sun.tattva               D  Moon Longitude: 218.12°
+2026-01-12 03:15:43.590 16646-16773 NityaDebug              com.android.sun.tattva               D  Sun Longitude:  291.91°
+2026-01-12 03:15:43.590 16646-16773 NityaDebug              com.android.sun.tattva               D  Difference:     286.21°
+2026-01-12 03:15:43.590 16646-16773 NityaDebug              com.android.sun.tattva               D  Tithi Index:    23 (raw)
+2026-01-12 03:15:43.590 16646-16773 NityaDebug              com.android.sun.tattva               D  Paksha:         Krishna (Dark)
+2026-01-12 03:15:43.590 16646-16773 NityaDebug              com.android.sun.tattva               D  Nitya Index:    6 (adjusted)
+2026-01-12 03:15:43.590 16646-16773 NityaDebug              com.android.sun.tattva               D  Nitya Result:   7 - Sivaduti
+2026-01-12 03:15:43.590 16646-16773 NityaDebug              com.android.sun.tattva               D  Tithi Progress: 85.07% (10.21° in current Tithi)
+2026-01-12 03:15:43.590 16646-16773 NityaDebug              com.android.sun.tattva               D  Hours elapsed:  20.08 hours
+2026-01-12 03:15:43.591 16646-16773 NityaDebug              com.android.sun.tattva               D  Hours remaining: 3.52 hours
+2026-01-12 03:15:43.591 16646-16773 NityaDebug              com.android.sun.tattva               D  Start Time:     Sun Jan 11 07:11:43 GMT+02:00 2026
+2026-01-12 03:15:43.591 16646-16773 NityaDebug              com.android.sun.tattva               D  End Time:       Mon Jan 12 06:46:43 GMT+02:00 2026
+2026-01-12 03:15:43.591 16646-16773 NityaDebug              com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:43.591 16646-16773 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:43.591 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Moon: 208.2024595842952°, Sun:  291.06816540454804°
+2026-01-12 03:15:43.592 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Diff: 82.86570582025286°, Paksha: Krishna
+2026-01-12 03:15:43.592 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Nitya: 7, nn: 2 (PAR)
+2026-01-12 03:15:43.592 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Sunrise Polarity: (+) Pingala
+2026-01-12 03:15:43.593 16646-16773 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:43.593 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Moon: 212.93892109706226°, Sun:  291.4714455891223°
+2026-01-12 03:15:43.593 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Diff: 78.53252449206008°, Paksha: Krishna
+2026-01-12 03:15:43.594 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Nitya: 7, nn: 2 (PAR)
+2026-01-12 03:15:43.594 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Sunset Polarity: (-) Ida
+2026-01-12 03:15:43.594 16646-16773 AstroRepository         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.595 16646-16773 AstroRepository         com.android.sun.tattva               D  📍 Location: New York, USA
+2026-01-12 03:15:43.595 16646-16773 AstroRepository         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:43.596 16646-16773 AstroRepository         com.android.sun.tattva               D  📍 LocationTimeZone: Location
+2026-01-12 03:15:43.596 16646-16773 AstroRepository         com.android.sun.tattva               D  🌅 Sunrise formatted: 07:19:10
+2026-01-12 03:15:43.596 16646-16773 AstroRepository         com.android.sun.tattva               D  🌇 Sunset formatted:  16:49:06
+2026-01-12 03:15:43.596 16646-16773 AstroRepository         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.597 16646-16773 AstroRepository         com.android.sun.tattva               D  🌙 Zodiac:  lon=291.9148344361295° → 291.9148344361295° → Capricorn 21°
+2026-01-12 03:15:43.597 16646-16773 AstroRepository         com.android.sun.tattva               D  🌙 Zodiac:  lon=218.1238064808483° → 218.1238064808483° → Scorpion 8°
+2026-01-12 03:15:43.600 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.600 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:43.600 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:43.600 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:43.600 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 16:50:10
+2026-01-12 03:15:43.601 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:43.601 16646-16773 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:43.601 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Moon: 220.13087310554528°, Sun:  292.0868969566006°
+2026-01-12 03:15:43.601 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Diff: 71.95602385105525°, Paksha: Krishna
+2026-01-12 03:15:43.601 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Nitya: 6, nn: 1 (IMPAR)
+2026-01-12 03:15:43.601 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Sunrise Polarity: (-) Ida
+2026-01-12 03:15:43.601 16646-16773 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:43.602 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Moon: 224.83815337198956°, Sun:  292.4911307839785°
+2026-01-12 03:15:43.602 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Diff: 67.6529774119889°, Paksha: Krishna
+2026-01-12 03:15:43.604 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Nitya: 6, nn: 1 (IMPAR)
+2026-01-12 03:15:43.604 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Sunset Polarity: (+) Pingala
+2026-01-12 03:15:43.799   533-1321  CoreBackPreview         system_server                        D  Window{668865b u0 Splash Screen com.android.sun.tattva EXITING}: Setting back callback null
+2026-01-12 03:15:44.266 16646-16646 MainViewModel           com.android.sun.tattva               D  ───────────────────────────────────────
+2026-01-12 03:15:44.266 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵 calculateAstroData() START
+2026-01-12 03:15:44.266 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵 Using location: New York, USA
+2026-01-12 03:15:44.266 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵   Lat: 40.712799072265625, Lon: -74.00599670410156
+2026-01-12 03:15:44.267 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵   TimeZone: -5.0
+2026-01-12 03:15:44.269 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.269 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:44.269 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:44.269 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:44.269 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 7:18:53
+2026-01-12 03:15:44.270 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.272 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.272 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:44.272 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:44.272 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:44.273 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 7:19:10
+2026-01-12 03:15:44.273 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.275 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.275 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:44.275 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:44.275 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:44.275 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 16:49:6
+2026-01-12 03:15:44.276 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.277 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.278 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:44.278 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:44.278 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:44.278 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 16:48:3
+2026-01-12 03:15:44.278 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.281 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.281 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:44.281 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:44.281 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:44.281 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 7:18:53
+2026-01-12 03:15:44.282 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.282 16646-16773 TattvaCalculator        com.android.sun.tattva               D  === TATTVA DEBUG START ===
+2026-01-12 03:15:44.282 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Current time: 2026-01-12 03:15:44
+2026-01-12 03:15:44.282 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Sunrise time: 2026-01-11 07:19:10
+2026-01-12 03:15:44.282 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Elapsed since sunrise: 776 minutes
+2026-01-12 03:15:44.282 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Tattva index from sunrise: 32
+2026-01-12 03:15:44.282 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Cycle number: 6
+2026-01-12 03:15:44.282 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Tattva index in cycle: 2
+2026-01-12 03:15:44.282 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Current Tattva: Tejas
+2026-01-12 03:15:44.283 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Tattva starts at: 2026-01-12 03:07:10
+2026-01-12 03:15:44.283 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Tattva ends at: 2026-01-12 03:31:10
+2026-01-12 03:15:44.283 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Current millis: 1768180544267
+2026-01-12 03:15:44.283 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Tattva end millis: 1768181470769
+2026-01-12 03:15:44.283 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Remaining millis: 926502
+2026-01-12 03:15:44.283 16646-16773 TattvaCalculator        com.android.sun.tattva               D  Remaining: 15m 26s
+2026-01-12 03:15:44.284 16646-16773 TattvaCalculator        com.android.sun.tattva               D  === TATTVA DEBUG END ===
+2026-01-12 03:15:44.284 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  === SUBTATTVA DEBUG START ===
+2026-01-12 03:15:44.284 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Current time: 2026-01-12 03:15:44
+2026-01-12 03:15:44.284 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Sunrise time: 2026-01-11 07:19:10
+2026-01-12 03:15:44.284 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Elapsed since sunrise: 46593 seconds
+2026-01-12 03:15:44.284 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva index from sunrise: 161
+2026-01-12 03:15:44.284 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva index in Tattva: 1
+2026-01-12 03:15:44.284 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Current SubTattva: Vayu
+2026-01-12 03:15:44.284 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva starts at: 2026-01-12 03:11:58
+2026-01-12 03:15:44.284 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva ends at: 2026-01-12 03:16:46
+2026-01-12 03:15:44.284 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Current millis: 1768180544267
+2026-01-12 03:15:44.285 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  SubTattva end millis: 1768180606769
+2026-01-12 03:15:44.285 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Remaining millis: 62502
+2026-01-12 03:15:44.285 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  Remaining: 1m 2s
+2026-01-12 03:15:44.285 16646-16773 SubTattvaCalculator     com.android.sun.tattva               D  === SUBTATTVA DEBUG END ===
+2026-01-12 03:15:44.285 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=154.2833°, current=285.3026144723363°
+2026-01-12 03:15:44.285 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 228.9806855276637°, estimated days: 18
+2026-01-12 03:15:44.286 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-01-31 01:15:44 UTC
+2026-01-12 03:15:44.286 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-01-31 00:15:44 UTC
+2026-01-12 03:15:44.290 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 154.2833° (UTC):  2026-01-30 23:52:44 UTC, diff=5.241752760696272E-4°
+2026-01-12 03:15:44.290 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Location: 2026-01-30 18:52:44 Location
+2026-01-12 03:15:44.291 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=180.0°, current=285.3026144723363°
+2026-01-12 03:15:44.291 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 254.6973855276637°, estimated days: 20
+2026-01-12 03:15:44.292 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-02-02 01:15:44 UTC
+2026-01-12 03:15:44.293 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-02-01 22:15:44 UTC
+2026-01-12 03:15:44.295 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 180.0° (UTC):  2026-02-01 22:08:44 UTC, diff=0.0029013092703848997°
+2026-01-12 03:15:44.295 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Location: 2026-02-01 17:08:44 Location
+2026-01-12 03:15:44.296 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=0.0°, current=285.3026144723363°
+2026-01-12 03:15:44.296 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 74.6973855276637°, estimated days: 6
+2026-01-12 03:15:44.296 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-01-19 01:15:44 UTC
+2026-01-12 03:15:44.297 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-01-18 20:15:44 UTC
+2026-01-12 03:15:44.300 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 0.0° (UTC):  2026-01-18 19:51:44 UTC, diff=4.5337838980685774E-4°
+2026-01-12 03:15:44.300 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Location: 2026-01-18 14:51:44 Location
+2026-01-12 03:15:44.300 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  === MOON PHASE DEBUG ===
+2026-01-12 03:15:44.300 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Location TZ: Location
+2026-01-12 03:15:44.300 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Moon:      218.12394412884663°, Sun:   291.91484622925304°
+2026-01-12 03:15:44.301 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Phase angle: 286.2090978995936°
+2026-01-12 03:15:44.301 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Illumination:  40%
+2026-01-12 03:15:44.301 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Next Tripura Sundari: 2026-01-30 18:52:44 Location
+2026-01-12 03:15:44.301 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Next Full Moon:    2026-02-01 17:08:44 Location
+2026-01-12 03:15:44.301 16646-16773 MoonPhaseCalculator     com.android.sun.tattva               D  Next New Moon:   2026-01-18 14:51:44 Location
+2026-01-12 03:15:44.302 16646-16773 PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:44.302 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔍 PLANETARY HOUR CALCULATION START
+2026-01-12 03:15:44.302 16646-16773 PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:44.303 16646-16773 PlanetDebug             com.android.sun.tattva               D  📅 currentTime:     2026-01-12 03:15:44
+2026-01-12 03:15:44.304 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌅 sunrise:         2026-01-11 14:19:10
+2026-01-12 03:15:44.304 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌇 sunset:          2026-01-11 23:49:06
+2026-01-12 03:15:44.304 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌇 previousSunset:  2026-01-10 23:48:03
+2026-01-12 03:15:44.304 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌅 nextSunrise:     2026-01-12 14:18:53
+2026-01-12 03:15:44.304 16646-16773 PlanetDebug             com.android.sun.tattva               D  ☀️ isDayTime: false
+2026-01-12 03:15:44.304 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌙 NIGHT (after sunset): from sunset to nextSunrise
+2026-01-12 03:15:44.304 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏰ startMillis: 1768168146320 (2026-01-11 23:49:06)
+2026-01-12 03:15:44.304 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏰ endMillis:   1768220333493 (2026-01-12 14:18:53)
+2026-01-12 03:15:44.304 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏱ totalDuration: 869.7862166666666 minutes
+2026-01-12 03:15:44.305 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏱ planetaryHourDuration: 72.48218333333334 minutes
+2026-01-12 03:15:44.305 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏱ elapsedTime: 206.63245 minutes
+2026-01-12 03:15:44.306 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔢 hourIndex: 2 (hour 3 of 12)
+2026-01-12 03:15:44.306 16646-16773 PlanetDebug             com.android.sun.tattva               D  🌙 NIGHT: globalHourIndex = 14 (hours 13-24 of day)
+2026-01-12 03:15:44.306 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏰ hourStart: 2026-01-12 02:14:04
+2026-01-12 03:15:44.306 16646-16773 PlanetDebug             com.android.sun.tattva               D  ⏰ hourEnd:   2026-01-12 03:26:33
+2026-01-12 03:15:44.307 16646-16773 PlanetDebug             com.android.sun.tattva               D  📅 referenceDay: 2026-01-11 14:19:10
+2026-01-12 03:15:44.307 16646-16773 PlanetDebug             com.android.sun.tattva               D  📅 dayOfWeek: 0 (SUN)
+2026-01-12 03:15:44.307 16646-16773 PlanetDebug             com.android.sun.tattva               D  📅 dayRuler: Sun
+2026-01-12 03:15:44.307 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔢 globalHourIndex: 14 (hour 15 of 24)
+2026-01-12 03:15:44.308 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔍 getPlanetForHour: dayOfWeek=0, globalHourIndex=14
+2026-01-12 03:15:44.308 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔍 startPlanet: Soare (index 3 in chaldeanOrder)
+2026-01-12 03:15:44.308 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔍 planetIndex: (3 + 14) % 7 = 3
+2026-01-12 03:15:44.308 16646-16773 PlanetDebug             com.android.sun.tattva               D  🔍 result: Soare
+2026-01-12 03:15:44.309 16646-16773 PlanetDebug             com.android.sun.tattva               D  🪐 RESULT: Soare (☉)
+2026-01-12 03:15:44.309 16646-16773 PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:44.309 16646-16773 NityaDebug              com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:44.309 16646-16773 NityaDebug              com.android.sun.tattva               D  🌙 NITYA CALCULATION START
+2026-01-12 03:15:44.309 16646-16773 NityaDebug              com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:44.310 16646-16773 NityaDebug              com.android.sun.tattva               D  Moon Longitude: 218.12°
+2026-01-12 03:15:44.310 16646-16773 NityaDebug              com.android.sun.tattva               D  Sun Longitude:  291.91°
+2026-01-12 03:15:44.310 16646-16773 NityaDebug              com.android.sun.tattva               D  Difference:     286.21°
+2026-01-12 03:15:44.310 16646-16773 NityaDebug              com.android.sun.tattva               D  Tithi Index:    23 (raw)
+2026-01-12 03:15:44.311 16646-16773 NityaDebug              com.android.sun.tattva               D  Paksha:         Krishna (Dark)
+2026-01-12 03:15:44.311 16646-16773 NityaDebug              com.android.sun.tattva               D  Nitya Index:    6 (adjusted)
+2026-01-12 03:15:44.311 16646-16773 NityaDebug              com.android.sun.tattva               D  Nitya Result:   7 - Sivaduti
+2026-01-12 03:15:44.311 16646-16773 NityaDebug              com.android.sun.tattva               D  Tithi Progress: 85.08% (10.21° in current Tithi)
+2026-01-12 03:15:44.312 16646-16773 NityaDebug              com.android.sun.tattva               D  Hours elapsed:  20.08 hours
+2026-01-12 03:15:44.312 16646-16773 NityaDebug              com.android.sun.tattva               D  Hours remaining: 3.52 hours
+2026-01-12 03:15:44.312 16646-16773 NityaDebug              com.android.sun.tattva               D  Start Time:     Sun Jan 11 07:10:44 GMT+02:00 2026
+2026-01-12 03:15:44.312 16646-16773 NityaDebug              com.android.sun.tattva               D  End Time:       Mon Jan 12 06:46:44 GMT+02:00 2026
+2026-01-12 03:15:44.313 16646-16773 NityaDebug              com.android.sun.tattva               D  ============================================
+2026-01-12 03:15:44.313 16646-16773 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:44.313 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Moon: 208.2024595842952°, Sun:  291.06816540454804°
+2026-01-12 03:15:44.313 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Diff: 82.86570582025286°, Paksha: Krishna
+2026-01-12 03:15:44.314 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Nitya: 7, nn: 2 (PAR)
+2026-01-12 03:15:44.314 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Sunrise Polarity: (+) Pingala
+2026-01-12 03:15:44.314 16646-16773 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:44.315 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Moon: 212.93892109706226°, Sun:  291.4714455891223°
+2026-01-12 03:15:44.315 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Diff: 78.53252449206008°, Paksha: Krishna
+2026-01-12 03:15:44.315 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Nitya: 7, nn: 2 (PAR)
+2026-01-12 03:15:44.315 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Sunset Polarity: (-) Ida
+2026-01-12 03:15:44.316 16646-16773 AstroRepository         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.316 16646-16773 AstroRepository         com.android.sun.tattva               D  📍 Location: New York, USA
+2026-01-12 03:15:44.316 16646-16773 AstroRepository         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:44.316 16646-16773 AstroRepository         com.android.sun.tattva               D  📍 LocationTimeZone: Location
+2026-01-12 03:15:44.316 16646-16773 AstroRepository         com.android.sun.tattva               D  🌅 Sunrise formatted: 07:19:10
+2026-01-12 03:15:44.316 16646-16773 AstroRepository         com.android.sun.tattva               D  🌇 Sunset formatted:  16:49:06
+2026-01-12 03:15:44.316 16646-16773 AstroRepository         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.316 16646-16773 AstroRepository         com.android.sun.tattva               D  🌙 Zodiac:  lon=291.91484622925304° → 291.91484622925304° → Capricorn 21°
+2026-01-12 03:15:44.316 16646-16773 AstroRepository         com.android.sun.tattva               D  🌙 Zodiac:  lon=218.12394412884663° → 218.12394412884663° → Scorpion 8°
+2026-01-12 03:15:44.319 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.319 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset: -5.0 ore
+2026-01-12 03:15:44.319 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 TimeZone offset in ms: -18000000
+2026-01-12 03:15:44.319 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: LocationTZ
+2026-01-12 03:15:44.319 16646-16773 AstroCalculator         com.android.sun.tattva               D  📍 Ora rezultată: 16:50:10
+2026-01-12 03:15:44.320 16646-16773 AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-01-12 03:15:44.320 16646-16773 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:44.320 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Moon: 220.13087310554528°, Sun:  292.0868969566006°
+2026-01-12 03:15:44.321 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Diff: 71.95602385105525°, Paksha: Krishna
+2026-01-12 03:15:44.321 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Nitya: 6, nn: 1 (IMPAR)
+2026-01-12 03:15:44.321 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Sunrise Polarity: (-) Ida
+2026-01-12 03:15:44.321 16646-16773 PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-01-12 03:15:44.322 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Moon: 224.83815337198956°, Sun:  292.4911307839785°
+2026-01-12 03:15:44.323 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Diff: 67.6529774119889°, Paksha: Krishna
+2026-01-12 03:15:44.323 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Nitya: 6, nn: 1 (IMPAR)
+2026-01-12 03:15:44.323 16646-16773 PolarityCalculator      com.android.sun.tattva               D  Sunset Polarity: (+) Pingala
+2026-01-12 03:15:44.324 16646-16646 MainViewModel           com.android.sun.tattva               D  ✅ Calculation completed!
+2026-01-12 03:15:44.325 16646-16646 MainViewModel           com.android.sun.tattva               D  ✅ Result: sunrise=07:19:10
+2026-01-12 03:15:44.325 16646-16646 MainViewModel           com.android.sun.tattva               D  ✅ Location in result: New York, USA
+2026-01-12 03:15:44.326 16646-16646 MainViewModel           com.android.sun.tattva               D  📍 Broadcast sent after calculation complete
+2026-01-12 03:15:44.326 16646-16646 MainViewModel           com.android.sun.tattva               D  ───────────────────────────────────────
+2026-01-12 03:15:44.327 16646-16646 MainViewModel           com.android.sun.tattva               D  🔵 isLoading set to false
+2026-01-12 03:15:44.353 16646-16646 MoonPhaseCard           com.android.sun.tattva               D  🕐 Tripura Sundari: Calendar TZ: Location, millis: 1769817164267
+2026-01-12 03:15:44.354 16646-16646 MoonPhaseCard           com.android.sun.tattva               D  🕐 Full moon: Calendar TZ: Location, millis: 1769983724267
+2026-01-12 03:15:44.356 16646-16646 MoonPhaseCard           com.android.sun.tattva               D  🕐 New moon: Calendar TZ: Location, millis: 1768765904267
+2026-01-12 03:15:45.389 16646-16726 EGL_emulation           com.android.sun.tattva               D  app_time_stats: avg=147.06ms min=1.13ms max=1004.30ms count=13
+2026-01-12 03:15:47.390 16646-16726 EGL_emulation           com.android.sun.tattva               D  app_time_stats: avg=1000.25ms min=998.56ms max=1001.94ms count=2
+2026-01-12 03:15:48.403 16646-16726 EGL_emulation           com.android.sun.tattva               D  app_time_stats: avg=506.71ms min=13.91ms max=999.50ms count=2
+2026-01-12 03:15:50.389 16646-16726 EGL_emulation           com.android.sun.tattva               D  app_time_stats: avg=661.69ms min=13.16ms max=986.22ms count=3
+2026-01-12 03:15:51.389 16646-16726 EGL_emulation           com.android.sun.tattva               D  app_time_stats: avg=999.90ms min=999.90ms max=999.90ms count=1
+2026-01-12 03:15:53.406 16646-16726 EGL_emulation           com.android.sun.tattva               D  app_time_stats: avg=1008.40ms min=999.58ms max=1017.22ms count=2
+2026-01-12 03:15:54.406 16646-16726 EGL_emulation           com.android.sun.tattva               D  app_time_stats: avg=999.85ms min=999.85ms max=999.85ms count=1
+2026-01-12 03:15:55.406 16646-16726 EGL_emulation           com.android.sun.tattva               D  app_time_stats: avg=1000.05ms min=1000.05ms max=1000.05ms count=1
+2026-01-12 03:15:57.405 16646-16726 EGL_emulation           com.android.sun.tattva               D  app_time_stats: avg=999.53ms min=999.24ms max=999.83ms count=2
+2026-01-12 03:15:58.407 16646-16726 EGL_emulation           com.android.sun.tattva               D  app_time_stats: avg=1001.42ms min=1001.42ms max=1001.42ms count=1
+2026-01-12 03:15:59.419 16646-16726 EGL_emulation           com.android.sun.tattva               D  app_time_stats: avg=337.32ms min=11.65ms max=987.60ms count=3
+---------------------------- PROCESS ENDED (16646) for package com.android.sun.tattva ----------------------------
+2026-01-12 03:16:01.293   939-939   CarrierSvcBindHelper    com.android.phone                    D  onHandleForceStop: [com.android.sun.tattva]
