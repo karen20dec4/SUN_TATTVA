@@ -3,6 +3,9 @@ local.properties
 /.gradle/
 /app/.gradle/
 
+# Ignora fisierele locale de configurare specifice PC-ului
+local.properties
+
 # Build
 build/
 */build/
