@@ -109,21 +109,17 @@ import androidx.core.view.WindowCompat
 			SideEffect {
 				val window = (view.context as Activity).window
 				
-				// Status bar color
-				window.statusBarColor = if (darkTheme) {
-					colorScheme.background. toArgb()
-				} else {
-					colorScheme. primary.toArgb()
-				}
+				// Status bar transparent
+				window.statusBarColor = android.graphics.Color.TRANSPARENT
 				
 				// Navigation bar COMPLET TRANSPARENTA
 				window.navigationBarColor = android.graphics.Color.TRANSPARENT
 				
-				// Iconite status bar
-				WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = ! darkTheme
+				// Iconite status bar - dark icons for light theme, light icons for dark theme
+				WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
 				
 				// Iconite navigation bar
-				WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = ! darkTheme
+				WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
 			}
 		
 		
