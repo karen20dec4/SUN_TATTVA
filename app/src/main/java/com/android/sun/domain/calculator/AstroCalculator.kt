@@ -87,7 +87,7 @@ class AstroCalculator(private val swissEph: SwissEphWrapper) {
         android.util.Log.d("AstroCalculator", "📍 TimeZone ID: ${timezone.id}")
         android.util.Log.d("AstroCalculator", "📍 DST in effect: ${timezone.inDaylightTime(calendar.time)}")
         android.util.Log.d("AstroCalculator", "📍 Actual offset: ${timezone.getOffset(calendar.timeInMillis) / 3600000.0} ore")
-        android.util.Log.d("AstroCalculator", "📍 Ora rezultată: ${String.format("%02d:%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND))}")
+        android.util.Log.d("AstroCalculator", "📍 Calculated time: ${String.format("%02d:%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND))}")
         android.util.Log.d("AstroCalculator", "═══════════════════════════════════════")
         
         return calendar
@@ -123,7 +123,7 @@ class AstroCalculator(private val swissEph: SwissEphWrapper) {
         val offsetMillis = (standardOffset * 3600.0 * 1000.0).toInt()
         // Format offset properly for half-hour timezones (e.g., +5:30, +9:30)
         val hours = standardOffset.toInt()
-        val minutes = ((standardOffset - hours) * 60).toInt().let { if (it < 0) -it else it }
+        val minutes = kotlin.math.abs((standardOffset - hours) * 60).toInt()
         val offsetStr = if (minutes == 0) {
             "${if (standardOffset >= 0) "+" else ""}$hours"
         } else {

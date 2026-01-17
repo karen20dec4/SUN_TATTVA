@@ -144,12 +144,21 @@ fun MainScreen(
 }
 
 /**
- * Formatează offset-ul GMT pentru afișare
+ * Formatează offset-ul GMT pentru afișare (format ore:minute)
  */
 @Composable
 private fun GmtOffsetText(timeZone: Double, modifier: Modifier = Modifier) {
+    // Format properly for half-hour timezones (e.g., GMT+5:30, GMT-4:30)
+    val hours = timeZone.toInt()
+    val minutes = kotlin.math.abs((timeZone - hours) * 60).toInt()
+    val offsetStr = if (minutes == 0) {
+        "${if (timeZone >= 0) "+" else ""}$hours"
+    } else {
+        "${if (timeZone >= 0) "+" else ""}${String.format("%d:%02d", hours, minutes)}"
+    }
+    
     Text(
-        text = "GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)}",
+        text = "GMT$offsetStr",
         style = MaterialTheme.typography.bodySmall,
         fontSize = 10.sp,
         color = Color.White.copy(alpha = 0.6f),
