@@ -146,6 +146,15 @@ fun MainScreen(
 
 /**
  * Formats GMT offset for display (hours:minutes format)
+ * 
+ * Handles all timezone offset formats:
+ * - Positive whole hours: GMT+2
+ * - Positive with minutes: GMT+5:30
+ * - Negative whole hours: GMT-5
+ * - Negative with minutes: GMT-4:30
+ * 
+ * @param timeZone The timezone offset in hours (e.g., 2.0, 5.5, -4.5)
+ * @param modifier Optional Compose modifier for styling
  */
 @Composable
 private fun GmtOffsetText(timeZone: Double, modifier: Modifier = Modifier) {

@@ -59,7 +59,7 @@ class AstroCalculator(private val swissEph: SwissEphWrapper) {
      * 
      * SOLUȚIA:
      * - Convertim JD la Calendar în UTC
-     * - Aplicăm DST rules automat folosind TimeZone.getAvailableIDs pentru regiune
+     * - Folosim timezone mapping pentru a găsi timezone-ul IANA corespunzător
      * - Dacă nu găsim timezone ID, folosim offset-ul standard
      * 
      * @param julianDay - Julian Day returnat de Swiss Ephemeris (în UTC)
@@ -82,7 +82,8 @@ class AstroCalculator(private val swissEph: SwissEphWrapper) {
         val calendar = Calendar.getInstance(timezone)
         calendar.timeInMillis = unixMillis
         
-        // ✅ DEBUG LOG
+        // ✅ DEBUG LOG - Useful for troubleshooting DST issues
+        // TODO: Consider wrapping in BuildConfig.DEBUG or removing for production
         android.util.Log.d("AstroCalculator", "═══════════════════════════════════════")
         android.util.Log.d("AstroCalculator", "📍 TimeZone offset: $timeZoneOffset ore")
         android.util.Log.d("AstroCalculator", "📍 TimeZone ID: ${timezone.id}")
