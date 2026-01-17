@@ -28,7 +28,8 @@ class TattvaNotificationService : Service() {
 
     companion object {
         private const val TAG = "TattvaNotificationService"
-        private const val CHANNEL_ID = "tattva_persistent_channel"
+        private const val CHANNEL_ID_TATTVA = "tattva_persistent_channel"
+        private const val CHANNEL_ID_PLANET = "planet_persistent_channel"
         
         private const val TATTVA_NOTIF_ID = 1001
         private const val PLANET_NOTIF_ID = 1002
@@ -66,7 +67,7 @@ class TattvaNotificationService : Service() {
     
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Pornire neutră
-        val initialNotification = createDetailedNotification("Loading astro data...", R.drawable.icon)
+        val initialNotification = createDetailedNotification("Loading astro data...", R.drawable.icon, CHANNEL_ID_TATTVA)
         startForeground(TATTVA_NOTIF_ID, initialNotification)
         
         startPeriodicUpdate()
@@ -119,7 +120,7 @@ class TattvaNotificationService : Service() {
                 // Format: 🔺 - ends 03:02 (GMT+2.0)
                 val tattvaText = "$emoji - until $endTime $gmtSuffix"
                 
-                val notification = createDetailedNotification(tattvaText, getTattvaIcon(type))
+                val notification = createDetailedNotification(tattvaText, getTattvaIcon(type), CHANNEL_ID_TATTVA)
                 startForeground(TATTVA_NOTIF_ID, notification)
             } else {
                 notificationManager.cancel(TATTVA_NOTIF_ID)
@@ -137,7 +138,7 @@ class TattvaNotificationService : Service() {
 				// Format: 🪐 - ends 04:06 (+2.0)
 				val planetText = "$emoji - until $endTime $gmtSuffix"
 				
-				val notification = createDetailedNotification(planetText, getPlanetIcon(planet))
+				val notification = createDetailedNotification(planetText, getPlanetIcon(planet), CHANNEL_ID_PLANET)
 				
 				if (!showTattva) {
 					startForeground(PLANET_NOTIF_ID, notification)
@@ -179,11 +180,11 @@ class TattvaNotificationService : Service() {
 	
 	
 	
-    private fun createDetailedNotification(title: String, iconRes: Int): Notification {
+    private fun createDetailedNotification(title: String, iconRes: Int, channelId: String): Notification {
         val intent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, iconRes, intent, PendingIntent.FLAG_IMMUTABLE)
 
-        return NotificationCompat.Builder(this, CHANNEL_ID)
+        return NotificationCompat.Builder(this, channelId)
             .setSmallIcon(iconRes)
             .setContentTitle(title) // Textul scurt merge aici
             .setContentText("")      // Textul secundar rămâne gol pentru un singur rând
@@ -191,6 +192,7 @@ class TattvaNotificationService : Service() {
             .setSilent(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT) // DEFAULT scoate notificarea din "Silent"
             .setContentIntent(pendingIntent)
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL) // Prevents grouping
             .build()
     }
 
@@ -226,15 +228,27 @@ class TattvaNotificationService : Service() {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID, 
-                "Astro Updates", 
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            
+            // Create Tattva notification channel
+            val tattvaChannel = NotificationChannel(
+                CHANNEL_ID_TATTVA, 
+                "Tattva Updates", 
                 NotificationManager.IMPORTANCE_DEFAULT // Schimbat la DEFAULT pentru vizibilitate
             )
-            channel.setShowBadge(false)
-            channel.setSound(null, null)
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
+            tattvaChannel.setShowBadge(false)
+            tattvaChannel.setSound(null, null)
+            notificationManager.createNotificationChannel(tattvaChannel)
+            
+            // Create Planet notification channel
+            val planetChannel = NotificationChannel(
+                CHANNEL_ID_PLANET, 
+                "Planetary Hour Updates", 
+                NotificationManager.IMPORTANCE_DEFAULT // Schimbat la DEFAULT pentru vizibilitate
+            )
+            planetChannel.setShowBadge(false)
+            planetChannel.setSound(null, null)
+            notificationManager.createNotificationChannel(planetChannel)
         }
     }
 
