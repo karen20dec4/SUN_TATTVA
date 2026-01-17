@@ -152,10 +152,11 @@ private fun GmtOffsetText(timeZone: Double, modifier: Modifier = Modifier) {
     // Format properly for half-hour timezones (e.g., GMT+5:30, GMT-4:30)
     val hours = timeZone.toInt()
     val minutes = abs((timeZone - hours) * 60).toInt()
+    val sign = if (timeZone >= 0) "+" else "-"
     val offsetStr = if (minutes == 0) {
-        "${if (timeZone >= 0) "+" else ""}$hours"
+        "$sign${abs(hours)}"
     } else {
-        "${if (timeZone >= 0) "+" else ""}${String.format("%d:%02d", hours, minutes)}"
+        "$sign${abs(hours)}:${String.format("%02d", minutes)}"
     }
     
     Text(
