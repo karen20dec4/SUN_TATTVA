@@ -27,6 +27,32 @@ class AstroRepository(private val context: Context) {
     private val polarityCalculator = PolarityCalculator()  
 
     /**
+     * ✅ Obține timezone-ul corect pentru o locație (cu suport DST)
+     * Pentru orașele din România, folosim "Europe/Bucharest"
+     * Pentru alte locații, folosim timezone-ul implicit (temporar)
+     */
+    private fun getLocationTimeZone(locationName: String): java.util.TimeZone {
+        return when {
+            locationName.contains("București", ignoreCase = true) || 
+            locationName.contains("Bucharest", ignoreCase = true) ||
+            locationName.contains("Cluj", ignoreCase = true) ||
+            locationName.contains("Timișoara", ignoreCase = true) ||
+            locationName.contains("Iași", ignoreCase = true) ||
+            locationName.contains("Constanța", ignoreCase = true) ||
+            locationName.contains("Craiova", ignoreCase = true) ||
+            locationName.contains("Brașov", ignoreCase = true) -> {
+                // Toate orașele din România folosesc același timezone cu DST
+                java.util.TimeZone.getTimeZone("Europe/Bucharest")
+            }
+            else -> {
+                // Pentru alte locații, folosim timezone-ul implicit
+                // TODO: Adaugă un mapping complet oraș -> timezone ID în viitor
+                java.util.TimeZone.getDefault()
+            }
+        }
+    }
+
+    /**
      * Calculează toate datele astro pentru locația și timpul curent
      */
     suspend fun calculateAstroData(
@@ -167,28 +193,7 @@ class AstroRepository(private val context: Context) {
         )
 
         // ✅ FIX DST: Folosim timezone-ul cu suport pentru DST
-        // Pentru locații din România/Europa, folosim timezone ID-uri corecte
-        // Pentru alte locații, folosim un aproximativ bazat pe offset
-        val locationTimeZone = when {
-            locationName.contains("București", ignoreCase = true) || 
-            locationName.contains("Bucharest", ignoreCase = true) -> {
-                java.util.TimeZone.getTimeZone("Europe/Bucharest")
-            }
-            locationName.contains("Cluj", ignoreCase = true) ||
-            locationName.contains("Timișoara", ignoreCase = true) ||
-            locationName.contains("Iași", ignoreCase = true) ||
-            locationName.contains("Constanța", ignoreCase = true) ||
-            locationName.contains("Craiova", ignoreCase = true) ||
-            locationName.contains("Brașov", ignoreCase = true) -> {
-                // Toate orașele din România folosesc același timezone
-                java.util.TimeZone.getTimeZone("Europe/Bucharest")
-            }
-            else -> {
-                // Pentru alte locații, folosim timezone-ul implicit sau încercăm să găsim unul apropiat
-                // Aceasta este o soluție temporară până adăugăm timezone ID-uri în baza de date
-                java.util.TimeZone.getDefault()
-            }
-        }
+        val locationTimeZone = getLocationTimeZone(locationName)
         
         // ✅ Creăm MoonPhaseCalculator cu timezone-ul locației
         val moonPhaseCalculator = MoonPhaseCalculator(astroCalculator, locationTimeZone)
