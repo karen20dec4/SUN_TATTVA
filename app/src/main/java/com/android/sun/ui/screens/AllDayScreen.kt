@@ -42,6 +42,7 @@ fun AllDayScreen(
     sunsetTime: String,
     actualSunriseTime: Calendar,
     timeZone: Double,
+    locationName: String = "București",  // ✅ Adăugat pentru timezone corect cu DST
     isDarkTheme: Boolean = false,
     onBackClick: () -> Unit,
     onCalendarClick: () -> Unit = {},
@@ -49,8 +50,42 @@ fun AllDayScreen(
 ) {
     val listState = rememberLazyListState()
     
-    val offsetMillis = (timeZone * 3600 * 1000).toInt()
-    val locationTimeZone = SimpleTimeZone(offsetMillis, "Location")
+    // ✅ FIX DST: Folosim timezone cu suport pentru DST
+    val locationTimeZone = when {
+        locationName.contains("București", ignoreCase = true) || 
+        locationName.contains("Bucharest", ignoreCase = true) ||
+        locationName.contains("Cluj", ignoreCase = true) ||
+        locationName.contains("Timișoara", ignoreCase = true) ||
+        locationName.contains("Iași", ignoreCase = true) ||
+        locationName.contains("Constanța", ignoreCase = true) ||
+        locationName.contains("Craiova", ignoreCase = true) ||
+        locationName.contains("Brașov", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("Europe/Bucharest")
+        }
+        locationName.contains("Tokyo", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("Asia/Tokyo")
+        }
+        locationName.contains("New York", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("America/New_York")
+        }
+        locationName.contains("London", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("Europe/London")
+        }
+        locationName.contains("Paris", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("Europe/Paris")
+        }
+        locationName.contains("Berlin", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("Europe/Berlin")
+        }
+        locationName.contains("Los Angeles", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("America/Los_Angeles")
+        }
+        else -> {
+            // Pentru locații necunoscute, folosim offset-ul furnizat
+            val offsetMillis = (timeZone * 3600.0 * 1000.0).toInt()
+            SimpleTimeZone(offsetMillis, "Location")
+        }
+    }
     
     val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.US).apply {
         this.timeZone = locationTimeZone

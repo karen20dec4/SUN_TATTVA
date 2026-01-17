@@ -96,7 +96,8 @@ fun MainScreen(
                             sunset = astroData.sunset,
                             nextSunrise = nextSunrise,
                             currentPlanetIndex = astroData.planet.hourNumber - 1,
-							timeZone = astroData.timeZone
+							timeZone = astroData.timeZone,
+                            locationName = astroData.locationName
                         )
                     }
 

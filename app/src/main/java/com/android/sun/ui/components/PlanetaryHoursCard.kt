@@ -39,13 +39,47 @@ fun PlanetaryHoursCard(
     nextSunrise: Calendar,
     currentPlanetIndex: Int,  
     timeZone: Double,
+    locationName: String = "București",
     modifier: Modifier = Modifier
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     
-    // Calculează timezone-ul locației
-    val locationOffsetMillis = (timeZone * 3600 * 1000).toInt()
-    val locationTimeZone = SimpleTimeZone(locationOffsetMillis, "Location")
+    // ✅ FIX DST: Folosim timezone cu suport pentru DST
+    val locationTimeZone = when {
+        locationName.contains("București", ignoreCase = true) || 
+        locationName.contains("Bucharest", ignoreCase = true) ||
+        locationName.contains("Cluj", ignoreCase = true) ||
+        locationName.contains("Timișoara", ignoreCase = true) ||
+        locationName.contains("Iași", ignoreCase = true) ||
+        locationName.contains("Constanța", ignoreCase = true) ||
+        locationName.contains("Craiova", ignoreCase = true) ||
+        locationName.contains("Brașov", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("Europe/Bucharest")
+        }
+        locationName.contains("Tokyo", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("Asia/Tokyo")
+        }
+        locationName.contains("New York", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("America/New_York")
+        }
+        locationName.contains("London", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("Europe/London")
+        }
+        locationName.contains("Paris", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("Europe/Paris")
+        }
+        locationName.contains("Berlin", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("Europe/Berlin")
+        }
+        locationName.contains("Los Angeles", ignoreCase = true) -> {
+            java.util.TimeZone.getTimeZone("America/Los_Angeles")
+        }
+        else -> {
+            // Pentru locații necunoscute, folosim offset-ul furnizat
+            val locationOffsetMillis = (timeZone * 3600 * 1000).toInt()
+            SimpleTimeZone(locationOffsetMillis, "Location")
+        }
+    }
     
     Card(
         modifier = modifier

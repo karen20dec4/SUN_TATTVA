@@ -396,7 +396,10 @@ class AstroRepository(private val context: Context) {
         android.util.Log.d("TattvaDebug", "============================================")
         android.util.Log.d("TattvaDebug", "🚀 FIXED: Using exact 1440sec/Tattva, 288sec/SubTattva")
         android.util.Log.d("TattvaDebug", "============================================")
-        android.util.Log.d("TattvaDebug", "🌅 Sunrise:  ${timeFormat.format(sunriseTime.time)}")
+        android.util.Log.d("TattvaDebug", "🌅 Sunrise Calendar TimeZone: ${sunriseTime.timeZone.id}")
+        android.util.Log.d("TattvaDebug", "🌅 Sunrise timeInMillis: ${sunriseTime.timeInMillis}")
+        android.util.Log.d("TattvaDebug", "🌅 Sunrise formatted with locationTimeZone: ${timeFormat.format(sunriseTime.time)}")
+        android.util.Log.d("TattvaDebug", "🌍 Location TimeZone: ${locationTimeZone.id} (offset: $timeZone hours)")
         
         val startTime = System.currentTimeMillis()
         

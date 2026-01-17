@@ -222,6 +222,7 @@ fun AppNavigation(
                     sunsetTime = astroData!!.sunsetFormatted,
                     actualSunriseTime = astroData!! .sunrise,
                     timeZone = astroData!!.timeZone,
+                    locationName = astroData!!.locationName,
                     isDarkTheme = isDarkTheme,
                     onBackClick = {
                         navController.popBackStack("main", inclusive = false)
@@ -323,6 +324,7 @@ fun AppNavigation(
                     sunsetTime = timeFormat.format(sunset.time),
                     actualSunriseTime = sunrise,
                     timeZone = astroData!!.timeZone,
+                    locationName = astroData!!.locationName,
                     isDarkTheme = isDarkTheme,
                     onBackClick = {
                         navController.popBackStack("main", inclusive = false)
