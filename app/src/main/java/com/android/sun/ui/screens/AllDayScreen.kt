@@ -16,7 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -132,7 +132,7 @@ fun AllDayScreen(
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.CalendarMonth,
+                                imageVector = Icons.Default.DateRange,
                                 contentDescription = "Calendar",
                                 modifier = Modifier.size(20.dp)
                             )
