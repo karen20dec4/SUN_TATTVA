@@ -58,4 +58,37 @@ class AstroViewModel(application: Application) : AndroidViewModel(application) {
             currentTime = astroData.currentTime
         )
     }
+    
+    /**
+     * Calculează răsăritul și apusul pentru o dată specifică
+     */
+    fun calculateSunriseSunsetForDate(
+        year: Int,
+        month: Int,
+        day: Int,
+        latitude: Double,
+        longitude: Double,
+        timeZone: Double
+    ): Pair<Calendar, Calendar> {
+        return repository.calculateSunriseSunsetForDate(
+            year, month, day, latitude, longitude, timeZone
+        )
+    }
+    
+    /**
+     * Generează schedule pentru o dată specifică
+     */
+    fun generateScheduleForDate(
+        year: Int,
+        month: Int,
+        day: Int,
+        latitude: Double,
+        longitude: Double,
+        timeZone: Double,
+        currentTime: Calendar = Calendar.getInstance()
+    ): List<TattvaDayItem> {
+        return repository.generateScheduleForDate(
+            year, month, day, latitude, longitude, timeZone, currentTime
+        )
+    }
 }

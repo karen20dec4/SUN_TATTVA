@@ -18,6 +18,7 @@ import com.android.sun.data.preferences.SettingsPreferences
 import com.android.sun.notification.NotificationHelper
 import com.android.sun.notification.NotificationScheduler
 import com.android.sun.ui.screens.AllDayScreen
+import com.android.sun.ui.screens.CalendarPickerScreen
 import com.android.sun.ui.screens.LocationScreen
 import com.android.sun.ui.screens.MainScreen
 import com.android.sun.ui.screens.SettingsScreen
@@ -225,8 +226,77 @@ fun AppNavigation(
                     onBackClick = {
                         navController.popBackStack()
                     },
-                    onNextDayClick = {
-                        // TODO
+                    onCalendarClick = {
+                        navController.navigate("calendar")
+                    }
+                )
+            }
+        }
+        
+        composable("calendar") {
+            if (astroData != null) {
+                CalendarPickerScreen(
+                    currentDate = Calendar.getInstance(),
+                    onDateSelected = { year, month, day ->
+                        // Navigate to custom date view with selected date
+                        navController.navigate("customday/$year/$month/$day")
+                    },
+                    onBackClick = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+        }
+        
+        composable("customday/{year}/{month}/{day}") { backStackEntry ->
+            if (astroData != null) {
+                val year = backStackEntry.arguments?.getString("year")?.toIntOrNull() ?: return@composable
+                val month = backStackEntry.arguments?.getString("month")?.toIntOrNull() ?: return@composable
+                val day = backStackEntry.arguments?.getString("day")?.toIntOrNull() ?: return@composable
+                
+                // Calculate sunrise and sunset for the selected date
+                val (sunrise, sunset) = astroViewModel.calculateSunriseSunsetForDate(
+                    year = year,
+                    month = month,
+                    day = day,
+                    latitude = astroData!!.latitude,
+                    longitude = astroData!!.longitude,
+                    timeZone = astroData!!.timeZone
+                )
+                
+                // Generate tattva schedule for the selected date
+                val tattvaDaySchedule = remember(year, month, day) {
+                    astroViewModel.generateScheduleForDate(
+                        year = year,
+                        month = month,
+                        day = day,
+                        latitude = astroData!!.latitude,
+                        longitude = astroData!!.longitude,
+                        timeZone = astroData!!.timeZone,
+                        currentTime = Calendar.getInstance()
+                    )
+                }
+                
+                // Format sunrise and sunset times
+                val offsetMillis = (astroData!!.timeZone * 3600 * 1000).toInt()
+                val locationTimeZone = java.util.SimpleTimeZone(offsetMillis, "Location")
+                val timeFormat = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).apply {
+                    this.timeZone = locationTimeZone
+                }
+                
+                AllDayScreen(
+                    tattvaDaySchedule = tattvaDaySchedule,
+                    sunriseDate = sunrise,
+                    sunriseTime = timeFormat.format(sunrise.time),
+                    sunsetTime = timeFormat.format(sunset.time),
+                    actualSunriseTime = sunrise,
+                    timeZone = astroData!!.timeZone,
+                    isDarkTheme = isDarkTheme,
+                    onBackClick = {
+                        navController.popBackStack()
+                    },
+                    onCalendarClick = {
+                        navController.navigate("calendar")
                     }
                 )
             }

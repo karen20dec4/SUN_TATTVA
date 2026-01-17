@@ -486,4 +486,42 @@ class AstroRepository(private val context: Context) {
             else -> Color.Gray
         }
     }
+    
+    /**
+     * Calculează răsăritul și apusul pentru o dată specifică
+     */
+    fun calculateSunriseSunsetForDate(
+        year: Int,
+        month: Int,
+        day: Int,
+        latitude: Double,
+        longitude: Double,
+        timeZone: Double
+    ): Pair<Calendar, Calendar> {
+        val sunrise = astroCalculator.calculateSunrise(year, month, day, longitude, latitude, timeZone)
+        val sunset = astroCalculator.calculateSunset(year, month, day, longitude, latitude, timeZone)
+        return Pair(sunrise, sunset)
+    }
+    
+    /**
+     * Generează schedule pentru o dată specifică
+     */
+    fun generateScheduleForDate(
+        year: Int,
+        month: Int,
+        day: Int,
+        latitude: Double,
+        longitude: Double,
+        timeZone: Double,
+        currentTime: Calendar = Calendar.getInstance()
+    ): List<TattvaDayItem> {
+        val sunrise = astroCalculator.calculateSunrise(year, month, day, longitude, latitude, timeZone)
+        return generateTattvaDaySchedule(
+            sunriseTime = sunrise,
+            latitude = latitude,
+            longitude = longitude,
+            timeZone = timeZone,
+            currentTime = currentTime
+        )
+    }
 }

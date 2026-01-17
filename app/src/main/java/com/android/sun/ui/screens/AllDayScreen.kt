@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,7 +31,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * Ecran "ALL DAY" - Harta completa a Tattva-urilor pentru ziua curenta
+ * Ecran "ALL DAY" - Harta completa a Tattva-urilor pentru ziua curenta sau selectata
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +44,7 @@ fun AllDayScreen(
     timeZone: Double,
     isDarkTheme: Boolean = false,
     onBackClick: () -> Unit,
-    onNextDayClick: () -> Unit = {},
+    onCalendarClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
@@ -123,15 +124,21 @@ fun AllDayScreen(
                     },
                     actions = {
                         Button(
-                            onClick = onNextDayClick,
+                            onClick = onCalendarClick,
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary
                             ),
                             modifier = Modifier.padding(end = 8.dp),
-                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
                         ) {
+                            Icon(
+                                imageVector = Icons.Default.CalendarMonth,
+                                contentDescription = "Calendar",
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "NEXT DAY ►",
+                                text = "CALENDAR",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 14.sp
                             )
