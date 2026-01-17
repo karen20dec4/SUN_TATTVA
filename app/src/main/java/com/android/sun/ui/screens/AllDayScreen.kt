@@ -112,6 +112,25 @@ fun AllDayScreen(
                                 fontSize = 12.sp,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                             )
+                            
+                            // ✅ DEBUG: Afișează timezone și UTC time pentru verificare DST
+                            Spacer(modifier = Modifier.height(1.dp))
+                            val utcFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).apply {
+                                this.timeZone = java.util.TimeZone.getTimeZone("UTC")
+                            }
+                            val sunriseUTC = utcFormat.format(actualSunriseTime.time)
+                            
+                            // Calculează offset-ul real cu DST
+                            val locationTz = java.util.TimeZone.getTimeZone("Europe/Bucharest")
+                            val offsetWithDST = locationTz.getOffset(actualSunriseTime.timeInMillis) / (1000 * 60 * 60)
+                            val offsetSign = if (offsetWithDST >= 0) "+" else ""
+                            
+                            Text(
+                                text = "UTC$offsetSign$offsetWithDST (sunrise UTC: $sunriseUTC)",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 9.sp,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            )
                         }
                     },
                     navigationIcon = {

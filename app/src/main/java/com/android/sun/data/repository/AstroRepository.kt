@@ -166,10 +166,29 @@ class AstroRepository(private val context: Context) {
             year, month, day, hour, minute, second
         )
 
-        // ✅ FIX: Creăm timezone-ul bazat pe offset-ul locației
-        // timeZone este în ore (ex: 2.0 pentru București = UTC+2)
-        val offsetMillis = (timeZone * 3600 * 1000).toInt()
-        val locationTimeZone = SimpleTimeZone(offsetMillis, "Location")
+        // ✅ FIX DST: Folosim timezone-ul cu suport pentru DST
+        // Pentru locații din România/Europa, folosim timezone ID-uri corecte
+        // Pentru alte locații, folosim un aproximativ bazat pe offset
+        val locationTimeZone = when {
+            locationName.contains("București", ignoreCase = true) || 
+            locationName.contains("Bucharest", ignoreCase = true) -> {
+                java.util.TimeZone.getTimeZone("Europe/Bucharest")
+            }
+            locationName.contains("Cluj", ignoreCase = true) ||
+            locationName.contains("Timișoara", ignoreCase = true) ||
+            locationName.contains("Iași", ignoreCase = true) ||
+            locationName.contains("Constanța", ignoreCase = true) ||
+            locationName.contains("Craiova", ignoreCase = true) ||
+            locationName.contains("Brașov", ignoreCase = true) -> {
+                // Toate orașele din România folosesc același timezone
+                java.util.TimeZone.getTimeZone("Europe/Bucharest")
+            }
+            else -> {
+                // Pentru alte locații, folosim timezone-ul implicit sau încercăm să găsim unul apropiat
+                // Aceasta este o soluție temporară până adăugăm timezone ID-uri în baza de date
+                java.util.TimeZone.getDefault()
+            }
+        }
         
         // ✅ Creăm MoonPhaseCalculator cu timezone-ul locației
         val moonPhaseCalculator = MoonPhaseCalculator(astroCalculator, locationTimeZone)
@@ -343,9 +362,8 @@ class AstroRepository(private val context: Context) {
     ): List<TattvaDayItem> {
         val tattvaList = mutableListOf<TattvaDayItem>()
         
-        // ✅ FIX: Folosim timezone-ul locației pentru formatare
-        val offsetMillis = (timeZone * 3600 * 1000).toInt()
-        val locationTimeZone = SimpleTimeZone(offsetMillis, "Location")
+        // ✅ FIX DST: Folosim timezone cu suport pentru DST
+        val locationTimeZone = java.util.TimeZone.getTimeZone("Europe/Bucharest")
         
         val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         timeFormat.timeZone = locationTimeZone  // ✅ IMPORTANT! 

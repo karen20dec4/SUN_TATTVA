@@ -277,9 +277,8 @@ fun AppNavigation(
                     )
                 }
                 
-                // Format sunrise and sunset times
-                val offsetMillis = (astroData!!.timeZone * 3600 * 1000).toInt()
-                val locationTimeZone = java.util.SimpleTimeZone(offsetMillis, "Location")
+                // Format sunrise and sunset times with DST support
+                val locationTimeZone = java.util.TimeZone.getTimeZone("Europe/Bucharest")
                 val timeFormat = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).apply {
                     this.timeZone = locationTimeZone
                 }
