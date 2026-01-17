@@ -224,7 +224,7 @@ fun AppNavigation(
                     timeZone = astroData!!.timeZone,
                     isDarkTheme = isDarkTheme,
                     onBackClick = {
-                        navController.popBackStack()
+                        navController.popBackStack("main", inclusive = false)
                     },
                     onCalendarClick = {
                         navController.navigate("calendar")
@@ -293,7 +293,7 @@ fun AppNavigation(
                     timeZone = astroData!!.timeZone,
                     isDarkTheme = isDarkTheme,
                     onBackClick = {
-                        navController.popBackStack()
+                        navController.popBackStack("main", inclusive = false)
                     },
                     onCalendarClick = {
                         navController.navigate("calendar")
