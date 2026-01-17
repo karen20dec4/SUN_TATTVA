@@ -3,6 +3,7 @@ package com.android.sun.domain.calculator
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.cos
+import kotlin.math.PI
 
 /**
  * ✅ Calculator OPTIMIZAT pentru fazele lunii
@@ -56,8 +57,8 @@ class MoonPhaseCalculator(
     }
 
     private fun calculateIllumination(phaseAngle: Double): Int {
-        // Convert angle to radians
-        val phaseRadians = Math.toRadians(phaseAngle)
+        // Convert angle to radians using Kotlin's idiomatic approach
+        val phaseRadians = phaseAngle * PI / 180.0
         // Use the correct formula: (1 - cos(angle)) / 2 * 100
         // This gives accurate illumination throughout the lunar cycle:
         // 0° = 0%, 90° = 50%, 180° = 100%, 270° = 50%, 360° = 0%
