@@ -363,12 +363,13 @@ class AstroRepository(private val context: Context) {
         latitude: Double,
         longitude: Double,
         timeZone:  Double,
-        currentTime: Calendar = Calendar.getInstance()
+        currentTime: Calendar = Calendar.getInstance(),
+        locationName: String = "București"  // ✅ Adăugat pentru timezone corect
     ): List<TattvaDayItem> {
         val tattvaList = mutableListOf<TattvaDayItem>()
         
         // ✅ FIX DST: Folosim timezone cu suport pentru DST
-        val locationTimeZone = java.util.TimeZone.getTimeZone("Europe/Bucharest")
+        val locationTimeZone = getLocationTimeZone(locationName)
         
         val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         timeFormat.timeZone = locationTimeZone  // ✅ IMPORTANT! 
@@ -536,7 +537,8 @@ class AstroRepository(private val context: Context) {
         latitude: Double,
         longitude: Double,
         timeZone: Double,
-        currentTime: Calendar = Calendar.getInstance()
+        currentTime: Calendar = Calendar.getInstance(),
+        locationName: String = "București"  // ✅ Adăugat pentru timezone corect
     ): List<TattvaDayItem> {
         val sunrise = astroCalculator.calculateSunrise(year, month, day, longitude, latitude, timeZone)
         return generateTattvaDaySchedule(
@@ -544,7 +546,8 @@ class AstroRepository(private val context: Context) {
             latitude = latitude,
             longitude = longitude,
             timeZone = timeZone,
-            currentTime = currentTime
+            currentTime = currentTime,
+            locationName = locationName
         )
     }
 }

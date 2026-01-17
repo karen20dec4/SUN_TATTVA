@@ -273,18 +273,24 @@ fun AppNavigation(
                         latitude = astroData!!.latitude,
                         longitude = astroData!!.longitude,
                         timeZone = astroData!!.timeZone,
-                        currentTime = Calendar.getInstance()
+                        currentTime = Calendar.getInstance(),
+                        locationName = astroData!!.locationName
                     )
                 }
                 
                 // Format sunrise and sunset times with DST support
                 // Use the same timezone logic as in the repository
-                val locationTimeZone = if (astroData!!.locationName.contains("București", ignoreCase = true) || 
+                val locationTimeZone = when {
+                    astroData!!.locationName.contains("București", ignoreCase = true) || 
                     astroData!!.locationName.contains("Bucharest", ignoreCase = true) ||
-                    astroData!!.locationName.contains("România", ignoreCase = true)) {
-                    java.util.TimeZone.getTimeZone("Europe/Bucharest")
-                } else {
-                    java.util.TimeZone.getDefault()
+                    astroData!!.locationName.contains("Cluj", ignoreCase = true) ||
+                    astroData!!.locationName.contains("Timișoara", ignoreCase = true) ||
+                    astroData!!.locationName.contains("România", ignoreCase = true) -> {
+                        java.util.TimeZone.getTimeZone("Europe/Bucharest")
+                    }
+                    else -> {
+                        java.util.TimeZone.getDefault()
+                    }
                 }
                 val timeFormat = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).apply {
                     this.timeZone = locationTimeZone

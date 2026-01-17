@@ -23,7 +23,8 @@ class AstroViewModel(application: Application) : AndroidViewModel(application) {
             latitude = astroData.latitude,
             longitude = astroData.longitude,
             timeZone = astroData.timeZone,
-            currentTime = astroData.currentTime
+            currentTime = astroData.currentTime,
+            locationName = astroData.locationName
         )
     }
     
@@ -39,7 +40,8 @@ class AstroViewModel(application: Application) : AndroidViewModel(application) {
             latitude = astroData.latitude,
             longitude = astroData.longitude,
             timeZone = astroData.timeZone,
-            currentTime = currentTime  // ✅ Timpul CURENT, nu cel vechi!
+            currentTime = currentTime,  // ✅ Timpul CURENT, nu cel vechi!
+            locationName = astroData.locationName
         )
     }
     
@@ -55,7 +57,8 @@ class AstroViewModel(application: Application) : AndroidViewModel(application) {
             latitude = astroData.latitude,
             longitude = astroData.longitude,
             timeZone = astroData.timeZone,
-            currentTime = astroData.currentTime
+            currentTime = astroData.currentTime,
+            locationName = astroData.locationName
         )
     }
     
@@ -85,10 +88,11 @@ class AstroViewModel(application: Application) : AndroidViewModel(application) {
         latitude: Double,
         longitude: Double,
         timeZone: Double,
-        currentTime: Calendar = Calendar.getInstance()
+        currentTime: Calendar = Calendar.getInstance(),
+        locationName: String = "București"  // ✅ Adăugat pentru timezone corect
     ): List<TattvaDayItem> {
         return repository.generateScheduleForDate(
-            year, month, day, latitude, longitude, timeZone, currentTime
+            year, month, day, latitude, longitude, timeZone, currentTime, locationName
         )
     }
 }
