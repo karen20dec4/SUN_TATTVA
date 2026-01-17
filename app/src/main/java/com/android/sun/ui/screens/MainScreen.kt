@@ -144,6 +144,20 @@ fun MainScreen(
 }
 
 /**
+ * Formatează offset-ul GMT pentru afișare
+ */
+@Composable
+private fun GmtOffsetText(timeZone: Double, modifier: Modifier = Modifier) {
+    Text(
+        text = "GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)}",
+        style = MaterialTheme.typography.bodySmall,
+        fontSize = 10.sp,
+        color = Color.White.copy(alpha = 0.6f),
+        modifier = modifier
+    )
+}
+
+/**
  * Card compact cu gradient Tattva + Data/Ora LIVE + Settings/Refresh
  */
 @Composable
@@ -345,12 +359,7 @@ private fun CompactInfoCard(
                         )
                     }
                     // GMT offset display
-                    Text(
-                        text = "GMT${if (astroData.timeZone >= 0) "+" else ""}${String.format("%.1f", astroData.timeZone)}",
-                        style = MaterialTheme.typography.bodySmall,
-                        fontSize = 10.sp,
-                        color = Color.White.copy(alpha = 0.6f)
-                    )
+                    GmtOffsetText(timeZone = astroData.timeZone)
                 }
 
                 // Sunset with timezone info
@@ -382,12 +391,7 @@ private fun CompactInfoCard(
                         )
                     }
                     // GMT offset display
-                    Text(
-                        text = "GMT${if (astroData.timeZone >= 0) "+" else ""}${String.format("%.1f", astroData.timeZone)}",
-                        style = MaterialTheme.typography.bodySmall,
-                        fontSize = 10.sp,
-                        color = Color.White.copy(alpha = 0.6f)
-                    )
+                    GmtOffsetText(timeZone = astroData.timeZone)
                 }
             }
 

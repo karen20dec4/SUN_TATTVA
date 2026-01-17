@@ -121,7 +121,15 @@ class AstroCalculator(private val swissEph: SwissEphWrapper) {
         
         // Fallback: creează SimpleTimeZone cu offset fix (fără DST)
         val offsetMillis = (standardOffset * 3600.0 * 1000.0).toInt()
-        return SimpleTimeZone(offsetMillis, "GMT${if (standardOffset >= 0) "+" else ""}${standardOffset.toInt()}")
+        // Format offset properly for half-hour timezones (e.g., +5:30, +9:30)
+        val hours = standardOffset.toInt()
+        val minutes = ((standardOffset - hours) * 60).toInt().let { if (it < 0) -it else it }
+        val offsetStr = if (minutes == 0) {
+            "${if (standardOffset >= 0) "+" else ""}$hours"
+        } else {
+            "${if (standardOffset >= 0) "+" else ""}$hours:${String.format("%02d", minutes)}"
+        }
+        return SimpleTimeZone(offsetMillis, "GMT$offsetStr")
     }
 
     fun calculateMoonLongitude(
