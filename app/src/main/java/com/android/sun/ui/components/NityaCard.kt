@@ -29,7 +29,7 @@ fun NityaCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(7.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
@@ -67,7 +67,7 @@ fun NityaCard(
                 modifier = Modifier
                     .background(
                         color = MaterialTheme.colorScheme.tertiaryContainer,
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(7.dp)
                     )
                     .padding(20.dp),
                 contentAlignment = Alignment.Center

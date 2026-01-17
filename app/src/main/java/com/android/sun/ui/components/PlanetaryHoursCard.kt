@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sun.domain.calculator.PlanetType
@@ -53,7 +54,8 @@ fun PlanetaryHoursCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+		shape = RoundedCornerShape(7.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier
@@ -95,7 +97,9 @@ fun PlanetaryHoursCard(
                         fontSize = 14.sp
                     )
                     
-                    Spacer(modifier = Modifier.height(12.dp))
+                    
+					
+					Spacer(modifier = Modifier.height(12.dp))
                     
                     // Scrollable list of all hours
                     Column(
@@ -130,6 +134,34 @@ fun PlanetaryHoursCard(
                             locationTimeZone = locationTimeZone
                         )
                     }
+					
+					
+					
+					
+					
+					
+					Spacer(modifier = Modifier.height(12.dp))
+					
+					// DEBUG INFO:  Sunrise + GMT (aliniază la dreapta)
+						val sunriseFormat = SimpleDateFormat("HH:mm", Locale.getDefault()).apply {
+							this.timeZone = locationTimeZone
+						}
+						Text(
+							modifier = Modifier.fillMaxWidth(),
+							text = "debug️: Sunrise - ${sunriseFormat.format(sunrise.time)} • GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)}",
+							textAlign = TextAlign.Center,
+							style = MaterialTheme.typography.bodySmall,
+							color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+							fontSize = 12.sp
+						)
+					// END DEBUG INFO:  Sunrise + GMT
+					
+					
+					
+					
+					
+					
+					
                 }
             }
         }
@@ -181,22 +213,22 @@ private fun CurrentPlanetaryHourHeader(
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,
-            fontSize = 21.sp
+            fontSize = 16.sp
         )
         
         Spacer(modifier = Modifier.height(4.dp))
-        
-        // DEBUG INFO:  Sunrise + GMT
-        val sunriseFormat = SimpleDateFormat("HH:mm", Locale.getDefault()).apply {
-            this.timeZone = locationTimeZone
-        }
-        Text(
-            text = "☀️ Sunrise: ${sunriseFormat.format(sunrise.time)} • GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)}",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-            fontSize = 12.sp
-        )
-        
+        /*
+			// DEBUG INFO:  Sunrise + GMT
+			val sunriseFormat = SimpleDateFormat("HH:mm", Locale.getDefault()).apply {
+				this.timeZone = locationTimeZone
+			}
+			Text(
+				text = "☀️ Sunrise: ${sunriseFormat.format(sunrise.time)} • GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)}",
+				style = MaterialTheme.typography.bodySmall,
+				color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+				fontSize = 12.sp
+			)
+        */
         Spacer(modifier = Modifier.height(8.dp))
         
         // Row cu ora și planetă

@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sun.domain.calculator.NityaResult
@@ -28,10 +29,11 @@ fun NityaExpandableCard(
 
     Card(
         modifier = modifier.fillMaxWidth(),
+		shape = RoundedCornerShape(5.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
             modifier = Modifier
@@ -45,7 +47,7 @@ fun NityaExpandableCard(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 modifier = Modifier.padding(end = 12.dp)
             )
 
@@ -53,7 +55,7 @@ fun NityaExpandableCard(
             Text(
                 text = "${currentNitya.number}/15 - ${currentNitya.name}",
                 style = MaterialTheme.typography.bodyLarge,
-                fontSize = 16.sp,
+                fontSize = 14.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier

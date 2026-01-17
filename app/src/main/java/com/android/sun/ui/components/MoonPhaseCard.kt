@@ -24,7 +24,7 @@ fun MoonPhaseCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(7.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
@@ -59,18 +59,20 @@ fun MoonPhaseCard(
                 )
             }
             
-            // ✅ DEBUG: Afișează ora curentă (mic și gri)
-            val currentTimeZone = moonPhase.nextFullMoon.timeZone
-            val currentTime = Calendar.getInstance(currentTimeZone)
-            val debugFormat = SimpleDateFormat("HH:mm:ss z (Z)", Locale.getDefault())
-            debugFormat.timeZone = currentTimeZone
-            
-            Text(
-                text = "🕐 ${debugFormat.format(currentTime.time)}",
-                style = MaterialTheme.typography.bodySmall,
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-            )
+            /*
+					// ✅ DEBUG: Afișează ora curentă (mic și gri)
+					val currentTimeZone = moonPhase.nextFullMoon.timeZone
+					val currentTime = Calendar.getInstance(currentTimeZone)
+					val debugFormat = SimpleDateFormat("HH:mm:ss z (Z)", Locale.getDefault())
+					debugFormat.timeZone = currentTimeZone
+					
+					Text(
+						text = "🕐 ${debugFormat.format(currentTime.time)}",
+						style = MaterialTheme.typography.bodySmall,
+						fontSize = 12.sp,
+						color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+					)
+			*/
             
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f),

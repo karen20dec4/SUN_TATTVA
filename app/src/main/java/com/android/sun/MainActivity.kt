@@ -216,9 +216,9 @@ fun AppNavigation(
                 
                 AllDayScreen(
                     tattvaDaySchedule = tattvaDaySchedule,
-                    sunriseDate = astroData!! .sunrise,
+                    sunriseDate = astroData!!.sunrise,
                     sunriseTime = astroData!!.sunriseFormatted,
-                    sunsetTime = astroData!! .sunsetFormatted,
+                    sunsetTime = astroData!!.sunsetFormatted,
                     actualSunriseTime = astroData!! .sunrise,
                     timeZone = astroData!!.timeZone,
                     isDarkTheme = isDarkTheme,

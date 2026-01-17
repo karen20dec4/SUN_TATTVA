@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 // ============================================
 
 // Light Theme
-val Primary = Color(0xFF6a6a6a)
+val Primary = Color(0xFF2D2A34)
 //val Primary = Color(0xFF6750A4)
 val OnPrimary = Color(0xFFFFFFFF)
 val PrimaryContainer = Color(0xFFEADDFF)
@@ -38,12 +38,14 @@ val OnBackground = Color(0xFF1C1B1F)
 val Surface = Color(0xFFFFFBFE)
 val OnSurface = Color(0xFF1C1B1F)
 
-val SurfaceVariant = Color(0xFFE7E0EC)
-val OnSurfaceVariant = Color(0xFF49454F)
+// val SurfaceVariant = Color(0xFFE7E0EC)  // de inlocuit CU F1EDF0
+val SurfaceVariant = Color(0xFFF1EDF0)  
+// val OnSurfaceVariant = Color(0xFF49454F) // inlocuim cu 2D2A34
+val OnSurfaceVariant = Color(0xFF2D2A34)
 val Outline = Color(0xFF79747E)
 
 // Dark Theme
-val PrimaryDark = Color(0xFFD0BCFF)
+val PrimaryDark = Color(0xFFCAC4D0) // era D0BCFF
 val OnPrimaryDark = Color(0xFF381E72)
 val PrimaryContainerDark = Color(0xFF4F378B)
 val OnPrimaryContainerDark = Color(0xFFEADDFF)
@@ -68,7 +70,9 @@ val OnBackgroundDark = Color(0xFFE6E1E5)
 val SurfaceDark = Color(0xFF1C1B1F)
 val OnSurfaceDark = Color(0xFFE6E1E5)
 
-val SurfaceVariantDark = Color(0xFF49454F)
+// val SurfaceVariantDark = Color(0xFF49454F) // Ilocuim cu 2D2A34
+val SurfaceVariantDark = Color(0xFF2D2A34)
+
 val OnSurfaceVariantDark = Color(0xFFCAC4D0)
 val OutlineDark = Color(0xFF938F99)
 

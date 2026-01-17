@@ -71,8 +71,9 @@ fun CombinedTattvaCard(
 Card(
         modifier = modifier
             .fillMaxWidth()
-            .shadow(8.dp, RoundedCornerShape(20.dp)),
-        shape = RoundedCornerShape(20.dp),
+            .shadow(8.dp, RoundedCornerShape(7.dp)),
+        shape = RoundedCornerShape(7.dp),
+		elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -87,10 +88,10 @@ Card(
                         brush = Brush.verticalGradient(
                             colors = listOf(tattva.color, tattva.color.copy(alpha = 0.7f))
                         ),
-                        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                        shape = RoundedCornerShape(topStart = 7.dp, topEnd = 7.dp)
                     )
                     // Am redus padding-ul vertical de la 28.dp la 12.dp pentru a face cardul mai mic
-                    .padding(vertical = 20.dp, horizontal = 16.dp) 
+                    .padding(vertical = 50.dp, horizontal = 16.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -135,7 +136,7 @@ Card(
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
                     ) {
                         Text(
-                            text = "ALL DAY",
+                            text = "SHOW DAY",
                             style = MaterialTheme.typography.labelLarge,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
@@ -153,11 +154,17 @@ Card(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+					.shadow(                      // <--- umbra: ajustează aici
+						elevation = 0.1.dp,       // încearcă 0.5.dp, 0.8.dp, 1.dp etc.
+						shape = RoundedCornerShape(bottomStart = 7.dp, bottomEnd = 7.dp),
+						clip = false
+					)
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(subTattva.color.copy(alpha = 0.25f), subTattva.color.copy(alpha = 0.10f))
                         ),
-                        shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
+                        
+						shape = RoundedCornerShape(bottomStart = 7.dp, bottomEnd = 7.dp)
                     )
                     .padding(vertical = 12.dp, horizontal = 16.dp)
             ) {

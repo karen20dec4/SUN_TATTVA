@@ -86,13 +86,7 @@ fun MainScreen(
                         )
                     }
 
-                    item(key = "moon_phase") {
-                        MoonPhaseCard(
-                            moonSign = astroData.moonSign,
-                            moonPhase = astroData.moonPhase
-                        )
-                    }
-                    
+                                        
                     item(key = "planetary_hours") {
                         val nextSunrise = astroData.sunrise.clone() as Calendar
                         nextSunrise.add(Calendar.DAY_OF_MONTH, 1)
@@ -106,7 +100,16 @@ fun MainScreen(
                         )
                     }
 
-                    item(key = "nitya") {
+                    
+					item(key = "moon_phase") {
+                        MoonPhaseCard(
+                            moonSign = astroData.moonSign,
+                            moonPhase = astroData.moonPhase
+                        )
+                    }
+					
+										
+					item(key = "nitya") {
                         NityaExpandableCard(
                             currentNitya = astroData.nitya
                         )
@@ -175,8 +178,8 @@ private fun CompactInfoCard(
             .clickable {
                 onNavigateToLocation()
             },
-        shape = RoundedCornerShape(20.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        shape = RoundedCornerShape(7.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier
@@ -205,7 +208,7 @@ private fun CompactInfoCard(
                     Text(
                         text = dateFormat.format(currentTime.time).uppercase(),
                         style = MaterialTheme.typography.titleMedium,
-                        fontSize = 18.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
@@ -214,7 +217,7 @@ private fun CompactInfoCard(
                     Text(
                         text = timeFormat.format(currentTime.time),
                         style = MaterialTheme.typography.titleMedium,
-                        fontSize = 18.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
@@ -248,9 +251,9 @@ private fun CompactInfoCard(
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             HorizontalDivider(color = Color.White.copy(alpha = 0.3f), thickness = 1.dp)
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -267,7 +270,7 @@ private fun CompactInfoCard(
                             else -> "No location"
                         },
                         style = MaterialTheme.typography.titleMedium,
-                        fontSize = 24.sp,
+                        fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
@@ -317,7 +320,7 @@ private fun CompactInfoCard(
                     Text(
                         text = astroData.sunrisePolaritySymbol,
                         style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
@@ -332,7 +335,7 @@ private fun CompactInfoCard(
                     Text(
                         text = astroData.sunriseFormatted,
                         style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White.copy(alpha = 0.9f)
                     )
@@ -342,7 +345,7 @@ private fun CompactInfoCard(
                     Text(
                         text = astroData.sunsetPolaritySymbol,
                         style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
@@ -357,14 +360,14 @@ private fun CompactInfoCard(
                     Text(
                         text = astroData.sunsetFormatted,
                         style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White.copy(alpha = 0.9f)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
+            // Spacer(modifier = Modifier.height(4.dp))
             
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -374,7 +377,7 @@ private fun CompactInfoCard(
                     Text(
                         text = astroData.nextSunrisePolaritySymbol,
                         style = MaterialTheme.typography.bodySmall,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White.copy(alpha = 0.7f)
                     )
@@ -389,7 +392,7 @@ private fun CompactInfoCard(
                     Text(
                         text = astroData.nextSunriseFormatted,
                         style = MaterialTheme.typography.bodySmall,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White.copy(alpha = 0.7f)
                     )
@@ -399,7 +402,7 @@ private fun CompactInfoCard(
                     Text(
                         text = astroData.nextSunsetPolaritySymbol,
                         style = MaterialTheme.typography.bodySmall,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White.copy(alpha = 0.7f)
                     )
@@ -414,7 +417,7 @@ private fun CompactInfoCard(
                     Text(
                         text = astroData.nextSunsetFormatted,
                         style = MaterialTheme.typography.bodySmall,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White.copy(alpha = 0.7f)
                     )
