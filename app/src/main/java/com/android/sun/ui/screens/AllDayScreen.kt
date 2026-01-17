@@ -120,17 +120,15 @@ fun AllDayScreen(
                             }
                             val sunriseUTC = utcFormat.format(actualSunriseTime.time)
                             
-                            // Calculează offset-ul real cu DST pentru București (dacă timeZone este 2.0)
-                            val locationTz = if (timeZone == 2.0) {
-                                java.util.TimeZone.getTimeZone("Europe/Bucharest")
-                            } else {
-                                java.util.TimeZone.getDefault()
-                            }
-                            val offsetWithDST = locationTz.getOffset(actualSunriseTime.timeInMillis) / (1000 * 60 * 60)
-                            val offsetSign = if (offsetWithDST >= 0) "+" else ""
+                            // Calculează offset-ul real folosind timezone-ul locației
+                            // Folosim SimpleTimeZone cu offset-ul furnizat (nu poate determina DST automat fără location)
+                            val offsetMillis = (timeZone * 3600.0 * 1000.0).toInt()
+                            val locationTz = java.util.SimpleTimeZone(offsetMillis, "Location")
+                            val offsetHours = timeZone.toInt()
+                            val offsetSign = if (timeZone >= 0) "+" else ""
                             
                             Text(
-                                text = "UTC$offsetSign$offsetWithDST (sunrise UTC: $sunriseUTC)",
+                                text = "UTC$offsetSign$offsetHours (sunrise UTC: $sunriseUTC)",
                                 style = MaterialTheme.typography.bodySmall,
                                 fontSize = 9.sp,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)

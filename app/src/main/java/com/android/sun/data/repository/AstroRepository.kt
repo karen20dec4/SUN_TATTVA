@@ -28,10 +28,11 @@ class AstroRepository(private val context: Context) {
 
     /**
      * ✅ Obține timezone-ul corect pentru o locație (cu suport DST)
-     * Pentru orașele din România, folosim "Europe/Bucharest"
-     * Pentru alte locații, folosim timezone-ul implicit (temporar)
+     * Pentru orașe cunoscute, folosim timezone ID-uri corecte
+     * Pentru alte locații, folosim offset-ul furnizat (fără DST)
      */
-    private fun getLocationTimeZone(locationName: String): java.util.TimeZone {
+    private fun getLocationTimeZone(locationName: String, timeZoneOffset: Double): java.util.TimeZone {
+        // Mapare orașe cunoscute -> timezone ID (cu suport DST)
         return when {
             locationName.contains("București", ignoreCase = true) || 
             locationName.contains("Bucharest", ignoreCase = true) ||
@@ -41,13 +42,31 @@ class AstroRepository(private val context: Context) {
             locationName.contains("Constanța", ignoreCase = true) ||
             locationName.contains("Craiova", ignoreCase = true) ||
             locationName.contains("Brașov", ignoreCase = true) -> {
-                // Toate orașele din România folosesc același timezone cu DST
                 java.util.TimeZone.getTimeZone("Europe/Bucharest")
             }
+            locationName.contains("Tokyo", ignoreCase = true) -> {
+                java.util.TimeZone.getTimeZone("Asia/Tokyo")
+            }
+            locationName.contains("New York", ignoreCase = true) -> {
+                java.util.TimeZone.getTimeZone("America/New_York")
+            }
+            locationName.contains("London", ignoreCase = true) -> {
+                java.util.TimeZone.getTimeZone("Europe/London")
+            }
+            locationName.contains("Paris", ignoreCase = true) -> {
+                java.util.TimeZone.getTimeZone("Europe/Paris")
+            }
+            locationName.contains("Berlin", ignoreCase = true) -> {
+                java.util.TimeZone.getTimeZone("Europe/Berlin")
+            }
+            locationName.contains("Los Angeles", ignoreCase = true) -> {
+                java.util.TimeZone.getTimeZone("America/Los_Angeles")
+            }
             else -> {
-                // Pentru alte locații, folosim timezone-ul implicit
-                // TODO: Adaugă un mapping complet oraș -> timezone ID în viitor
-                java.util.TimeZone.getDefault()
+                // Pentru locații necunoscute, folosim offset-ul furnizat
+                // Acest lucru nu va gestiona DST, dar va afișa ora corectă pentru zona orară de bază
+                val offsetMillis = (timeZoneOffset * 3600.0 * 1000.0).toInt()
+                SimpleTimeZone(offsetMillis, "Location")
             }
         }
     }
@@ -193,7 +212,7 @@ class AstroRepository(private val context: Context) {
         )
 
         // ✅ FIX DST: Folosim timezone-ul cu suport pentru DST
-        val locationTimeZone = getLocationTimeZone(locationName)
+        val locationTimeZone = getLocationTimeZone(locationName, timeZone)
         
         // ✅ Creăm MoonPhaseCalculator cu timezone-ul locației
         val moonPhaseCalculator = MoonPhaseCalculator(astroCalculator, locationTimeZone)
@@ -369,7 +388,7 @@ class AstroRepository(private val context: Context) {
         val tattvaList = mutableListOf<TattvaDayItem>()
         
         // ✅ FIX DST: Folosim timezone cu suport pentru DST
-        val locationTimeZone = getLocationTimeZone(locationName)
+        val locationTimeZone = getLocationTimeZone(locationName, timeZone)
         
         val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         timeFormat.timeZone = locationTimeZone  // ✅ IMPORTANT! 

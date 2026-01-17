@@ -288,8 +288,28 @@ fun AppNavigation(
                     astroData!!.locationName.contains("România", ignoreCase = true) -> {
                         java.util.TimeZone.getTimeZone("Europe/Bucharest")
                     }
+                    astroData!!.locationName.contains("Tokyo", ignoreCase = true) -> {
+                        java.util.TimeZone.getTimeZone("Asia/Tokyo")
+                    }
+                    astroData!!.locationName.contains("New York", ignoreCase = true) -> {
+                        java.util.TimeZone.getTimeZone("America/New_York")
+                    }
+                    astroData!!.locationName.contains("London", ignoreCase = true) -> {
+                        java.util.TimeZone.getTimeZone("Europe/London")
+                    }
+                    astroData!!.locationName.contains("Paris", ignoreCase = true) -> {
+                        java.util.TimeZone.getTimeZone("Europe/Paris")
+                    }
+                    astroData!!.locationName.contains("Berlin", ignoreCase = true) -> {
+                        java.util.TimeZone.getTimeZone("Europe/Berlin")
+                    }
+                    astroData!!.locationName.contains("Los Angeles", ignoreCase = true) -> {
+                        java.util.TimeZone.getTimeZone("America/Los_Angeles")
+                    }
                     else -> {
-                        java.util.TimeZone.getDefault()
+                        // Pentru locații necunoscute, folosim offset-ul furnizat
+                        val offsetMillis = (astroData!!.timeZone * 3600.0 * 1000.0).toInt()
+                        java.util.SimpleTimeZone(offsetMillis, "Location")
                     }
                 }
                 val timeFormat = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).apply {
