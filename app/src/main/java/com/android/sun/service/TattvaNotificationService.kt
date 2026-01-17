@@ -192,7 +192,7 @@ class TattvaNotificationService : Service() {
             .setSilent(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT) // DEFAULT scoate notificarea din "Silent"
             .setContentIntent(pendingIntent)
-            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL) // Prevents grouping
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL) // Alert independently if grouped
             .build()
     }
 
