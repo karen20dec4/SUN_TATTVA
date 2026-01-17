@@ -28,6 +28,7 @@ import com.android.sun.ui.components.GradientNavigationBar
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 /**
  * Ecranul principal al aplicatiei
@@ -144,13 +145,13 @@ fun MainScreen(
 }
 
 /**
- * Formatează offset-ul GMT pentru afișare (format ore:minute)
+ * Formats GMT offset for display (hours:minutes format)
  */
 @Composable
 private fun GmtOffsetText(timeZone: Double, modifier: Modifier = Modifier) {
     // Format properly for half-hour timezones (e.g., GMT+5:30, GMT-4:30)
     val hours = timeZone.toInt()
-    val minutes = kotlin.math.abs((timeZone - hours) * 60).toInt()
+    val minutes = abs((timeZone - hours) * 60).toInt()
     val offsetStr = if (minutes == 0) {
         "${if (timeZone >= 0) "+" else ""}$hours"
     } else {

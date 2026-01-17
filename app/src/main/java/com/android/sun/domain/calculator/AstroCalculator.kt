@@ -1,6 +1,7 @@
 package com.android.sun.domain.calculator
 
 import java.util.*
+import kotlin.math.abs
 
 class AstroCalculator(private val swissEph: SwissEphWrapper) {
 
@@ -123,7 +124,7 @@ class AstroCalculator(private val swissEph: SwissEphWrapper) {
         val offsetMillis = (standardOffset * 3600.0 * 1000.0).toInt()
         // Format offset properly for half-hour timezones (e.g., +5:30, +9:30)
         val hours = standardOffset.toInt()
-        val minutes = kotlin.math.abs((standardOffset - hours) * 60).toInt()
+        val minutes = abs((standardOffset - hours) * 60).toInt()
         val offsetStr = if (minutes == 0) {
             "${if (standardOffset >= 0) "+" else ""}$hours"
         } else {
