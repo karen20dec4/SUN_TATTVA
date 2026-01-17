@@ -316,53 +316,77 @@ private fun CompactInfoCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                // Sunrise with timezone info
+                Column(
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = astroData.sunrisePolaritySymbol,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "↑",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = astroData.sunriseFormatted,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White.copy(alpha = 0.9f)
+                        )
+                    }
+                    // GMT offset display
                     Text(
-                        text = astroData.sunrisePolaritySymbol,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "↑",
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    Text(
-                        text = astroData.sunriseFormatted,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White.copy(alpha = 0.9f)
+                        text = "GMT${if (astroData.timeZone >= 0) "+" else ""}${String.format("%.1f", astroData.timeZone)}",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 10.sp,
+                        color = Color.White.copy(alpha = 0.6f)
                     )
                 }
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                // Sunset with timezone info
+                Column(
+                    horizontalAlignment = Alignment.End
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = astroData.sunsetPolaritySymbol,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "↓",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = astroData.sunsetFormatted,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White.copy(alpha = 0.9f)
+                        )
+                    }
+                    // GMT offset display
                     Text(
-                        text = astroData.sunsetPolaritySymbol,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "↓",
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    Text(
-                        text = astroData.sunsetFormatted,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White.copy(alpha = 0.9f)
+                        text = "GMT${if (astroData.timeZone >= 0) "+" else ""}${String.format("%.1f", astroData.timeZone)}",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 10.sp,
+                        color = Color.White.copy(alpha = 0.6f)
                     )
                 }
             }

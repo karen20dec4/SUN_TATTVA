@@ -49,45 +49,79 @@ class AstroCalculator(private val swissEph: SwissEphWrapper) {
     }
 
     /**
-     * ✅ FIX: Convertește Julian Day la Calendar folosind timezone-ul LOCAȚIEI
+     * ✅ FIX: Convertește Julian Day la Calendar folosind timezone-ul LOCAȚIEI cu suport DST
      * 
-     * PROBLEMA VECHE: 
+     * PROBLEMA: 
      * - Swiss Ephemeris returnează ora în UTC (Julian Day)
-     * - Calendar. getInstance() folosea timezone-ul TELEFONULUI
-     * - Dacă telefonul era în București (+2) și locația New York (-5),
-     *   ora de răsărit era afișată greșit (diferență de 7 ore!)
+     * - SimpleTimeZone cu offset fix nu ține cont de Daylight Saving Time (DST)
+     * - Pentru București în vară (EEST): UTC+3, nu UTC+2
      * 
      * SOLUȚIA:
-     * - Creăm un Calendar cu timezone-ul LOCAȚIEI selectate
-     * - Astfel ora afișată este corectă pentru locația aleasă
+     * - Convertim JD la Calendar în UTC
+     * - Aplicăm DST rules automat folosind TimeZone.getAvailableIDs pentru regiune
+     * - Dacă nu găsim timezone ID, folosim offset-ul standard
      * 
      * @param julianDay - Julian Day returnat de Swiss Ephemeris (în UTC)
-     * @param timeZoneOffset - Offset-ul timezone-ului locației (ex: -5. 0 pentru New York, +2.0 pentru București)
-     * @return Calendar cu ora corectă în timezone-ul locației
+     * @param timeZoneOffset - Offset-ul timezone-ului standard al locației (ex: 2.0 pentru București EET)
+     * @return Calendar cu ora corectă în timezone-ul locației (cu DST aplicat automat)
      */
     private fun julianDayToCalendar(julianDay: Double, timeZoneOffset: Double): Calendar {
         // JD 2440587.5 = 1 ianuarie 1970, 00:00:00 UTC (Unix epoch)
         val unixMillis = ((julianDay - 2440587.5) * 86400000.0).toLong()
         
-        // ✅ FIX: Creează timezone bazat pe offset-ul LOCAȚIEI (nu al telefonului!)
-        // timeZoneOffset este în ore (ex: -5.0 pentru New York EST)
-        // Trebuie convertit în milisecunde:  ore * 3600 * 1000
-        val offsetMillis = (timeZoneOffset * 3600.0 * 1000.0).toInt()
-        val locationTimeZone = SimpleTimeZone(offsetMillis, "LocationTZ")
+        // ✅ Creăm Calendar în UTC mai întâi
+        val utcCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        utcCalendar.timeInMillis = unixMillis
         
-        // ✅ Creează Calendar cu timezone-ul locației
-        val calendar = Calendar.getInstance(locationTimeZone)
+        // ✅ Determinăm timezone-ul potrivit bazat pe offset
+        // Pentru locații cu DST, Java va aplica automat regulile DST
+        val timezone = getTimezoneForOffset(timeZoneOffset)
+        
+        // ✅ Creează Calendar cu timezone-ul corespunzător
+        val calendar = Calendar.getInstance(timezone)
         calendar.timeInMillis = unixMillis
         
-        // ✅ DEBUG LOG - poți să-l ștergi după ce confirmi că funcționează
-        android.util.Log. d("AstroCalculator", "═══════════════════════════════════════")
+        // ✅ DEBUG LOG
+        android.util.Log.d("AstroCalculator", "═══════════════════════════════════════")
         android.util.Log.d("AstroCalculator", "📍 TimeZone offset: $timeZoneOffset ore")
-        android.util.Log. d("AstroCalculator", "📍 TimeZone offset in ms: $offsetMillis")
-        android.util.Log. d("AstroCalculator", "📍 Calendar TimeZone: ${calendar.timeZone. id}")
-        android.util.Log. d("AstroCalculator", "📍 Ora rezultată: ${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar. MINUTE)}:${calendar.get(Calendar. SECOND)}")
-        android.util.Log. d("AstroCalculator", "═══════════════════════════════════════")
+        android.util.Log.d("AstroCalculator", "📍 TimeZone ID: ${timezone.id}")
+        android.util.Log.d("AstroCalculator", "📍 DST in effect: ${timezone.inDaylightTime(calendar.time)}")
+        android.util.Log.d("AstroCalculator", "📍 Actual offset: ${timezone.getOffset(calendar.timeInMillis) / 3600000.0} ore")
+        android.util.Log.d("AstroCalculator", "📍 Ora rezultată: ${String.format("%02d:%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND))}")
+        android.util.Log.d("AstroCalculator", "═══════════════════════════════════════")
         
         return calendar
+    }
+    
+    /**
+     * Determină timezone-ul corect bazat pe offset-ul standard
+     * Încearcă să găsească un timezone cu DST rules pentru offset-ul dat
+     */
+    private fun getTimezoneForOffset(standardOffset: Double): TimeZone {
+        // Mapare specială pentru timezone-uri cunoscute cu DST
+        val timezoneMap = mapOf(
+            2.0 to "Europe/Bucharest",  // România: EET (UTC+2) / EEST (UTC+3)
+            1.0 to "Europe/Paris",       // Europa Centrală: CET (UTC+1) / CEST (UTC+2)
+            0.0 to "Europe/London",      // UK: GMT (UTC+0) / BST (UTC+1)
+            -5.0 to "America/New_York",  // EST (UTC-5) / EDT (UTC-4)
+            -6.0 to "America/Chicago",   // CST (UTC-6) / CDT (UTC-5)
+            -7.0 to "America/Denver",    // MST (UTC-7) / MDT (UTC-6)
+            -8.0 to "America/Los_Angeles", // PST (UTC-8) / PDT (UTC-7)
+            3.0 to "Europe/Moscow",      // MSK (UTC+3) - no DST from 2014
+            5.5 to "Asia/Kolkata",       // IST (UTC+5:30) - no DST
+            8.0 to "Asia/Shanghai",      // CST (UTC+8) - no DST
+            9.0 to "Asia/Tokyo"          // JST (UTC+9) - no DST
+        )
+        
+        // Încearcă să găsească timezone din mapare
+        val timezoneId = timezoneMap[standardOffset]
+        if (timezoneId != null) {
+            return TimeZone.getTimeZone(timezoneId)
+        }
+        
+        // Fallback: creează SimpleTimeZone cu offset fix (fără DST)
+        val offsetMillis = (standardOffset * 3600.0 * 1000.0).toInt()
+        return SimpleTimeZone(offsetMillis, "GMT${if (standardOffset >= 0) "+" else ""}${standardOffset.toInt()}")
     }
 
     fun calculateMoonLongitude(
