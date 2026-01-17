@@ -120,10 +120,7 @@ fun AllDayScreen(
                             }
                             val sunriseUTC = utcFormat.format(actualSunriseTime.time)
                             
-                            // Calculează offset-ul real folosind timezone-ul locației
-                            // Folosim SimpleTimeZone cu offset-ul furnizat (nu poate determina DST automat fără location)
-                            val offsetMillis = (timeZone * 3600.0 * 1000.0).toInt()
-                            val locationTz = java.util.SimpleTimeZone(offsetMillis, "Location")
+                            // Afișează offset-ul furnizat (baza timezone-ului, fără DST automat)
                             val offsetHours = timeZone.toInt()
                             val offsetSign = if (timeZone >= 0) "+" else ""
                             
