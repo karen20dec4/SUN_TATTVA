@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -146,6 +147,7 @@ fun LocationScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 16.dp),
+						shape = RoundedCornerShape(7.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.errorContainer
                         )
@@ -189,6 +191,7 @@ fun LocationScreen(
                 ) {
                     OutlinedButton(
                         onClick = { showSearchDialog = true },
+						shape = RoundedCornerShape(7.dp),
                         modifier = Modifier.weight(1f)
                     ) {
                         Icon(
@@ -279,6 +282,7 @@ fun LocationScreen(
 										showClearAllDialog = true
                                     },
                                     modifier = Modifier.fillMaxWidth(),
+									shape = RoundedCornerShape(8.dp),
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = MaterialTheme.colorScheme.secondary
                                     )
@@ -613,6 +617,7 @@ private fun SearchResultItemLarge(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
+		shape = RoundedCornerShape(7.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         )
@@ -691,7 +696,8 @@ private fun AddLocationDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            shape = MaterialTheme.shapes.large
+				shape = RoundedCornerShape(7.dp)
+            //shape = MaterialTheme.shapes.large
         ) {
             Column(
                 modifier = Modifier
@@ -832,9 +838,13 @@ private fun GPSLocationSection(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
+        shape = RoundedCornerShape(7.dp),
+		colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
+        ),
+		elevation = CardDefaults.cardElevation(
+        defaultElevation = 2.dp // Modifică valoarea după preferință (ex: 2.dp, 6.dp)
+		)
     ) {
         Column(
             modifier = Modifier
@@ -893,6 +903,7 @@ private fun GPSLocationSection(
                     Button(
                         onClick = { onUseGPS(currentGPSLocation) },
                         modifier = Modifier.fillMaxWidth(),
+						shape = RoundedCornerShape(7.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Icon(imageVector = Icons.Filled.Check, contentDescription = null, modifier = Modifier.size(20.dp))
@@ -968,6 +979,7 @@ private fun InfoRow(label: String, value:  String) {
 					modifier = Modifier
 						.fillMaxWidth()
 						.animateContentSize(),
+					shape = RoundedCornerShape(7.dp),
 					colors = CardDefaults. cardColors(
 						containerColor = if (isSelected) 
 							MaterialTheme.colorScheme. primaryContainer 

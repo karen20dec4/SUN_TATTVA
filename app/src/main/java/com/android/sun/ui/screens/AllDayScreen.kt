@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -160,7 +161,7 @@ fun AllDayScreen(
                             val offsetSign = if (offsetWithDST >= 0) "+" else ""
                             
                             Text(
-                                text = "UTC$offsetSign$offsetWithDST (sunrise UTC: $sunriseUTC)",
+                                text = "GMT$offsetSign$offsetWithDST (sunrise UTC: $sunriseUTC)",
                                 style = MaterialTheme.typography.bodySmall,
                                 fontSize = 9.sp,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
@@ -177,25 +178,36 @@ fun AllDayScreen(
                     },
                     actions = {
                         Button(
-                            onClick = onCalendarClick,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary
-                            ),
-                            modifier = Modifier.padding(end = 8.dp),
-                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.DateRange,
-                                contentDescription = "Calendar",
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "CALENDAR",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 14.sp
-                            )
-                        }
+							onClick = onCalendarClick,
+							shape = RoundedCornerShape(7.dp), // Aici modifici rotunjirea (ex: 4.dp, 8.dp, 12.dp)
+							
+							elevation = ButtonDefaults.buttonElevation(
+							defaultElevation = 2.dp,      // Umbra în stare normală
+							pressedElevation = 8.dp,      // Umbra când este apăsat
+							hoveredElevation = 4.dp       // Umbra când treci cu mouse-ul (pe desktop/ChromeOS)
+						),
+							
+							
+							
+							
+							colors = ButtonDefaults.buttonColors(
+								containerColor = MaterialTheme.colorScheme.primary
+							),
+							modifier = Modifier.padding(end = 8.dp),
+							contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
+						) {
+							Icon(
+								imageVector = Icons.Default.DateRange,
+								contentDescription = "Calendar",
+								modifier = Modifier.size(20.dp)
+							)
+							Spacer(modifier = Modifier.width(4.dp))
+							Text(
+								text = "CALENDAR",
+								fontWeight = FontWeight.Bold,
+								fontSize = 14.sp
+							)
+						}
                     }
                 )
             }
@@ -299,6 +311,7 @@ private fun TattvaDayItemCard(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
+		shape = RoundedCornerShape(7.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isTattvaCurrentNow) {
                 tattvaItem.tattvaColor.copy(alpha = 0.25f)

@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
@@ -270,6 +271,7 @@ fun SettingsScreen(
                 
                 // Versiune
                 Card(
+					shape = RoundedCornerShape(7.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant
                     ),
@@ -338,6 +340,7 @@ fun SettingsScreen(
                         val helper = com.android.sun.notification.NotificationHelper(context)
                         helper.sendFullMoonStartNotification("Test - 15: 30")
                     },
+					shape = RoundedCornerShape(7.dp),
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("🌑 Luna P", fontSize = 12.sp)
@@ -349,6 +352,7 @@ fun SettingsScreen(
                         val helper = com.android.sun.notification.NotificationHelper(context)
                         helper.sendTripuraSundariNotification("Test - 18:45")
                     },
+					shape = RoundedCornerShape(7.dp),
                     modifier = Modifier. weight(1f)
                 ) {
                     Text("⭐ Tripura", fontSize = 12.sp)
@@ -360,6 +364,7 @@ fun SettingsScreen(
                         val helper = com.android.sun. notification.NotificationHelper(context)
                         helper.sendNewMoonNotification("Test - 12:00")
                     },
+					shape = RoundedCornerShape(7.dp),
                     modifier = Modifier. weight(1f)
                 ) {
                     Text("🌕 Shv", fontSize = 12.sp)
@@ -389,7 +394,8 @@ private fun SettingsSwitchItem(
     enabled: Boolean = true
 ) {
     Card(
-        colors = CardDefaults.cardColors(
+        shape = RoundedCornerShape(7.dp),
+		colors = CardDefaults.cardColors(
             containerColor = if (enabled) {
                 MaterialTheme.colorScheme.surfaceVariant
             } else {

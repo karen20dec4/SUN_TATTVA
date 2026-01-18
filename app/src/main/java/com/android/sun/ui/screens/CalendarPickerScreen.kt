@@ -63,7 +63,7 @@ fun CalendarPickerScreen(
                 modifier = Modifier.weight(1f),
                 title = {
                     Text(
-                        text = "Select a date to view Tattvas",
+                        text = "Select a date to calculate Tattvas",
                         modifier = Modifier.padding(16.dp),
                         style = MaterialTheme.typography.bodyLarge
                     )
@@ -93,7 +93,7 @@ fun CalendarPickerScreen(
                 )
             ) {
                 Text(
-                    text = "VIEW TATTVAS FOR SELECTED DATE",
+                    text = "SELECT DATE",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     modifier = Modifier.padding(vertical = 8.dp)
