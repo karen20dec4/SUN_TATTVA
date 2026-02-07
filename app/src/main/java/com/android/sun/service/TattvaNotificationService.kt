@@ -114,6 +114,9 @@ class TattvaNotificationService : Service() {
             // Formatare GMT (ex: GMT+2.0) - am scos GMT
             val gmtSuffix = "(${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
 
+            // Decide which notification to use for foreground service
+            val useSummary = showTattva && showPlanet
+
             // 1. NOTIFICARE TATTVA
             if (showTattva) {
                 val type = astroData.tattva.tattva
@@ -125,8 +128,9 @@ class TattvaNotificationService : Service() {
                 
                 val notification = createDetailedNotification(tattvaText, getTattvaIcon(type), CHANNEL_ID_TATTVA)
                 
-                // If both notifications are active, use notify() for the first one
-                if (showPlanet) {
+                // If both notifications are active, post as regular notification
+                // Otherwise, use as foreground notification
+                if (useSummary) {
                     notificationManager.notify(TATTVA_NOTIF_ID, notification)
                 } else {
                     startForeground(TATTVA_NOTIF_ID, notification)
@@ -149,17 +153,19 @@ class TattvaNotificationService : Service() {
 				
 				val notification = createDetailedNotification(planetText, getPlanetIcon(planet), CHANNEL_ID_PLANET)
 				
-				if (!showTattva) {
-					startForeground(PLANET_NOTIF_ID, notification)
-				} else {
+				// If both notifications are active, post as regular notification
+                // Otherwise, use as foreground notification
+				if (useSummary) {
 					notificationManager.notify(PLANET_NOTIF_ID, notification)
+				} else {
+					startForeground(PLANET_NOTIF_ID, notification)
 				}
 			} else {
                 notificationManager.cancel(PLANET_NOTIF_ID)
             }
             
-            // 3. SUMMARY NOTIFICATION - Only show when both notifications are active (Android 16+)
-            if (showTattva && showPlanet) {
+            // 3. SUMMARY NOTIFICATION - Only show and use as foreground when both notifications are active
+            if (useSummary) {
                 val summaryNotification = createSummaryNotification()
                 startForeground(SUMMARY_NOTIF_ID, summaryNotification)
             } else {
@@ -210,7 +216,7 @@ class TattvaNotificationService : Service() {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT) // DEFAULT scoate notificarea din "Silent"
             .setContentIntent(pendingIntent)
             .setGroup(GROUP_KEY_ASTRO) // Add to notification group
-            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL) // Alert independently if grouped
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY) // Silent notifications use GROUP_ALERT_SUMMARY
             .build()
     }
     
