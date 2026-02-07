@@ -306,14 +306,14 @@ private fun CurrentPlanetaryHourHeader(
             Text(
                 text = planet.code,
                 style = MaterialTheme.typography.titleLarge,
-                fontSize = 43.sp,
+                fontSize = 36.sp,
                 color = getPlanetColor(planet)
             )
             
             Text(
                 text = planet.displayName,
                 style = MaterialTheme.typography.titleLarge,
-                fontSize = 22.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = getPlanetColor(planet)
             )
