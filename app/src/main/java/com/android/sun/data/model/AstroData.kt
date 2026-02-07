@@ -44,5 +44,8 @@ data class AstroData(
     val nextSunsetPolaritySymbol: String = "(-)",    // "(+)" sau "(-)"
 	
 	// ✅ Fazele lunii:  
-    val moonPhase: MoonPhaseResult
+    val moonPhase: MoonPhaseResult,
+	
+	// ✅ Nakshatra
+    val nakshatra: NakshatraResult
 )

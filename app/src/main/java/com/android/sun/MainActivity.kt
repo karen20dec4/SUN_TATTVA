@@ -22,12 +22,14 @@ import com.android.sun.ui.screens.CalendarPickerScreen
 import com.android.sun.ui.screens.LocationScreen
 import com.android.sun.ui.screens.MainScreen
 import com.android.sun.ui.screens.SettingsScreen
+import com.android.sun.ui.screens.NakshatraDetailScreen
 import com.android.sun.ui.theme.SunTheme
 import com.android.sun.viewmodel.AstroViewModel
 import com.android.sun.viewmodel.LocationViewModel
 import com.android.sun.viewmodel.MainViewModel
 import com.android.sun.service.TattvaNotificationService
 import androidx.compose.ui.platform.LocalContext
+import com.android.sun.domain.calculator.NakshatraCalculator
 
 class MainActivity : ComponentActivity() {
     
@@ -139,6 +141,9 @@ fun AppNavigation(
                 },
                 onNavigateToSettings = {
                     navController.navigate("settings")
+                },
+                onNavigateToNakshatraDetail = { nakshatraNumber ->
+                    navController.navigate("nakshatra/$nakshatraNumber")
                 }
             )
         }
@@ -334,6 +339,19 @@ fun AppNavigation(
                     }
                 )
             }
+        }
+        
+        composable("nakshatra/{number}") { backStackEntry ->
+            val nakshatraNumber = backStackEntry.arguments?.getString("number")?.toIntOrNull() ?: 1
+            val nakshatra = NakshatraCalculator.nakshatraList.getOrNull(nakshatraNumber - 1) 
+                ?: NakshatraCalculator.nakshatraList[0]
+            
+            NakshatraDetailScreen(
+                nakshatra = nakshatra,
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

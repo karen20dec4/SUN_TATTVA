@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.android.sun.data.model.AstroData
 import com.android.sun.ui.components.CombinedTattvaCard
 import com.android.sun.ui.components.PlanetaryHoursCard
+import com.android.sun.ui.components.NakshatraCard
 import com.android.sun.ui.components.NityaExpandableCard
 import com.android.sun.ui.components.MoonPhaseCard
 import com.android.sun.ui.components.GradientNavigationBar
@@ -43,7 +44,8 @@ fun MainScreen(
     onRefresh: () -> Unit,
     onNavigateToLocation: () -> Unit,
     onNavigateToAllDay: () -> Unit = {},
-    onNavigateToSettings: () -> Unit = {}
+    onNavigateToSettings: () -> Unit = {},
+    onNavigateToNakshatraDetail: (Int) -> Unit = {}
 ) {
     Box(
         modifier = modifier.fillMaxSize()
@@ -98,6 +100,17 @@ fun MainScreen(
                             currentPlanetIndex = astroData.planet.hourNumber - 1,
 							timeZone = astroData.timeZone,
                             locationName = astroData.locationName
+                        )
+                    }
+					
+					item(key = "nakshatra") {
+                        NakshatraCard(
+                            nakshatraResult = astroData.nakshatra,
+                            timeZone = astroData.timeZone,
+                            locationName = astroData.locationName,
+                            onNakshatraClick = { nakshatra ->
+                                onNavigateToNakshatraDetail(nakshatra.number)
+                            }
                         )
                     }
 

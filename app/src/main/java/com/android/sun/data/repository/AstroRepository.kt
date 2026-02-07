@@ -24,7 +24,8 @@ class AstroRepository(private val context: Context) {
     private val subTattvaCalculator = SubTattvaCalculator()
     private val planetCalculator = PlanetCalculator()
     private val nityaCalculator = NityaCalculator()
-    private val polarityCalculator = PolarityCalculator()  
+    private val polarityCalculator = PolarityCalculator()
+    private val nakshatraCalculator = NakshatraCalculator()  
 
     /**
      * ✅ Obține timezone-ul corect pentru o locație (cu suport DST)
@@ -229,6 +230,11 @@ class AstroRepository(private val context: Context) {
         val nitya = nityaCalculator.calculateNitya(
             moonLongitude, sunLongitude, calendar
         )
+		
+		// ✅ ADĂUGAT: Calculează Nakshatra
+        val nakshatra = nakshatraCalculator.calculateNakshatra(
+            moonLongitude, calendar
+        )
 
         // ✅ ADĂUGAT:  Calculează polaritatea la răsărit
         val sunriseHour = sunrise.get(Calendar.HOUR_OF_DAY)
@@ -368,7 +374,9 @@ class AstroRepository(private val context: Context) {
             nextSunrisePolaritySymbol = polarityCalculator.getPolaritySymbol(nextSunrisePolarity),
             nextSunsetPolaritySymbol = polarityCalculator.getPolaritySymbol(nextSunsetPolarity),
             // ✅ Faze luna
-            moonPhase = moonPhase
+            moonPhase = moonPhase,
+			// ✅ Nakshatra
+            nakshatra = nakshatra
         )
     }
 
