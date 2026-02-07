@@ -125,15 +125,27 @@ fun NakshatraCard(
                     
                     Spacer(modifier = Modifier.height(12.dp))
                     
-                    // Scrollable list of all Nakshatras
+                    // Scrollable list of all Nakshatras - start with current, then remaining in order
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(max = 400.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
-                        NakshatraCalculator.nakshatraList.forEachIndexed { index, nakshatra ->
-                            val isCurrent = index == (nakshatraResult.number - 1)
+                        // Build reordered list: current Nakshatra first, then the rest in circular order
+                        val currentIndex = nakshatraResult.number - 1
+                        val reorderedList = buildList {
+                            // Add current Nakshatra first
+                            add(NakshatraCalculator.nakshatraList[currentIndex])
+                            // Add remaining Nakshatras in circular order
+                            for (i in 1 until 27) {
+                                val index = (currentIndex + i) % 27
+                                add(NakshatraCalculator.nakshatraList[index])
+                            }
+                        }
+                        
+                        reorderedList.forEachIndexed { displayIndex, nakshatra ->
+                            val isCurrent = displayIndex == 0 // First item is always current
                             
                             NakshatraRow(
                                 nakshatra = nakshatra,
@@ -153,7 +165,7 @@ fun NakshatraCard(
 }
 
 /**
- * Header compact: Afișează doar Nakshatra curentă + countdown
+ * Header compact: Afișează doar Nakshatra curentă + countdown (no title, single line)
  */
 @Composable
 private fun CurrentNakshatraHeader(
@@ -182,66 +194,44 @@ private fun CurrentNakshatraHeader(
         else -> String.format("%ds", secondsRemaining)
     }
     
-    Column(modifier = Modifier.fillMaxWidth()) {
-        // Titlu
+    // Single row with Nakshatra name and countdown
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // ✅ NAKSHATRA (stânga) - colored by Tattva
         Text(
-            text = "Nakshatra",
-            style = MaterialTheme.typography.titleMedium,
+            text = nakshatraResult.nakshatra.displayName,
+            style = MaterialTheme.typography.titleLarge,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            fontSize = 16.sp
+            color = getNakshatraTattvaColor(nakshatraResult.nakshatra)
         )
         
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        // Row cu Nakshatra și countdown
+        // ✅ COUNTDOWN + ICON (dreapta)
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // ✅ NAKSHATRA (stânga)
-            Column {
-                Text(
-                    text = nakshatraResult.nakshatra.displayName,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = getNakshatraColor(nakshatraResult.nakshatra)
-                )
-                
-                Text(
-                    text = nakshatraResult.nakshatra.degreeRange,
-                    style = MaterialTheme.typography.bodySmall,
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                )
-            }
+            Text(
+                text = countdownText,
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
             
-            // ✅ COUNTDOWN + ICON (dreapta)
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = countdownText,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                
-                Icon(
-                    imageVector = if (isExpanded) {
-                        Icons.Default.KeyboardArrowUp
-                    } else {
-                        Icons.Default.KeyboardArrowDown
-                    },
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
+            Icon(
+                imageVector = if (isExpanded) {
+                    Icons.Default.KeyboardArrowUp
+                } else {
+                    Icons.Default.KeyboardArrowDown
+                },
+                contentDescription = if (isExpanded) "Collapse" else "Expand",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(28.dp)
+            )
         }
     }
 }
@@ -259,11 +249,7 @@ private fun NakshatraRow(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = if (isCurrent) {
-                    getNakshatraColor(nakshatra).copy(alpha = 0.2f)
-                } else {
-                    Color.Transparent
-                },
+                color = getNakshatraTattvaColor(nakshatra).copy(alpha = 0.6f),
                 shape = RoundedCornerShape(4.dp)
             )
             .clickable { onClick() }
@@ -278,11 +264,7 @@ private fun NakshatraRow(
                 style = MaterialTheme.typography.bodyMedium,
                 fontSize = 14.sp,
                 fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
-                color = if (isCurrent) {
-                    getNakshatraColor(nakshatra)
-                } else {
-                    MaterialTheme.colorScheme.onSurface
-                }
+                color = MaterialTheme.colorScheme.onSurface
             )
             
             Text(
@@ -307,14 +289,14 @@ private fun NakshatraRow(
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
                 fontSize = 12.sp,
-                color = getNakshatraColor(nakshatra)
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
 }
 
 /**
- * Culori pentru Nakshatra (bazate pe planetă)
+ * Culori pentru Nakshatra (bazate pe planetă) - DEPRECATED, use getNakshatraTattvaColor instead
  */
 private fun getNakshatraColor(nakshatra: NakshatraType): Color {
     return when (nakshatra.planet) {
@@ -327,6 +309,63 @@ private fun getNakshatraColor(nakshatra: NakshatraType): Color {
         "Saturn" -> Color(0xFF2F4F4F)     // Dark Slate Gray
         "Rahu" -> Color(0xFF8B4513)       // Saddle Brown
         "Ketu" -> Color(0xFF9370DB)       // Medium Purple
+        else -> Color.Gray
+    }
+}
+
+/**
+ * Returns Tattva type for each Nakshatra based on Vedic correspondence
+ */
+private fun getNakshatraTattva(nakshatra: NakshatraType): String {
+    return when (nakshatra) {
+        // PRITHIVI (Earth)
+        NakshatraType.DHANISHTA -> "P"
+        NakshatraType.ROHINI -> "P"
+        NakshatraType.JYESHTHA -> "P"
+        NakshatraType.ANURADHA -> "P"
+        NakshatraType.SHRAVANA -> "P"
+        NakshatraType.UTTARA_ASHADHA -> "P"
+        
+        // APAS (Water)
+        NakshatraType.PURVA_ASHADHA -> "Ap"
+        NakshatraType.ASHLESHA -> "Ap"
+        NakshatraType.MULA -> "Ap"
+        NakshatraType.ARDRA -> "Ap"
+        NakshatraType.REVATI -> "Ap"
+        NakshatraType.UTTARA_BHADRAPADA -> "Ap"
+        NakshatraType.SHATABHISHA -> "Ap"
+        
+        // TEJAS (Fire)
+        NakshatraType.BHARANI -> "T"
+        NakshatraType.KRITTIKA -> "T"
+        NakshatraType.PUSHYA -> "T"
+        NakshatraType.MAGHA -> "T"
+        NakshatraType.PURVA_PHALGUNI -> "T"
+        NakshatraType.PURVA_BHADRAPADA -> "T"
+        NakshatraType.SWATI -> "T"
+        
+        // VAYU (Air)
+        NakshatraType.VISHAKHA -> "V"
+        NakshatraType.UTTARA_PHALGUNI -> "V"
+        NakshatraType.HASTA -> "V"
+        NakshatraType.CHITRA -> "V"
+        NakshatraType.PUNARVASU -> "V"
+        NakshatraType.ASHWINI -> "V"
+        NakshatraType.MRIGASHIRA -> "V"
+    }
+}
+
+/**
+ * Returns the color for a Nakshatra based on its governing Tattva
+ */
+private fun getNakshatraTattvaColor(nakshatra: NakshatraType): Color {
+    val tattva = getNakshatraTattva(nakshatra)
+    return when (tattva) {
+        "A" -> Color(0xFF4A00D3)   // Akasha - Purple
+        "V" -> Color(0xFF009AD3)   // Vayu - Blue
+        "T" -> Color(0xFFFF0000)   // Tejas - Red
+        "Ap" -> Color(0xFF8A8A8A)  // Apas - Gray
+        "P" -> Color(0xFFDFCD00)   // Prithivi - Yellow
         else -> Color.Gray
     }
 }
