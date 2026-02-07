@@ -145,14 +145,7 @@ fun NakshatraCard(
                     
                     Spacer(modifier = Modifier.height(12.dp))
                     
-                    // DEBUG INFO
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = "🌙 Moon: %.2f° • GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)}".format(nakshatraResult.moonLongitude),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                        fontSize = 12.sp
-                    )
+                    // Debug info removed for production
                 }
             }
         }

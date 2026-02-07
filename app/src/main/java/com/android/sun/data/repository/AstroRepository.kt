@@ -231,7 +231,7 @@ class AstroRepository(private val context: Context) {
             moonLongitude, sunLongitude, calendar
         )
 		
-		// ✅ ADĂUGAT: Calculează Nakshatra
+		// ✅ ADDED: Calculate Nakshatra
         val nakshatra = nakshatraCalculator.calculateNakshatra(
             moonLongitude, calendar
         )

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.android.sun.domain.calculator.NakshatraType
 
 /**
+ * Detailed screen for a specific Nakshatra
  * Ecran detaliat pentru o Nakshatra specifică
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -198,8 +199,9 @@ private fun InfoCard(
 }
 
 /**
- * Descriere generică pentru fiecare Nakshatra
- * Poate fi modificată mai târziu de utilizator
+ * Generic description for each Nakshatra
+ * Can be modified later by the user
+ * Descriere generică pentru fiecare Nakshatra - poate fi modificată mai târziu de utilizator
  */
 private fun getGenericDescription(nakshatra: NakshatraType): String {
     return when (nakshatra) {

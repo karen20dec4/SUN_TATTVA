@@ -3,7 +3,7 @@ package com.android.sun.domain.calculator
 import java.util.*
 
 /**
- * Calculator pentru Nakshatra (cele 27 constelatii lunare)
+ * Calculator pentru Nakshatra (cele 27 constelații lunare)
  * Fiecare Nakshatra = 13°20' = 13.333° (360° / 27)
  * Ordinea începe de la 0° Berbec (Mesha), folosind zodiacul sideral
  */
