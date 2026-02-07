@@ -262,7 +262,7 @@ private fun CurrentPlanetaryHourHeader(
         }
     }
     
-    // Calculează ora curentă
+    // Logica de calcul rămâne aceeași
     val isDayTime = currentPlanetIndex < 12
     val startTime = if (isDayTime) sunrise else sunset
     val endTime = if (isDayTime) sunset else nextSunrise
@@ -271,16 +271,10 @@ private fun CurrentPlanetaryHourHeader(
     val totalDuration = endTime.timeInMillis - startTime.timeInMillis
     val planetaryHourDuration = totalDuration / 12
     
-    val hourStartMillis = startTime.timeInMillis + (hourIndexInPeriod * planetaryHourDuration)
-    val hourEndMillis = hourStartMillis + planetaryHourDuration
-    
-    val hourStart = Calendar.getInstance(locationTimeZone).apply { timeInMillis = hourStartMillis }
-    val hourEnd = Calendar.getInstance(locationTimeZone).apply { timeInMillis = hourEndMillis }
-    
+    val hourEndMillis = startTime.timeInMillis + ((hourIndexInPeriod + 1) * planetaryHourDuration)
     val dayOfWeek = sunrise.get(Calendar.DAY_OF_WEEK) - 1
     val planet = getPlanetForGlobalIndex(dayOfWeek, currentPlanetIndex)
     
-    // Calculate countdown
     val timeRemaining = hourEndMillis - currentTime.timeInMillis
     val hoursRemaining = timeRemaining / (1000 * 60 * 60)
     val minutesRemaining = (timeRemaining / (1000 * 60)) % 60
@@ -291,22 +285,30 @@ private fun CurrentPlanetaryHourHeader(
         minutesRemaining > 0 -> String.format("%dm %ds", minutesRemaining, secondsRemaining)
         else -> String.format("%ds", secondsRemaining)
     }
-    
-    // Single row with planet symbol + name and countdown
+
+    // ✅ HEADER-UL CU DIMENSIUNE FIXĂ (50.dp)
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(38.dp), // Aici am fixat înălțimea pentru a nu fi lărgită de fontul mare
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // ✅ PLANET SYMBOL + NAME (left)
+        // ✅ PARTEA STÂNGĂ: Simbol Planetă + Nume
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
                 text = planet.code,
-                style = MaterialTheme.typography.titleLarge,
-                fontSize = 36.sp,
+				modifier = Modifier.offset(y = (-10).dp),
+                style = androidx.compose.ui.text.TextStyle(
+                    fontSize = 36.sp,
+                    lineHeight = 36.sp,
+                    platformStyle = androidx.compose.ui.text.PlatformTextStyle(
+                        includeFontPadding = false
+                    )
+                ),
                 color = getPlanetColor(planet)
             )
             
@@ -319,7 +321,7 @@ private fun CurrentPlanetaryHourHeader(
             )
         }
         
-        // ✅ COUNTDOWN + ICON (right)
+        // ✅ PARTEA DREAPTĂ: Countdown + Iconiță
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -340,11 +342,17 @@ private fun CurrentPlanetaryHourHeader(
                 },
                 contentDescription = if (isExpanded) "Collapse" else "Expand",
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
-    }
-}
+    } // Sfârșit Row principal
+} // Sfârșit funcție Composable
+
+
+
+
+
+
 
 /**
  * Secțiune pentru ZI sau NOAPTE
