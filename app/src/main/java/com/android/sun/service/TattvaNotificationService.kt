@@ -33,6 +33,9 @@ class TattvaNotificationService : Service() {
         
         private const val TATTVA_NOTIF_ID = 1001
         private const val PLANET_NOTIF_ID = 1002
+        private const val SUMMARY_NOTIF_ID = 1000
+        
+        private const val GROUP_KEY_ASTRO = "com.android.sun.ASTRO_NOTIFICATIONS"
         
         const val ACTION_LOCATION_CHANGED = "com.android.sun.LOCATION_CHANGED"
         
@@ -66,9 +69,9 @@ class TattvaNotificationService : Service() {
     }
     
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // Pornire neutră
-        val initialNotification = createDetailedNotification("Loading astro data...", R.drawable.icon, CHANNEL_ID_TATTVA)
-        startForeground(TATTVA_NOTIF_ID, initialNotification)
+        // Pornire cu summary notification
+        val initialNotification = createSummaryNotification()
+        startForeground(SUMMARY_NOTIF_ID, initialNotification)
         
         startPeriodicUpdate()
         return START_STICKY
@@ -121,7 +124,13 @@ class TattvaNotificationService : Service() {
                 val tattvaText = "$emoji - until $endTime $gmtSuffix"
                 
                 val notification = createDetailedNotification(tattvaText, getTattvaIcon(type), CHANNEL_ID_TATTVA)
-                startForeground(TATTVA_NOTIF_ID, notification)
+                
+                // If both notifications are active, use notify() for the first one
+                if (showPlanet) {
+                    notificationManager.notify(TATTVA_NOTIF_ID, notification)
+                } else {
+                    startForeground(TATTVA_NOTIF_ID, notification)
+                }
             } else {
                 notificationManager.cancel(TATTVA_NOTIF_ID)
             }
@@ -147,6 +156,14 @@ class TattvaNotificationService : Service() {
 				}
 			} else {
                 notificationManager.cancel(PLANET_NOTIF_ID)
+            }
+            
+            // 3. SUMMARY NOTIFICATION - Only show when both notifications are active (Android 16+)
+            if (showTattva && showPlanet) {
+                val summaryNotification = createSummaryNotification()
+                startForeground(SUMMARY_NOTIF_ID, summaryNotification)
+            } else {
+                notificationManager.cancel(SUMMARY_NOTIF_ID)
             }
 
         } catch (e: Exception) {
@@ -192,7 +209,25 @@ class TattvaNotificationService : Service() {
             .setSilent(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT) // DEFAULT scoate notificarea din "Silent"
             .setContentIntent(pendingIntent)
+            .setGroup(GROUP_KEY_ASTRO) // Add to notification group
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL) // Alert independently if grouped
+            .build()
+    }
+    
+    private fun createSummaryNotification(): Notification {
+        val intent = Intent(this, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        return NotificationCompat.Builder(this, CHANNEL_ID_TATTVA)
+            .setSmallIcon(R.drawable.icon)
+            .setContentTitle("Astro Updates")
+            .setContentText("Tattva and Planetary Hours")
+            .setGroup(GROUP_KEY_ASTRO)
+            .setGroupSummary(true)
+            .setOngoing(true)
+            .setSilent(true)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
             .build()
     }
 
