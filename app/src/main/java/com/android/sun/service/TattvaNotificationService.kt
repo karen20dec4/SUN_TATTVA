@@ -34,6 +34,10 @@ class TattvaNotificationService : Service() {
         private const val TATTVA_NOTIF_ID = 1001
         private const val PLANET_NOTIF_ID = 1002
         
+        // Separate groups to prevent Android from grouping notifications together
+        private const val GROUP_KEY_TATTVA = "com.android.sun.TATTVA_GROUP"
+        private const val GROUP_KEY_PLANET = "com.android.sun.PLANET_GROUP"
+        
         const val ACTION_LOCATION_CHANGED = "com.android.sun.LOCATION_CHANGED"
         
         fun start(context: Context) {
@@ -67,7 +71,7 @@ class TattvaNotificationService : Service() {
     
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Pornire cu notificare simplă
-        val initialNotification = createDetailedNotification("Loading astro data...", R.drawable.icon, CHANNEL_ID_TATTVA)
+        val initialNotification = createDetailedNotification("Loading astro data...", R.drawable.icon, CHANNEL_ID_TATTVA, GROUP_KEY_TATTVA)
         startForeground(TATTVA_NOTIF_ID, initialNotification)
         
         startPeriodicUpdate()
@@ -111,53 +115,66 @@ class TattvaNotificationService : Service() {
             // Formatare GMT (ex: GMT+2.0) - am scos GMT
             val gmtSuffix = "(${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
 
-            // When both notifications are enabled, create a single combined notification
-            if (showTattva && showPlanet) {
-                val tattvaType = astroData.tattva.tattva
-                val tattvaEndTime = formatTime(astroData.tattva.endTime, timeZone)
-                val tattvaEmoji = getTattvaEmoji(tattvaType)
-                val tattvaText = "$tattvaEmoji - until $tattvaEndTime $gmtSuffix"
-                
-                val planet = astroData.planet.planet
-                val planetEndTime = formatTime(astroData.planet.endTime, timeZone)
-                val planetEmoji = getPlanetEmoji(planet)
-                val planetText = "$planetEmoji - until $planetEndTime $gmtSuffix"
-                
-                // Create a combined notification with both info
-                val combinedNotification = createCombinedNotification(
-                    tattvaText, 
-                    planetText, 
-                    getTattvaIcon(tattvaType),
-                    CHANNEL_ID_TATTVA
-                )
-                startForeground(TATTVA_NOTIF_ID, combinedNotification)
-                
-                // Cancel planet notification
-                notificationManager.cancel(PLANET_NOTIF_ID)
-                
-            } else if (showTattva) {
-                // Only Tattva notification
+            // Show separate notifications with different groups to prevent auto-grouping
+            if (showTattva) {
                 val type = astroData.tattva.tattva
                 val endTime = formatTime(astroData.tattva.endTime, timeZone)
                 val emoji = getTattvaEmoji(type)
                 val tattvaText = "$emoji - until $endTime $gmtSuffix"
                 
-                val notification = createDetailedNotification(tattvaText, getTattvaIcon(type), CHANNEL_ID_TATTVA)
-                startForeground(TATTVA_NOTIF_ID, notification)
+                val notification = createDetailedNotification(
+                    tattvaText, 
+                    getTattvaIcon(type), 
+                    CHANNEL_ID_TATTVA,
+                    GROUP_KEY_TATTVA
+                )
                 
-                notificationManager.cancel(PLANET_NOTIF_ID)
-                
-            } else if (showPlanet) {
-                // Only Planetary Hour notification
+                // Use startForeground for the first notification
+                if (!showPlanet) {
+                    startForeground(TATTVA_NOTIF_ID, notification)
+                } else {
+                    notificationManager.notify(TATTVA_NOTIF_ID, notification)
+                }
+            } else {
+                notificationManager.cancel(TATTVA_NOTIF_ID)
+            }
+
+            if (showPlanet) {
                 val planet = astroData.planet.planet
                 val endTime = formatTime(astroData.planet.endTime, timeZone)
                 val emoji = getPlanetEmoji(planet)
                 val planetText = "$emoji - until $endTime $gmtSuffix"
                 
-                val notification = createDetailedNotification(planetText, getPlanetIcon(planet), CHANNEL_ID_PLANET)
-                startForeground(PLANET_NOTIF_ID, notification)
+                val notification = createDetailedNotification(
+                    planetText, 
+                    getPlanetIcon(planet), 
+                    CHANNEL_ID_PLANET,
+                    GROUP_KEY_PLANET
+                )
                 
-                notificationManager.cancel(TATTVA_NOTIF_ID)
+                // Use startForeground for one notification (preferably the first one set)
+                if (showTattva) {
+                    // If Tattva is shown, we need to make one of them foreground
+                    // We'll use Tattva as foreground, so Planet is just notify
+                    notificationManager.notify(PLANET_NOTIF_ID, notification)
+                    
+                    // Re-post Tattva as foreground to ensure service stays alive
+                    val tattvaType = astroData.tattva.tattva
+                    val tattvaEndTime = formatTime(astroData.tattva.endTime, timeZone)
+                    val tattvaEmoji = getTattvaEmoji(tattvaType)
+                    val tattvaText = "$tattvaEmoji - until $tattvaEndTime $gmtSuffix"
+                    val tattvaNotif = createDetailedNotification(
+                        tattvaText, 
+                        getTattvaIcon(tattvaType), 
+                        CHANNEL_ID_TATTVA,
+                        GROUP_KEY_TATTVA
+                    )
+                    startForeground(TATTVA_NOTIF_ID, tattvaNotif)
+                } else {
+                    startForeground(PLANET_NOTIF_ID, notification)
+                }
+            } else {
+                notificationManager.cancel(PLANET_NOTIF_ID)
             }
 
         } catch (e: Exception) {
@@ -191,7 +208,7 @@ class TattvaNotificationService : Service() {
 	
 	
 	
-    private fun createDetailedNotification(title: String, iconRes: Int, channelId: String): Notification {
+    private fun createDetailedNotification(title: String, iconRes: Int, channelId: String, groupKey: String): Notification {
         val intent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, iconRes, intent, PendingIntent.FLAG_IMMUTABLE)
 
@@ -203,25 +220,7 @@ class TattvaNotificationService : Service() {
             .setSilent(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
-            .build()
-    }
-    
-    private fun createCombinedNotification(tattvaText: String, planetText: String, iconRes: Int, channelId: String): Notification {
-        val intent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, iconRes, intent, PendingIntent.FLAG_IMMUTABLE)
-
-        return NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(iconRes)
-            .setContentTitle("Tattva & Planet")
-            .setContentText("$tattvaText | $planetText")
-            .setStyle(NotificationCompat.InboxStyle()
-                .addLine(tattvaText)
-                .addLine(planetText)
-                .setBigContentTitle("Astro Updates"))
-            .setOngoing(true)
-            .setSilent(true)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
+            .setGroup(groupKey) // Each notification in its own group
             .build()
     }
 
