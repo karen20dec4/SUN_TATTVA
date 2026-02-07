@@ -114,7 +114,14 @@ fun MainScreen(
                         )
                     }
 
-                    
+                    					
+					item(key = "nitya") {
+                        NityaExpandableCard(
+                            currentNitya = astroData.nitya
+                        )
+                    }
+					
+					
 					item(key = "moon_phase") {
                         MoonPhaseCard(
                             moonSign = astroData.moonSign,
@@ -123,11 +130,6 @@ fun MainScreen(
                     }
 					
 										
-					item(key = "nitya") {
-                        NityaExpandableCard(
-                            currentNitya = astroData.nitya
-                        )
-                    }
                 }
             } else {
                 Column(

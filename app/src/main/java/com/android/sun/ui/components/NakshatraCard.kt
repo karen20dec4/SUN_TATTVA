@@ -248,7 +248,7 @@ private fun CurrentNakshatraHeader(
                 },
                 contentDescription = if (isExpanded) "Collapse" else "Expand",
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
     }
