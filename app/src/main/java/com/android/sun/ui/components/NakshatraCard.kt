@@ -165,7 +165,7 @@ fun NakshatraCard(
 }
 
 /**
- * Header compact: Afișează doar Nakshatra curentă + countdown (no title, single line)
+ * Header compact: Shows current Nakshatra + countdown (no title, single line)
  */
 @Composable
 private fun CurrentNakshatraHeader(
@@ -357,15 +357,16 @@ private fun getNakshatraTattva(nakshatra: NakshatraType): String {
 
 /**
  * Returns the color for a Nakshatra based on its governing Tattva
+ * Note: Akasha case included for completeness but not currently assigned to any Nakshatra
  */
 private fun getNakshatraTattvaColor(nakshatra: NakshatraType): Color {
     val tattva = getNakshatraTattva(nakshatra)
     return when (tattva) {
-        "A" -> Color(0xFF4A00D3)   // Akasha - Purple
-        "V" -> Color(0xFF009AD3)   // Vayu - Blue
-        "T" -> Color(0xFFFF0000)   // Tejas - Red
-        "Ap" -> Color(0xFF8A8A8A)  // Apas - Gray
-        "P" -> Color(0xFFDFCD00)   // Prithivi - Yellow
+        "A" -> Color(0xFF4A00D3)   // Akasha - Purple (not currently used)
+        "V" -> Color(0xFF009AD3)   // Vayu - Blue (7 Nakshatras)
+        "T" -> Color(0xFFFF0000)   // Tejas - Red (7 Nakshatras)
+        "Ap" -> Color(0xFF8A8A8A)  // Apas - Gray (7 Nakshatras)
+        "P" -> Color(0xFFDFCD00)   // Prithivi - Yellow (6 Nakshatras)
         else -> Color.Gray
     }
 }
