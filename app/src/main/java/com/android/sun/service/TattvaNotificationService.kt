@@ -212,15 +212,24 @@ class TattvaNotificationService : Service() {
         val intent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, iconRes, intent, PendingIntent.FLAG_IMMUTABLE)
 
+        // Use different categories to prevent status bar consolidation
+        val category = if (groupKey == GROUP_KEY_TATTVA) {
+            NotificationCompat.CATEGORY_STATUS
+        } else {
+            NotificationCompat.CATEGORY_SERVICE
+        }
+
         return NotificationCompat.Builder(this, channelId)
             .setSmallIcon(iconRes)
             .setContentTitle(title)
             .setContentText("")
             .setOngoing(true)
             .setSilent(true)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_MAX) // MAX priority to keep both visible
+            .setCategory(category) // Different category for each notification
             .setContentIntent(pendingIntent)
             .setGroup(groupKey) // Each notification in its own group
+            .setShowWhen(false) // Don't show timestamp
             .build()
     }
 
@@ -258,24 +267,26 @@ class TattvaNotificationService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = getSystemService(NotificationManager::class.java)
             
-            // Create Tattva notification channel
+            // Create Tattva notification channel with HIGH importance
             val tattvaChannel = NotificationChannel(
                 CHANNEL_ID_TATTVA, 
                 "Tattva Updates", 
-                NotificationManager.IMPORTANCE_DEFAULT // Schimbat la DEFAULT pentru vizibilitate
+                NotificationManager.IMPORTANCE_HIGH // HIGH to prevent status bar consolidation
             )
             tattvaChannel.setShowBadge(false)
             tattvaChannel.setSound(null, null)
+            tattvaChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             notificationManager.createNotificationChannel(tattvaChannel)
             
-            // Create Planet notification channel
+            // Create Planet notification channel with HIGH importance
             val planetChannel = NotificationChannel(
                 CHANNEL_ID_PLANET, 
                 "Planetary Hour Updates", 
-                NotificationManager.IMPORTANCE_DEFAULT // Schimbat la DEFAULT pentru vizibilitate
+                NotificationManager.IMPORTANCE_HIGH // HIGH to prevent status bar consolidation
             )
             planetChannel.setShowBadge(false)
             planetChannel.setSound(null, null)
+            planetChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             notificationManager.createNotificationChannel(planetChannel)
         }
     }
