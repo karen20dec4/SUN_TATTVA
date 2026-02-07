@@ -26,6 +26,8 @@ import com.android.sun.domain.calculator.NakshatraType
 @Composable
 fun NakshatraDetailScreen(
     nakshatra: NakshatraType,
+    startTime: Calendar? = null,
+    endTime: Calendar? = null,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -89,6 +91,20 @@ fun NakshatraDetailScreen(
                     )
                     
                     Spacer(modifier = Modifier.height(8.dp))
+                    
+                    // Show time interval if available
+                    if (startTime != null && endTime != null) {
+                        val dateTimeFormat = java.text.SimpleDateFormat("d-MMM HH:mm", java.util.Locale.ENGLISH)
+                        val timeInterval = "${dateTimeFormat.format(startTime.time)}   -  ${dateTimeFormat.format(endTime.time)}"
+                        Text(
+                            text = timeInterval,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontSize = 16.sp,
+                            color = Color.White.copy(alpha = 0.9f)
+                        )
+                        
+                        Spacer(modifier = Modifier.height(4.dp))
+                    }
                     
                     Text(
                         text = nakshatra.degreeRange,
@@ -262,19 +278,58 @@ private fun getGenericDescription(nakshatra: NakshatraType): String {
 }
 
 /**
- * Culori pentru Nakshatra (bazate pe planetă)
+ * Returns Tattva type for each Nakshatra based on Vedic correspondence
+ */
+private fun getNakshatraTattva(nakshatra: NakshatraType): String {
+    return when (nakshatra) {
+        // PRITHIVI (Earth)
+        NakshatraType.DHANISHTA -> "P"
+        NakshatraType.ROHINI -> "P"
+        NakshatraType.JYESHTHA -> "P"
+        NakshatraType.ANURADHA -> "P"
+        NakshatraType.SHRAVANA -> "P"
+        NakshatraType.UTTARA_ASHADHA -> "P"
+        
+        // APAS (Water)
+        NakshatraType.PURVA_ASHADHA -> "Ap"
+        NakshatraType.ASHLESHA -> "Ap"
+        NakshatraType.MULA -> "Ap"
+        NakshatraType.ARDRA -> "Ap"
+        NakshatraType.REVATI -> "Ap"
+        NakshatraType.UTTARA_BHADRAPADA -> "Ap"
+        NakshatraType.SHATABHISHA -> "Ap"
+        
+        // TEJAS (Fire)
+        NakshatraType.BHARANI -> "T"
+        NakshatraType.KRITTIKA -> "T"
+        NakshatraType.PUSHYA -> "T"
+        NakshatraType.MAGHA -> "T"
+        NakshatraType.PURVA_PHALGUNI -> "T"
+        NakshatraType.PURVA_BHADRAPADA -> "T"
+        NakshatraType.SWATI -> "T"
+        
+        // VAYU (Air)
+        NakshatraType.VISHAKHA -> "V"
+        NakshatraType.UTTARA_PHALGUNI -> "V"
+        NakshatraType.HASTA -> "V"
+        NakshatraType.CHITRA -> "V"
+        NakshatraType.PUNARVASU -> "V"
+        NakshatraType.ASHWINI -> "V"
+        NakshatraType.MRIGASHIRA -> "V"
+    }
+}
+
+/**
+ * Culori pentru Nakshatra (bazate pe Tattva)
  */
 private fun getNakshatraColor(nakshatra: NakshatraType): Color {
-    return when (nakshatra.planet) {
-        "Soare" -> Color(0xFFFFD700)      // Gold
-        "Luna" -> Color(0xFFC0C0C0)       // Silver
-        "Mercur" -> Color(0xFF808080)     // Gray
-        "Venus" -> Color(0xFF00CED1)      // Turquoise
-        "Marte" -> Color(0xFFFF4500)      // Red-Orange
-        "Jupiter" -> Color(0xFF4169E1)    // Royal Blue
-        "Saturn" -> Color(0xFF2F4F4F)     // Dark Slate Gray
-        "Rahu" -> Color(0xFF8B4513)       // Saddle Brown
-        "Ketu" -> Color(0xFF9370DB)       // Medium Purple
+    val tattva = getNakshatraTattva(nakshatra)
+    return when (tattva) {
+        "A" -> Color(0xFF4A00D3)   // Akasha - Purple
+        "V" -> Color(0xFF009AD3)   // Vayu - Blue
+        "T" -> Color(0xFFFF0000)   // Tejas - Red
+        "Ap" -> Color(0xFF8A8A8A)  // Apas - Gray
+        "P" -> Color(0xFFDFCD00)   // Prithivi - Yellow
         else -> Color.Gray
     }
 }

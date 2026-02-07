@@ -144,12 +144,30 @@ fun NakshatraCard(
                             }
                         }
                         
+                        // Calculate time for each Nakshatra based on current one
+                        val nakshatraDegrees = 360.0 / 27.0  // 13.333333°
+                        val avgDegreesPerHour = 13.2 / 24.0  // ~0.55° per hour
+                        
                         reorderedList.forEachIndexed { displayIndex, nakshatra ->
                             val isCurrent = displayIndex == 0 // First item is always current
+                            
+                            // Calculate start and end time for this Nakshatra
+                            val nakshatraIndex = nakshatra.number - 1
+                            val offsetFromCurrent = (nakshatraIndex - currentIndex + 27) % 27
+                            
+                            val hoursOffset = offsetFromCurrent * nakshatraDegrees / avgDegreesPerHour
+                            val startTime = nakshatraResult.startTime.clone() as Calendar
+                            startTime.add(Calendar.MINUTE, (hoursOffset * 60).toInt())
+                            
+                            val endTime = startTime.clone() as Calendar
+                            endTime.add(Calendar.MINUTE, (nakshatraDegrees / avgDegreesPerHour * 60).toInt())
                             
                             NakshatraRow(
                                 nakshatra = nakshatra,
                                 isCurrent = isCurrent,
+                                startTime = startTime,
+                                endTime = endTime,
+                                locationTimeZone = locationTimeZone,
                                 onClick = { onNakshatraClick(nakshatra) }
                             )
                         }
@@ -243,8 +261,17 @@ private fun CurrentNakshatraHeader(
 private fun NakshatraRow(
     nakshatra: NakshatraType,
     isCurrent: Boolean,
+    startTime: Calendar,
+    endTime: Calendar,
+    locationTimeZone: TimeZone,
     onClick: () -> Unit
 ) {
+    // Format date and time
+    val dateTimeFormat = SimpleDateFormat("d-MMM HH:mm", Locale.ENGLISH).apply {
+        timeZone = locationTimeZone
+    }
+    val timeInterval = "${dateTimeFormat.format(startTime.time)}   -  ${dateTimeFormat.format(endTime.time)}"
+    
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -257,7 +284,7 @@ private fun NakshatraRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Nume
+        // Nume și interval orar
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = "${nakshatra.number}. ${nakshatra.displayName}",
@@ -268,7 +295,7 @@ private fun NakshatraRow(
             )
             
             Text(
-                text = nakshatra.degreeRange,
+                text = timeInterval,
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 11.sp,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)

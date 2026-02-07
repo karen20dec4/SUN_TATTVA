@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sun.domain.calculator.PlanetType
+import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -135,38 +136,75 @@ fun PlanetaryHoursCard(
 					
 					Spacer(modifier = Modifier.height(12.dp))
                     
-                    // Scrollable list of all hours
+                    // Scrollable list of all hours - reordered with current first
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(max = 400.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
-                        // ✅ DAY: Hours 0-11
-                        PlanetaryHourSection(
-                            title = "☀️ DAY (Sunrise - Sunset)",
-                            startTime = sunrise,
-                            endTime = sunset,
-                            hourStartIndex = 0,
-                            hourCount = 12,
-                            currentPlanetIndex = currentPlanetIndex,
-                            dayOfWeek = sunrise.get(Calendar.DAY_OF_WEEK) - 1,
-                            locationTimeZone = locationTimeZone
-                        )
+                        // Build reordered list: current hour first, then remaining in circular order
+                        val dayOfWeek = sunrise.get(Calendar.DAY_OF_WEEK) - 1
+                        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).apply {
+                            this.timeZone = locationTimeZone
+                        }
                         
-                        Spacer(modifier = Modifier.height(16.dp))
+                        // Generate all 24 hours
+                        val allHours = buildList {
+                            // Day hours (0-11)
+                            for (i in 0 until 12) {
+                                val startTime = sunrise
+                                val endTime = sunset
+                                val totalDuration = endTime.timeInMillis - startTime.timeInMillis
+                                val hourDuration = totalDuration / 12
+                                
+                                val hourStartMillis = startTime.timeInMillis + (i * hourDuration)
+                                val hourEndMillis = hourStartMillis + hourDuration
+                                
+                                val hourStart = Calendar.getInstance(locationTimeZone).apply { timeInMillis = hourStartMillis }
+                                val hourEnd = Calendar.getInstance(locationTimeZone).apply { timeInMillis = hourEndMillis }
+                                
+                                val planet = getPlanetForGlobalIndex(dayOfWeek, i)
+                                add(Triple(planet, timeFormat.format(hourStart.time), timeFormat.format(hourEnd.time)))
+                            }
+                            
+                            // Night hours (12-23)
+                            for (i in 12 until 24) {
+                                val startTime = sunset
+                                val endTime = nextSunrise
+                                val totalDuration = endTime.timeInMillis - startTime.timeInMillis
+                                val hourDuration = totalDuration / 12
+                                val hourIndex = i - 12
+                                
+                                val hourStartMillis = startTime.timeInMillis + (hourIndex * hourDuration)
+                                val hourEndMillis = hourStartMillis + hourDuration
+                                
+                                val hourStart = Calendar.getInstance(locationTimeZone).apply { timeInMillis = hourStartMillis }
+                                val hourEnd = Calendar.getInstance(locationTimeZone).apply { timeInMillis = hourEndMillis }
+                                
+                                val planet = getPlanetForGlobalIndex(dayOfWeek, i)
+                                add(Triple(planet, timeFormat.format(hourStart.time), timeFormat.format(hourEnd.time)))
+                            }
+                        }
                         
-                        // ✅ NIGHT: Hours 12-23
-                        PlanetaryHourSection(
-                            title = "🌙 NIGHT (Sunset - Sunrise)",
-                            startTime = sunset,
-                            endTime = nextSunrise,
-                            hourStartIndex = 12,
-                            hourCount = 12,
-                            currentPlanetIndex = currentPlanetIndex,
-                            dayOfWeek = sunrise.get(Calendar.DAY_OF_WEEK) - 1,
-                            locationTimeZone = locationTimeZone
-                        )
+                        // Reorder: current first, then circular
+                        val reorderedHours = buildList {
+                            add(allHours[currentPlanetIndex])
+                            for (i in 1 until 24) {
+                                val index = (currentPlanetIndex + i) % 24
+                                add(allHours[index])
+                            }
+                        }
+                        
+                        reorderedHours.forEachIndexed { displayIndex, (planet, start, end) ->
+                            val isCurrent = displayIndex == 0
+                            PlanetaryHourRow(
+                                planet = planet,
+                                startTime = start,
+                                endTime = end,
+                                isCurrent = isCurrent
+                            )
+                        }
                     }
 					
 					
@@ -203,10 +241,7 @@ fun PlanetaryHoursCard(
 }
 
 /**
- * Header compact:  Afișează doar ora curentă + expand/collapse icon
- * ✅ Font mai mare (20sp pentru planetă)
- * ✅ Fără pictogramă ceas
- * ✅ Planetă aliniată la dreapta
+ * Header compact: Shows current planet + countdown (no title, single line like Nakshatra)
  */
 @Composable
 private fun CurrentPlanetaryHourHeader(
@@ -218,6 +253,15 @@ private fun CurrentPlanetaryHourHeader(
     locationTimeZone: TimeZone,
     isExpanded: Boolean
 ) {
+    var currentTime by remember { mutableStateOf(Calendar.getInstance()) }
+    
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(1000)
+            currentTime = Calendar.getInstance()
+        }
+    }
+    
     // Calculează ora curentă
     val isDayTime = currentPlanetIndex < 12
     val startTime = if (isDayTime) sunrise else sunset
@@ -236,80 +280,68 @@ private fun CurrentPlanetaryHourHeader(
     val dayOfWeek = sunrise.get(Calendar.DAY_OF_WEEK) - 1
     val planet = getPlanetForGlobalIndex(dayOfWeek, currentPlanetIndex)
     
-    val timeFormat = SimpleDateFormat("HH:mm: ss", Locale.getDefault()).apply {
-        this.timeZone = locationTimeZone
+    // Calculate countdown
+    val timeRemaining = hourEndMillis - currentTime.timeInMillis
+    val hoursRemaining = timeRemaining / (1000 * 60 * 60)
+    val minutesRemaining = (timeRemaining / (1000 * 60)) % 60
+    val secondsRemaining = (timeRemaining / 1000) % 60
+    
+    val countdownText = when {
+        hoursRemaining > 0 -> String.format("%dh %dm %ds", hoursRemaining, minutesRemaining, secondsRemaining)
+        minutesRemaining > 0 -> String.format("%dm %ds", minutesRemaining, secondsRemaining)
+        else -> String.format("%ds", secondsRemaining)
     }
     
-    Column(modifier = Modifier.fillMaxWidth()) {
-        // Titlu
-        Text(
-            text = "Planetary Hours",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            fontSize = 16.sp
-        )
-        
-        Spacer(modifier = Modifier.height(4.dp))
-        /*
-			// DEBUG INFO:  Sunrise + GMT
-			val sunriseFormat = SimpleDateFormat("HH:mm", Locale.getDefault()).apply {
-				this.timeZone = locationTimeZone
-			}
-			Text(
-				text = "☀️ Sunrise: ${sunriseFormat.format(sunrise.time)} • GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)}",
-				style = MaterialTheme.typography.bodySmall,
-				color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-				fontSize = 12.sp
-			)
-        */
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        // Row cu ora și planetă
+    // Single row with planet symbol + name and countdown
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // ✅ PLANET SYMBOL + NAME (left)
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // ✅ ORA (stânga)
             Text(
-                text = "${timeFormat.format(hourStart.time)} - ${timeFormat.format(hourEnd.time)}",
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold
+                text = planet.code,
+                style = MaterialTheme.typography.titleLarge,
+                fontSize = 24.sp,
+                color = getPlanetColor(planet)
             )
             
-            // ✅ PLANETĂ + ICON (dreapta)
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = planet.code,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontSize = 24.sp,
-                    color = getPlanetColor(planet)
-                )
-                
-                Text(
-                    text = planet.displayName,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = getPlanetColor(planet)
-                )
-                
-                Icon(
-                    imageVector = if (isExpanded) {
-                        Icons.Default.KeyboardArrowUp
-                    } else {
-                        Icons.Default.KeyboardArrowDown
-                    },
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
+            Text(
+                text = planet.displayName,
+                style = MaterialTheme.typography.titleLarge,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = getPlanetColor(planet)
+            )
+        }
+        
+        // ✅ COUNTDOWN + ICON (right)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = countdownText,
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            
+            Icon(
+                imageVector = if (isExpanded) {
+                    Icons.Default.KeyboardArrowUp
+                } else {
+                    Icons.Default.KeyboardArrowDown
+                },
+                contentDescription = if (isExpanded) "Collapse" else "Expand",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(28.dp)
+            )
         }
     }
 }
@@ -401,19 +433,11 @@ private fun PlanetaryHourRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Timp
-        Text(
-            text = "$startTime - $endTime",
-            style = MaterialTheme.typography.bodySmall,
-            fontSize = 14.sp,
-            fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
-            modifier = Modifier.weight(1f)
-        )
-        
-        // Planetă
+        // ✅ PLANETĂ PRIMUL (stânga) - symbol + name
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            modifier = Modifier.weight(1f)
         ) {
             Text(
                 text = planet.code,
@@ -431,6 +455,19 @@ private fun PlanetaryHourRow(
                 } else {
                     MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                 }
+            )
+        }
+        
+        // ✅ TIMP (dreapta)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "$startTime - $endTime",
+                style = MaterialTheme.typography.bodySmall,
+                fontSize = 14.sp,
+                fontWeight = if (isCurrent) FontWeight.Normal else FontWeight.Normal
             )
             
             if (isCurrent) {
