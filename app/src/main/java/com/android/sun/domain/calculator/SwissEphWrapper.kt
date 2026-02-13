@@ -43,6 +43,9 @@ class SwissEphWrapper(private val context: Context) {
         private var globalEphePath: String = ""
         
         const val SEFLG_SWIEPH = 2
+        const val SEFLG_SIDEREAL = 64  // ✅ Flag for sidereal calculations
+        
+        const val SE_SIDM_LAHIRI = 1  // ✅ Lahiri ayanamsa (most common in Vedic astrology)
         
         const val SE_SUN = 0
         const val SE_MOON = 1
@@ -97,6 +100,11 @@ class SwissEphWrapper(private val context: Context) {
                 globalEphePath = ephePath
                 swissEph = SwissEph()
                 swissEph?.swe_set_ephe_path(ephePath)
+                
+                // ✅ Set sidereal mode with Lahiri ayanamsa for Vedic astrology
+                swissEph?.swe_set_sid_mode(SE_SIDM_LAHIRI, 0.0, 0.0)
+                android.util.Log.d("SwissEphWrapper", "✅ Sidereal mode set to Lahiri ayanamsa")
+                
                 globalIsInitialized = true
                 retryCount = 0
                 android.util.Log.d("SwissEphWrapper", "✅ Swiss Ephemeris initialized at:  $ephePath")
@@ -164,10 +172,14 @@ class SwissEphWrapper(private val context: Context) {
                 globalEphePath = ephePath
                 swissEph = SwissEph()
                 swissEph?.swe_set_ephe_path(ephePath)
+                
+                // ✅ Set sidereal mode with Lahiri ayanamsa for Vedic astrology
+                swissEph?.swe_set_sid_mode(SE_SIDM_LAHIRI, 0.0, 0.0)
+                
                 globalIsInitialized = true
                 filesNeedCopy = false
                 
-                android.util.Log.d("SwissEphWrapper", "✅ Swiss Ephemeris successfully reinitialized!")
+                android.util.Log.d("SwissEphWrapper", "✅ Swiss Ephemeris successfully reinitialized with sidereal mode!")
                 
             } catch (e: Exception) {
                 android.util.Log.e("SwissEphWrapper", "❌ Failed to reinitialize Swiss Ephemeris", e)
@@ -516,10 +528,11 @@ return epheDir.absolutePath
         val xx = DoubleArray(6)
         val serr = StringBuffer()
 
+        // ✅ Use SIDEREAL mode for Vedic astrology calculations
         val result = swissEph!!.swe_calc_ut(
             julianDay,
             body,
-            SEFLG_SWIEPH,
+            SEFLG_SWIEPH or SEFLG_SIDEREAL,  // ✅ Combine flags for sidereal calculation
             xx,
             serr
         )

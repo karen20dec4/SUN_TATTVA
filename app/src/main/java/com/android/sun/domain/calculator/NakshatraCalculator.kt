@@ -115,8 +115,9 @@ class NakshatraCalculator {
     
     companion object {
         /**
-         * Convert moon longitude (0-360°) to zodiac sign with degrees and minutes
-         * Example: 283.5° -> "13°30′ Capricorn"
+         * Convert moon longitude (0-360°) to zodiac sign with degrees, minutes, and seconds
+         * Example: 283.5° -> "13°30'00" Capricorn"
+         * Includes raw longitude for debugging
          */
         fun moonLongitudeToZodiacString(longitude: Double): String {
             val signs = listOf(
@@ -131,9 +132,13 @@ class NakshatraCalculator {
             val signIndex = (normalizedLon / 30.0).toInt().coerceIn(0, 11)  // ✅ Prevent array bounds error
             val degreeInSign = normalizedLon % 30.0
             val degrees = degreeInSign.toInt()
-            val minutes = ((degreeInSign - degrees) * 60).toInt()
+            val fractionalDegrees = degreeInSign - degrees
+            val totalMinutes = fractionalDegrees * 60.0
+            val minutes = totalMinutes.toInt()
+            val seconds = ((totalMinutes - minutes) * 60.0).toInt()
             
-            return "${degrees}°${minutes}′ ${signs[signIndex]}"
+            // Show with seconds for more precision
+            return "${degrees}°${minutes}'${String.format("%02d", seconds)}\" ${signs[signIndex]} (${String.format("%.2f", normalizedLon)}°)"
         }
         
         // Lista completă a celor 27 Nakshatra
