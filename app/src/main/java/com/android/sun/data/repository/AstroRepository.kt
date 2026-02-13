@@ -532,12 +532,18 @@ class AstroRepository(private val context: Context) {
         // Calculează index-ul corect
         val index = (normalizedLon / 30.0).toInt()
         
-        // Calculează gradele în semnul curent
-        val degreesInSign = (normalizedLon % 30.0).toInt()
+        // Calculează gradele, minutele și secundele în semnul curent
+        val degreeInSign = normalizedLon % 30.0
+        val degrees = degreeInSign.toInt()
+        val fractionalDegrees = degreeInSign - degrees
+        val totalMinutes = fractionalDegrees * 60.0
+        val minutes = totalMinutes.toInt()
+        val seconds = ((totalMinutes - minutes) * 60.0).toInt()
         
-        android.util.Log.d("AstroRepository", "🌙 Zodiac:  lon=$longitude° → $normalizedLon° → ${signs[index]} $degreesInSign°")
+        android.util.Log.d("AstroRepository", "🌙 Zodiac: lon=$longitude° → $normalizedLon° → ${signs[index]} ${degrees}°${minutes}'${seconds}\"")
         
-        return "${degreesInSign}° ${signs[index]}"
+        // Format cu grade, minute și secunde
+        return "${degrees}°${minutes}'${String.format("%02d", seconds)}\" ${signs[index]}"
     }
     
     private fun getTattvaName(code: String): String {
