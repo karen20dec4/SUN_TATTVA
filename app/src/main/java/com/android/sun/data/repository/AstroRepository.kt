@@ -167,10 +167,6 @@ class AstroRepository(private val context: Context) {
         val minute = utcCalendar.get(Calendar.MINUTE)
         val second = utcCalendar.get(Calendar.SECOND)
         
-        android.util.Log.d("AstroRepository", "🌍 Local time: ${calendar.time}")
-        android.util.Log.d("AstroRepository", "🌐 UTC time: ${utcCalendar.time}")
-        android.util.Log.d("AstroRepository", "⏰ Sending to SwissEph: $year-$month-$day $hour:$minute:$second UTC")
-        
         // ✅ NAKSHATRA FIX: Calculează poziția lunii la miezul nopții UTC pentru stabilitate zilnică
         // Aceasta asigură că Nakshatra este aceeași în Tokyo și București la același moment UTC
         val midnightUTC = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
