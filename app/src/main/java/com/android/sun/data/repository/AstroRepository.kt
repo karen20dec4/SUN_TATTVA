@@ -243,20 +243,28 @@ class AstroRepository(private val context: Context) {
             moonLongitude, sunLongitude, calendar
         )
 		
-		// ✅ NAKSHATRA FIX: Calculate moon position at midnight UTC for stable daily reference
-        // This ensures Nakshatra times are location-independent and stable throughout the day
+		// ✅ NAKSHATRA FIX: Use CURRENT moon position, not midnight
+        // Nakshatra identity must reflect actual current moon position
+        // But calculate start/end times from a stable reference for consistency
+        
+        // For determining WHICH Nakshatra: use current moon position
+        val currentMoonLongitude = moonLongitude
+        
+        // For calculating start/end TIMES: use midnight UTC position for daily stability
         val moonLongitudeAtMidnightUTC = astroCalculator.calculateMoonLongitude(
             midnightUTC.get(Calendar.YEAR),
-            midnightUTC.get(Calendar.MONTH) + 1,  // Calendar.MONTH is 0-based
+            midnightUTC.get(Calendar.MONTH) + 1,
             midnightUTC.get(Calendar.DAY_OF_MONTH),
-            0, 0, 0  // Midnight: 00:00:00
+            0, 0, 0
         )
         
-        // Calculate Nakshatra using midnight UTC moon position
-        // This gives the same Nakshatra worldwide and stable times for the entire day
+        // Calculate Nakshatra using CURRENT moon position (shows correct Nakshatra)
+        // Pass current calendar for proper countdown timing
         val nakshatra = nakshatraCalculator.calculateNakshatra(
-            moonLongitudeAtMidnightUTC,  // Moon position at midnight UTC (universal reference)
-            midnightUTC  // Midnight UTC as reference time (universal baseline)
+            currentMoonLongitude,  // Current position determines WHICH Nakshatra
+            calendar,              // Current time for countdown calculation
+            moonLongitudeAtMidnightUTC,  // Reference for stable daily times
+            midnightUTC           // Reference baseline
         )
 
         // ✅ ADĂUGAT:  Calculează polaritatea la răsărit

@@ -12,15 +12,19 @@ class NakshatraCalculator {
     /**
      * Calculează Nakshatra curentă bazată pe longitudinea Lunii (sidereal)
      * 
-     * ✅ FIX: Folosește poziția lunii și timpul de la răsărit ca referință stabilă zilnică.
-     * Aceasta asigură că timpurile Nakshatra rămân constante pe parcursul zilei.
+     * ✅ FIX: Uses current moon position to determine Nakshatra
+     * Uses reference times for stable daily calculations
      * 
-     * @param moonLongitude Longitudinea ecliptică a lunii (de obicei calculată la răsărit)
-     * @param currentTime Timpul de referință (de obicei răsăritul zilei)
+     * @param moonLongitude Current moon longitude (determines which Nakshatra)
+     * @param currentTime Current time for countdown calculation
+     * @param referenceMoonLongitude Reference moon position for daily stability (optional)
+     * @param referenceTime Reference time for daily stability (optional)
      */
     fun calculateNakshatra(
         moonLongitude: Double,
-        currentTime: Calendar
+        currentTime: Calendar,
+        referenceMoonLongitude: Double = moonLongitude,
+        referenceTime: Calendar = currentTime
     ): NakshatraResult {
         android.util.Log.d("NakshatraDebug", "============================================")
         android.util.Log.d("NakshatraDebug", "🌙 NAKSHATRA CALCULATION START")
@@ -31,13 +35,13 @@ class NakshatraCalculator {
         while (normalizedLon < 0) normalizedLon += 360.0
         while (normalizedLon >= 360) normalizedLon -= 360.0
         
-        android.util.Log.d("NakshatraDebug", "Moon Longitude: %.2f°".format(normalizedLon))
-        android.util.Log.d("NakshatraDebug", "Reference Time (usually sunrise): ${currentTime.time}")
+        android.util.Log.d("NakshatraDebug", "Moon Longitude (current): %.2f°".format(normalizedLon))
+        android.util.Log.d("NakshatraDebug", "Current Time: ${currentTime.time}")
         
         // Fiecare Nakshatra = 13.333333° (360 / 27)
         val nakshatraDegrees = 360.0 / 27.0  // 13.333333°
         
-        // Calculează index-ul Nakshatra (0-26)
+        // Calculează index-ul Nakshatra (0-26) based on CURRENT moon position
         val nakshatraIndex = (normalizedLon / nakshatraDegrees).toInt().coerceIn(0, 26)
         
         val nakshatra = nakshatraList[nakshatraIndex]
@@ -94,6 +98,11 @@ class NakshatraCalculator {
         android.util.Log.d("NakshatraDebug", "Zero Reference Time: ${zeroReferenceTime.time}")
         android.util.Log.d("NakshatraDebug", "============================================")
         
+        // ✅ Convert moon longitude to zodiac sign with degrees and minutes
+        val moonZodiacPosition = moonLongitudeToZodiacString(normalizedLon)
+        
+        android.util.Log.d("NakshatraDebug", "Moon Position in Zodiac: $moonZodiacPosition")
+        
         return NakshatraResult(
             nakshatra = nakshatra,
             moonLongitude = normalizedLon,
@@ -104,11 +113,34 @@ class NakshatraCalculator {
             number = nakshatra.number,
             name = nakshatra.displayName,
             code = "NK${nakshatra.number}",
-            zeroReferenceTime = zeroReferenceTime
+            zeroReferenceTime = zeroReferenceTime,
+            moonZodiacPosition = moonZodiacPosition
         )
     }
     
     companion object {
+        /**
+         * Convert moon longitude (0-360°) to zodiac sign with degrees and minutes
+         * Example: 283.5° -> "13°30′ Capricorn"
+         */
+        fun moonLongitudeToZodiacString(longitude: Double): String {
+            val signs = listOf(
+                "Berbec", "Taur", "Gemeni", "Rac", "Leu", "Fecioară",
+                "Balanță", "Scorpion", "Săgetător", "Capricorn", "Vărsător", "Pești"
+            )
+            
+            var normalizedLon = longitude
+            while (normalizedLon < 0) normalizedLon += 360.0
+            while (normalizedLon >= 360) normalizedLon -= 360.0
+            
+            val signIndex = (normalizedLon / 30.0).toInt()
+            val degreeInSign = normalizedLon % 30.0
+            val degrees = degreeInSign.toInt()
+            val minutes = ((degreeInSign - degrees) * 60).toInt()
+            
+            return "${degrees}°${minutes}′ ${signs[signIndex]}"
+        }
+        
         // Lista completă a celor 27 Nakshatra
         val nakshatraList = listOf(
             NakshatraType.ASHWINI,           // 1:  0° - 13°20' Berbec
@@ -191,6 +223,8 @@ enum class NakshatraType(
  * folosit ca punct de referință pentru a calcula timpurile tuturor celor 27 Nakshatra în mod consistent.
  * În practică, când această funcție este apelată cu poziția lunii la răsărit, zeroReferenceTime
  * devine un timestamp fix pentru întreaga zi.
+ * 
+ * ✅ ADDED moonZodiacPosition: Poziția lunii în zodiac (ex: "13°20′ Capricorn")
  */
 data class NakshatraResult(
     val nakshatra: NakshatraType,
@@ -202,5 +236,6 @@ data class NakshatraResult(
     val number: Int = nakshatra.number,
     val name: String = nakshatra.displayName,
     val code: String = "NK${nakshatra.number}",
-    val zeroReferenceTime: Calendar  // ✅ Required parameter - no default to ensure stability
+    val zeroReferenceTime: Calendar,  // ✅ Required parameter - no default to ensure stability
+    val moonZodiacPosition: String = ""  // ✅ Moon position in zodiac format
 )

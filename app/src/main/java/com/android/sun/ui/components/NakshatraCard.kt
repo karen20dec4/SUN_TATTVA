@@ -123,6 +123,18 @@ fun NakshatraCard(
                         fontSize = 14.sp
                     )
                     
+                    // ✅ DEBUG: Show current moon position in zodiac
+                    if (nakshatraResult.moonZodiacPosition.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "🌙 Luna: ${nakshatraResult.moonZodiacPosition}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                    
                     Spacer(modifier = Modifier.height(12.dp))
                     
                     // Scrollable list of all Nakshatras - start with current, then remaining in order
