@@ -144,7 +144,8 @@ class AstroRepository(private val context: Context) {
      * ✅ Calculează datele astro pentru un moment specific
      * ✅ OPTIMIZAT: calculează previousSunset și nextSunrise pentru Planetary Hours
      * ✅ ADĂUGAT: calculează polaritatea la răsărit și apus
-     * ✅ FIX:  Creează MoonPhaseCalculator cu timezone-ul locației
+     * ✅ FIX: Creează MoonPhaseCalculator cu timezone-ul locației
+     * ✅ NAKSHATRA: Folosește poziția lunii la miezul nopții UTC pentru stabilitate zilnică
      */
     private fun calculateAstroDataForTime(
         calendar: Calendar,
@@ -160,6 +161,21 @@ class AstroRepository(private val context: Context) {
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
         val second = calendar.get(Calendar.SECOND)
+        
+        // ✅ NAKSHATRA FIX: Calculează poziția lunii la miezul nopții UTC pentru stabilitate zilnică
+        // Aceasta asigură că Nakshatra este aceeași în Tokyo și București la același moment UTC
+        val midnightUTC = Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
+        midnightUTC.set(Calendar.YEAR, year)
+        midnightUTC.set(Calendar.MONTH, month - 1)  // Calendar.MONTH is 0-based
+        midnightUTC.set(Calendar.DAY_OF_MONTH, day)
+        midnightUTC.set(Calendar.HOUR_OF_DAY, 0)
+        midnightUTC.set(Calendar.MINUTE, 0)
+        midnightUTC.set(Calendar.SECOND, 0)
+        midnightUTC.set(Calendar.MILLISECOND, 0)
+        
+        val midnightYear = midnightUTC.get(Calendar.YEAR)
+        val midnightMonth = midnightUTC.get(Calendar.MONTH) + 1
+        val midnightDay = midnightUTC.get(Calendar.DAY_OF_MONTH)
 
         val sunrise = getTattvaDayStart(calendar, latitude, longitude, timeZone)
         
@@ -231,12 +247,17 @@ class AstroRepository(private val context: Context) {
             moonLongitude, sunLongitude, calendar
         )
 		
-		// ✅ CORRECTED: Calculate Nakshatra using CURRENT moon position (location-independent)
-        // Nakshatra must be the same worldwide at any given UTC moment
-        // Use current moon longitude to determine which Nakshatra, then calculate times
+		// ✅ NAKSHATRA FIX: Calculate moon position at midnight UTC for stable daily reference
+        // This ensures Nakshatra times are location-independent and stable throughout the day
+        val moonLongitudeAtMidnightUTC = astroCalculator.calculateMoonLongitude(
+            midnightYear, midnightMonth, midnightDay, 0, 0, 0
+        )
+        
+        // Calculate Nakshatra using midnight UTC moon position
+        // This gives the same Nakshatra worldwide and stable times for the entire day
         val nakshatra = nakshatraCalculator.calculateNakshatra(
-            moonLongitude,  // Current moon longitude (same worldwide at this UTC moment)
-            calendar  // Current time for calculating when Nakshatra started/will end
+            moonLongitudeAtMidnightUTC,  // Moon position at midnight UTC (universal reference)
+            midnightUTC  // Midnight UTC as reference time (universal baseline)
         )
 
         // ✅ ADĂUGAT:  Calculează polaritatea la răsărit
