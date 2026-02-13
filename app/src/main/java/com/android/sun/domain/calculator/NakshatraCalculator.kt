@@ -10,7 +10,7 @@ import java.util.*
 class NakshatraCalculator {
 
     /**
-     * Calculează Nakshatra curentă bazată pe longitudinea Lunii (sidereal)
+     * calculează Nakshatra curentă bazată pe longitudinea Lunii (sidereal)
      * 
      * ✅ FIX v3: Calculează momentul când luna VA INTRA/IEȘI din fiecare Nakshatra
      * bazat pe poziția și viteza curentă. Aceste momente VIITOARE sunt fixe în timp.
@@ -183,18 +183,19 @@ enum class NakshatraType(
 /**
  * Rezultatul calculului Nakshatra
  * 
- * ✅ ADDED zeroReferenceTime: Momentul absolut când luna era la 0° (începutul Nakshatra #1)
- * Acest timestamp fix poate fi folosit pentru a calcula toate cele 27 Nakshatra în mod consistent
+ * ✅ ADDED zeroReferenceTime: Momentul absolut când luna era la 0° longitudinii ecliptice
+ * (punctul de start al zodiacului sideral, nu neapărat începutul unei Nakshatra specifice).
+ * Acest timestamp fix poate fi folosit pentru a calcula toate cele 27 Nakshatra în mod consistent.
  */
 data class NakshatraResult(
     val nakshatra: NakshatraType,
     val moonLongitude: Double,
     val startDegree: Double,
     val endDegree: Double,
-    val startTime: Calendar = Calendar.getInstance(),
-    val endTime: Calendar = Calendar.getInstance(),
+    val startTime: Calendar,
+    val endTime: Calendar,
     val number: Int = nakshatra.number,
     val name: String = nakshatra.displayName,
     val code: String = "NK${nakshatra.number}",
-    val zeroReferenceTime: Calendar = Calendar.getInstance()  // ✅ ADDED: Reference point for all Nakshatras
+    val zeroReferenceTime: Calendar  // ✅ Required parameter - no default to ensure stability
 )
