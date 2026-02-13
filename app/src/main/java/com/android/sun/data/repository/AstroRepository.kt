@@ -164,7 +164,7 @@ class AstroRepository(private val context: Context) {
         
         // ✅ NAKSHATRA FIX: Calculează poziția lunii la miezul nopții UTC pentru stabilitate zilnică
         // Aceasta asigură că Nakshatra este aceeași în Tokyo și București la același moment UTC
-        val midnightUTC = Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
+        val midnightUTC = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
         midnightUTC.set(Calendar.YEAR, year)
         midnightUTC.set(Calendar.MONTH, month - 1)  // Calendar.MONTH is 0-based
         midnightUTC.set(Calendar.DAY_OF_MONTH, day)
@@ -172,10 +172,6 @@ class AstroRepository(private val context: Context) {
         midnightUTC.set(Calendar.MINUTE, 0)
         midnightUTC.set(Calendar.SECOND, 0)
         midnightUTC.set(Calendar.MILLISECOND, 0)
-        
-        val midnightYear = midnightUTC.get(Calendar.YEAR)
-        val midnightMonth = midnightUTC.get(Calendar.MONTH) + 1
-        val midnightDay = midnightUTC.get(Calendar.DAY_OF_MONTH)
 
         val sunrise = getTattvaDayStart(calendar, latitude, longitude, timeZone)
         
@@ -250,7 +246,10 @@ class AstroRepository(private val context: Context) {
 		// ✅ NAKSHATRA FIX: Calculate moon position at midnight UTC for stable daily reference
         // This ensures Nakshatra times are location-independent and stable throughout the day
         val moonLongitudeAtMidnightUTC = astroCalculator.calculateMoonLongitude(
-            midnightYear, midnightMonth, midnightDay, 0, 0, 0
+            midnightUTC.get(Calendar.YEAR),
+            midnightUTC.get(Calendar.MONTH) + 1,  // Calendar.MONTH is 0-based
+            midnightUTC.get(Calendar.DAY_OF_MONTH),
+            0, 0, 0  // Midnight: 00:00:00
         )
         
         // Calculate Nakshatra using midnight UTC moon position
