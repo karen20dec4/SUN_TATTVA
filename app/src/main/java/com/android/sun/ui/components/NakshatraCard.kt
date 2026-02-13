@@ -144,23 +144,26 @@ fun NakshatraCard(
                             }
                         }
                         
-                        // Calculate time for each Nakshatra based on current one
+                        // ✅ FIX: Use zeroReferenceTime to calculate ABSOLUTE times for all Nakshatras
                         val nakshatraDegrees = 360.0 / 27.0  // 13.333333°
                         val avgDegreesPerHour = 13.2 / 24.0  // ~0.55° per hour
+                        val zeroRef = nakshatraResult.zeroReferenceTime
                         
                         reorderedList.forEachIndexed { displayIndex, nakshatra ->
                             val isCurrent = displayIndex == 0 // First item is always current
                             
-                            // Calculate start and end time for this Nakshatra
-                            val nakshatraIndex = nakshatra.number - 1
-                            val offsetFromCurrent = (nakshatraIndex - currentIndex + 27) % 27
+                            // ✅ FIX: Calculate ABSOLUTE start and end time from zero reference
+                            val nakshatraIndex = nakshatra.number - 1  // 0-based index
                             
-                            val hoursOffset = offsetFromCurrent * nakshatraDegrees / avgDegreesPerHour
-                            val startTime = nakshatraResult.startTime.clone() as Calendar
-                            startTime.add(Calendar.MINUTE, (hoursOffset * 60).toInt())
+                            // Time from 0° to start of this Nakshatra
+                            val hoursToStart = nakshatraIndex * nakshatraDegrees / avgDegreesPerHour
+                            val hoursToEnd = (nakshatraIndex + 1) * nakshatraDegrees / avgDegreesPerHour
                             
-                            val endTime = startTime.clone() as Calendar
-                            endTime.add(Calendar.MINUTE, (nakshatraDegrees / avgDegreesPerHour * 60).toInt())
+                            val startTime = zeroRef.clone() as Calendar
+                            startTime.add(Calendar.MINUTE, (hoursToStart * 60).toInt())
+                            
+                            val endTime = zeroRef.clone() as Calendar
+                            endTime.add(Calendar.MINUTE, (hoursToEnd * 60).toInt())
                             
                             NakshatraRow(
                                 nakshatra = nakshatra,

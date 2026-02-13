@@ -11,13 +11,17 @@ class NakshatraCalculator {
 
     /**
      * Calculează Nakshatra curentă bazată pe longitudinea Lunii (sidereal)
+     * 
+     * ✅ FIX MAJOR: Calculează timpul ABSOLUT când luna a fost la 0° (începutul Nakshatra #1)
+     * Toate celelalte timpi Nakshatra sunt derivate din acest moment fix de referință.
+     * Acest lucru asigură că orele rămân constante indiferent când este vizualizat cardul.
      */
     fun calculateNakshatra(
         moonLongitude: Double,
         currentTime: Calendar = Calendar.getInstance()
     ): NakshatraResult {
         android.util.Log.d("NakshatraDebug", "============================================")
-        android.util.Log.d("NakshatraDebug", "🌙 NAKSHATRA CALCULATION START")
+        android.util.Log.d("NakshatraDebug", "🌙 NAKSHATRA CALCULATION START (FIXED v2)")
         android.util.Log.d("NakshatraDebug", "============================================")
         
         // Normalizează longitudinea la 0-360
@@ -26,6 +30,7 @@ class NakshatraCalculator {
         while (normalizedLon >= 360) normalizedLon -= 360.0
         
         android.util.Log.d("NakshatraDebug", "Moon Longitude: %.2f°".format(normalizedLon))
+        android.util.Log.d("NakshatraDebug", "Current Time (reference): ${currentTime.time}")
         
         // Fiecare Nakshatra = 13.333333° (360 / 27)
         val nakshatraDegrees = 360.0 / 27.0  // 13.333333°
@@ -46,30 +51,39 @@ class NakshatraCalculator {
         
         android.util.Log.d("NakshatraDebug", "Progress: %.2f%% (%.4f° in current Nakshatra)".format(nakshatraProgress * 100, progressInNakshatra))
         
-        // Calculează timpul rămas
         // Luna se mișcă cu aproximativ 13.2° pe zi
         // Deci pentru 13.333° (o Nakshatra) sunt necesare aproximativ 24 ore
         val avgDegreesPerHour = 13.2 / 24.0  // ~0.55° per oră
         
-        // Câte ore au trecut de la start până acum?
-        val hoursElapsedInNakshatra = progressInNakshatra / avgDegreesPerHour
+        // ✅ FIX MAJOR: Calculează momentul ABSOLUT când luna a fost la 0° (începutul ciclului Nakshatra)
+        // Aceasta este cheia fix-ului: folosim poziția curentă a lunii pentru a calcula
+        // când a fost la 0°, apoi derivăm toate celelalte timpi din acel moment fix.
         
-        // Câte ore mai sunt până la final?
-        val degreesRemaining = nakshatraDegrees - progressInNakshatra
-        val hoursRemainingInNakshatra = degreesRemaining / avgDegreesPerHour
+        // Câte grade a parcurs luna de la 0°?
+        val degreesFromZero = normalizedLon
         
-        // Calculează Start Time
-        val startTime = currentTime.clone() as Calendar
-        startTime.add(Calendar.MINUTE, -(hoursElapsedInNakshatra * 60).toInt())
+        // Câte ore au trecut de când luna era la 0°?
+        val hoursFromZero = degreesFromZero / avgDegreesPerHour
         
-        // Calculează End Time
-        val endTime = currentTime.clone() as Calendar
-        endTime.add(Calendar.MINUTE, (hoursRemainingInNakshatra * 60).toInt())
+        // Calculează momentul ABSOLUT când luna era la 0° (începutul Nakshatra #1 - Ashwini)
+        val zeroReferenceTime = currentTime.clone() as Calendar
+        zeroReferenceTime.add(Calendar.MINUTE, -(hoursFromZero * 60).toInt())
         
-        android.util.Log.d("NakshatraDebug", "Hours elapsed: %.2f hours".format(hoursElapsedInNakshatra))
-        android.util.Log.d("NakshatraDebug", "Hours remaining: %.2f hours".format(hoursRemainingInNakshatra))
-        android.util.Log.d("NakshatraDebug", "Start Time: ${startTime.time}")
-        android.util.Log.d("NakshatraDebug", "End Time: ${endTime.time}")
+        android.util.Log.d("NakshatraDebug", "✅ Zero Reference Time (Moon at 0°): ${zeroReferenceTime.time}")
+        android.util.Log.d("NakshatraDebug", "✅ Hours from 0°: %.2f hours".format(hoursFromZero))
+        
+        // Acum calculează start și end time pentru Nakshatra curentă bazat pe zero reference
+        val hoursToCurrentNakshatraStart = nakshatraIndex * nakshatraDegrees / avgDegreesPerHour
+        val hoursToCurrentNakshatraEnd = (nakshatraIndex + 1) * nakshatraDegrees / avgDegreesPerHour
+        
+        val startTime = zeroReferenceTime.clone() as Calendar
+        startTime.add(Calendar.MINUTE, (hoursToCurrentNakshatraStart * 60).toInt())
+        
+        val endTime = zeroReferenceTime.clone() as Calendar
+        endTime.add(Calendar.MINUTE, (hoursToCurrentNakshatraEnd * 60).toInt())
+        
+        android.util.Log.d("NakshatraDebug", "Start Time (ABSOLUTE): ${startTime.time}")
+        android.util.Log.d("NakshatraDebug", "End Time (ABSOLUTE): ${endTime.time}")
         android.util.Log.d("NakshatraDebug", "============================================")
         
         return NakshatraResult(
@@ -81,7 +95,8 @@ class NakshatraCalculator {
             endTime = endTime,
             number = nakshatra.number,
             name = nakshatra.displayName,
-            code = "NK${nakshatra.number}"
+            code = "NK${nakshatra.number}",
+            zeroReferenceTime = zeroReferenceTime  // ✅ Add this for UI to calculate all 27 Nakshatras
         )
     }
     
@@ -163,6 +178,9 @@ enum class NakshatraType(
 
 /**
  * Rezultatul calculului Nakshatra
+ * 
+ * ✅ ADDED zeroReferenceTime: Momentul absolut când luna era la 0° (începutul Nakshatra #1)
+ * Acest timestamp fix poate fi folosit pentru a calcula toate cele 27 Nakshatra în mod consistent
  */
 data class NakshatraResult(
     val nakshatra: NakshatraType,
@@ -173,5 +191,6 @@ data class NakshatraResult(
     val endTime: Calendar = Calendar.getInstance(),
     val number: Int = nakshatra.number,
     val name: String = nakshatra.displayName,
-    val code: String = "NK${nakshatra.number}"
+    val code: String = "NK${nakshatra.number}",
+    val zeroReferenceTime: Calendar = Calendar.getInstance()  // ✅ ADDED: Reference point for all Nakshatras
 )
