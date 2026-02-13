@@ -14,13 +14,16 @@ class NakshatraCalculator {
      * 
      * ✅ FIX: Folosește poziția lunii și timpul de la răsărit ca referință stabilă zilnică.
      * Aceasta asigură că timpurile Nakshatra rămân constante pe parcursul zilei.
+     * 
+     * @param moonLongitude Longitudinea ecliptică a lunii (de obicei calculată la răsărit)
+     * @param currentTime Timpul de referință (de obicei răsăritul zilei)
      */
     fun calculateNakshatra(
         moonLongitude: Double,
-        currentTime: Calendar = Calendar.getInstance()
+        currentTime: Calendar
     ): NakshatraResult {
         android.util.Log.d("NakshatraDebug", "============================================")
-        android.util.Log.d("NakshatraDebug", "🌙 NAKSHATRA CALCULATION START (FIXED v3)")
+        android.util.Log.d("NakshatraDebug", "🌙 NAKSHATRA CALCULATION START")
         android.util.Log.d("NakshatraDebug", "============================================")
         
         // Normalizează longitudinea la 0-360
