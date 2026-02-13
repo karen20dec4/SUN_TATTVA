@@ -276,14 +276,22 @@ private fun CurrentPlanetaryHourHeader(
     val planet = getPlanetForGlobalIndex(dayOfWeek, currentPlanetIndex)
     
     val timeRemaining = hourEndMillis - currentTime.timeInMillis
-    val hoursRemaining = timeRemaining / (1000 * 60 * 60)
-    val minutesRemaining = (timeRemaining / (1000 * 60)) % 60
-    val secondsRemaining = (timeRemaining / 1000) % 60
     
-    val countdownText = when {
-        hoursRemaining > 0 -> String.format("%dh %dm %ds", hoursRemaining, minutesRemaining, secondsRemaining)
-        minutesRemaining > 0 -> String.format("%dm %ds", minutesRemaining, secondsRemaining)
-        else -> String.format("%ds", secondsRemaining)
+    // ✅ FIX: Handle negative time (when planetary hour has ended)
+    val countdownText = if (timeRemaining <= 0) {
+        "0s"  // Show 0s when time has expired
+    } else {
+        // Calculate hours, minutes, seconds from positive time remaining
+        val totalSeconds = timeRemaining / 1000
+        val hoursRemaining = totalSeconds / 3600
+        val minutesRemaining = (totalSeconds % 3600) / 60
+        val secondsRemaining = totalSeconds % 60
+        
+        when {
+            hoursRemaining > 0 -> String.format("%dh %dm %ds", hoursRemaining, minutesRemaining, secondsRemaining)
+            minutesRemaining > 0 -> String.format("%dm %ds", minutesRemaining, secondsRemaining)
+            else -> String.format("%ds", secondsRemaining)
+        }
     }
 
     // ✅ HEADER-UL CU DIMENSIUNE FIXĂ (50.dp)
