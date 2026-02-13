@@ -128,7 +128,7 @@ class NakshatraCalculator {
             while (normalizedLon < 0) normalizedLon += 360.0
             while (normalizedLon >= 360) normalizedLon -= 360.0
             
-            val signIndex = (normalizedLon / 30.0).toInt()
+            val signIndex = (normalizedLon / 30.0).toInt().coerceIn(0, 11)  // ✅ Prevent array bounds error
             val degreeInSign = normalizedLon % 30.0
             val degrees = degreeInSign.toInt()
             val minutes = ((degreeInSign - degrees) * 60).toInt()
