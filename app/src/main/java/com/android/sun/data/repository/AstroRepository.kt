@@ -231,9 +231,12 @@ class AstroRepository(private val context: Context) {
             moonLongitude, sunLongitude, calendar
         )
 		
-		// ✅ ADDED: Calculate Nakshatra
+		// ✅ FIXED v2: Calculate Nakshatra using moon position AT SUNRISE as baseline
+        // Use sunrise and moon position at sunrise for a stable daily reference
+        // Nakshatra times will be consistent throughout the day, only updating once per sunrise
         val nakshatra = nakshatraCalculator.calculateNakshatra(
-            moonLongitude, calendar
+            moonLongitudeAtSunrise,  // Moon position at sunrise (already calculated above)
+            sunrise  // Sunrise as reference time
         )
 
         // ✅ ADĂUGAT:  Calculează polaritatea la răsărit
