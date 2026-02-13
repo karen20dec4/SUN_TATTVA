@@ -243,28 +243,13 @@ class AstroRepository(private val context: Context) {
             moonLongitude, sunLongitude, calendar
         )
 		
-		// ✅ NAKSHATRA FIX: Use CURRENT moon position, not midnight
-        // Nakshatra identity must reflect actual current moon position
-        // But calculate start/end times from a stable reference for consistency
+		// ✅ NAKSHATRA FIX: Use CURRENT moon position for correct Nakshatra identification
+        // This ensures the displayed Nakshatra matches the moon's actual current position
         
-        // For determining WHICH Nakshatra: use current moon position
-        val currentMoonLongitude = moonLongitude
-        
-        // For calculating start/end TIMES: use midnight UTC position for daily stability
-        val moonLongitudeAtMidnightUTC = astroCalculator.calculateMoonLongitude(
-            midnightUTC.get(Calendar.YEAR),
-            midnightUTC.get(Calendar.MONTH) + 1,
-            midnightUTC.get(Calendar.DAY_OF_MONTH),
-            0, 0, 0
-        )
-        
-        // Calculate Nakshatra using CURRENT moon position (shows correct Nakshatra)
-        // Pass current calendar for proper countdown timing
+        // Calculate Nakshatra using CURRENT moon position
         val nakshatra = nakshatraCalculator.calculateNakshatra(
-            currentMoonLongitude,  // Current position determines WHICH Nakshatra
-            calendar,              // Current time for countdown calculation
-            moonLongitudeAtMidnightUTC,  // Reference for stable daily times
-            midnightUTC           // Reference baseline
+            moonLongitude,  // Current position determines correct Nakshatra ✅
+            calendar        // Current time for proper countdown ✅
         )
 
         // ✅ ADĂUGAT:  Calculează polaritatea la răsărit

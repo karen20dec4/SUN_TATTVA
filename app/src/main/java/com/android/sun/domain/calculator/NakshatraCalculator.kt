@@ -13,18 +13,13 @@ class NakshatraCalculator {
      * Calculează Nakshatra curentă bazată pe longitudinea Lunii (sidereal)
      * 
      * ✅ FIX: Uses current moon position to determine Nakshatra
-     * Uses reference times for stable daily calculations
      * 
      * @param moonLongitude Current moon longitude (determines which Nakshatra)
      * @param currentTime Current time for countdown calculation
-     * @param referenceMoonLongitude Reference moon position for daily stability (optional)
-     * @param referenceTime Reference time for daily stability (optional)
      */
     fun calculateNakshatra(
         moonLongitude: Double,
-        currentTime: Calendar,
-        referenceMoonLongitude: Double = moonLongitude,
-        referenceTime: Calendar = currentTime
+        currentTime: Calendar
     ): NakshatraResult {
         android.util.Log.d("NakshatraDebug", "============================================")
         android.util.Log.d("NakshatraDebug", "🌙 NAKSHATRA CALCULATION START")
