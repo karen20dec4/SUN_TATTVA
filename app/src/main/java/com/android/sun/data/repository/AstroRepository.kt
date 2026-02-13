@@ -542,8 +542,8 @@ class AstroRepository(private val context: Context) {
         
         android.util.Log.d("AstroRepository", "🌙 Zodiac: lon=$longitude° → $normalizedLon° → ${signs[index]} ${degrees}°${minutes}'${seconds}\"")
         
-        // Format cu grade, minute și secunde
-        return "${degrees}°${minutes}'${String.format("%02d", seconds)}\" ${signs[index]}"
+        // Format cu grade, minute și secunde (cu padding)
+        return "${degrees}°${String.format("%02d", minutes)}'${String.format("%02d", seconds)}\" ${signs[index]}"
     }
     
     private fun getTattvaName(code: String): String {
