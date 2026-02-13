@@ -461,10 +461,11 @@ return epheDir.absolutePath
                 val xx = DoubleArray(6)
                 val serr = StringBuffer()
 
+                // ✅ Use SIDEREAL mode for Vedic astrology calculations
                 val result = swissEph!! .swe_calc_ut(
                     julianDay,
                     body,
-                    SEFLG_SWIEPH,
+                    SEFLG_SWIEPH or SEFLG_SIDEREAL,  // ✅ Combine flags for sidereal calculation
                     xx,
                     serr
                 )
