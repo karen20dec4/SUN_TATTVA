@@ -155,12 +155,21 @@ class AstroRepository(private val context: Context) {
         locationName: String,
         isGPSLocation: Boolean = false
     ): AstroData {
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH) + 1
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-        val second = calendar.get(Calendar.SECOND)
+        // ✅ CRITICAL FIX: Convert to UTC before extracting time components
+        // Swiss Ephemeris expects UTC time, not local time!
+        val utcCalendar = calendar.clone() as Calendar
+        utcCalendar.timeZone = TimeZone.getTimeZone("UTC")
+        
+        val year = utcCalendar.get(Calendar.YEAR)
+        val month = utcCalendar.get(Calendar.MONTH) + 1
+        val day = utcCalendar.get(Calendar.DAY_OF_MONTH)
+        val hour = utcCalendar.get(Calendar.HOUR_OF_DAY)
+        val minute = utcCalendar.get(Calendar.MINUTE)
+        val second = utcCalendar.get(Calendar.SECOND)
+        
+        android.util.Log.d("AstroRepository", "🌍 Local time: ${calendar.time}")
+        android.util.Log.d("AstroRepository", "🌐 UTC time: ${utcCalendar.time}")
+        android.util.Log.d("AstroRepository", "⏰ Sending to SwissEph: $year-$month-$day $hour:$minute:$second UTC")
         
         // ✅ NAKSHATRA FIX: Calculează poziția lunii la miezul nopții UTC pentru stabilitate zilnică
         // Aceasta asigură că Nakshatra este aceeași în Tokyo și București la același moment UTC
