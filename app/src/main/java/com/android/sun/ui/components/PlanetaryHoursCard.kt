@@ -282,10 +282,10 @@ private fun CurrentPlanetaryHourHeader(
         "0s"  // Show 0s when time has expired
     } else {
         // Calculate hours, minutes, seconds from positive time remaining
-        val totalSeconds = timeRemaining / 1000
-        val hoursRemaining = totalSeconds / 3600
-        val minutesRemaining = (totalSeconds % 3600) / 60
-        val secondsRemaining = totalSeconds % 60
+        val totalSeconds = timeRemaining / 1000L
+        val hoursRemaining = totalSeconds / 3600L
+        val minutesRemaining = (totalSeconds % 3600L) / 60L
+        val secondsRemaining = totalSeconds % 60L
         
         when {
             hoursRemaining > 0 -> String.format("%dh %dm %ds", hoursRemaining, minutesRemaining, secondsRemaining)
