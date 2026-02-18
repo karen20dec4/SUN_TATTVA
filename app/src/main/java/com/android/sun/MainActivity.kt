@@ -190,7 +190,10 @@ fun AppNavigation(
 						TattvaNotificationService.start(context)
 					} else {
 						TattvaNotificationService.stop(context)
-							}
+					}
+					// Send broadcast to trigger immediate notification update
+					val intent = Intent(TattvaNotificationService.ACTION_SETTINGS_CHANGED)
+					context.sendBroadcast(intent)
 				},
 				isPlanetaryHourNotification = isPlanetaryHourNotification,
 				onPlanetaryHourNotificationChange = { enabled ->
@@ -200,6 +203,9 @@ fun AppNavigation(
 					} else {
 						TattvaNotificationService.stop(context)
 					}
+					// Send broadcast to trigger immediate notification update
+					val intent = Intent(TattvaNotificationService.ACTION_SETTINGS_CHANGED)
+					context.sendBroadcast(intent)
 				},
 				onBackClick = {
 					navController.popBackStack()
