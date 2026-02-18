@@ -33,6 +33,7 @@ class TattvaNotificationService : Service() {
         
         private const val TATTVA_NOTIF_ID = 1001
         private const val PLANET_NOTIF_ID = 1002
+        private const val GROUP_KEY = "com.android.sun.STATUS_BAR_NOTIFICATIONS"
         
         const val ACTION_LOCATION_CHANGED = "com.android.sun.LOCATION_CHANGED"
         
@@ -85,7 +86,6 @@ class TattvaNotificationService : Service() {
     }
 
     
-	
 	private suspend fun updateNotification() {
         val repository = AstroRepository(applicationContext)
         val locationPrefs = LocationPreferences(applicationContext)
@@ -121,6 +121,8 @@ class TattvaNotificationService : Service() {
                 val tattvaText = "$emoji - until $endTime $gmtSuffix"
                 
                 val notification = createDetailedNotification(tattvaText, getTattvaIcon(type), CHANNEL_ID_TATTVA)
+                
+                // Tattva is always the primary foreground notification when enabled
                 startForeground(TATTVA_NOTIF_ID, notification)
             } else {
                 notificationManager.cancel(TATTVA_NOTIF_ID)
@@ -140,9 +142,12 @@ class TattvaNotificationService : Service() {
 				
 				val notification = createDetailedNotification(planetText, getPlanetIcon(planet), CHANNEL_ID_PLANET)
 				
+				// If Tattva is not shown, Planet becomes the foreground notification
+				// If Tattva is shown, Planet is added as a second notification
 				if (!showTattva) {
 					startForeground(PLANET_NOTIF_ID, notification)
 				} else {
+					// Both are enabled - show planet as a separate notification in the same group
 					notificationManager.notify(PLANET_NOTIF_ID, notification)
 				}
 			} else {
@@ -186,13 +191,14 @@ class TattvaNotificationService : Service() {
 
         return NotificationCompat.Builder(this, channelId)
             .setSmallIcon(iconRes)
-            .setContentTitle(title) // Textul scurt merge aici
-            .setContentText("")      // Textul secundar rămâne gol pentru un singur rând
+            .setContentTitle(title)
+            .setContentText("")
             .setOngoing(true)
             .setSilent(true)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT) // DEFAULT scoate notificarea din "Silent"
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
-            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL) // Alert independently if grouped
+            .setGroup(GROUP_KEY)  // Add notifications to a group
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL)
             .build()
     }
 
