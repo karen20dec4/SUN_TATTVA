@@ -33,7 +33,6 @@ class TattvaNotificationService : Service() {
         
         private const val TATTVA_NOTIF_ID = 1001
         private const val PLANET_NOTIF_ID = 1002
-        private const val GROUP_KEY = "com.android.sun.STATUS_BAR_NOTIFICATIONS"
         
         const val ACTION_LOCATION_CHANGED = "com.android.sun.LOCATION_CHANGED"
         const val ACTION_SETTINGS_CHANGED = "com.android.sun.SETTINGS_CHANGED"
@@ -227,11 +226,9 @@ class TattvaNotificationService : Service() {
             .setSilent(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
-            .setGroup(GROUP_KEY)  // Add notifications to a group
-            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_ALL)
             .build()
         
-        Log.d(TAG, "Notification created with group key: $GROUP_KEY")
+        Log.d(TAG, "Notification created (no grouping)")
         return notification
     }
 
