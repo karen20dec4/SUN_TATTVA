@@ -72,7 +72,7 @@ class TattvaNotificationService : Service() {
         Log.d(TAG, "onStartCommand() called")
         
         // Pornire neutră
-        val initialNotification = createDetailedNotification("Loading astro data...", R.drawable.icon, CHANNEL_ID_TATTVA)
+        val initialNotification = createDetailedNotification("Loading astro data...", R.drawable.icon, CHANNEL_ID_TATTVA, "GROUP_TATTVA")
         startForeground(TATTVA_NOTIF_ID, initialNotification)
         
         Log.d(TAG, "Started in foreground with initial notification")
@@ -80,6 +80,8 @@ class TattvaNotificationService : Service() {
         startPeriodicUpdate()
         return START_STICKY
     }
+	
+	
 
     private fun startPeriodicUpdate() {
         updateJob?.cancel()
@@ -92,8 +94,12 @@ class TattvaNotificationService : Service() {
     }
 
     
+	
+	
+	
+	
+	
 	private suspend fun updateNotification() {
-        Log.d(TAG, "═══════════════════════════════════════════════════════")
         Log.d(TAG, "updateNotification() called")
         
         val repository = AstroRepository(applicationContext)
@@ -101,10 +107,7 @@ class TattvaNotificationService : Service() {
         val showTattva = settingsPreferences.getTattvaNotification()
         val showPlanet = settingsPreferences.getPlanetaryHourNotification()
 
-        Log.d(TAG, "Settings: showTattva=$showTattva, showPlanet=$showPlanet")
-
         if (!showTattva && !showPlanet) {
-            Log.d(TAG, "Both notifications disabled - stopping service")
             stopSelf()
             return
         }
@@ -119,8 +122,6 @@ class TattvaNotificationService : Service() {
             )
 
             val notificationManager = getSystemService(NotificationManager::class.java)
-            
-            // Formatare GMT (ex: GMT+2.0) - am scos GMT
             val gmtSuffix = "(${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
 
             // 1. NOTIFICARE TATTVA
@@ -128,63 +129,63 @@ class TattvaNotificationService : Service() {
                 val type = astroData.tattva.tattva
                 val endTime = formatTime(astroData.tattva.endTime, timeZone)
                 val emoji = getTattvaEmoji(type)
-                
-                // Format: 🔺 - ends 03:02 (GMT+2.0)
                 val tattvaText = "$emoji - until $endTime $gmtSuffix"
                 
-                Log.d(TAG, "Creating Tattva notification: $tattvaText")
-                Log.d(TAG, "Tattva icon resource: ${getTattvaIcon(type)}")
+                // În secțiunea pentru Tattva (aprox. linia 91):
+				val notification = createDetailedNotification(
+					tattvaText, 
+					getTattvaIcon(type), 
+					CHANNEL_ID_TATTVA,
+					"GROUP_TATTVA" // Nume unic pentru grupul Tattva
+				)
                 
-                val notification = createDetailedNotification(tattvaText, getTattvaIcon(type), CHANNEL_ID_TATTVA)
-                
-                // Tattva is always the primary foreground notification when enabled
-                Log.d(TAG, "Calling startForeground with TATTVA_NOTIF_ID=$TATTVA_NOTIF_ID")
+                // Aceasta rămâne notificarea principală a serviciului
                 startForeground(TATTVA_NOTIF_ID, notification)
             } else {
-                Log.d(TAG, "Tattva disabled - canceling notification")
                 notificationManager.cancel(TATTVA_NOTIF_ID)
             }
 
             // 2. NOTIFICARE ORA PLANETARĂ
             if (showPlanet) {
-				val planet = astroData.planet.planet
-				val endTime = formatTime(astroData.planet.endTime, timeZone)
-				
-				// Folosim getPlanetEmoji în loc de planet.code
-				val emoji = getPlanetEmoji(planet)
-				val gmtSuffix = "(${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
-				
-				// Format: 🪐 - ends 04:06 (+2.0)
-				val planetText = "$emoji - until $endTime $gmtSuffix"
-				
-				Log.d(TAG, "Creating Planet notification: $planetText")
-				Log.d(TAG, "Planet icon resource: ${getPlanetIcon(planet)}")
-				
-				val notification = createDetailedNotification(planetText, getPlanetIcon(planet), CHANNEL_ID_PLANET)
-				
-				// If Tattva is not shown, Planet becomes the foreground notification
-				// If Tattva is shown, Planet is added as a second notification
-				if (!showTattva) {
-					Log.d(TAG, "Calling startForeground with PLANET_NOTIF_ID=$PLANET_NOTIF_ID")
-					startForeground(PLANET_NOTIF_ID, notification)
-				} else {
-					// Both are enabled - show planet as a separate notification in the same group
-					Log.d(TAG, "Both enabled - calling notify() for PLANET_NOTIF_ID=$PLANET_NOTIF_ID")
-					notificationManager.notify(PLANET_NOTIF_ID, notification)
-				}
-			} else {
-                Log.d(TAG, "Planet disabled - canceling notification")
+                val planet = astroData.planet.planet
+                val endTime = formatTime(astroData.planet.endTime, timeZone)
+                val emoji = getPlanetEmoji(planet)
+                val planetText = "$emoji - until $endTime $gmtSuffix"
+                
+                // În secțiunea pentru Planetă (aprox. linia 106):
+				val notification = createDetailedNotification(
+					planetText, 
+					getPlanetIcon(planet), 
+					CHANNEL_ID_PLANET,
+					"GROUP_PLANET" // Nume unic pentru grupul Planetă
+				)
+                
+                if (!showTattva) {
+                    // Dacă Tattva e oprit, Planeta devine notificarea principală de tip Foreground
+                    startForeground(PLANET_NOTIF_ID, notification)
+                } else {
+                    // Dacă ambele sunt pornite, Planeta e o notificare separată
+                    // Ne asigurăm că are ID diferit și NU este group summary
+                    notificationManager.notify(PLANET_NOTIF_ID, notification)
+                }
+            } else {
                 notificationManager.cancel(PLANET_NOTIF_ID)
             }
-            
-            Log.d(TAG, "updateNotification() completed successfully")
 
         } catch (e: Exception) {
             Log.e(TAG, "Update failed", e)
         }
-        
-        Log.d(TAG, "═══════════════════════════════════════════════════════")
-    }
+		    Log.d(TAG, "═══════════════════════════════════════════════════════")
+    }   
+    
+    
+
+
+
+
+
+
+
 
     private fun getTattvaEmoji(type: TattvaType): String {
         return when (type) {
@@ -212,25 +213,29 @@ class TattvaNotificationService : Service() {
 	
 	
 	
-    private fun createDetailedNotification(title: String, iconRes: Int, channelId: String): Notification {
-        Log.d(TAG, "createDetailedNotification(): title='$title', iconRes=$iconRes, channelId=$channelId")
-        
-        val intent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, iconRes, intent, PendingIntent.FLAG_IMMUTABLE)
+    
+	private fun createDetailedNotification(title: String, iconRes: Int, channelId: String, groupKey: String): Notification {
+		Log.d(TAG, "createDetailedNotification(): title='$title', iconRes=$iconRes, channelId=$channelId, group=$groupKey")
+		val intent = Intent(this, MainActivity::class.java)
+		val pendingIntent = PendingIntent.getActivity(this, iconRes, intent, PendingIntent.FLAG_IMMUTABLE)
 
-        val notification = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(iconRes)
-            .setContentTitle(title)
-            .setContentText("")
-            .setOngoing(true)
-            .setSilent(true)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
-            .build()
-        
-        Log.d(TAG, "Notification created (no grouping)")
-        return notification
-    }
+		return NotificationCompat.Builder(this, channelId)
+			.setSmallIcon(iconRes)
+			.setContentTitle(title)
+			.setOngoing(true)
+			.setSilent(true)
+			// Am pus Priority HIGH pentru a forța sistemul să le dea importanță vizuală
+			.setPriority(NotificationCompat.PRIORITY_HIGH) 
+			.setContentIntent(pendingIntent)
+			.setGroup(groupKey) // <--- Aici e magia
+			.setGroupSummary(false) // Îi spunem că e notificare individuală
+			.build()
+	}
+	
+	
+	
+	
+	
 
     private fun getPlanetIcon(type: PlanetType?): Int {
         return when (type) {

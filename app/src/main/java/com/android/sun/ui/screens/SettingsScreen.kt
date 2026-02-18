@@ -212,9 +212,11 @@ fun SettingsScreen(
 					items = listOf(
 						NotificationItem("Tattva", isTattvaNotification) { enabled ->
 							onTattvaNotificationChange(enabled)
+							context.sendBroadcast(android.content.Intent("com.android.sun.ACTION_SETTINGS_CHANGED"))
 						},
 						NotificationItem("Planetary Hour", isPlanetaryHourNotification) { enabled ->
 							onPlanetaryHourNotificationChange(enabled)
+							context.sendBroadcast(android.content.Intent("com.android.sun.ACTION_SETTINGS_CHANGED"))
 						}
 					),
 					enabled = true
