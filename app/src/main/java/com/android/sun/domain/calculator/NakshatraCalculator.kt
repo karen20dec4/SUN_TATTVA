@@ -13,13 +13,18 @@ class NakshatraCalculator {
      * Calculează Nakshatra curentă bazată pe longitudinea Lunii (sidereal)
      * 
      * ✅ FIX: Uses current moon position to determine Nakshatra
+     * ✅ FIX DRIFT: Uses reference moon position at a fixed time to calculate stable zeroReferenceTime
      * 
      * @param moonLongitude Current moon longitude (determines which Nakshatra)
      * @param currentTime Current time for countdown calculation
+     * @param referenceMoonLongitude Moon longitude at a fixed reference time (e.g., sunrise) to prevent drift
+     * @param referenceTime The fixed reference time (e.g., sunrise time)
      */
     fun calculateNakshatra(
         moonLongitude: Double,
-        currentTime: Calendar
+        currentTime: Calendar,
+        referenceMoonLongitude: Double = moonLongitude,  // Default to current for backward compatibility
+        referenceTime: Calendar = currentTime  // Default to current for backward compatibility
     ): NakshatraResult {
         android.util.Log.d("NakshatraDebug", "============================================")
         android.util.Log.d("NakshatraDebug", "🌙 NAKSHATRA CALCULATION START")
@@ -78,18 +83,28 @@ class NakshatraCalculator {
         val endTime = currentTime.clone() as Calendar
         endTime.add(Calendar.SECOND, (hoursRemainingUntilEnd * 3600).toInt())
         
-        // ✅ Zero Reference pentru toate cele 27 Nakshatras
+        // ✅ FIXED DRIFT: Zero Reference pentru toate cele 27 Nakshatras
         // Calculăm când luna era la 0° longitudinii ecliptice pentru a putea 
         // calcula timpul absolut pentru toate Nakshatra-urile în mod consistent
-        val degreesFromZero = normalizedLon
+        // ✅ KEY FIX: Use REFERENCE moon position (at fixed time like sunrise) instead of current
+        // This prevents the zeroReferenceTime from drifting as the moon moves throughout the day
+        
+        // Normalizează longitudinea de referință
+        var normalizedRefLon = referenceMoonLongitude
+        while (normalizedRefLon < 0) normalizedRefLon += 360.0
+        while (normalizedRefLon >= 360) normalizedRefLon -= 360.0
+        
+        val degreesFromZero = normalizedRefLon  // ✅ Use reference position, not current!
         val hoursFromZero = degreesFromZero / avgDegreesPerHour
-        val zeroReferenceTime = currentTime.clone() as Calendar
+        val zeroReferenceTime = referenceTime.clone() as Calendar  // ✅ Use reference time, not current!
         zeroReferenceTime.add(Calendar.SECOND, -(hoursFromZero * 3600).toInt())
         
         android.util.Log.d("NakshatraDebug", "Hours elapsed since Nakshatra start: %.2f hours".format(hoursElapsedSinceStart))
         android.util.Log.d("NakshatraDebug", "Hours remaining until Nakshatra end: %.2f hours".format(hoursRemainingUntilEnd))
         android.util.Log.d("NakshatraDebug", "Start Time: ${startTime.time}")
         android.util.Log.d("NakshatraDebug", "End Time: ${endTime.time}")
+        android.util.Log.d("NakshatraDebug", "Reference Moon Longitude: %.2f°".format(normalizedRefLon))
+        android.util.Log.d("NakshatraDebug", "Reference Time: ${referenceTime.time}")
         android.util.Log.d("NakshatraDebug", "Zero Reference Time: ${zeroReferenceTime.time}")
         android.util.Log.d("NakshatraDebug", "============================================")
         
@@ -219,10 +234,10 @@ enum class NakshatraType(
 /**
  * Rezultatul calculului Nakshatra
  * 
- * ✅ ADDED zeroReferenceTime: Timpul calculat când luna era la 0° longitudinii ecliptice,
- * folosit ca punct de referință pentru a calcula timpurile tuturor celor 27 Nakshatra în mod consistent.
- * În practică, când această funcție este apelată cu poziția lunii la răsărit, zeroReferenceTime
- * devine un timestamp fix pentru întreaga zi.
+ * ✅ FIXED DRIFT: zeroReferenceTime este calculat folosind poziția lunii la un moment fix (răsărit),
+ * nu poziția lunii curentă. Aceasta previne "drift-ul" intervalelor Nakshatra pe măsură ce luna
+ * se mișcă de-a lungul zilei. Pentru aceeași zi Tattva, zeroReferenceTime va fi întotdeauna același,
+ * asigurând că intervalele Nakshatra rămân constante.
  * 
  * ✅ ADDED moonZodiacPosition: Poziția lunii în zodiac (ex: "13°20′ Capricorn")
  */

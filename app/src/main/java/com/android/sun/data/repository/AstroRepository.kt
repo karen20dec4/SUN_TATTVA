@@ -248,16 +248,7 @@ class AstroRepository(private val context: Context) {
             moonLongitude, sunLongitude, calendar
         )
 		
-		// ✅ NAKSHATRA FIX: Use CURRENT moon position for correct Nakshatra identification
-        // This ensures the displayed Nakshatra matches the moon's actual current position
-        
-        // Calculate Nakshatra using CURRENT moon position
-        val nakshatra = nakshatraCalculator.calculateNakshatra(
-            moonLongitude,  // Current position determines correct Nakshatra ✅
-            calendar        // Current time for proper countdown ✅
-        )
-
-        // ✅ ADĂUGAT:  Calculează polaritatea la răsărit
+		// ✅ ADĂUGAT:  Calculează polaritatea la răsărit
         val sunriseHour = sunrise.get(Calendar.HOUR_OF_DAY)
         val sunriseMinute = sunrise.get(Calendar.MINUTE)
         val sunriseSecond = sunrise.get(Calendar.SECOND)
@@ -267,6 +258,18 @@ class AstroRepository(private val context: Context) {
         )
         val sunLongitudeAtSunrise = astroCalculator.calculateSunLongitude(
             sunriseYear, sunriseMonth, sunriseDay, sunriseHour, sunriseMinute, sunriseSecond
+        )
+		
+		// ✅ NAKSHATRA DRIFT FIX: Use moon position at SUNRISE as reference
+        // This prevents Nakshatra time intervals from drifting as the moon moves during the day
+        // The current moon position is used to identify which Nakshatra is active now,
+        // but the sunrise moon position provides a STABLE reference point for all 27 Nakshatra intervals
+        
+        val nakshatra = nakshatraCalculator.calculateNakshatra(
+            moonLongitude = moonLongitude,              // Current position → determines WHICH Nakshatra ✅
+            currentTime = calendar,                     // Current time → for countdown ✅
+            referenceMoonLongitude = moonLongitudeAtSunrise,  // Sunrise position → STABLE reference ✅
+            referenceTime = sunrise                     // Sunrise time → STABLE timestamp ✅
         )
         
         // ✅ FIX: Apelează cu 2 parametri Double, nu Calendar
