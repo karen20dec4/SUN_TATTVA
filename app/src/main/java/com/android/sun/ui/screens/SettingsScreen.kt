@@ -175,88 +175,50 @@ fun SettingsScreen(
                     Spacer(modifier = Modifier.height(8.dp))
                 }
                 
-                // Full Moon Notification
-                SettingsSwitchItem(
-                    icon = Icons.Default.Star,
-                    title = "Full Moon",
-                    subtitle = "Get notified 18h before and after full moon peak",
-                    checked = isFullMoonNotification,
-                    onCheckedChange = { enabled ->
-                        if (enabled && ! hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                        } else {
-                            onFullMoonNotificationChange(enabled)
+                // Combined Notification Card - Full Moon, Tripura Sundari, New Moon
+                NotificationGroupCard(
+                    title = "Notification",
+                    items = listOf(
+                        NotificationItem("Full Moon", isFullMoonNotification) { enabled ->
+                            if (enabled && !hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            } else {
+                                onFullMoonNotificationChange(enabled)
+                            }
+                        },
+                        NotificationItem("Tripura Sundari", isTripuraSundariNotification) { enabled ->
+                            if (enabled && !hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            } else {
+                                onTripuraSundariNotificationChange(enabled)
+                            }
+                        },
+                        NotificationItem("New Moon", isNewMoonNotification) { enabled ->
+                            if (enabled && !hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            } else {
+                                onNewMoonNotificationChange(enabled)
+                            }
                         }
-                    },
-                    enabled = hasNotificationPermission || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
-                )
-                
-                // Tripura Sundari Notification
-                SettingsSwitchItem(
-                    icon = Icons.Default.Star,
-                    title = "Tripura Sundari",
-                    subtitle = "Get notified 24h before Tripura Sundari moment",
-                    checked = isTripuraSundariNotification,
-                    onCheckedChange = { enabled ->
-                        if (enabled && ! hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                        } else {
-                            onTripuraSundariNotificationChange(enabled)
-                        }
-                    },
-                    enabled = hasNotificationPermission || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
-                )
-                
-                // New Moon Notification
-                SettingsSwitchItem(
-                    icon = Icons.Default.Star,
-                    title = "New Moon",
-                    subtitle = "Get notified 24h before new moon",
-                    checked = isNewMoonNotification,
-                    onCheckedChange = { enabled ->
-                        if (enabled && !hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                        } else {
-                            onNewMoonNotificationChange(enabled)
-                        }
-                    },
+                    ),
                     enabled = hasNotificationPermission || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
                 )
                 
                 
 				
-				
-				// Tattva Persistent Notification
-				SettingsSwitchItem(
-					icon = Icons.Default.Notifications,
-					title = "Tattva in Status Bar",
-					subtitle = "Show current Tattva as persistent notification",
-					checked = isTattvaNotification,
-					onCheckedChange = { enabled ->
-						onTattvaNotificationChange(enabled)
-					}
+				// Combined Status Bar Card - Tattva and Planetary Hour
+				NotificationGroupCard(
+					title = "Status Bar",
+					items = listOf(
+						NotificationItem("Tattva", isTattvaNotification) { enabled ->
+							onTattvaNotificationChange(enabled)
+						},
+						NotificationItem("Planetary Hour", isPlanetaryHourNotification) { enabled ->
+							onPlanetaryHourNotificationChange(enabled)
+						}
+					),
+					enabled = true
 				)
-				
-				// Planetary Hour Persistent Notification
-				SettingsSwitchItem(
-					icon = Icons.Default.Notifications,
-					title = "Planetary Hour in Status Bar",
-					subtitle = "Show current planetary hour as persistent notification",
-					checked = isPlanetaryHourNotification,
-					onCheckedChange = { enabled ->
-						onPlanetaryHourNotificationChange(enabled)
-					}
-				)
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
 				
 				HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                 
@@ -311,67 +273,7 @@ fun SettingsScreen(
                 }
                 
 				
-				
-				
-				
-				
-				
-				
-				
-				Spacer(modifier = Modifier.height(32.dp))
-			// ═══════════════════════════════════════════════════════════════════
-            // SECTIUNEA:  TEST NOTIFICATIONS (pentru development)
-            // ═══════════════════════════════════════════════════════════════════
-            Text(
-                text = "Test Notifications",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight. Bold,
-                color = MaterialTheme. colorScheme.primary,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-            
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                // Test Full Moon
-                Button(
-                    onClick = {
-                        val helper = com.android.sun.notification.NotificationHelper(context)
-                        helper.sendFullMoonStartNotification("Test - 15: 30")
-                    },
-					shape = RoundedCornerShape(7.dp),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text("🌑 Luna P", fontSize = 12.sp)
-                }
-                
-                // Test Tripura
-                Button(
-                    onClick = {
-                        val helper = com.android.sun.notification.NotificationHelper(context)
-                        helper.sendTripuraSundariNotification("Test - 18:45")
-                    },
-					shape = RoundedCornerShape(7.dp),
-                    modifier = Modifier. weight(1f)
-                ) {
-                    Text("⭐ Tripura", fontSize = 12.sp)
-                }
-                
-                // Test New Moon
-                Button(
-                    onClick = {
-                        val helper = com.android.sun. notification.NotificationHelper(context)
-                        helper.sendNewMoonNotification("Test - 12:00")
-                    },
-					shape = RoundedCornerShape(7.dp),
-                    modifier = Modifier. weight(1f)
-                ) {
-                    Text("🌕 Shv", fontSize = 12.sp)
-                }
-            }
-   			
-                // Spatiu pentru gradient navigation bar
+				// Spatiu pentru gradient navigation bar
                 Spacer(modifier = Modifier.height(20.dp))
             }
         }
@@ -446,6 +348,86 @@ private fun SettingsSwitchItem(
                 onCheckedChange = onCheckedChange,
                 enabled = enabled
             )
+        }
+    }
+}
+
+/**
+ * Data class for notification items in grouped card
+ */
+data class NotificationItem(
+    val title: String,
+    val checked: Boolean,
+    val onCheckedChange: (Boolean) -> Unit
+)
+
+/**
+ * Grouped notification card with horizontal checkboxes
+ */
+@Composable
+private fun NotificationGroupCard(
+    title: String,
+    items: List<NotificationItem>,
+    enabled: Boolean = true
+) {
+    Card(
+        shape = RoundedCornerShape(7.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (enabled) {
+                MaterialTheme.colorScheme.surfaceVariant
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+            }
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            // Card title
+            Text(
+                text = title,
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
+                color = if (enabled) {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                },
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+            
+            // Horizontal row with checkboxes
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                items.forEach { item ->
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = item.title,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = if (enabled) {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                            },
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+                        Checkbox(
+                            checked = item.checked,
+                            onCheckedChange = item.onCheckedChange,
+                            enabled = enabled
+                        )
+                    }
+                }
+            }
         }
     }
 }
