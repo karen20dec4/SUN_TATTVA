@@ -87,8 +87,11 @@ class TattvaNotificationService : Service() {
         updateJob?.cancel()
         updateJob = serviceScope.launch {
             while (isActive) {
-                updateNotification()
-                delay(30_000) 
+                val delayMs = updateNotificationAndGetDelay()
+                // Wait until the next Tattva/Planet change (with 1s buffer to ensure the change happened)
+                val waitMs = (delayMs + 1000L).coerceAtLeast(1000L)
+                Log.d(TAG, "Next update in ${waitMs / 1000}s")
+                delay(waitMs)
             }
         }
     }
@@ -99,8 +102,12 @@ class TattvaNotificationService : Service() {
 	
 	
 	
-	private suspend fun updateNotification() {
-        Log.d(TAG, "updateNotification() called")
+	/**
+	 * Updates the notification and returns the delay (in ms) until the next Tattva/Planet change.
+	 * Returns 30_000 as fallback if calculation fails.
+	 */
+	private suspend fun updateNotificationAndGetDelay(): Long {
+        Log.d(TAG, "updateNotificationAndGetDelay() called")
         
         val repository = AstroRepository(applicationContext)
         val locationPrefs = LocationPreferences(applicationContext)
@@ -109,7 +116,7 @@ class TattvaNotificationService : Service() {
 
         if (!showTattva && !showPlanet) {
             stopSelf()
-            return
+            return 30_000L
         }
 
         try {
@@ -124,6 +131,9 @@ class TattvaNotificationService : Service() {
             val notificationManager = getSystemService(NotificationManager::class.java)
             val gmtSuffix = "(${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
 
+            val now = System.currentTimeMillis()
+            var nextChangeMs = Long.MAX_VALUE
+
             // 1. NOTIFICARE TATTVA
             if (showTattva) {
                 val type = astroData.tattva.tattva
@@ -131,16 +141,23 @@ class TattvaNotificationService : Service() {
                 val emoji = getTattvaEmoji(type)
                 val tattvaText = "$emoji - until $endTime $gmtSuffix"
                 
-                // În secțiunea pentru Tattva (aprox. linia 91):
-				val notification = createDetailedNotification(
+                val notification = createDetailedNotification(
 					tattvaText, 
 					getTattvaIcon(type), 
 					CHANNEL_ID_TATTVA,
-					"GROUP_TATTVA" // Nume unic pentru grupul Tattva
+					"GROUP_TATTVA"
 				)
                 
-                // Aceasta rămâne notificarea principală a serviciului
                 startForeground(TATTVA_NOTIF_ID, notification)
+
+                // Track when this Tattva ends
+                val tattvaEndMs = astroData.tattva.endTime.timeInMillis - now
+                if (tattvaEndMs > 0) {
+                    nextChangeMs = minOf(nextChangeMs, tattvaEndMs)
+                } else {
+                    Log.w(TAG, "Tattva already ended (stale data), retrying soon")
+                    nextChangeMs = minOf(nextChangeMs, 2_000L)
+                }
             } else {
                 notificationManager.cancel(TATTVA_NOTIF_ID)
             }
@@ -152,30 +169,40 @@ class TattvaNotificationService : Service() {
                 val emoji = getPlanetEmoji(planet)
                 val planetText = "$emoji - until $endTime $gmtSuffix"
                 
-                // În secțiunea pentru Planetă (aprox. linia 106):
-				val notification = createDetailedNotification(
+                val notification = createDetailedNotification(
 					planetText, 
 					getPlanetIcon(planet), 
 					CHANNEL_ID_PLANET,
-					"GROUP_PLANET" // Nume unic pentru grupul Planetă
+					"GROUP_PLANET"
 				)
                 
                 if (!showTattva) {
-                    // Dacă Tattva e oprit, Planeta devine notificarea principală de tip Foreground
                     startForeground(PLANET_NOTIF_ID, notification)
                 } else {
-                    // Dacă ambele sunt pornite, Planeta e o notificare separată
-                    // Ne asigurăm că are ID diferit și NU este group summary
                     notificationManager.notify(PLANET_NOTIF_ID, notification)
+                }
+
+                // Track when this planetary hour ends
+                val planetEndMs = astroData.planet.endTime.timeInMillis - now
+                if (planetEndMs > 0) {
+                    nextChangeMs = minOf(nextChangeMs, planetEndMs)
+                } else {
+                    Log.w(TAG, "Planetary hour already ended (stale data), retrying soon")
+                    nextChangeMs = minOf(nextChangeMs, 2_000L)
                 }
             } else {
                 notificationManager.cancel(PLANET_NOTIF_ID)
             }
 
+            Log.d(TAG, "═══════════════════════════════════════════════════════")
+            
+            // Return the time until the next change (or 30s fallback)
+            return if (nextChangeMs == Long.MAX_VALUE) 30_000L else nextChangeMs
+
         } catch (e: Exception) {
             Log.e(TAG, "Update failed", e)
+            return 30_000L
         }
-		    Log.d(TAG, "═══════════════════════════════════════════════════════")
     }   
     
     
@@ -301,11 +328,11 @@ class TattvaNotificationService : Service() {
                 when (intent?.action) {
                     ACTION_LOCATION_CHANGED -> {
                         Log.d(TAG, "Received ACTION_LOCATION_CHANGED broadcast")
-                        serviceScope.launch { updateNotification() }
+                        startPeriodicUpdate() // Restart loop to pick up new timing
                     }
                     ACTION_SETTINGS_CHANGED -> {
                         Log.d(TAG, "Received ACTION_SETTINGS_CHANGED broadcast")
-                        serviceScope.launch { updateNotification() }
+                        startPeriodicUpdate() // Restart loop to pick up new timing
                     }
                 }
             }
