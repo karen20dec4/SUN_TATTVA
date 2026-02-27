@@ -243,6 +243,7 @@ fun PlanetaryHoursCard(
 /**
  * Header compact: Shows current planet + countdown (no title, single line like Nakshatra)
  */
+@Suppress("UNUSED_PARAMETER")
 @Composable
 private fun CurrentPlanetaryHourHeader(
     sunrise: Calendar,

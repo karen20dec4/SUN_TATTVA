@@ -91,9 +91,6 @@ fun AllDayScreen(
     val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.US).apply {
         this.timeZone = locationTimeZone
     }
-    val timeFormat = SimpleDateFormat("HH:mm: ss", Locale.getDefault()).apply {
-        this.timeZone = locationTimeZone
-    }
     
     var currentTime by remember { mutableStateOf(Calendar.getInstance()) }
     
@@ -406,7 +403,7 @@ private fun TattvaDayItemCard(
                         this.timeZone = locationTimeZone
                     }
                     
-                    tattvaItem.subTattvas.forEachIndexed { index, subTattva ->
+                    tattvaItem.subTattvas.forEachIndexed { _, subTattva ->
                         val subEndTimeMs = subTattva.startTime.timeInMillis + subTattvaDurationMs
                         
                         val isSubCurrentNow = currentTime.timeInMillis >= subTattva.startTime.timeInMillis &&

@@ -18,6 +18,7 @@ class SubTattvaCalculator {
     /**
      * Calculează SubTattva-ul curent bazat pe răsăritul soarelui
      */
+    @Suppress("UNUSED_PARAMETER")
     fun calculateCurrentSubTattva(
         currentTime: Calendar,
         sunrise: Calendar,

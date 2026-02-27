@@ -67,7 +67,6 @@ class NityaCalculator {
     
     // ✅ CALCUL EXACT pentru Start/End Time
     val tithiStartDegree = tithiIndex * 12.0
-    val tithiEndDegree = (tithiIndex + 1) * 12.0
     
     val progressInTithi = diff - tithiStartDegree
     val tithiProgress = progressInTithi / 12.0

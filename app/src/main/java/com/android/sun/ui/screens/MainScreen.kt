@@ -33,6 +33,7 @@ import java.util.*
 /**
  * Ecranul principal al aplicatiei
  */
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,

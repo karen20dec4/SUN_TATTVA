@@ -65,6 +65,7 @@ class AstroCalculator(private val swissEph: SwissEphWrapper) {
      * @param timeZoneOffset - Offset-ul timezone-ului locației (UNUSED acum, păstrat pentru compatibilitate)
      * @return Calendar cu ora în UTC
      */
+    @Suppress("UNUSED_PARAMETER")
     private fun julianDayToCalendar(julianDay: Double, timeZoneOffset: Double): Calendar {
         // JD 2440587.5 = 1 ianuarie 1970, 00:00:00 UTC (Unix epoch)
         val unixMillis = ((julianDay - 2440587.5) * 86400000.0).toLong()

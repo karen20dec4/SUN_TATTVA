@@ -69,7 +69,6 @@ fun LocationScreen(
     
     var showClearAllDialog by rememberSaveable { mutableStateOf(false) }
     val currentSelectedLocation by mainViewModel.currentLocation.collectAsState()
-    val searchResults by viewModel.searchResults.collectAsState()
     var searchQuery by rememberSaveable { mutableStateOf("") }
     
     LaunchedEffect(searchQuery) {
@@ -256,7 +255,7 @@ fun LocationScreen(
                             ) { location ->
                                 LocationItemCompact(
                                     location = location,
-                                    isSelected = currentSelectedLocation?.name == location.name,
+                                    isSelected = currentSelectedLocation.name == location.name,
                                     onSelect = { 
                                         Log.d(TAG, "═══════════════════════════════════════")
 										Log.d(TAG, "🟢 SELECT BUTTON CLICKED")

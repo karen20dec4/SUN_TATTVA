@@ -149,6 +149,7 @@ fun getTattvaColor(hexColor: String): Color {
  * Returnează culoarea textului pentru fundal tattva
  * (toate au text alb pentru contrast bun)
  */
+@Suppress("UNUSED_PARAMETER")
 fun getTattvaOnColor(hexColor: String): Color {
     return Color.White
 }

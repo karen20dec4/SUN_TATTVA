@@ -200,6 +200,7 @@ fun NakshatraCard(
 /**
  * Header compact: Shows current Nakshatra + countdown (no title, single line)
  */
+@Suppress("UNUSED_PARAMETER")
 @Composable
 private fun CurrentNakshatraHeader(
     nakshatraResult: NakshatraResult,

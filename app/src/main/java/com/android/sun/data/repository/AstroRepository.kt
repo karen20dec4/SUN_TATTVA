@@ -410,6 +410,7 @@ class AstroRepository(private val context: Context) {
      * Fiecare Tattva mare = 24 minute = 1440 secunde
      * Fiecare SubTattva = 4 min 48 sec = 288 secunde
      */
+    @Suppress("UNUSED_PARAMETER")
     fun generateTattvaDaySchedule(
         sunriseTime: Calendar,
         latitude: Double,

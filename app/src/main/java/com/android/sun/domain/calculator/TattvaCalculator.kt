@@ -19,6 +19,7 @@ class TattvaCalculator {
     /**
      * Calculează Tattva-ul curent bazat pe răsăritul soarelui
      */
+    @Suppress("UNUSED_PARAMETER")
     fun calculateCurrentTattva(
         currentTime: Calendar,
         sunrise: Calendar,
