@@ -222,7 +222,7 @@ class AstroRepository(private val context: Context) {
             calendar, sunrise, sunset
         )
 
-        val moonLongitude = astroCalculator.calculateMoonLongitude(
+        val (moonLongitude, moonSpeedDegreesPerDay) = astroCalculator.calculateMoonLongitudeWithSpeed(
             year, month, day, hour, minute, second
         )
         val sunLongitude = astroCalculator.calculateSunLongitude(
@@ -269,7 +269,8 @@ class AstroRepository(private val context: Context) {
             moonLongitude = moonLongitude,              // Current position → determines WHICH Nakshatra ✅
             currentTime = calendar,                     // Current time → for countdown ✅
             referenceMoonLongitude = moonLongitudeAtSunrise,  // Sunrise position → STABLE reference ✅
-            referenceTime = sunrise                     // Sunrise time → STABLE timestamp ✅
+            referenceTime = sunrise,                    // Sunrise time → STABLE timestamp ✅
+            moonSpeedDegreesPerDay = moonSpeedDegreesPerDay   // Actual moon speed → accurate timing ✅
         )
         
         // ✅ FIX: Apelează cu 2 parametri Double, nu Calendar

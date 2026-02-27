@@ -14,17 +14,20 @@ class NakshatraCalculator {
      * 
      * ✅ FIX: Uses current moon position to determine Nakshatra
      * ✅ FIX DRIFT: Uses reference moon position at a fixed time to calculate stable zeroReferenceTime
+     * ✅ FIX SPEED: Uses actual moon speed from Swiss Ephemeris instead of static average
      * 
      * @param moonLongitude Current moon longitude (determines which Nakshatra)
      * @param currentTime Current time for countdown calculation
      * @param referenceMoonLongitude Moon longitude at a fixed reference time (e.g., sunrise) to prevent drift
      * @param referenceTime The fixed reference time (e.g., sunrise time)
+     * @param moonSpeedDegreesPerDay Actual moon speed in degrees/day from Swiss Ephemeris (default 13.2 for backward compat)
      */
     fun calculateNakshatra(
         moonLongitude: Double,
         currentTime: Calendar,
         referenceMoonLongitude: Double = moonLongitude,  // Default to current for backward compatibility
-        referenceTime: Calendar = currentTime  // Default to current for backward compatibility
+        referenceTime: Calendar = currentTime,  // Default to current for backward compatibility
+        moonSpeedDegreesPerDay: Double = 13.2  // Default to average for backward compatibility
     ): NakshatraResult {
         android.util.Log.d("NakshatraDebug", "============================================")
         android.util.Log.d("NakshatraDebug", "🌙 NAKSHATRA CALCULATION START")
@@ -57,8 +60,11 @@ class NakshatraCalculator {
         
         android.util.Log.d("NakshatraDebug", "Progress: %.2f%% (%.4f° in current Nakshatra)".format(nakshatraProgress * 100, progressInNakshatra))
         
-        // Luna se mișcă cu aproximativ 13.2° pe zi
-        val avgDegreesPerHour = 13.2 / 24.0  // ~0.55° per oră
+        // ✅ FIX: Folosește viteza reală a Lunii din Swiss Ephemeris
+        // Luna se mișcă cu viteza variabilă (~11.8° - 15.2° pe zi, media ~13.2°)
+        // Bounds slightly wider than typical range to handle edge cases in ephemeris data
+        val actualDegreesPerDay = moonSpeedDegreesPerDay.coerceIn(10.0, 16.0)
+        val avgDegreesPerHour = actualDegreesPerDay / 24.0
         
         // ✅ Calculează când luna a intrat și când va ieși din Nakshatra curentă
         // bazat pe poziția lunii la timpul de referință (de obicei răsăritul)

@@ -93,6 +93,19 @@ class AstroCalculator(private val swissEph: SwissEphWrapper) {
         return swissEph.calculateBodyPosition(jd, SwissEphWrapper. SE_MOON)
     }
 
+    /**
+     * Calculează longitudinea Lunii și viteza ei (°/zi)
+     * Returnează Pair(longitude, speedDegreesPerDay)
+     */
+    fun calculateMoonLongitudeWithSpeed(
+        year: Int, month: Int, day: Int,
+        hour: Int, minute: Int, second: Int
+    ): Pair<Double, Double> {
+        val dayFraction = hour + minute / 60.0 + second / 3600.0
+        val jd = swissEph.getJulianDay(year, month, day, dayFraction)
+        return swissEph.calculateBodyPositionWithSpeed(jd, SwissEphWrapper.SE_MOON)
+    }
+
     fun calculateSunLongitude(
         year: Int, month: Int, day:  Int,
         hour: Int, minute:  Int, second: Int

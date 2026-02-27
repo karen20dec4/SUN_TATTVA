@@ -547,6 +547,100 @@ return epheDir.absolutePath
     }
 
     /**
+     * ✅ Calculează poziția și viteza corpului ceresc - THREAD-SAFE
+     * Returnează Pair(longitude, speed_in_degrees_per_day)
+     * xx[0] = longitude, xx[3] = speed in longitude (°/day)
+     */
+    fun calculateBodyPositionWithSpeed(julianDay: Double, body: Int): Pair<Double, Double> {
+        lock.withLock {
+            if (!globalIsInitialized || swissEph == null) {
+                if (!globalIsInitializing) {
+                    try {
+                        initializeSwissEph()
+                    } catch (e: Exception) {
+                        throw RuntimeException("Swiss Ephemeris not initialized", e)
+                    }
+                } else {
+                    Thread.sleep(100)
+                    if (!globalIsInitialized) {
+                        throw RuntimeException("Swiss Ephemeris not initialized")
+                    }
+                }
+            }
+
+            try {
+                val xx = DoubleArray(6)
+                val serr = StringBuffer()
+
+                val result = swissEph!!.swe_calc_ut(
+                    julianDay,
+                    body,
+                    SEFLG_SWIEPH or SEFLG_SIDEREAL,
+                    xx,
+                    serr
+                )
+
+                if (result < 0) {
+                    val errorMsg = serr.toString()
+                    if (isCorruptionError(errorMsg) && retryCount < maxRetries) {
+                        retryCount++
+                        reinitializeSwissEph()
+                        return calculateBodyPositionWithSpeedInternal(julianDay, body)
+                    }
+                    throw RuntimeException("Error calculating body position: $errorMsg")
+                }
+
+                retryCount = 0
+                return Pair(xx[0], xx[3])
+
+            } catch (e: NullPointerException) {
+                if (retryCount < maxRetries) {
+                    retryCount++
+                    reinitializeSwissEph()
+                    return calculateBodyPositionWithSpeedInternal(julianDay, body)
+                }
+                throw RuntimeException("NullPointerException after $maxRetries retries", e)
+
+            } catch (e: ArrayIndexOutOfBoundsException) {
+                if (retryCount < maxRetries) {
+                    retryCount++
+                    reinitializeSwissEph()
+                    return calculateBodyPositionWithSpeedInternal(julianDay, body)
+                }
+                throw RuntimeException("ArrayIndexOutOfBoundsException after $maxRetries retries", e)
+
+            } catch (e: Exception) {
+                if (isCorruptionError(e.message) && retryCount < maxRetries) {
+                    retryCount++
+                    reinitializeSwissEph()
+                    return calculateBodyPositionWithSpeedInternal(julianDay, body)
+                }
+                throw RuntimeException("Error calculating body position: ${e.message}", e)
+            }
+        }
+    }
+
+    private fun calculateBodyPositionWithSpeedInternal(julianDay: Double, body: Int): Pair<Double, Double> {
+        val xx = DoubleArray(6)
+        val serr = StringBuffer()
+
+        val result = swissEph!!.swe_calc_ut(
+            julianDay,
+            body,
+            SEFLG_SWIEPH or SEFLG_SIDEREAL,
+            xx,
+            serr
+        )
+
+        if (result < 0) {
+            throw RuntimeException("Error calculating body position: ${serr}")
+        }
+
+        retryCount = 0
+        return Pair(xx[0], xx[3])
+    }
+
+    /**
      * ✅ Închide Swiss Ephemeris
      */
     fun close() {
