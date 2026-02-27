@@ -102,7 +102,12 @@ fun AppNavigation(
     val isTripuraSundariNotification by settingsPreferences.tripuraSundariNotification.collectAsState()
     val isNewMoonNotification by settingsPreferences.newMoonNotification.collectAsState()
     
-    LaunchedEffect(astroData, isFullMoonNotification, isTripuraSundariNotification, isNewMoonNotification) {
+    // ✅ Use stable keys based on event times to prevent unnecessary rescheduling
+    val fullMoonTimeMillis = astroData?.moonPhase?.nextFullMoon?.timeInMillis
+    val tripuraTimeMillis = astroData?.moonPhase?.nextTripuraSundari?.timeInMillis
+    val newMoonTimeMillis = astroData?.moonPhase?.nextNewMoon?.timeInMillis
+    
+    LaunchedEffect(fullMoonTimeMillis, tripuraTimeMillis, newMoonTimeMillis, isFullMoonNotification, isTripuraSundariNotification, isNewMoonNotification) {
         astroData?.let { data ->
             if (isFullMoonNotification) {
                 notificationScheduler.scheduleFullMoonNotifications(

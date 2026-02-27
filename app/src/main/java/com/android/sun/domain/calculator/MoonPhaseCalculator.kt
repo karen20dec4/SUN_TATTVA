@@ -47,12 +47,21 @@ class MoonPhaseCalculator(
         android.util.Log.d("MoonPhaseCalculator", "Next Full Moon:    ${formatDate(nextFullMoon)}")
         android.util.Log. d("MoonPhaseCalculator", "Next New Moon:   ${formatDate(nextNewMoon)}")
         
+        // ✅ Check if we're within ~18h of full moon peak
+        // Moon-Sun relative speed averages ~12.2°/day (moon ~13.2° - sun ~1°)
+        // 18 hours ≈ 9.15° of relative motion. Use 9.5° for safety margin.
+        val fullMoonAngleDiff = getAngleDifference(diff, 180.0)
+        val isInFullMoonInfluence = fullMoonAngleDiff <= 9.5
+        
+        android.util.Log.d("MoonPhaseCalculator", "Full Moon angle diff: $fullMoonAngleDiff°, influence: $isInFullMoonInfluence")
+        
         return MoonPhaseResult(
             phaseAngle = diff,
             illuminationPercent = illuminationPercent,
             nextTripuraSundari = nextTripuraSundari,
             nextFullMoon = nextFullMoon,
-            nextNewMoon = nextNewMoon
+            nextNewMoon = nextNewMoon,
+            isInFullMoonInfluence = isInFullMoonInfluence
         )
     }
 
@@ -211,5 +220,6 @@ data class MoonPhaseResult(
     val illuminationPercent: Int,
     val nextTripuraSundari: Calendar,
     val nextFullMoon:  Calendar,
-    val nextNewMoon: Calendar
+    val nextNewMoon: Calendar,
+    val isInFullMoonInfluence: Boolean = false
 )

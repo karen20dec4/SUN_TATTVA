@@ -2,18 +2,17 @@ package com.android.sun.notification
 
 import android.content.Context
 import androidx.work.*
-import com.android.sun.data.preferences.SettingsPreferences
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
  * Programeaza notificarile folosind WorkManager
+ * Settings checks are handled by the caller (MainActivity) before calling these methods
  */
 class NotificationScheduler(private val context: Context) {
 
     private val workManager = WorkManager.getInstance(context)
-    private val settingsPreferences = SettingsPreferences(context)
 
     companion object {
         const val WORK_TAG_FULL_MOON_START = "full_moon_start"
@@ -31,11 +30,6 @@ class NotificationScheduler(private val context: Context) {
      * - 18h dupa momentul maxim
      */
     fun scheduleFullMoonNotifications(fullMoonTimeMillis: Long) {
-        if (! settingsPreferences.getFullMoonNotification()) {
-            android.util.Log.d("NotificationScheduler", "Full moon notifications disabled")
-            return
-        }
-
         val now = System.currentTimeMillis()
         val timeFormat = SimpleDateFormat("dd MMM HH:mm", Locale.getDefault())
         val fullMoonTimeFormatted = timeFormat.format(Date(fullMoonTimeMillis))
@@ -96,11 +90,6 @@ class NotificationScheduler(private val context: Context) {
      * Programeaza notificarea pentru Tripura Sundari (24h inainte)
      */
     fun scheduleTripuraSundariNotification(tripuraTimeMillis:  Long) {
-        if (!settingsPreferences.getTripuraSundariNotification()) {
-            android.util.Log.d("NotificationScheduler", "Tripura Sundari notifications disabled")
-            return
-        }
-
         val now = System.currentTimeMillis()
         val timeFormat = SimpleDateFormat("dd MMM HH:mm", Locale.getDefault())
         val tripuraTimeFormatted = timeFormat.format(Date(tripuraTimeMillis))
@@ -136,13 +125,8 @@ class NotificationScheduler(private val context: Context) {
      * Programeaza notificarea pentru Luna Noua (24h inainte)
      */
     fun scheduleNewMoonNotification(newMoonTimeMillis:  Long) {
-        if (!settingsPreferences.getNewMoonNotification()) {
-            android.util.Log.d("NotificationScheduler", "New moon notifications disabled")
-            return
-        }
-
         val now = System.currentTimeMillis()
-        val timeFormat = SimpleDateFormat("dd MMM HH: mm", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("dd MMM HH:mm", Locale.getDefault())
         val newMoonTimeFormatted = timeFormat.format(Date(newMoonTimeMillis))
 
         // 24h inainte

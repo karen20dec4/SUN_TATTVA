@@ -1,5 +1,6 @@
 package com.android.sun.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -10,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sun.domain.calculator.MoonPhaseResult
+import androidx.compose.ui.graphics.Color
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -85,10 +87,11 @@ fun MoonPhaseCard(
                 date = moonPhase.nextTripuraSundari
             )
             
-            // Full Moon
+            // Full Moon (highlighted when in influence period)
             MoonEventRow(
                 label = "Full moon:",
-                date = moonPhase.nextFullMoon
+                date = moonPhase.nextFullMoon,
+                isHighlighted = moonPhase.isInFullMoonInfluence
             )
             
             // New Moon
@@ -107,7 +110,8 @@ fun MoonPhaseCard(
 @Composable
 private fun MoonEventRow(
     label: String,
-    date: Calendar
+    date: Calendar,
+    isHighlighted: Boolean = false
 ) {
     // ✅ Format pentru dată și oră (fără timezone)
     val dateFormat = SimpleDateFormat("d MMM - HH:mm", Locale.getDefault())
@@ -126,15 +130,29 @@ private fun MoonEventRow(
     android.util.Log.d("MoonPhaseCard", "🕐 $label Calendar TZ: ${date.timeZone.id}, millis: ${date.timeInMillis}")
     
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(
+                if (isHighlighted) {
+                    Modifier
+                        .background(
+                            color = Color(0xFFFFD700).copy(alpha = 0.25f),
+                            shape = RoundedCornerShape(6.dp)
+                        )
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                } else {
+                    Modifier
+                }
+            ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = label,
+            text = if (isHighlighted) "🌕 $label" else label,
             style = MaterialTheme.typography.bodyMedium,
             fontSize = 14.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            fontWeight = if (isHighlighted) FontWeight.Bold else FontWeight.Normal,
+            color = if (isHighlighted) Color(0xFFFFD700) else MaterialTheme.colorScheme.onSurfaceVariant
         )
         
         // ✅ Afișează data + timezone custom format
