@@ -158,7 +158,7 @@ fun NakshatraCard(
                         
                         // ✅ FIX: Use zeroReferenceTime to calculate ABSOLUTE times for all Nakshatras
                         val nakshatraDegrees = 360.0 / 27.0  // 13.333333°
-                        val avgDegreesPerHour = 13.2 / 24.0  // ~0.55° per hour
+                        val avgDegreesPerHour = nakshatraResult.moonSpeedDegreesPerDay / 24.0
                         val zeroRef = nakshatraResult.zeroReferenceTime
                         
                         reorderedList.forEachIndexed { displayIndex, nakshatra ->

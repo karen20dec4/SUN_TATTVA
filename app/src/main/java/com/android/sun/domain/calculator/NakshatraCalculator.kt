@@ -130,7 +130,8 @@ class NakshatraCalculator {
             name = nakshatra.displayName,
             code = "NK${nakshatra.number}",
             zeroReferenceTime = zeroReferenceTime,
-            moonZodiacPosition = moonZodiacPosition
+            moonZodiacPosition = moonZodiacPosition,
+            moonSpeedDegreesPerDay = actualDegreesPerDay
         )
     }
     
@@ -258,5 +259,6 @@ data class NakshatraResult(
     val name: String = nakshatra.displayName,
     val code: String = "NK${nakshatra.number}",
     val zeroReferenceTime: Calendar,  // ✅ Required parameter - no default to ensure stability
-    val moonZodiacPosition: String = ""  // ✅ Moon position in zodiac format
+    val moonZodiacPosition: String = "",  // ✅ Moon position in zodiac format
+    val moonSpeedDegreesPerDay: Double = 13.2  // ✅ Actual moon speed used for time calculations
 )
