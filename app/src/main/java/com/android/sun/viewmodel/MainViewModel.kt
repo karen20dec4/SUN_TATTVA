@@ -236,6 +236,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         updateJob = viewModelScope.launch {
             var lastTattvaTime:  Calendar? = null
             var lastSubTattvaTime: Calendar?  = null
+            var lastPlanetTime: Calendar? = null
             
             while (true) {
                 delay(1000)
@@ -251,10 +252,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     val subTattvaChanged = lastSubTattvaTime == null || 
                         currentTime.timeInMillis >= currentData.subTattva.endTime. timeInMillis
                     
-                    if (tattvaChanged || subTattvaChanged) {
+                    val planetChanged = lastPlanetTime == null ||
+                        currentTime.timeInMillis >= currentData.planet.endTime.timeInMillis
+                    
+                    if (tattvaChanged || subTattvaChanged || planetChanged) {
                         calculateAstroData()
                         lastTattvaTime = currentTime
                         lastSubTattvaTime = currentTime
+                        lastPlanetTime = currentTime
                     }
                 }
             }
