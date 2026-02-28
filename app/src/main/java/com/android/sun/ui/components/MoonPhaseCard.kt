@@ -129,6 +129,9 @@ private fun MoonEventRow(
     // ✅ DEBUG: Log timezone-ul Calendar-ului primit
     android.util.Log.d("MoonPhaseCard", "🕐 $label Calendar TZ: ${date.timeZone.id}, millis: ${date.timeInMillis}")
     
+    val highlightBg = Color(0xFF423e48)
+    val highlightText = Color(0xFFd0ccd1)
+    
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -136,7 +139,7 @@ private fun MoonEventRow(
                 if (isHighlighted) {
                     Modifier
                         .background(
-                            color = Color(0xFFFFD700).copy(alpha = 0.25f),
+                            color = highlightBg,
                             shape = RoundedCornerShape(6.dp)
                         )
                         .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -148,11 +151,11 @@ private fun MoonEventRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = if (isHighlighted) "🌕 $label" else label,
+            text = label,
             style = MaterialTheme.typography.bodyMedium,
             fontSize = 14.sp,
             fontWeight = if (isHighlighted) FontWeight.Bold else FontWeight.Normal,
-            color = if (isHighlighted) Color(0xFFFFD700) else MaterialTheme.colorScheme.onSurfaceVariant
+            color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant
         )
         
         // ✅ Afișează data + timezone custom format
@@ -165,14 +168,14 @@ private fun MoonEventRow(
                 style = MaterialTheme.typography.bodyMedium,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = timezoneText,
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 10.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
             )
         }
     }
