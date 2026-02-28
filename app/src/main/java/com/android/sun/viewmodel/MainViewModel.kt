@@ -238,6 +238,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         updateJob = viewModelScope.launch {
             var previousTattvaCode: String? = null
             
+            com.android.sun.util.AppLog.d("MainViewModel", "▶️ startRealtimeUpdates() started")
+            
             while (true) {
                 delay(1000)
                 
@@ -250,6 +252,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     val tattvaExpired = currentTime.timeInMillis >= currentData.tattva.endTime.timeInMillis
                     
                     if (tattvaExpired) {
+                        com.android.sun.util.AppLog.d("MainViewModel", "⏰ Tattva expired, recalculating...")
                         calculateAstroData()
                     }
                     
@@ -257,7 +260,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     val latestData = _astroData.value
                     if (latestData != null) {
                         val currentTattvaCode = latestData.tattva.tattva.code
-                        if (previousTattvaCode != null && currentTattvaCode != previousTattvaCode) {
+                        if (previousTattvaCode == null) {
+                            com.android.sun.util.AppLog.d("MainViewModel", "🔵 Initial tattva code: $currentTattvaCode")
+                        } else if (currentTattvaCode != previousTattvaCode) {
+                            com.android.sun.util.AppLog.d("MainViewModel", "🔄 Tattva code changed: $previousTattvaCode → $currentTattvaCode")
                             onTattvaChanged(currentTattvaCode)
                         }
                         previousTattvaCode = currentTattvaCode
@@ -277,8 +283,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val context = getApplication<Application>()
         val settingsPreferences = com.android.sun.data.preferences.SettingsPreferences(context)
         
-        if (settingsPreferences.isTattvaSoundEnabled(newTattvaCode)) {
+        val soundEnabled = settingsPreferences.isTattvaSoundEnabled(newTattvaCode)
+        com.android.sun.util.AppLog.d("MainViewModel", "🔔 Sound enabled for $newTattvaCode: $soundEnabled")
+        
+        if (soundEnabled) {
             playTattvaSound(context, newTattvaCode)
+        } else {
+            com.android.sun.util.AppLog.d("MainViewModel", "🔇 Sound DISABLED for tattva: $newTattvaCode (check Settings)")
         }
     }
     
@@ -293,18 +304,40 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 "T"  -> com.android.sun.R.raw.sound_tejas
                 "Ap" -> com.android.sun.R.raw.sound_apas
                 "P"  -> com.android.sun.R.raw.sound_prithivi
-                else -> return
+                else -> {
+                    com.android.sun.util.AppLog.e("MainViewModel", "❌ Unknown tattva code: $tattvaCode")
+                    return
+                }
             }
-            val mediaPlayer = android.media.MediaPlayer.create(context, resId)
+            com.android.sun.util.AppLog.d("MainViewModel", "🔊 Creating MediaPlayer for tattva: $tattvaCode (resId=$resId)")
+            
+            val audioAttributes = android.media.AudioAttributes.Builder()
+                .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION)
+                .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build()
+            
+            val mediaPlayer = android.media.MediaPlayer.create(
+                context, resId, audioAttributes,
+                android.media.AudioManager.AUDIO_SESSION_ID_GENERATE
+            )
             if (mediaPlayer == null) {
-                com.android.sun.util.AppLog.e("MainViewModel", "❌ Failed to create MediaPlayer for tattva: $tattvaCode")
+                com.android.sun.util.AppLog.e("MainViewModel", "❌ Failed to create MediaPlayer for tattva: $tattvaCode — resource might be missing or corrupt")
                 return
             }
-            mediaPlayer.setOnCompletionListener { it.release() }
+            
+            mediaPlayer.setOnCompletionListener { mp ->
+                com.android.sun.util.AppLog.d("MainViewModel", "🔊 Sound playback completed for tattva: $tattvaCode")
+                mp.release()
+            }
+            mediaPlayer.setOnErrorListener { _, what, extra ->
+                com.android.sun.util.AppLog.e("MainViewModel", "❌ MediaPlayer error for tattva $tattvaCode: what=$what extra=$extra")
+                true
+            }
             mediaPlayer.start()
-            com.android.sun.util.AppLog.d("MainViewModel", "🔊 Playing sound for tattva: $tattvaCode")
+            val durationMs = try { mediaPlayer.duration } catch (_: Exception) { -1 }
+            com.android.sun.util.AppLog.d("MainViewModel", "🔊 ▶️ Sound STARTED for tattva: $tattvaCode (duration=${durationMs}ms)")
         } catch (e: Exception) {
-            com.android.sun.util.AppLog.e("MainViewModel", "Error playing tattva sound", e)
+            com.android.sun.util.AppLog.e("MainViewModel", "❌ Exception playing tattva sound: ${e.message}", e)
         }
     }
 

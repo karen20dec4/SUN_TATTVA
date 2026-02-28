@@ -135,11 +135,11 @@ class SettingsPreferences(context: Context) {
     private val _tattvaSoundPrithivi = MutableStateFlow(getTattvaSoundPrithivi())
     val tattvaSoundPrithivi: StateFlow<Boolean> = _tattvaSoundPrithivi.asStateFlow()
     
-    fun getTattvaSoundAkasha(): Boolean = prefs.getBoolean(KEY_TATTVA_SOUND_AKASHA, false)
-    fun getTattvaSoundVayu(): Boolean = prefs.getBoolean(KEY_TATTVA_SOUND_VAYU, false)
-    fun getTattvaSoundTejas(): Boolean = prefs.getBoolean(KEY_TATTVA_SOUND_TEJAS, false)
-    fun getTattvaSoundApas(): Boolean = prefs.getBoolean(KEY_TATTVA_SOUND_APAS, false)
-    fun getTattvaSoundPrithivi(): Boolean = prefs.getBoolean(KEY_TATTVA_SOUND_PRITHIVI, false)
+    fun getTattvaSoundAkasha(): Boolean = prefs.getBoolean(KEY_TATTVA_SOUND_AKASHA, true)
+    fun getTattvaSoundVayu(): Boolean = prefs.getBoolean(KEY_TATTVA_SOUND_VAYU, true)
+    fun getTattvaSoundTejas(): Boolean = prefs.getBoolean(KEY_TATTVA_SOUND_TEJAS, true)
+    fun getTattvaSoundApas(): Boolean = prefs.getBoolean(KEY_TATTVA_SOUND_APAS, true)
+    fun getTattvaSoundPrithivi(): Boolean = prefs.getBoolean(KEY_TATTVA_SOUND_PRITHIVI, true)
     
     fun setTattvaSoundAkasha(enabled: Boolean) {
         prefs.edit().putBoolean(KEY_TATTVA_SOUND_AKASHA, enabled).apply()
