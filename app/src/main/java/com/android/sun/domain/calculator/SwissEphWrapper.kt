@@ -67,7 +67,7 @@ class SwissEphWrapper(private val context: Context) {
         initLock.withLock {
             // Check if already initialized globally
             if (globalIsInitialized) {
-                android.util.Log.d("SwissEphWrapper", "✅ Already initialized globally, reusing path")
+                com.android.sun.util.AppLog.d("SwissEphWrapper", "✅ Already initialized globally, reusing path")
                 ephePath = globalEphePath
                 swissEph = SwissEph()
                 swissEph?.swe_set_ephe_path(ephePath)
@@ -76,18 +76,18 @@ class SwissEphWrapper(private val context: Context) {
             
             // If another thread is initializing, wait for it
             while (globalIsInitializing) {
-                android.util.Log.d("SwissEphWrapper", "⏳ Another thread is initializing, waiting...")
+                com.android.sun.util.AppLog.d("SwissEphWrapper", "⏳ Another thread is initializing, waiting...")
                 try {
                     Thread.sleep(100)
                     if (globalIsInitialized) {
-                        android.util.Log.d("SwissEphWrapper", "✅ Initialization completed by other thread")
+                        com.android.sun.util.AppLog.d("SwissEphWrapper", "✅ Initialization completed by other thread")
                         ephePath = globalEphePath
                         swissEph = SwissEph()
                         swissEph?.swe_set_ephe_path(ephePath)
                         return
                     }
                 } catch (e: InterruptedException) {
-                    android.util.Log.e("SwissEphWrapper", "Interrupted while waiting", e)
+                    com.android.sun.util.AppLog.e("SwissEphWrapper", "Interrupted while waiting", e)
                     throw e
                 }
             }
@@ -103,13 +103,13 @@ class SwissEphWrapper(private val context: Context) {
                 
                 // ✅ Set sidereal mode with Lahiri ayanamsa for Vedic astrology
                 swissEph?.swe_set_sid_mode(SE_SIDM_LAHIRI, 0.0, 0.0)
-                android.util.Log.d("SwissEphWrapper", "✅ Sidereal mode set to Lahiri ayanamsa")
+                com.android.sun.util.AppLog.d("SwissEphWrapper", "✅ Sidereal mode set to Lahiri ayanamsa")
                 
                 globalIsInitialized = true
                 retryCount = 0
-                android.util.Log.d("SwissEphWrapper", "✅ Swiss Ephemeris initialized at:  $ephePath")
+                com.android.sun.util.AppLog.d("SwissEphWrapper", "✅ Swiss Ephemeris initialized at:  $ephePath")
             } catch (e: Exception) {
-                android.util.Log.e("SwissEphWrapper", "❌ Failed to initialize Swiss Ephemeris", e)
+                com.android.sun.util.AppLog.e("SwissEphWrapper", "❌ Failed to initialize Swiss Ephemeris", e)
                 globalIsInitialized = false
                 throw e
             } finally {
@@ -125,13 +125,13 @@ class SwissEphWrapper(private val context: Context) {
         initLock.withLock {
             // Verifică din nou după ce am obținut lock-ul
             if (globalIsInitializing) {
-                android.util.Log.d("SwissEphWrapper", "⏳ Another thread is reinitializing, waiting...")
+                com.android.sun.util.AppLog.d("SwissEphWrapper", "⏳ Another thread is reinitializing, waiting...")
                 // Așteaptă puțin și returnează
                 Thread.sleep(100)
                 return
             }
             
-            android.util.Log.w("SwissEphWrapper", "⚠️ Reinitializing Swiss Ephemeris (attempt ${retryCount}/$maxRetries)...")
+            com.android.sun.util.AppLog.w("SwissEphWrapper", "⚠️ Reinitializing Swiss Ephemeris (attempt ${retryCount}/$maxRetries)...")
             
             globalIsInitializing = true
             globalIsInitialized = false
@@ -142,7 +142,7 @@ class SwissEphWrapper(private val context: Context) {
                 try {
                     swissEph?.swe_close()
                 } catch (e: Exception) {
-                    android.util.Log.w("SwissEphWrapper", "Warning closing SwissEph: ${e.message}")
+                    com.android.sun.util.AppLog.w("SwissEphWrapper", "Warning closing SwissEph: ${e.message}")
                 }
                 swissEph = null
                 
@@ -155,9 +155,9 @@ class SwissEphWrapper(private val context: Context) {
                             if (file.name.endsWith(".se1")) {
                                 try {
                                     val deleted = file.delete()
-                                    android.util.Log.d("SwissEphWrapper", "Deleted corrupted file: ${file.name} -> $deleted")
+                                    com.android.sun.util.AppLog.d("SwissEphWrapper", "Deleted corrupted file: ${file.name} -> $deleted")
                                 } catch (e: Exception) {
-                                    android.util.Log.w("SwissEphWrapper", "Failed to delete ${file.name}: ${e.message}")
+                                    com.android.sun.util.AppLog.w("SwissEphWrapper", "Failed to delete ${file.name}: ${e.message}")
                                 }
                             }
                         }
@@ -179,10 +179,10 @@ class SwissEphWrapper(private val context: Context) {
                 globalIsInitialized = true
                 filesNeedCopy = false
                 
-                android.util.Log.d("SwissEphWrapper", "✅ Swiss Ephemeris successfully reinitialized with sidereal mode!")
+                com.android.sun.util.AppLog.d("SwissEphWrapper", "✅ Swiss Ephemeris successfully reinitialized with sidereal mode!")
                 
             } catch (e: Exception) {
-                android.util.Log.e("SwissEphWrapper", "❌ Failed to reinitialize Swiss Ephemeris", e)
+                com.android.sun.util.AppLog.e("SwissEphWrapper", "❌ Failed to reinitialize Swiss Ephemeris", e)
                 globalIsInitialized = false
                 throw RuntimeException("Failed to reinitialize Swiss Ephemeris after corruption", e)
             } finally {
@@ -213,7 +213,7 @@ file.exists() && file.length() > 0
 }
 
 if (allFilesValid && !filesNeedCopy) {
-android.util.Log.d("SwissEphWrapper", "✅ All ephemeris files already exist and are valid, skipping copy")
+com.android.sun.util.AppLog.d("SwissEphWrapper", "✅ All ephemeris files already exist and are valid, skipping copy")
 return epheDir.absolutePath
 }
 
@@ -222,7 +222,7 @@ val outFile = File(epheDir, fileName)
 
 // ✅ ȘTERGE doar dacă fișierul există și trebuie recopiat
 if (outFile.exists() && filesNeedCopy) {
-android.util.Log.d("SwissEphWrapper", "Deleting existing $fileName to prevent corruption")
+com.android.sun.util.AppLog.d("SwissEphWrapper", "Deleting existing $fileName to prevent corruption")
 outFile.delete()
 // Wait a bit to ensure filesystem sync
 Thread.sleep(10)
@@ -230,7 +230,7 @@ Thread.sleep(10)
 
 // ✅ Skip copy if file exists and is valid
 if (outFile.exists() && outFile.length() > 0 && !filesNeedCopy) {
-android.util.Log.d("SwissEphWrapper", "✓ $fileName already exists (${outFile.length()} bytes), skipping")
+com.android.sun.util.AppLog.d("SwissEphWrapper", "✓ $fileName already exists (${outFile.length()} bytes), skipping")
 return@forEach
 }
 
@@ -249,14 +249,14 @@ output.fd.sync() // ✅ Force sync to disk
 }
 
 val size = outFile.length()
-android.util.Log.d("SwissEphWrapper", "✓ Copied $fileName ($size bytes)")
+com.android.sun.util.AppLog.d("SwissEphWrapper", "✓ Copied $fileName ($size bytes)")
 
 if (size == 0L) {
 throw RuntimeException("File $fileName is EMPTY after copy!")
 }
 
 } catch (e: Exception) {
-android.util.Log.e("SwissEphWrapper", "✗ Failed to copy $fileName", e)
+com.android.sun.util.AppLog.e("SwissEphWrapper", "✗ Failed to copy $fileName", e)
 throw RuntimeException("Failed to copy ephemeris file: $fileName", e)
 }
 }
@@ -302,11 +302,11 @@ return epheDir.absolutePath
         lock.withLock {
             if (!globalIsInitialized || swissEph == null) {
                 if (!globalIsInitializing) {
-                    android.util.Log.w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
+                    com.android.sun.util.AppLog.w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
                     try {
                         initializeSwissEph()
                     } catch (e: Exception) {
-                        android.util.Log.e("SwissEphWrapper", "❌ Failed to initialize on demand", e)
+                        com.android.sun.util.AppLog.e("SwissEphWrapper", "❌ Failed to initialize on demand", e)
                         throw RuntimeException("Swiss Ephemeris not initialized", e)
                     }
                 } else {
@@ -342,7 +342,7 @@ return epheDir.absolutePath
 
                 if (result < 0) {
                     val errorMsg = serr.toString()
-                    android.util.Log.e("SwissEphWrapper", "Rise/Set error: $errorMsg")
+                    com.android.sun.util.AppLog.e("SwissEphWrapper", "Rise/Set error: $errorMsg")
                     
                     // ✅ Detectează corupție și reinițializează
                     if (isCorruptionError(errorMsg) && retryCount < maxRetries) {
@@ -361,7 +361,7 @@ return epheDir.absolutePath
                 return tret. `val`
                 
             } catch (e: NullPointerException) {
-                android. util.Log.e("SwissEphWrapper", "❌ NullPointerException - corrupted ephemeris!", e)
+                com.android.sun.util.AppLog.e("SwissEphWrapper", "❌ NullPointerException - corrupted ephemeris!", e)
                 
                 if (retryCount < maxRetries) {
                     retryCount++
@@ -372,7 +372,7 @@ return epheDir.absolutePath
                 throw RuntimeException("NullPointerException after $maxRetries retries", e)
                 
             } catch (e: ArrayIndexOutOfBoundsException) {
-                android.util.Log.e("SwissEphWrapper", "❌ ArrayIndexOutOfBoundsException - corrupted ephemeris!", e)
+                com.android.sun.util.AppLog.e("SwissEphWrapper", "❌ ArrayIndexOutOfBoundsException - corrupted ephemeris!", e)
                 
                 if (retryCount < maxRetries) {
                     retryCount++
@@ -383,7 +383,7 @@ return epheDir.absolutePath
                 throw RuntimeException("ArrayIndexOutOfBoundsException after $maxRetries retries", e)
                 
             } catch (e: Exception) {
-                android.util.Log.e("SwissEphWrapper", "❌ Unexpected error in calculateRiseTransSet", e)
+                com.android.sun.util.AppLog.e("SwissEphWrapper", "❌ Unexpected error in calculateRiseTransSet", e)
                 
                 if (isCorruptionError(e.message) && retryCount < maxRetries) {
                     retryCount++
@@ -442,11 +442,11 @@ return epheDir.absolutePath
         lock.withLock {
             if (!globalIsInitialized || swissEph == null) {
                 if (!globalIsInitializing) {
-                    android.util.Log.w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
+                    com.android.sun.util.AppLog.w("SwissEphWrapper", "⚠️ Not initialized, attempting to initialize...")
                     try {
                         initializeSwissEph()
                     } catch (e: Exception) {
-                        android.util.Log.e("SwissEphWrapper", "❌ Failed to initialize on demand", e)
+                        com.android.sun.util.AppLog.e("SwissEphWrapper", "❌ Failed to initialize on demand", e)
                         throw RuntimeException("Swiss Ephemeris not initialized", e)
                     }
                 } else {
@@ -472,7 +472,7 @@ return epheDir.absolutePath
 
                 if (result < 0) {
                     val errorMsg = serr.toString()
-                    android.util.Log.e("SwissEphWrapper", "Body position error: $errorMsg")
+                    com.android.sun.util.AppLog.e("SwissEphWrapper", "Body position error: $errorMsg")
                     
                     if (isCorruptionError(errorMsg) && retryCount < maxRetries) {
                         retryCount++
@@ -487,7 +487,7 @@ return epheDir.absolutePath
                 return xx[0]
                 
             } catch (e: NullPointerException) {
-                android.util.Log.e("SwissEphWrapper", "❌ NullPointerException - corrupted ephemeris!", e)
+                com.android.sun.util.AppLog.e("SwissEphWrapper", "❌ NullPointerException - corrupted ephemeris!", e)
                 
                 if (retryCount < maxRetries) {
                     retryCount++
@@ -498,7 +498,7 @@ return epheDir.absolutePath
                 throw RuntimeException("NullPointerException after $maxRetries retries", e)
                 
             } catch (e: ArrayIndexOutOfBoundsException) {
-                android.util.Log.e("SwissEphWrapper", "❌ ArrayIndexOutOfBoundsException - corrupted ephemeris!", e)
+                com.android.sun.util.AppLog.e("SwissEphWrapper", "❌ ArrayIndexOutOfBoundsException - corrupted ephemeris!", e)
                 
                 if (retryCount < maxRetries) {
                     retryCount++
@@ -509,7 +509,7 @@ return epheDir.absolutePath
                 throw RuntimeException("ArrayIndexOutOfBoundsException after $maxRetries retries", e)
                 
             } catch (e: Exception) {
-                android.util.Log.e("SwissEphWrapper", "❌ Unexpected error in calculateBodyPosition", e)
+                com.android.sun.util.AppLog.e("SwissEphWrapper", "❌ Unexpected error in calculateBodyPosition", e)
                 
                 if (isCorruptionError(e.message) && retryCount < maxRetries) {
                     retryCount++
@@ -648,11 +648,11 @@ return epheDir.absolutePath
             try {
                 swissEph?.swe_close()
             } catch (e:  Exception) {
-                android.util.Log.w("SwissEphWrapper", "Warning closing SwissEph:  ${e.message}")
+                com.android.sun.util.AppLog.w("SwissEphWrapper", "Warning closing SwissEph:  ${e.message}")
             }
             swissEph = null
             // Note: Nu resetăm globalIsInitialized pentru că alte instanțe pot folosi fișierele
-            android.util.Log.d("SwissEphWrapper", "Swiss Ephemeris closed for this instance")
+            com.android.sun.util.AppLog.d("SwissEphWrapper", "Swiss Ephemeris closed for this instance")
         }
     }
 }

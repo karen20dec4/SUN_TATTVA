@@ -75,20 +75,11 @@ class LocationRepository(private val context: Context) {
 	 * Apelat la pornirea aplicației pentru a garanta că avem mereu o locație default
 	 */
 	suspend fun ensureBucharestExists() = withContext(Dispatchers.IO) {
-		val bucharest = placeDao.getPlaceByName("București")
+		val bucharest = placeDao.getPlaceByName(com.android.sun.util.AppDefaults.LOCATION_NAME)
 		if (bucharest == null) {
-			android.util.Log.d("LocationRepository", "⚠️ București not found, adding it...")
-			placeDao.insertPlace(
-				PlaceEntity(
-					name = "București",
-					longitude = 26.1025,
-					latitude = 44.4268,
-					altitude = 80.0,
-					timeZone = 2.0,
-					dst = 0
-				)
-			)
-			android.util.Log.d("LocationRepository", "✅ București added")
+			com.android.sun.util.AppLog.d("LocationRepository", "⚠️ București not found, adding it...")
+			placeDao.insertPlace(com.android.sun.util.AppDefaults.getDefaultPlaceEntity())
+			com.android.sun.util.AppLog.d("LocationRepository", "✅ București added")
 		}
 	}
 	
@@ -100,7 +91,7 @@ class LocationRepository(private val context: Context) {
 	suspend fun locationExistsByName(name: String): Boolean = withContext(Dispatchers.IO) {
 		val place = placeDao.getPlaceByName(name)
 		val exists = place != null
-		android.util.Log.d("LocationRepository", "🔍 Location '$name' exists:  $exists")
+		com.android.sun.util.AppLog.d("LocationRepository", "🔍 Location '$name' exists:  $exists")
 		exists
 	}
 	
@@ -117,7 +108,7 @@ class LocationRepository(private val context: Context) {
 			 * Apelat la prima pornire a aplicației
 			 */
 			suspend fun loadDefaultLocations() = withContext(Dispatchers.IO) {
-				android.util.Log. d("LocationRepository", "🔵 Loading default location (București only)...")
+				com.android.sun.util.AppLog.d("LocationRepository", "🔵 Loading default location (București only)...")
 				
 				// Verifică dacă există deja locații în DB
 				// Dacă DA, nu face nimic (utilizatorul are deja date)
@@ -125,23 +116,14 @@ class LocationRepository(private val context: Context) {
 				
 				val existingCount = placeDao.getPlacesCount()
 				if (existingCount > 0) {
-					android.util. Log.d("LocationRepository", "✅ DB already has $existingCount locations, skipping default load")
+					com.android.sun.util.AppLog.d("LocationRepository", "✅ DB already has $existingCount locations, skipping default load")
 					return@withContext
 				}
 				
 				// Adaugă doar București
-				placeDao.insertPlace(
-					PlaceEntity(
-						name = "București",
-						longitude = 26.1025,
-						latitude = 44.4268,
-						altitude = 80.0,
-						timeZone = 2.0,
-						dst = 0
-					)
-				)
+				placeDao.insertPlace(com.android.sun.util.AppDefaults.getDefaultPlaceEntity())
 				
-				android.util.Log. d("LocationRepository", "✅ București added as default location")
+				com.android.sun.util.AppLog.d("LocationRepository", "✅ București added as default location")
 			}
 
     
@@ -153,24 +135,15 @@ class LocationRepository(private val context: Context) {
      * Apelat când utilizatorul apasă "Clear saved locations"
      */
     suspend fun clearSavedLocations() = withContext(Dispatchers.IO) {
-        android.util.Log. d("LocationRepository", "🗑️ Clearing all saved locations...")
+        com.android.sun.util.AppLog.d("LocationRepository", "🗑️ Clearing all saved locations...")
         
         // Șterge TOATE locațiile
         placeDao. deleteAllPlaces()
         
         // Adaugă înapoi doar București
-        placeDao.insertPlace(
-            PlaceEntity(
-                name = "București",
-                longitude = 26.1025,
-                latitude = 44.4268,
-                altitude = 80.0,
-                timeZone = 2.0,
-                dst = 0
-            )
-        )
+        placeDao.insertPlace(com.android.sun.util.AppDefaults.getDefaultPlaceEntity())
         
-        android.util.Log.d("LocationRepository", "✅ Cleared!  Only București remains")
+        com.android.sun.util.AppLog.d("LocationRepository", "✅ Cleared!  Only București remains")
     }
 
     
@@ -188,12 +161,12 @@ class LocationRepository(private val context: Context) {
 		 * ✅ Adaugă un oraș predefinit în baza de date (locații salvate)
 		 */
 		suspend fun addPredefinedCity(city:  PredefinedCity) = withContext(Dispatchers.IO) {
-			android.util.Log.d("LocationRepository", "➕ Adding predefined city: ${city.name}, ${city.country}")
+			com.android.sun.util.AppLog.d("LocationRepository", "➕ Adding predefined city: ${city.name}, ${city.country}")
 			
 			// Verifică dacă există deja
 			val existingPlace = placeDao.getPlaceByName("${city.name}, ${city.country}")
 			if (existingPlace != null) {
-				android.util.Log. d("LocationRepository", "⚠️ City already exists, skipping")
+				com.android.sun.util.AppLog.d("LocationRepository", "⚠️ City already exists, skipping")
 				return@withContext
 			}
 			
@@ -207,7 +180,7 @@ class LocationRepository(private val context: Context) {
 				dst = 0
 			)
 			placeDao.insertPlace(entity)
-			android.util. Log.d("LocationRepository", "✅ City added to saved locations")
+			com.android.sun.util.AppLog.d("LocationRepository", "✅ City added to saved locations")
 		}
 	
 	
@@ -220,18 +193,18 @@ class LocationRepository(private val context: Context) {
      * Obține locația curentă de la GPS
      */
     suspend fun getCurrentLocation(): LocationData? = withContext(Dispatchers.IO) {
-        android.util.Log.d("LocationRepository", "🟡 getCurrentLocation() called")
+        com.android.sun.util.AppLog.d("LocationRepository", "🟡 getCurrentLocation() called")
         
         if (! hasLocationPermission()) {
-            android.util.Log.e("LocationRepository", "❌ No location permission!")
+            com.android.sun.util.AppLog.e("LocationRepository", "❌ No location permission!")
             return@withContext null
         }
         
-        android.util.Log.d("LocationRepository", "✅ Permission OK, requesting GPS...")
+        com.android.sun.util.AppLog.d("LocationRepository", "✅ Permission OK, requesting GPS...")
 
         try {
             val location = getCurrentLocationInternal()
-            android.util.Log.d("LocationRepository", "✅ Got GPS: ${location.latitude}, ${location.longitude}")
+            com.android.sun.util.AppLog.d("LocationRepository", "✅ Got GPS: ${location.latitude}, ${location.longitude}")
             
             LocationData(
                 id = 0,
@@ -243,7 +216,7 @@ class LocationRepository(private val context: Context) {
                 isCurrentLocation = true
             )
         } catch (e: Exception) {
-            android.util.Log.e("LocationRepository", "❌ GPS Exception: ${e.message}")
+            com.android.sun.util.AppLog.e("LocationRepository", "❌ GPS Exception: ${e.message}")
             e.printStackTrace()
             null
         }

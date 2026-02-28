@@ -33,43 +33,7 @@ class AstroRepository(private val context: Context) {
      * Pentru alte locații, folosim offset-ul furnizat (fără DST)
      */
     private fun getLocationTimeZone(locationName: String, timeZoneOffset: Double): java.util.TimeZone {
-        // Mapare orașe cunoscute -> timezone ID (cu suport DST)
-        return when {
-            locationName.contains("București", ignoreCase = true) || 
-            locationName.contains("Bucharest", ignoreCase = true) ||
-            locationName.contains("Cluj", ignoreCase = true) ||
-            locationName.contains("Timișoara", ignoreCase = true) ||
-            locationName.contains("Iași", ignoreCase = true) ||
-            locationName.contains("Constanța", ignoreCase = true) ||
-            locationName.contains("Craiova", ignoreCase = true) ||
-            locationName.contains("Brașov", ignoreCase = true) -> {
-                java.util.TimeZone.getTimeZone("Europe/Bucharest")
-            }
-            locationName.contains("Tokyo", ignoreCase = true) -> {
-                java.util.TimeZone.getTimeZone("Asia/Tokyo")
-            }
-            locationName.contains("New York", ignoreCase = true) -> {
-                java.util.TimeZone.getTimeZone("America/New_York")
-            }
-            locationName.contains("London", ignoreCase = true) -> {
-                java.util.TimeZone.getTimeZone("Europe/London")
-            }
-            locationName.contains("Paris", ignoreCase = true) -> {
-                java.util.TimeZone.getTimeZone("Europe/Paris")
-            }
-            locationName.contains("Berlin", ignoreCase = true) -> {
-                java.util.TimeZone.getTimeZone("Europe/Berlin")
-            }
-            locationName.contains("Los Angeles", ignoreCase = true) -> {
-                java.util.TimeZone.getTimeZone("America/Los_Angeles")
-            }
-            else -> {
-                // Pentru locații necunoscute, folosim offset-ul furnizat
-                // Acest lucru nu va gestiona DST, dar va afișa ora corectă pentru zona orară de bază
-                val offsetMillis = (timeZoneOffset * 3600.0 * 1000.0).toInt()
-                SimpleTimeZone(offsetMillis, "Location")
-            }
-        }
+        return com.android.sun.util.TimeZoneUtils.getLocationTimeZone(locationName, timeZoneOffset)
     }
 
     /**
@@ -308,13 +272,13 @@ class AstroRepository(private val context: Context) {
         val sunsetFormatted = timeFormat.format(sunset.time)
         
         // ✅ DEBUG LOG - pentru verificare
-        android.util.Log.d("AstroRepository", "═══════════════════════════════════════")
-        android.util.Log.d("AstroRepository", "📍 Location: $locationName")
-        android.util.Log.d("AstroRepository", "📍 TimeZone offset: $timeZone ore")
-        android.util.Log.d("AstroRepository", "📍 LocationTimeZone: ${locationTimeZone.id}")
-        android.util.Log.d("AstroRepository", "🌅 Sunrise formatted: $sunriseFormatted")
-        android.util.Log.d("AstroRepository", "🌇 Sunset formatted:  $sunsetFormatted")
-        android.util.Log.d("AstroRepository", "═══════════════════════════════════════")
+        com.android.sun.util.AppLog.d("AstroRepository", "═══════════════════════════════════════")
+        com.android.sun.util.AppLog.d("AstroRepository", "📍 Location: $locationName")
+        com.android.sun.util.AppLog.d("AstroRepository", "📍 TimeZone offset: $timeZone ore")
+        com.android.sun.util.AppLog.d("AstroRepository", "📍 LocationTimeZone: ${locationTimeZone.id}")
+        com.android.sun.util.AppLog.d("AstroRepository", "🌅 Sunrise formatted: $sunriseFormatted")
+        com.android.sun.util.AppLog.d("AstroRepository", "🌇 Sunset formatted:  $sunsetFormatted")
+        com.android.sun.util.AppLog.d("AstroRepository", "═══════════════════════════════════════")
 
         val sunSign = getZodiacSign(sunLongitude)
         val moonSign = getZodiacSign(moonLongitude)
@@ -427,13 +391,13 @@ class AstroRepository(private val context: Context) {
         val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         timeFormat.timeZone = locationTimeZone  // ✅ IMPORTANT! 
         
-        android.util.Log.d("TattvaDebug", "============================================")
-        android.util.Log.d("TattvaDebug", "🚀 FIXED: Using exact 1440sec/Tattva, 288sec/SubTattva")
-        android.util.Log.d("TattvaDebug", "============================================")
-        android.util.Log.d("TattvaDebug", "🌅 Sunrise Calendar TimeZone: ${sunriseTime.timeZone.id}")
-        android.util.Log.d("TattvaDebug", "🌅 Sunrise timeInMillis: ${sunriseTime.timeInMillis}")
-        android.util.Log.d("TattvaDebug", "🌅 Sunrise formatted with locationTimeZone: ${timeFormat.format(sunriseTime.time)}")
-        android.util.Log.d("TattvaDebug", "🌍 Location TimeZone: ${locationTimeZone.id} (offset: $timeZone hours)")
+        com.android.sun.util.AppLog.d("TattvaDebug", "============================================")
+        com.android.sun.util.AppLog.d("TattvaDebug", "🚀 FIXED: Using exact 1440sec/Tattva, 288sec/SubTattva")
+        com.android.sun.util.AppLog.d("TattvaDebug", "============================================")
+        com.android.sun.util.AppLog.d("TattvaDebug", "🌅 Sunrise Calendar TimeZone: ${sunriseTime.timeZone.id}")
+        com.android.sun.util.AppLog.d("TattvaDebug", "🌅 Sunrise timeInMillis: ${sunriseTime.timeInMillis}")
+        com.android.sun.util.AppLog.d("TattvaDebug", "🌅 Sunrise formatted with locationTimeZone: ${timeFormat.format(sunriseTime.time)}")
+        com.android.sun.util.AppLog.d("TattvaDebug", "🌍 Location TimeZone: ${locationTimeZone.id} (offset: $timeZone hours)")
         
         val startTime = System.currentTimeMillis()
         
@@ -515,10 +479,10 @@ class AstroRepository(private val context: Context) {
         val endTime = System.currentTimeMillis()
         val duration = endTime - startTime
         
-        android.util.Log.d("TattvaDebug", "✅ Generated ${tattvaList.size} Tattvas in ${duration}ms!")
-        android.util.Log.d("TattvaDebug", "🎯 First Tattva: ${timeFormat.format(tattvaList[0].startTime.time)}")
-        android.util.Log.d("TattvaDebug", "🎯 Second Tattva (VAYU): ${timeFormat.format(tattvaList[1].startTime.time)}")
-        android.util.Log.d("TattvaDebug", "============================================")
+        com.android.sun.util.AppLog.d("TattvaDebug", "✅ Generated ${tattvaList.size} Tattvas in ${duration}ms!")
+        com.android.sun.util.AppLog.d("TattvaDebug", "🎯 First Tattva: ${timeFormat.format(tattvaList[0].startTime.time)}")
+        com.android.sun.util.AppLog.d("TattvaDebug", "🎯 Second Tattva (VAYU): ${timeFormat.format(tattvaList[1].startTime.time)}")
+        com.android.sun.util.AppLog.d("TattvaDebug", "============================================")
         
         return tattvaList
     }
@@ -545,7 +509,7 @@ class AstroRepository(private val context: Context) {
         val minutes = totalMinutes.toInt()
         val seconds = ((totalMinutes - minutes) * 60.0).toInt()
         
-        android.util.Log.d("AstroRepository", "🌙 Zodiac: lon=$longitude° → $normalizedLon° → ${signs[index]} ${degrees}°${minutes}'${seconds}\"")
+        com.android.sun.util.AppLog.d("AstroRepository", "🌙 Zodiac: lon=$longitude° → $normalizedLon° → ${signs[index]} ${degrees}°${minutes}'${seconds}\"")
         
         // Format cu grade, minute și secunde (cu padding)
         return "${degrees}°${String.format("%02d", minutes)}'${String.format("%02d", seconds)}\" ${signs[index]}"
@@ -563,14 +527,7 @@ class AstroRepository(private val context: Context) {
     }
     
     private fun getTattvaColor(code: String): Color {
-        return when (code) {
-            "A" -> Color(0xFF4A00D3)
-            "V" -> Color(0xFF009AD3)
-            "T" -> Color(0xFFFF0000)
-            "Ap" -> Color(0xFF8A8A8A)
-            "P" -> Color(0xFFDFCD00)
-            else -> Color.Gray
-        }
+        return com.android.sun.util.TattvaColors.getByCode(code)
     }
     
     /**

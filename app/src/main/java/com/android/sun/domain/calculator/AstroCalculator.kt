@@ -75,12 +75,12 @@ class AstroCalculator(private val swissEph: SwissEphWrapper) {
         val calendar = Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
         calendar.timeInMillis = unixMillis
         
-        android.util.Log.d("AstroCalculator", "═══════════════════════════════════════")
-        android.util.Log.d("AstroCalculator", "📍 Julian Day: $julianDay")
-        android.util.Log.d("AstroCalculator", "📍 Unix millis (UTC): $unixMillis")
-        android.util.Log.d("AstroCalculator", "📍 Calendar TimeZone: ${calendar.timeZone.id}")
-        android.util.Log.d("AstroCalculator", "📍 Ora UTC: ${calendar.get(Calendar.HOUR_OF_DAY)}:${String.format("%02d", calendar.get(Calendar.MINUTE))}:${String.format("%02d", calendar.get(Calendar.SECOND))}")
-        android.util.Log.d("AstroCalculator", "═══════════════════════════════════════")
+        com.android.sun.util.AppLog.d("AstroCalculator", "═══════════════════════════════════════")
+        com.android.sun.util.AppLog.d("AstroCalculator", "📍 Julian Day: $julianDay")
+        com.android.sun.util.AppLog.d("AstroCalculator", "📍 Unix millis (UTC): $unixMillis")
+        com.android.sun.util.AppLog.d("AstroCalculator", "📍 Calendar TimeZone: ${calendar.timeZone.id}")
+        com.android.sun.util.AppLog.d("AstroCalculator", "📍 Ora UTC: ${calendar.get(Calendar.HOUR_OF_DAY)}:${String.format("%02d", calendar.get(Calendar.MINUTE))}:${String.format("%02d", calendar.get(Calendar.SECOND))}")
+        com.android.sun.util.AppLog.d("AstroCalculator", "═══════════════════════════════════════")
         
         return calendar
     }

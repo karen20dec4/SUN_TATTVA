@@ -30,7 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
-import android.util.Log
+import com.android.sun.util.AppLog
 import com.android.sun.data.model.LocationData
 import com.android.sun.viewmodel.LocationViewModel
 import androidx.compose.material.icons.filled.Clear
@@ -95,7 +95,7 @@ fun LocationScreen(
     }
     
     fun requestGPSLocation() {
-		Log.d(TAG, "🔵 requestGPSLocation() called")
+		AppLog.d(TAG, "🔵 requestGPSLocation() called")
         val hasFinePermission = ContextCompat.checkSelfPermission(
             context, Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
@@ -104,12 +104,12 @@ fun LocationScreen(
             context, Manifest.permission.ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
         
-        Log.d(TAG, "Current permissions: fine=$hasFinePermission, coarse=$hasCoarsePermission")
+        AppLog.d(TAG, "Current permissions: fine=$hasFinePermission, coarse=$hasCoarsePermission")
 		if (hasFinePermission || hasCoarsePermission) {
-            Log.d(TAG, "✅ Already has permission, loading GPS...")
+            AppLog.d(TAG, "✅ Already has permission, loading GPS...")
 			viewModel.loadGPSLocation()
         } else {
-            Log.d(TAG, "🔵 Requesting permissions from user...")
+            AppLog.d(TAG, "🔵 Requesting permissions from user...")
 			permissionLauncher.launch(
                 arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -257,16 +257,16 @@ fun LocationScreen(
                                     location = location,
                                     isSelected = currentSelectedLocation.name == location.name,
                                     onSelect = { 
-                                        Log.d(TAG, "═══════════════════════════════════════")
-										Log.d(TAG, "🟢 SELECT BUTTON CLICKED")
-										Log.d(TAG, "🟢 Selected location: ${location.name}")
-										Log.d(TAG, "🟢   Lat: ${location.latitude}, Lon: ${location.longitude}")
+                                        AppLog.d(TAG, "═══════════════════════════════════════")
+										AppLog.d(TAG, "🟢 SELECT BUTTON CLICKED")
+										AppLog.d(TAG, "🟢 Selected location: ${location.name}")
+										AppLog.d(TAG, "🟢   Lat: ${location.latitude}, Lon: ${location.longitude}")
 										onLocationSelected(location)
 										// mainViewModel.refresh()
-										Log.d(TAG, "═══════════════════════════════════════")
+										AppLog.d(TAG, "═══════════════════════════════════════")
                                     },
                                     onDelete = { 
-										Log.d(TAG, "❌ DELETE clicked for:  ${location.name}")
+										AppLog.d(TAG, "❌ DELETE clicked for:  ${location.name}")
                                         locationToDelete = location
                                     }
                                 )
@@ -277,7 +277,7 @@ fun LocationScreen(
                                 
                                 Button(
                                     onClick = {
-                                        Log.d(TAG, "🗑️ Clear saved locations clicked")
+                                        AppLog.d(TAG, "🗑️ Clear saved locations clicked")
 										showClearAllDialog = true
                                     },
                                     modifier = Modifier.fillMaxWidth(),
@@ -651,7 +651,7 @@ private fun SearchResultItemLarge(
             
             FilledTonalButton(
                 onClick = { 
-					Log. d(TAG, "➕ ADD clicked for: ${city.name}, ${city.country}")
+					AppLog.d(TAG, "➕ ADD clicked for: ${city.name}, ${city.country}")
 					onAdd() 
 				}
             ) {
@@ -972,7 +972,7 @@ private fun InfoRow(label: String, value:  String) {
 				// București nu poate fi șters
 				val canDelete = location. name != "București"
 
-				Log.d(TAG, "LocationItemCompact rendering:  ${location.name}, canDelete=$canDelete, isSelected=$isSelected")
+				AppLog.d(TAG, "LocationItemCompact rendering:  ${location.name}, canDelete=$canDelete, isSelected=$isSelected")
 
 				Card(
 					modifier = Modifier
@@ -1012,14 +1012,14 @@ private fun InfoRow(label: String, value:  String) {
 									.weight(1f)
 									.padding(end = 8.dp)
 									.clickable { 
-										Log.d(TAG, "City name clicked: ${location. name}")
+										AppLog.d(TAG, "City name clicked: ${location. name}")
 										expanded = !expanded 
 									}
 							)
 
 							// Expand / Collapse
 							IconButton(onClick = { 
-								Log.d(TAG, "Expand/Collapse clicked:  ${location.name}")
+								AppLog.d(TAG, "Expand/Collapse clicked:  ${location.name}")
 								expanded = !expanded 
 							}) {
 								Icon(
@@ -1036,7 +1036,7 @@ private fun InfoRow(label: String, value:  String) {
 							if (canDelete) {
 								IconButton(
 									onClick = {
-										Log. d(TAG, "DELETE BUTTON CLICKED for: ${location.name}")
+										AppLog.d(TAG, "DELETE BUTTON CLICKED for: ${location.name}")
 										onDelete()
 									},
 									colors = IconButtonDefaults.iconButtonColors(
@@ -1061,7 +1061,7 @@ private fun InfoRow(label: String, value:  String) {
 							} else {
 								TextButton(
 									onClick = {
-										Log. d(TAG, "SELECT BUTTON CLICKED for: ${location. name}")
+										AppLog.d(TAG, "SELECT BUTTON CLICKED for: ${location. name}")
 										onSelect()
 									},
 									colors = ButtonDefaults.textButtonColors(

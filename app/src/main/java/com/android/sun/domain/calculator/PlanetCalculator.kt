@@ -23,14 +23,14 @@ class PlanetCalculator {
     ): PlanetResult {
         val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         
-        android.util.Log.d("PlanetDebug", "============================================")
-        android.util.Log.d("PlanetDebug", "🔍 PLANETARY HOUR CALCULATION START")
-        android.util.Log.d("PlanetDebug", "============================================")
-        android.util.Log.d("PlanetDebug", "📅 currentTime:     ${timeFormat.format(currentTime.time)}")
-        android.util.Log.d("PlanetDebug", "🌅 sunrise:         ${timeFormat.format(sunrise.time)}")
-        android.util.Log.d("PlanetDebug", "🌇 sunset:          ${timeFormat.format(sunset.time)}")
-        android.util.Log.d("PlanetDebug", "🌇 previousSunset:  ${timeFormat.format(previousSunset.time)}")
-        android.util.Log.d("PlanetDebug", "🌅 nextSunrise:     ${timeFormat.format(nextSunrise.time)}")
+        com.android.sun.util.AppLog.d("PlanetDebug", "============================================")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🔍 PLANETARY HOUR CALCULATION START")
+        com.android.sun.util.AppLog.d("PlanetDebug", "============================================")
+        com.android.sun.util.AppLog.d("PlanetDebug", "📅 currentTime:     ${timeFormat.format(currentTime.time)}")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🌅 sunrise:         ${timeFormat.format(sunrise.time)}")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🌇 sunset:          ${timeFormat.format(sunset.time)}")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🌇 previousSunset:  ${timeFormat.format(previousSunset.time)}")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🌅 nextSunrise:     ${timeFormat.format(nextSunrise.time)}")
         
         val currentMillis = currentTime.timeInMillis
         val sunriseMillis = sunrise.timeInMillis
@@ -38,7 +38,7 @@ class PlanetCalculator {
         
         val isDayTime = currentMillis in sunriseMillis..sunsetMillis
         
-        android.util.Log.d("PlanetDebug", "☀️ isDayTime: $isDayTime")
+        com.android.sun.util.AppLog.d("PlanetDebug", "☀️ isDayTime: $isDayTime")
         
         // Calculează interval
         val startMillis: Long
@@ -48,36 +48,36 @@ class PlanetCalculator {
             // ✅ ZI: de la sunrise la sunset
             startMillis = sunriseMillis
             endMillis = sunsetMillis
-            android.util.Log.d("PlanetDebug", "🌞 DAY TIME: from sunrise to sunset")
+            com.android.sun.util.AppLog.d("PlanetDebug", "🌞 DAY TIME: from sunrise to sunset")
         } else {
             if (currentMillis < sunriseMillis) {
                 // ✅ NOAPTE ÎNAINTE DE SUNRISE: de la previousSunset (ieri) la sunrise (azi)
                 startMillis = previousSunset.timeInMillis
                 endMillis = sunriseMillis
-                android.util.Log.d("PlanetDebug", "🌙 NIGHT (before sunrise): from previousSunset to sunrise")
+                com.android.sun.util.AppLog.d("PlanetDebug", "🌙 NIGHT (before sunrise): from previousSunset to sunrise")
             } else {
                 // ✅ NOAPTE DUPĂ SUNSET: de la sunset (azi) la nextSunrise (mâine)
                 startMillis = sunsetMillis
                 endMillis = nextSunrise.timeInMillis
-                android.util.Log.d("PlanetDebug", "🌙 NIGHT (after sunset): from sunset to nextSunrise")
+                com.android.sun.util.AppLog.d("PlanetDebug", "🌙 NIGHT (after sunset): from sunset to nextSunrise")
             }
         }
         
-        android.util.Log.d("PlanetDebug", "⏰ startMillis: $startMillis (${timeFormat.format(Date(startMillis))})")
-        android.util.Log.d("PlanetDebug", "⏰ endMillis:   $endMillis (${timeFormat.format(Date(endMillis))})")
+        com.android.sun.util.AppLog.d("PlanetDebug", "⏰ startMillis: $startMillis (${timeFormat.format(Date(startMillis))})")
+        com.android.sun.util.AppLog.d("PlanetDebug", "⏰ endMillis:   $endMillis (${timeFormat.format(Date(endMillis))})")
         
         // 12 ore planetare
         val totalDuration = endMillis - startMillis
         val planetaryHourDuration = totalDuration / 12
         val elapsedTime = currentMillis - startMillis
         
-        android.util.Log.d("PlanetDebug", "⏱ totalDuration: ${totalDuration / 60000.0} minutes")
-        android.util.Log.d("PlanetDebug", "⏱ planetaryHourDuration: ${planetaryHourDuration / 60000.0} minutes")
-        android.util.Log.d("PlanetDebug", "⏱ elapsedTime: ${elapsedTime / 60000.0} minutes")
+        com.android.sun.util.AppLog.d("PlanetDebug", "⏱ totalDuration: ${totalDuration / 60000.0} minutes")
+        com.android.sun.util.AppLog.d("PlanetDebug", "⏱ planetaryHourDuration: ${planetaryHourDuration / 60000.0} minutes")
+        com.android.sun.util.AppLog.d("PlanetDebug", "⏱ elapsedTime: ${elapsedTime / 60000.0} minutes")
         
         val hourIndex = (elapsedTime / planetaryHourDuration).toInt().coerceIn(0, 11)
         
-        android.util.Log.d("PlanetDebug", "🔢 hourIndex: $hourIndex (hour ${hourIndex + 1} of 12)")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🔢 hourIndex: $hourIndex (hour ${hourIndex + 1} of 12)")
         
         // ✅ CORECTARE: Calculează index-ul GLOBAL (0-23) pentru secvența continuă!
         val globalHourIndex: Int
@@ -87,14 +87,14 @@ class PlanetCalculator {
             // Zi: orele 0-11 (ora 1-12)
             globalHourIndex = hourIndex
             referenceDay = sunrise
-            android.util.Log.d("PlanetDebug", "🌞 DAY: globalHourIndex = $globalHourIndex (hours 1-12 of day)")
+            com.android.sun.util.AppLog.d("PlanetDebug", "🌞 DAY: globalHourIndex = $globalHourIndex (hours 1-12 of day)")
         } else {
             // Noapte: orele 12-23 (ora 13-24)
             globalHourIndex = 12 + hourIndex
             // ✅ Pentru noapte, folosește sunrise (nu previousSunset!)
             // Fiindcă planeta zilei e determinată de sunrise!
             referenceDay = sunrise
-            android.util.Log.d("PlanetDebug", "🌙 NIGHT: globalHourIndex = $globalHourIndex (hours 13-24 of day)")
+            com.android.sun.util.AppLog.d("PlanetDebug", "🌙 NIGHT: globalHourIndex = $globalHourIndex (hours 13-24 of day)")
         }
 
         val dayOfWeek = referenceDay.get(Calendar.DAY_OF_WEEK) - 1
@@ -108,22 +108,22 @@ class PlanetCalculator {
         val hourEnd = Calendar.getInstance()
         hourEnd.timeInMillis = hourEndMillis
         
-        android.util.Log.d("PlanetDebug", "⏰ hourStart: ${timeFormat.format(hourStart.time)}")
-        android.util.Log.d("PlanetDebug", "⏰ hourEnd:   ${timeFormat.format(hourEnd.time)}")
+        com.android.sun.util.AppLog.d("PlanetDebug", "⏰ hourStart: ${timeFormat.format(hourStart.time)}")
+        com.android.sun.util.AppLog.d("PlanetDebug", "⏰ hourEnd:   ${timeFormat.format(hourEnd.time)}")
         
         val dayNames = listOf("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
         val planetRulers = listOf("Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn")
         
-        android.util.Log.d("PlanetDebug", "📅 referenceDay: ${timeFormat.format(referenceDay.time)}")
-        android.util.Log.d("PlanetDebug", "📅 dayOfWeek: $dayOfWeek (${dayNames[dayOfWeek]})")
-        android.util.Log.d("PlanetDebug", "📅 dayRuler: ${planetRulers[dayOfWeek]}")
-        android.util.Log.d("PlanetDebug", "🔢 globalHourIndex: $globalHourIndex (hour ${globalHourIndex + 1} of 24)")
+        com.android.sun.util.AppLog.d("PlanetDebug", "📅 referenceDay: ${timeFormat.format(referenceDay.time)}")
+        com.android.sun.util.AppLog.d("PlanetDebug", "📅 dayOfWeek: $dayOfWeek (${dayNames[dayOfWeek]})")
+        com.android.sun.util.AppLog.d("PlanetDebug", "📅 dayRuler: ${planetRulers[dayOfWeek]}")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🔢 globalHourIndex: $globalHourIndex (hour ${globalHourIndex + 1} of 24)")
         
         // ✅ Secvența planetelor folosind globalHourIndex
         val planet = getPlanetForHour(dayOfWeek, globalHourIndex)
         
-        android.util.Log.d("PlanetDebug", "🪐 RESULT: ${planet.displayName} (${planet.code})")
-        android.util.Log.d("PlanetDebug", "============================================")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🪐 RESULT: ${planet.displayName} (${planet.code})")
+        com.android.sun.util.AppLog.d("PlanetDebug", "============================================")
         
         return PlanetResult(
             planet = planet,
@@ -159,14 +159,14 @@ class PlanetCalculator {
         val startPlanet = dayRuler[dayOfWeek]
         val startIndex = chaldeanOrder.indexOf(startPlanet)
         
-        android.util.Log.d("PlanetDebug", "🔍 getPlanetForHour: dayOfWeek=$dayOfWeek, globalHourIndex=$globalHourIndex")
-        android.util.Log.d("PlanetDebug", "🔍 startPlanet: ${startPlanet.displayName} (index $startIndex in chaldeanOrder)")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🔍 getPlanetForHour: dayOfWeek=$dayOfWeek, globalHourIndex=$globalHourIndex")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🔍 startPlanet: ${startPlanet.displayName} (index $startIndex in chaldeanOrder)")
         
         // ✅ Calculează index-ul planetei curente folosind globalHourIndex
         val planetIndex = (startIndex + globalHourIndex) % 7
         
-        android.util.Log.d("PlanetDebug", "🔍 planetIndex: ($startIndex + $globalHourIndex) % 7 = $planetIndex")
-        android.util.Log.d("PlanetDebug", "🔍 result: ${chaldeanOrder[planetIndex].displayName}")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🔍 planetIndex: ($startIndex + $globalHourIndex) % 7 = $planetIndex")
+        com.android.sun.util.AppLog.d("PlanetDebug", "🔍 result: ${chaldeanOrder[planetIndex].displayName}")
         
         return chaldeanOrder[planetIndex]
     }

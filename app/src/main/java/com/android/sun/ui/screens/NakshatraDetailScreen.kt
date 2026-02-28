@@ -325,12 +325,5 @@ private fun getNakshatraTattva(nakshatra: NakshatraType): String {
  */
 private fun getNakshatraColor(nakshatra: NakshatraType): Color {
     val tattva = getNakshatraTattva(nakshatra)
-    return when (tattva) {
-        "A" -> Color(0xFF4A00D3)   // Akasha - Purple
-        "V" -> Color(0xFF009AD3)   // Vayu - Blue
-        "T" -> Color(0xFFFF0000)   // Tejas - Red
-        "Ap" -> Color(0xFF8A8A8A)  // Apas - Gray
-        "P" -> Color(0xFFDFCD00)   // Prithivi - Yellow
-        else -> Color.Gray
-    }
+    return com.android.sun.util.TattvaColors.getByCode(tattva)
 }

@@ -48,7 +48,7 @@ class LocationPreferences(context: Context) {
             putBoolean(KEY_HAS_SAVED_LOCATION, true)
             apply()
         }
-        android.util.Log. d("LocationPreferences", "✅ Saved location: $name ($latitude, $longitude)")
+        com.android.sun.util.AppLog.d("LocationPreferences", "✅ Saved location: $name ($latitude, $longitude)")
     }
     
     /**
@@ -69,35 +69,35 @@ class LocationPreferences(context: Context) {
      * Obține numele locației salvate
      */
     fun getSavedLocationName(): String {
-        return prefs.getString(KEY_LOCATION_NAME, "București") ?: "București"
+        return prefs.getString(KEY_LOCATION_NAME, com.android.sun.util.AppDefaults.LOCATION_NAME) ?: com.android.sun.util.AppDefaults.LOCATION_NAME
     }
     
     /**
      * Obține latitudinea salvată
      */
     fun getSavedLatitude(): Double {
-        return prefs. getFloat(KEY_LATITUDE, 44.4268f).toDouble()
+        return prefs. getFloat(KEY_LATITUDE, com.android.sun.util.AppDefaults.LATITUDE.toFloat()).toDouble()
     }
     
     /**
      * Obține longitudinea salvată
      */
     fun getSavedLongitude(): Double {
-        return prefs. getFloat(KEY_LONGITUDE, 26.1025f).toDouble()
+        return prefs. getFloat(KEY_LONGITUDE, com.android.sun.util.AppDefaults.LONGITUDE.toFloat()).toDouble()
     }
     
     /**
      * Obține altitudinea salvată
      */
     fun getSavedAltitude(): Double {
-        return prefs.getFloat(KEY_ALTITUDE, 80f).toDouble()
+        return prefs.getFloat(KEY_ALTITUDE, com.android.sun.util.AppDefaults.ALTITUDE.toFloat()).toDouble()
     }
     
     /**
      * Obține timezone-ul salvat
      */
     fun getSavedTimeZone(): Double {
-        return prefs.getFloat(KEY_TIMEZONE, 2.0f).toDouble()
+        return prefs.getFloat(KEY_TIMEZONE, com.android.sun.util.AppDefaults.TIME_ZONE.toFloat()).toDouble()
     }
     
     /**
@@ -115,6 +115,6 @@ class LocationPreferences(context: Context) {
             putBoolean(KEY_HAS_SAVED_LOCATION, false)
             apply()
         }
-        android.util.Log.d("LocationPreferences", "🗑️ Cleared saved location")
+        com.android.sun.util.AppLog.d("LocationPreferences", "🗑️ Cleared saved location")
     }
 }

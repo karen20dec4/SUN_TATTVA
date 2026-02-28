@@ -127,7 +127,7 @@ private fun MoonEventRow(
     }
     
     // ✅ DEBUG: Log timezone-ul Calendar-ului primit
-    android.util.Log.d("MoonPhaseCard", "🕐 $label Calendar TZ: ${date.timeZone.id}, millis: ${date.timeInMillis}")
+    com.android.sun.util.AppLog.d("MoonPhaseCard", "🕐 $label Calendar TZ: ${date.timeZone.id}, millis: ${date.timeInMillis}")
     
     val highlightBg = Color(0xFF423e48)
     val highlightText = Color(0xFFd0ccd1)

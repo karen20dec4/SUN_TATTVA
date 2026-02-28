@@ -29,17 +29,17 @@ class NakshatraCalculator {
         referenceTime: Calendar = currentTime,  // Default to current for backward compatibility
         moonSpeedDegreesPerDay: Double = 13.2  // Default to average for backward compatibility
     ): NakshatraResult {
-        android.util.Log.d("NakshatraDebug", "============================================")
-        android.util.Log.d("NakshatraDebug", "🌙 NAKSHATRA CALCULATION START")
-        android.util.Log.d("NakshatraDebug", "============================================")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "============================================")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "🌙 NAKSHATRA CALCULATION START")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "============================================")
         
         // Normalizează longitudinea la 0-360
         var normalizedLon = moonLongitude
         while (normalizedLon < 0) normalizedLon += 360.0
         while (normalizedLon >= 360) normalizedLon -= 360.0
         
-        android.util.Log.d("NakshatraDebug", "Moon Longitude (current): %.2f°".format(normalizedLon))
-        android.util.Log.d("NakshatraDebug", "Current Time: ${currentTime.time}")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Moon Longitude (current): %.2f°".format(normalizedLon))
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Current Time: ${currentTime.time}")
         
         // Fiecare Nakshatra = 13.333333° (360 / 27)
         val nakshatraDegrees = 360.0 / 27.0  // 13.333333°
@@ -49,8 +49,8 @@ class NakshatraCalculator {
         
         val nakshatra = nakshatraList[nakshatraIndex]
         
-        android.util.Log.d("NakshatraDebug", "Nakshatra Index: $nakshatraIndex")
-        android.util.Log.d("NakshatraDebug", "Nakshatra: ${nakshatra.displayName}")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Nakshatra Index: $nakshatraIndex")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Nakshatra: ${nakshatra.displayName}")
         
         // Calculează progress în Nakshatra curentă
         val nakshatraStartDegree = nakshatraIndex * nakshatraDegrees
@@ -58,7 +58,7 @@ class NakshatraCalculator {
         val progressInNakshatra = normalizedLon - nakshatraStartDegree
         val nakshatraProgress = progressInNakshatra / nakshatraDegrees
         
-        android.util.Log.d("NakshatraDebug", "Progress: %.2f%% (%.4f° in current Nakshatra)".format(nakshatraProgress * 100, progressInNakshatra))
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Progress: %.2f%% (%.4f° in current Nakshatra)".format(nakshatraProgress * 100, progressInNakshatra))
         
         // ✅ FIX: Folosește viteza reală a Lunii din Swiss Ephemeris
         // Luna se mișcă cu viteza variabilă (~11.8° - 15.2° pe zi, media ~13.2°)
@@ -105,19 +105,19 @@ class NakshatraCalculator {
         val zeroReferenceTime = referenceTime.clone() as Calendar  // ✅ Use reference time, not current!
         zeroReferenceTime.add(Calendar.SECOND, -(hoursFromZero * 3600).toInt())
         
-        android.util.Log.d("NakshatraDebug", "Hours elapsed since Nakshatra start: %.2f hours".format(hoursElapsedSinceStart))
-        android.util.Log.d("NakshatraDebug", "Hours remaining until Nakshatra end: %.2f hours".format(hoursRemainingUntilEnd))
-        android.util.Log.d("NakshatraDebug", "Start Time: ${startTime.time}")
-        android.util.Log.d("NakshatraDebug", "End Time: ${endTime.time}")
-        android.util.Log.d("NakshatraDebug", "Reference Moon Longitude: %.2f°".format(normalizedRefLon))
-        android.util.Log.d("NakshatraDebug", "Reference Time: ${referenceTime.time}")
-        android.util.Log.d("NakshatraDebug", "Zero Reference Time: ${zeroReferenceTime.time}")
-        android.util.Log.d("NakshatraDebug", "============================================")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Hours elapsed since Nakshatra start: %.2f hours".format(hoursElapsedSinceStart))
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Hours remaining until Nakshatra end: %.2f hours".format(hoursRemainingUntilEnd))
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Start Time: ${startTime.time}")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "End Time: ${endTime.time}")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Reference Moon Longitude: %.2f°".format(normalizedRefLon))
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Reference Time: ${referenceTime.time}")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Zero Reference Time: ${zeroReferenceTime.time}")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "============================================")
         
         // ✅ Convert moon longitude to zodiac sign with degrees and minutes
         val moonZodiacPosition = moonLongitudeToZodiacString(normalizedLon)
         
-        android.util.Log.d("NakshatraDebug", "Moon Position in Zodiac: $moonZodiacPosition")
+        com.android.sun.util.AppLog.d("NakshatraDebug", "Moon Position in Zodiac: $moonZodiacPosition")
         
         return NakshatraResult(
             nakshatra = nakshatra,

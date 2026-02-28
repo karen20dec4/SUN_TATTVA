@@ -49,14 +49,7 @@ fun SubTattvaResult.toTattvaInfo(): TattvaInfo {
  * Culori pentru fiecare Tattva (fixe conform specificațiilor)
  */
 private fun getTattvaColor(code: String): Color {
-    return when (code) {
-        "A" -> Color(0xFF4A00D3)   // Akasha - Violet
-        "V" -> Color(0xFF009AD3)   // Vayu - Albastru
-        "T" -> Color(0xFFFF0000)   // Tejas - Roșu
-        "Ap" -> Color(0xFF8A8A8A)  // Apas - Argintiu
-        "P" -> Color(0xFFDFCD00)   // Prithivi - Galben-Pământ
-        else -> Color.Gray
-    }
+    return com.android.sun.util.TattvaColors.getByCode(code)
 }
 
 /**

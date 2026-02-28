@@ -74,21 +74,12 @@ abstract class PlaceDatabase : RoomDatabase() {
         suspend fun populateDatabase(placeDao: PlaceDao) {
             // Verifică dacă DB-ul este gol
             if (placeDao.getPlacesCount() == 0) {
-                android.util.Log. d("PlaceDatabase", "🔵 Adding default location:  București")
+                com.android.sun.util.AppLog.d("PlaceDatabase", "🔵 Adding default location:  București")
                 
                 // Adaugă DOAR București
-                placeDao.insertPlace(
-                    PlaceEntity(
-                        name = "București",
-                        longitude = 26.1025,
-                        latitude = 44.4268,
-                        altitude = 80.0,
-                        timeZone = 2.0,
-                        dst = 0
-                    )
-                )
+                placeDao.insertPlace(com.android.sun.util.AppDefaults.getDefaultPlaceEntity())
                 
-                android.util.Log. d("PlaceDatabase", "✅ București added as default location")
+                com.android.sun.util.AppLog.d("PlaceDatabase", "✅ București added as default location")
             }
         }
 		

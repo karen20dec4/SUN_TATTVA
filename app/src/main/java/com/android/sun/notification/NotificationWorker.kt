@@ -18,7 +18,7 @@ class NotificationWorker(
         val notificationType = inputData.getString(NotificationScheduler.KEY_NOTIFICATION_TYPE) ?: ""
         val eventTime = inputData.getString(NotificationScheduler.KEY_EVENT_TIME) ?: ""
 
-        android.util.Log.d("NotificationWorker", "Executing notification:  $notificationType")
+        com.android.sun.util.AppLog.d("NotificationWorker", "Executing notification:  $notificationType")
 
         return try {
             when (notificationType) {
@@ -35,12 +35,12 @@ class NotificationWorker(
                     notificationHelper.sendNewMoonNotification(eventTime)
                 }
                 else -> {
-                    android.util.Log.w("NotificationWorker", "Unknown notification type: $notificationType")
+                    com.android.sun.util.AppLog.w("NotificationWorker", "Unknown notification type: $notificationType")
                 }
             }
             Result.success()
         } catch (e: Exception) {
-            android.util.Log.e("NotificationWorker", "Error sending notification", e)
+            com.android.sun.util.AppLog.e("NotificationWorker", "Error sending notification", e)
             Result.failure()
         }
     }

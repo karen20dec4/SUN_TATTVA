@@ -56,7 +56,7 @@ class NotificationScheduler(private val context: Context) {
                 workRequest
             )
             
-            android.util.Log.d("NotificationScheduler", 
+            com.android.sun.util.AppLog.d("NotificationScheduler", 
                 "Scheduled Full Moon START notification in ${delayMillis / 3600000}h")
         }
 
@@ -81,7 +81,7 @@ class NotificationScheduler(private val context: Context) {
                 workRequest
             )
             
-            android.util.Log.d("NotificationScheduler", 
+            com.android.sun.util.AppLog.d("NotificationScheduler", 
                 "Scheduled Full Moon END notification in ${delayMillis / 3600000}h")
         }
     }
@@ -116,7 +116,7 @@ class NotificationScheduler(private val context: Context) {
                 workRequest
             )
             
-            android.util.Log.d("NotificationScheduler", 
+            com.android.sun.util.AppLog.d("NotificationScheduler", 
                 "Scheduled Tripura Sundari notification in ${delayMillis / 3600000}h")
         }
     }
@@ -151,7 +151,7 @@ class NotificationScheduler(private val context: Context) {
                 workRequest
             )
             
-            android.util.Log.d("NotificationScheduler", 
+            com.android.sun.util.AppLog.d("NotificationScheduler", 
                 "Scheduled New Moon notification in ${delayMillis / 3600000}h")
         }
     }
@@ -164,6 +164,6 @@ class NotificationScheduler(private val context: Context) {
         workManager.cancelAllWorkByTag(WORK_TAG_FULL_MOON_END)
         workManager.cancelAllWorkByTag(WORK_TAG_TRIPURA_SUNDARI)
         workManager.cancelAllWorkByTag(WORK_TAG_NEW_MOON)
-        android.util.Log.d("NotificationScheduler", "All notifications cancelled")
+        com.android.sun.util.AppLog.d("NotificationScheduler", "All notifications cancelled")
     }
 }

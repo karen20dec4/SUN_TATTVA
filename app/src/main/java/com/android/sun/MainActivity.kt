@@ -298,38 +298,7 @@ fun AppNavigation(
                 
                 // Format sunrise and sunset times with DST support
                 // Use the same timezone logic as in the repository
-                val locationTimeZone = when {
-                    astroData!!.locationName.contains("București", ignoreCase = true) || 
-                    astroData!!.locationName.contains("Bucharest", ignoreCase = true) ||
-                    astroData!!.locationName.contains("Cluj", ignoreCase = true) ||
-                    astroData!!.locationName.contains("Timișoara", ignoreCase = true) ||
-                    astroData!!.locationName.contains("România", ignoreCase = true) -> {
-                        java.util.TimeZone.getTimeZone("Europe/Bucharest")
-                    }
-                    astroData!!.locationName.contains("Tokyo", ignoreCase = true) -> {
-                        java.util.TimeZone.getTimeZone("Asia/Tokyo")
-                    }
-                    astroData!!.locationName.contains("New York", ignoreCase = true) -> {
-                        java.util.TimeZone.getTimeZone("America/New_York")
-                    }
-                    astroData!!.locationName.contains("London", ignoreCase = true) -> {
-                        java.util.TimeZone.getTimeZone("Europe/London")
-                    }
-                    astroData!!.locationName.contains("Paris", ignoreCase = true) -> {
-                        java.util.TimeZone.getTimeZone("Europe/Paris")
-                    }
-                    astroData!!.locationName.contains("Berlin", ignoreCase = true) -> {
-                        java.util.TimeZone.getTimeZone("Europe/Berlin")
-                    }
-                    astroData!!.locationName.contains("Los Angeles", ignoreCase = true) -> {
-                        java.util.TimeZone.getTimeZone("America/Los_Angeles")
-                    }
-                    else -> {
-                        // Pentru locații necunoscute, folosim offset-ul furnizat
-                        val offsetMillis = (astroData!!.timeZone * 3600.0 * 1000.0).toInt()
-                        java.util.SimpleTimeZone(offsetMillis, "Location")
-                    }
-                }
+                val locationTimeZone = com.android.sun.util.TimeZoneUtils.getLocationTimeZone(astroData!!.locationName, astroData!!.timeZone)
                 val timeFormat = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).apply {
                     this.timeZone = locationTimeZone
                 }

@@ -38,14 +38,14 @@ class MoonPhaseCalculator(
         val nextFullMoon = findNextPhase(currentTime, 180.0)
         val nextNewMoon = findNextPhase(currentTime, 0.0)
         
-        android.util.Log. d("MoonPhaseCalculator", "=== MOON PHASE DEBUG ===")
-        android.util.Log.d("MoonPhaseCalculator", "Location TZ: ${locationTimeZone. id}")
-        android.util. Log.d("MoonPhaseCalculator", "Moon:      $moonLongitude°, Sun:   $sunLongitude°")
-        android.util.Log. d("MoonPhaseCalculator", "Phase angle: $diff°")
-        android.util.Log.d("MoonPhaseCalculator", "Illumination:  $illuminationPercent%")
-        android.util.Log. d("MoonPhaseCalculator", "Next Tripura Sundari: ${formatDate(nextTripuraSundari)}")
-        android.util.Log.d("MoonPhaseCalculator", "Next Full Moon:    ${formatDate(nextFullMoon)}")
-        android.util.Log. d("MoonPhaseCalculator", "Next New Moon:   ${formatDate(nextNewMoon)}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "=== MOON PHASE DEBUG ===")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Location TZ: ${locationTimeZone. id}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Moon:      $moonLongitude°, Sun:   $sunLongitude°")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Phase angle: $diff°")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Illumination:  $illuminationPercent%")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Next Tripura Sundari: ${formatDate(nextTripuraSundari)}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Next Full Moon:    ${formatDate(nextFullMoon)}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Next New Moon:   ${formatDate(nextNewMoon)}")
         
         // ✅ Check if we're within ~18h of full moon peak
         // Moon-Sun relative speed averages ~12.2°/day (moon ~13.2° - sun ~1°)
@@ -53,7 +53,7 @@ class MoonPhaseCalculator(
         val fullMoonAngleDiff = getAngleDifference(diff, 180.0)
         val isInFullMoonInfluence = fullMoonAngleDiff <= 9.5
         
-        android.util.Log.d("MoonPhaseCalculator", "Full Moon angle diff: $fullMoonAngleDiff°, influence: $isInFullMoonInfluence")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Full Moon angle diff: $fullMoonAngleDiff°, influence: $isInFullMoonInfluence")
         
         return MoonPhaseResult(
             phaseAngle = diff,
@@ -85,7 +85,7 @@ class MoonPhaseCalculator(
         
         val currentAngle = getCurrentPhaseAngle(utcStartTime)
         
-        android.util.Log.d("MoonPhaseCalculator", "📍 START SEARCH: target=$targetAngle°, current=$currentAngle°")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "📍 START SEARCH: target=$targetAngle°, current=$currentAngle°")
         
         // Estimează câte zile până la fază
         val degreesToTarget = if (targetAngle == 0.0) {
@@ -98,7 +98,7 @@ class MoonPhaseCalculator(
         
         val estimatedDays = ((degreesToTarget / 13.2).toInt() + 1).coerceIn(2, 35)
         
-        android.util.Log.d("MoonPhaseCalculator", "  Degrees to go: $degreesToTarget°, estimated days: $estimatedDays")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "  Degrees to go: $degreesToTarget°, estimated days: $estimatedDays")
         
         // ✅ PAS 1: Caută cu pași de 1 ZI (în UTC)
         var bestTime = utcStartTime.clone() as Calendar
@@ -120,7 +120,7 @@ class MoonPhaseCalculator(
             current.add(Calendar.DAY_OF_MONTH, 1)
         }
         
-        android.util.Log.d("MoonPhaseCalculator", "  After DAY search:   ${formatDate(bestTime)}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "  After DAY search:   ${formatDate(bestTime)}")
         
         // ✅ PAS 2: Rafinare cu pași de 1 ORĂ
         val hourStart = bestTime.clone() as Calendar
@@ -141,7 +141,7 @@ class MoonPhaseCalculator(
             current.add(Calendar. HOUR_OF_DAY, 1)
         }
         
-        android.util.Log. d("MoonPhaseCalculator", "  After HOUR search:  ${formatDate(bestTime)}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "  After HOUR search:  ${formatDate(bestTime)}")
         
         // ✅ PAS 3: Rafinare FINALĂ cu pași de 1 MINUT
         val minuteStart = bestTime.clone() as Calendar
@@ -162,13 +162,13 @@ class MoonPhaseCalculator(
             current.add(Calendar.MINUTE, 1)
         }
         
-        android.util.Log.d("MoonPhaseCalculator", "✅ FOUND phase $targetAngle° (UTC):  ${formatDate(bestTime)}, diff=$bestDiff°")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "✅ FOUND phase $targetAngle° (UTC):  ${formatDate(bestTime)}, diff=$bestDiff°")
         
         // ✅ Convertim rezultatul de la UTC la timezone-ul locației
         val locationResult = Calendar.getInstance(locationTimeZone)
         locationResult. timeInMillis = bestTime. timeInMillis
         
-        android.util.Log.d("MoonPhaseCalculator", "✅ Converted to ${locationTimeZone.id}: ${formatDate(locationResult)}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "✅ Converted to ${locationTimeZone.id}: ${formatDate(locationResult)}")
         
         return locationResult
     }

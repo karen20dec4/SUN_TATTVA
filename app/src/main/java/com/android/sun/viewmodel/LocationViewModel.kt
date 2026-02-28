@@ -57,32 +57,32 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
      * Încarcă locația GPS curentă
      */
     fun loadGPSLocation() {
-        android.util.Log.d("LocationViewModel", "🔵 loadGPSLocation() CALLED")
+        com.android.sun.util.AppLog.d("LocationViewModel", "🔵 loadGPSLocation() CALLED")
         
         viewModelScope.launch {
             _isLoading.value = true
             _error.value = null
             
-            android.util.Log.d("LocationViewModel", "🔵 Starting GPS location request...")
+            com.android.sun.util.AppLog.d("LocationViewModel", "🔵 Starting GPS location request...")
             
             try {
                 val location = locationRepository.getCurrentLocation()
-                android.util.Log.d("LocationViewModel", "🔵 GPS result: $location")
+                com.android.sun.util.AppLog.d("LocationViewModel", "🔵 GPS result: $location")
                 
                 if (location != null) {
                     _currentGPSLocation.value = location
                     // ✅ Salvează locația GPS pentru utilizare ulterioară
                     saveGPSLocationToPrefs(location)
-                    android.util.Log.d("LocationViewModel", "✅ GPS Location set and saved:  ${location.latitude}, ${location.longitude}")
+                    com.android.sun.util.AppLog.d("LocationViewModel", "✅ GPS Location set and saved:  ${location.latitude}, ${location.longitude}")
                 } else {
                     // ✅ GPS nu e disponibil - încercăm să folosim ultima locație salvată
                     if (_currentGPSLocation.value == null) {
                         loadSavedGPSLocation()
                         if (_currentGPSLocation.value != null) {
-                            android.util.Log.d("LocationViewModel", "✅ Using saved GPS location")
+                            com.android.sun.util.AppLog.d("LocationViewModel", "✅ Using saved GPS location")
                         } else {
                             _error.value = "Could not get GPS location. Check permissions."
-                            android.util.Log.e("LocationViewModel", "❌ GPS returned null and no saved location")
+                            com.android.sun.util.AppLog.e("LocationViewModel", "❌ GPS returned null and no saved location")
                         }
                     }
                 }
@@ -91,16 +91,16 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
                 if (_currentGPSLocation.value == null) {
                     loadSavedGPSLocation()
                     if (_currentGPSLocation.value != null) {
-                        android.util.Log.d("LocationViewModel", "✅ GPS failed, using saved location")
+                        com.android.sun.util.AppLog.d("LocationViewModel", "✅ GPS failed, using saved location")
                     } else {
                         _error.value = "GPS Error: ${e.message}"
-                        android.util.Log.e("LocationViewModel", "❌ GPS Exception: ${e.message}")
+                        com.android.sun.util.AppLog.e("LocationViewModel", "❌ GPS Exception: ${e.message}")
                     }
                 }
                 e.printStackTrace()
             } finally {
                 _isLoading.value = false
-                android.util.Log.d("LocationViewModel", "🔵 GPS request finished")
+                com.android.sun.util.AppLog.d("LocationViewModel", "🔵 GPS request finished")
             }
         }
     }
@@ -119,9 +119,9 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
                 .putLong("gps_timestamp", System.currentTimeMillis())
                 .apply()
             
-            android.util.Log.d("LocationViewModel", "✅ GPS location saved to prefs:  ${location.latitude}, ${location.longitude}")
+            com.android.sun.util.AppLog.d("LocationViewModel", "✅ GPS location saved to prefs:  ${location.latitude}, ${location.longitude}")
         } catch (e: Exception) {
-            android.util.Log.e("LocationViewModel", "❌ Error saving GPS to prefs: ${e.message}")
+            com.android.sun.util.AppLog.e("LocationViewModel", "❌ Error saving GPS to prefs: ${e.message}")
         }
     }
 
@@ -148,12 +148,12 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
                 
                 val timestamp = prefs.getLong("gps_timestamp", 0)
                 val ageMinutes = (System.currentTimeMillis() - timestamp) / 60000
-                android.util.Log.d("LocationViewModel", "✅ Loaded saved GPS location (${ageMinutes} min old): ${savedLocation.latitude}, ${savedLocation.longitude}")
+                com.android.sun.util.AppLog.d("LocationViewModel", "✅ Loaded saved GPS location (${ageMinutes} min old): ${savedLocation.latitude}, ${savedLocation.longitude}")
             } else {
-                android.util.Log.d("LocationViewModel", "ℹ️ No saved GPS location found")
+                com.android.sun.util.AppLog.d("LocationViewModel", "ℹ️ No saved GPS location found")
             }
         } catch (e: Exception) {
-            android.util.Log.e("LocationViewModel", "❌ Error loading saved GPS:  ${e.message}")
+            com.android.sun.util.AppLog.e("LocationViewModel", "❌ Error loading saved GPS:  ${e.message}")
         }
     }
 
@@ -195,16 +195,16 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
                 
                 // ✅ Dacă am șters locația curentă, resetează la București
                 if (isCurrentLocation) {
-                    android.util.Log.d("LocationViewModel", "⚠️ Deleted current location '${location.name}', resetting to București")
+                    com.android.sun.util.AppLog.d("LocationViewModel", "⚠️ Deleted current location '${location.name}', resetting to București")
                     
                     // Salvează București ca locație curentă
                     locationPreferences.saveSelectedLocation(
                         id = 0,
-                        name = "București",
-                        latitude = 44.4268,
-                        longitude = 26.1025,
-                        altitude = 80.0,
-                        timeZone = 2.0,
+                        name = com.android.sun.util.AppDefaults.LOCATION_NAME,
+                        latitude = com.android.sun.util.AppDefaults.LATITUDE,
+                        longitude = com.android.sun.util.AppDefaults.LONGITUDE,
+                        altitude = com.android.sun.util.AppDefaults.ALTITUDE,
+                        timeZone = com.android.sun.util.AppDefaults.TIME_ZONE,
                         isGPS = false
                     )
                 }
@@ -241,7 +241,7 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
      * ✅ Încarcă locațiile predefinite (toate orașele din România)
      */
     fun loadDefaultLocations() {
-        android.util.Log.d("LocationViewModel", "🔵 loadDefaultLocations() CALLED")
+        com.android.sun.util.AppLog.d("LocationViewModel", "🔵 loadDefaultLocations() CALLED")
         
         viewModelScope.launch {
             _isLoading.value = true
@@ -249,10 +249,10 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
             
             try {
                 locationRepository.loadDefaultLocations()
-                android.util.Log.d("LocationViewModel", "✅ Default locations loaded")
+                com.android.sun.util.AppLog.d("LocationViewModel", "✅ Default locations loaded")
             } catch (e: Exception) {
                 _error.value = "Error loading defaults: ${e.message}"
-                android.util.Log.e("LocationViewModel", "❌ Error:  ${e.message}")
+                com.android.sun.util.AppLog.e("LocationViewModel", "❌ Error:  ${e.message}")
                 e.printStackTrace()
             } finally {
                 _isLoading.value = false
@@ -266,7 +266,7 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
      * ✅ Șterge toate locațiile salvate, păstrând doar București
      */
     fun clearSavedLocations() {
-        android.util.Log.d("LocationViewModel", "🗑️ clearSavedLocations() CALLED")
+        com.android.sun.util.AppLog.d("LocationViewModel", "🗑️ clearSavedLocations() CALLED")
         
         viewModelScope.launch {
             _isLoading.value = true
@@ -274,7 +274,7 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
             
             try {
                 locationRepository.clearSavedLocations()
-                android.util.Log.d("LocationViewModel", "✅ Saved locations cleared")
+                com.android.sun.util.AppLog.d("LocationViewModel", "✅ Saved locations cleared")
             } catch (e: Exception) {
                 _error.value = "Error clearing locations: ${e.message}"
                 e.printStackTrace()
@@ -294,7 +294,7 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
 		fun searchPredefinedCities(query: String) {
 			val results = locationRepository.searchPredefinedCities(query)
 			_searchResults.value = results
-			android.util.Log. d("LocationViewModel", "🔍 Search '$query' → ${results.size} results")
+			com.android.sun.util.AppLog.d("LocationViewModel", "🔍 Search '$query' → ${results.size} results")
 		}
 		
 		/**
@@ -308,7 +308,7 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
 		 * ✅ Adaugă un oraș predefinit în locațiile salvate
 		 */
 		fun addPredefinedCity(city: PredefinedCity) {
-			android.util.Log. d("LocationViewModel", "➕ addPredefinedCity: ${city.name}, ${city.country}")
+			com.android.sun.util.AppLog.d("LocationViewModel", "➕ addPredefinedCity: ${city.name}, ${city.country}")
 			
 			viewModelScope.launch {
 				_isLoading.value = true
@@ -318,10 +318,10 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
 					locationRepository.addPredefinedCity(city)
 					// Golește rezultatele căutării după adăugare
 					_searchResults.value = emptyList()
-					android.util.Log.d("LocationViewModel", "✅ City added successfully")
+					com.android.sun.util.AppLog.d("LocationViewModel", "✅ City added successfully")
 				} catch (e: Exception) {
 					_error.value = "Error adding city: ${e.message}"
-					android.util.Log.e("LocationViewModel", "❌ Error:  ${e.message}")
+					com.android.sun.util.AppLog.e("LocationViewModel", "❌ Error:  ${e.message}")
 					e.printStackTrace()
 				} finally {
 					_isLoading.value = false

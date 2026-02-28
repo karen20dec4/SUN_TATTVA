@@ -84,7 +84,7 @@ class TattvaCalculator {
         
         // Verifică că e pozitiv
         if (remainingMillis < 0) {
-            android.util.Log.e("TattvaCalculator", "ERROR: Remaining time is negative! $remainingMillis ms")
+            com.android.sun.util.AppLog.e("TattvaCalculator", "ERROR: Remaining time is negative! $remainingMillis ms")
         }
         
         val safeRemainingMillis = if (remainingMillis > 0) remainingMillis else 0L
@@ -94,21 +94,21 @@ class TattvaCalculator {
         val remainingSeconds = ((safeRemainingMillis % 60000) / 1000).toInt()
         
         // Debug logging
-        android.util.Log.d("TattvaCalculator", "=== TATTVA DEBUG START ===")
-        android.util.Log.d("TattvaCalculator", "Current time: ${formatCalendar(current)}")
-        android.util.Log.d("TattvaCalculator", "Sunrise time: ${formatCalendar(sunriseLocal)}")
-        android.util.Log.d("TattvaCalculator", "Elapsed since sunrise: ${adjustedElapsed / 60000} minutes")
-        android.util.Log.d("TattvaCalculator", "Tattva index from sunrise: $tattvaIndexFromSunrise")
-        android.util.Log.d("TattvaCalculator", "Cycle number: $cycleNumber")
-        android.util.Log.d("TattvaCalculator", "Tattva index in cycle: $tattvaIndexInCycle")
-        android.util.Log.d("TattvaCalculator", "Current Tattva: ${currentTattva.displayName}")
-        android.util.Log.d("TattvaCalculator", "Tattva starts at: ${formatCalendar(tattvaStart)}")
-        android.util.Log.d("TattvaCalculator", "Tattva ends at: ${formatCalendar(tattvaEnd)}")
-        android.util.Log.d("TattvaCalculator", "Current millis: ${current.timeInMillis}")
-        android.util.Log.d("TattvaCalculator", "Tattva end millis: $tattvaEndMillis")
-        android.util.Log.d("TattvaCalculator", "Remaining millis: $remainingMillis")
-        android.util.Log.d("TattvaCalculator", "Remaining: ${remainingMinutes}m ${remainingSeconds}s")
-        android.util.Log.d("TattvaCalculator", "=== TATTVA DEBUG END ===")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "=== TATTVA DEBUG START ===")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Current time: ${formatCalendar(current)}")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Sunrise time: ${formatCalendar(sunriseLocal)}")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Elapsed since sunrise: ${adjustedElapsed / 60000} minutes")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Tattva index from sunrise: $tattvaIndexFromSunrise")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Cycle number: $cycleNumber")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Tattva index in cycle: $tattvaIndexInCycle")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Current Tattva: ${currentTattva.displayName}")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Tattva starts at: ${formatCalendar(tattvaStart)}")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Tattva ends at: ${formatCalendar(tattvaEnd)}")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Current millis: ${current.timeInMillis}")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Tattva end millis: $tattvaEndMillis")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Remaining millis: $remainingMillis")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "Remaining: ${remainingMinutes}m ${remainingSeconds}s")
+        com.android.sun.util.AppLog.d("TattvaCalculator", "=== TATTVA DEBUG END ===")
         
         return TattvaResult(
             tattva = currentTattva,

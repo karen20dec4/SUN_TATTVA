@@ -11,7 +11,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
+import com.android.sun.util.AppLog
 import androidx.core.app.NotificationCompat
 import com.android.sun.MainActivity
 import com.android.sun.R
@@ -61,21 +61,21 @@ class TattvaNotificationService : Service() {
     
     override fun onCreate() {
         super.onCreate()
-        Log.d(TAG, "onCreate() called")
+        AppLog.d(TAG, "onCreate() called")
         settingsPreferences = SettingsPreferences(applicationContext)
         createNotificationChannel()
         registerLocationChangeReceiver()
-        Log.d(TAG, "Service created successfully")
+        AppLog.d(TAG, "Service created successfully")
     }
     
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "onStartCommand() called")
+        AppLog.d(TAG, "onStartCommand() called")
         
         // Pornire neutră
         val initialNotification = createDetailedNotification("Loading astro data...", R.drawable.icon, CHANNEL_ID_TATTVA, "GROUP_TATTVA")
         startForeground(TATTVA_NOTIF_ID, initialNotification)
         
-        Log.d(TAG, "Started in foreground with initial notification")
+        AppLog.d(TAG, "Started in foreground with initial notification")
         
         startPeriodicUpdate()
         return START_STICKY
@@ -90,7 +90,7 @@ class TattvaNotificationService : Service() {
                 val delayMs = updateNotificationAndGetDelay()
                 // Wait until the next Tattva/Planet change (with 1s buffer to ensure the change happened)
                 val waitMs = (delayMs + 1000L).coerceAtLeast(1000L)
-                Log.d(TAG, "Next update in ${waitMs / 1000}s")
+                AppLog.d(TAG, "Next update in ${waitMs / 1000}s")
                 delay(waitMs)
             }
         }
@@ -107,7 +107,7 @@ class TattvaNotificationService : Service() {
 	 * Returns 30_000 as fallback if calculation fails.
 	 */
 	private suspend fun updateNotificationAndGetDelay(): Long {
-        Log.d(TAG, "updateNotificationAndGetDelay() called")
+        AppLog.d(TAG, "updateNotificationAndGetDelay() called")
         
         val repository = AstroRepository(applicationContext)
         val locationPrefs = LocationPreferences(applicationContext)
@@ -155,7 +155,7 @@ class TattvaNotificationService : Service() {
                 if (tattvaEndMs > 0) {
                     nextChangeMs = minOf(nextChangeMs, tattvaEndMs)
                 } else {
-                    Log.w(TAG, "Tattva already ended (stale data), retrying soon")
+                    AppLog.w(TAG, "Tattva already ended (stale data), retrying soon")
                     nextChangeMs = minOf(nextChangeMs, 2_000L)
                 }
             } else {
@@ -187,20 +187,20 @@ class TattvaNotificationService : Service() {
                 if (planetEndMs > 0) {
                     nextChangeMs = minOf(nextChangeMs, planetEndMs)
                 } else {
-                    Log.w(TAG, "Planetary hour already ended (stale data), retrying soon")
+                    AppLog.w(TAG, "Planetary hour already ended (stale data), retrying soon")
                     nextChangeMs = minOf(nextChangeMs, 2_000L)
                 }
             } else {
                 notificationManager.cancel(PLANET_NOTIF_ID)
             }
 
-            Log.d(TAG, "═══════════════════════════════════════════════════════")
+            AppLog.d(TAG, "═══════════════════════════════════════════════════════")
             
             // Return the time until the next change (or 30s fallback)
             return if (nextChangeMs == Long.MAX_VALUE) 30_000L else nextChangeMs
 
         } catch (e: Exception) {
-            Log.e(TAG, "Update failed", e)
+            AppLog.e(TAG, "Update failed", e)
             return 30_000L
         }
     }   
@@ -242,7 +242,7 @@ class TattvaNotificationService : Service() {
 	
     
 	private fun createDetailedNotification(title: String, iconRes: Int, channelId: String, groupKey: String): Notification {
-		Log.d(TAG, "createDetailedNotification(): title='$title', iconRes=$iconRes, channelId=$channelId, group=$groupKey")
+		AppLog.d(TAG, "createDetailedNotification(): title='$title', iconRes=$iconRes, channelId=$channelId, group=$groupKey")
 		val intent = Intent(this, MainActivity::class.java)
 		val pendingIntent = PendingIntent.getActivity(this, iconRes, intent, PendingIntent.FLAG_IMMUTABLE)
 
@@ -321,17 +321,17 @@ class TattvaNotificationService : Service() {
     }
 
     private fun registerLocationChangeReceiver() {
-        Log.d(TAG, "Registering broadcast receivers for location and settings changes")
+        AppLog.d(TAG, "Registering broadcast receivers for location and settings changes")
         
         locationChangeReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 when (intent?.action) {
                     ACTION_LOCATION_CHANGED -> {
-                        Log.d(TAG, "Received ACTION_LOCATION_CHANGED broadcast")
+                        AppLog.d(TAG, "Received ACTION_LOCATION_CHANGED broadcast")
                         startPeriodicUpdate() // Restart loop to pick up new timing
                     }
                     ACTION_SETTINGS_CHANGED -> {
-                        Log.d(TAG, "Received ACTION_SETTINGS_CHANGED broadcast")
+                        AppLog.d(TAG, "Received ACTION_SETTINGS_CHANGED broadcast")
                         startPeriodicUpdate() // Restart loop to pick up new timing
                     }
                 }
@@ -347,7 +347,7 @@ class TattvaNotificationService : Service() {
             registerReceiver(locationChangeReceiver, filter)
         }
         
-        Log.d(TAG, "Broadcast receivers registered successfully")
+        AppLog.d(TAG, "Broadcast receivers registered successfully")
     }
 
     override fun onDestroy() {

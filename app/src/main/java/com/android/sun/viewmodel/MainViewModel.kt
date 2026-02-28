@@ -49,7 +49,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var updateJob: Job?  = null
 
     init {
-        android.util.Log. d("MainViewModel", "🔵 init called")
+        com.android.sun.util.AppLog.d("MainViewModel", "🔵 init called")
         
         // ✅ Încarcă locația salvată SINCRON (fără coroutine)
         loadSavedLocationSync()
@@ -66,7 +66,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * Nu verifică DB-ul aici - verificarea se face în reloadSavedLocation()
      */
     private fun loadSavedLocationSync() {
-        android.util.Log.d("MainViewModel", "🔵 loadSavedLocationSync() called")
+        com.android.sun.util.AppLog.d("MainViewModel", "🔵 loadSavedLocationSync() called")
         
         if (locationPreferences. hasSavedLocation()) {
             val savedLocation = LocationData(
@@ -79,10 +79,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 isCurrentLocation = locationPreferences.isSavedLocationGPS()
             )
             
-            android.util.Log. d("MainViewModel", "✅ Loaded saved location: ${savedLocation.name} (${savedLocation.latitude}, ${savedLocation.longitude})")
+            com.android.sun.util.AppLog.d("MainViewModel", "✅ Loaded saved location: ${savedLocation.name} (${savedLocation.latitude}, ${savedLocation.longitude})")
             _currentLocation.value = savedLocation
         } else {
-            android.util.Log. d("MainViewModel", "⚠️ No saved location, using București")
+            com.android.sun.util.AppLog.d("MainViewModel", "⚠️ No saved location, using București")
             _currentLocation.value = getDefaultLocation()
         }
     }
@@ -93,7 +93,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 		 * ✅ Reîncarcă locația salvată (apelat când revii la ecranul principal)
 		 */
 		fun reloadSavedLocation() {
-			android.util.Log.d("MainViewModel", "🔵 reloadSavedLocation() called")
+			com.android.sun.util.AppLog.d("MainViewModel", "🔵 reloadSavedLocation() called")
 			
 			viewModelScope. launch {
 				val oldLocation = _currentLocation. value
@@ -128,7 +128,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 								isCurrentLocation = false
 							)
 						} else {
-							android.util.Log. w("MainViewModel", "⚠️ '$savedName' not in DB, resetting")
+							com.android.sun.util.AppLog.w("MainViewModel", "⚠️ '$savedName' not in DB, resetting")
 							resetToDefaultLocation()
 						}
 					}
@@ -141,7 +141,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 				if (oldLocation. name != newLocation. name || 
 					oldLocation. latitude != newLocation. latitude ||
 					oldLocation. longitude != newLocation. longitude) {
-					android.util.Log. d("MainViewModel", "🔄 Location changed, recalculating...")
+					com.android.sun.util.AppLog.d("MainViewModel", "🔄 Location changed, recalculating...")
 					calculateAstroData()
 				}
 			}
@@ -165,7 +165,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 			isGPS = false
 		)
 		
-		android.util.Log.d("MainViewModel", "✅ Reset to București and saved to preferences")
+		com.android.sun.util.AppLog.d("MainViewModel", "✅ Reset to București and saved to preferences")
 	}
 
 
@@ -182,11 +182,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 			try {
 				val location = _currentLocation.value
 				
-				android.util.Log.d("MainViewModel", "───────────────────────────────────────")
-				android.util.Log. d("MainViewModel", "🔵 calculateAstroData() START")
-				android.util.Log.d("MainViewModel", "🔵 Using location: ${location.name}")
-				android.util.Log. d("MainViewModel", "🔵   Lat: ${location.latitude}, Lon: ${location.longitude}")
-				android.util.Log. d("MainViewModel", "🔵   TimeZone: ${location.timeZone}")
+				com.android.sun.util.AppLog.d("MainViewModel", "───────────────────────────────────────")
+				com.android.sun.util.AppLog.d("MainViewModel", "🔵 calculateAstroData() START")
+				com.android.sun.util.AppLog.d("MainViewModel", "🔵 Using location: ${location.name}")
+				com.android.sun.util.AppLog.d("MainViewModel", "🔵   Lat: ${location.latitude}, Lon: ${location.longitude}")
+				com.android.sun.util.AppLog.d("MainViewModel", "🔵   TimeZone: ${location.timeZone}")
 				
 				val data = astroRepository.calculateAstroData(
 					latitude = location.latitude,
@@ -197,28 +197,28 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 				)
 				_astroData.value = data
 				
-				android.util.Log.d("MainViewModel", "✅ Calculation completed!")
-				android.util.Log. d("MainViewModel", "✅ Result: sunrise=${data.sunriseFormatted}")
-				android.util.Log. d("MainViewModel", "✅ Location in result: ${data.locationName}")
+				com.android.sun.util.AppLog.d("MainViewModel", "✅ Calculation completed!")
+				com.android.sun.util.AppLog.d("MainViewModel", "✅ Result: sunrise=${data.sunriseFormatted}")
+				com.android.sun.util.AppLog.d("MainViewModel", "✅ Location in result: ${data.locationName}")
 				
 				// ✅ ADAUGĂ: Trimite broadcast DUPĂ calculul complet
 				try {
 					val intent = android. content.Intent("com.android. sun.LOCATION_CHANGED")
 					getApplication<Application>().sendBroadcast(intent)
-					android.util. Log.d("MainViewModel", "📍 Broadcast sent after calculation complete")
+					com.android.sun.util.AppLog.d("MainViewModel", "📍 Broadcast sent after calculation complete")
 				} catch (e:  Exception) {
-					android.util.Log.e("MainViewModel", "Error sending broadcast", e)
+					com.android.sun.util.AppLog.e("MainViewModel", "Error sending broadcast", e)
 				}
 				
-				android.util.Log.d("MainViewModel", "───────────────────────────────────────")
+				com.android.sun.util.AppLog.d("MainViewModel", "───────────────────────────────────────")
 			} catch (e: Exception) {
 				_error.value = "Error:  ${e.message}"
-				android.util.Log.e("MainViewModel", "❌ Error:  ${e.message}")
+				com.android.sun.util.AppLog.e("MainViewModel", "❌ Error:  ${e.message}")
 				e.printStackTrace()
 			}
 			
 			_isLoading.value = false
-			android.util.Log.d("MainViewModel", "🔵 isLoading set to false")
+			com.android.sun.util.AppLog.d("MainViewModel", "🔵 isLoading set to false")
 		}
 	}
 
@@ -289,19 +289,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * Setează o nouă locație și o salvează în SharedPreferences
      */
 	fun setLocation(location: LocationData) {
-		android.util.Log.d("MainViewModel", "═══════════════════════════════════════")
-		android.util.Log.d("MainViewModel", "🟢 setLocation() called")
-		android.util.Log.d("MainViewModel", "🟢 NEW Location: ${location.name}")
-		android.util.Log.d("MainViewModel", "🟢   Lat: ${location.latitude}, Lon: ${location.longitude}")
-		android.util.Log.d("MainViewModel", "🟢   TimeZone: ${location.timeZone}")
-		android.util.Log.d("MainViewModel", "🟢   IsGPS: ${location.isCurrentLocation}")
+		com.android.sun.util.AppLog.d("MainViewModel", "═══════════════════════════════════════")
+		com.android.sun.util.AppLog.d("MainViewModel", "🟢 setLocation() called")
+		com.android.sun.util.AppLog.d("MainViewModel", "🟢 NEW Location: ${location.name}")
+		com.android.sun.util.AppLog.d("MainViewModel", "🟢   Lat: ${location.latitude}, Lon: ${location.longitude}")
+		com.android.sun.util.AppLog.d("MainViewModel", "🟢   TimeZone: ${location.timeZone}")
+		com.android.sun.util.AppLog.d("MainViewModel", "🟢   IsGPS: ${location.isCurrentLocation}")
 		
 		val oldLocation = _currentLocation.value
-		android.util.Log.d("MainViewModel", "🟡 OLD Location: ${oldLocation. name}")
+		com.android.sun.util.AppLog.d("MainViewModel", "🟡 OLD Location: ${oldLocation. name}")
 		
 		_currentLocation.value = location
 		
-		android.util.Log. d("MainViewModel", "✅ _currentLocation updated to: ${_currentLocation.value.name}")
+		com.android.sun.util.AppLog.d("MainViewModel", "✅ _currentLocation updated to: ${_currentLocation.value.name}")
 		
 		// Salvează în SharedPreferences
 		locationPreferences.saveSelectedLocation(
@@ -314,10 +314,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 			isGPS = location.isCurrentLocation
 		)
 		
-		android.util.Log.d("MainViewModel", "✅ Location saved to SharedPreferences")
-		android.util.Log.d("MainViewModel", "🟢 Calling calculateAstroData()...")
+		com.android.sun.util.AppLog.d("MainViewModel", "✅ Location saved to SharedPreferences")
+		com.android.sun.util.AppLog.d("MainViewModel", "🟢 Calling calculateAstroData()...")
 		calculateAstroData()
-		android.util.Log.d("MainViewModel", "═══════════════════════════════════════")
+		com.android.sun.util.AppLog.d("MainViewModel", "═══════════════════════════════════════")
 	}
 	
 	
@@ -331,40 +331,40 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 	 * ✅ FIX: Verifică dacă locația curentă încă există în DB
 	 */
 	fun refresh() {
-		android.util. Log.d("MainViewModel", "═══════════════════════════════════════")
-		android.util.Log.d("MainViewModel", "🔵 refresh() called")
+		com.android.sun.util.AppLog.d("MainViewModel", "═══════════════════════════════════════")
+		com.android.sun.util.AppLog.d("MainViewModel", "🔵 refresh() called")
 		
 		val currentLoc = _currentLocation.value
-		android.util.Log. d("MainViewModel", "🔵 Current location in memory: ${currentLoc.name}")
-		android.util.Log.d("MainViewModel", "🔵   Lat: ${currentLoc. latitude}, Lon: ${currentLoc.longitude}")
-		android.util.Log.d("MainViewModel", "🔵   TimeZone: ${currentLoc.timeZone}")
-		android.util.Log.d("MainViewModel", "🔵   IsGPS: ${currentLoc.isCurrentLocation}")
+		com.android.sun.util.AppLog.d("MainViewModel", "🔵 Current location in memory: ${currentLoc.name}")
+		com.android.sun.util.AppLog.d("MainViewModel", "🔵   Lat: ${currentLoc. latitude}, Lon: ${currentLoc.longitude}")
+		com.android.sun.util.AppLog.d("MainViewModel", "🔵   TimeZone: ${currentLoc.timeZone}")
+		com.android.sun.util.AppLog.d("MainViewModel", "🔵   IsGPS: ${currentLoc.isCurrentLocation}")
 		
 		viewModelScope.launch {
 			// ✅ Dacă e locație GPS, folosește-o direct
 			if (currentLoc. isCurrentLocation) {
-				android.util.Log.d("MainViewModel", "✅ GPS location, using directly")
+				com.android.sun.util.AppLog.d("MainViewModel", "✅ GPS location, using directly")
 				calculateAstroData()
-				android.util.Log.d("MainViewModel", "═══════════════════════════════════════")
+				com.android.sun.util.AppLog.d("MainViewModel", "═══════════════════════════════════════")
 				return@launch
 			}
 			
 			// ✅ Verifică dacă locația încă există în DB
-			android.util.Log.d("MainViewModel", "🔍 Checking if location exists in DB...")
+			com.android.sun.util.AppLog.d("MainViewModel", "🔍 Checking if location exists in DB...")
 			val existsInDB = locationRepository.locationExistsByName(currentLoc.name)
-			android.util.Log.d("MainViewModel", "🔍 Location '${currentLoc.name}' exists in DB: $existsInDB")
+			com.android.sun.util.AppLog.d("MainViewModel", "🔍 Location '${currentLoc.name}' exists in DB: $existsInDB")
 			
 			if (existsInDB) {
-				android.util.Log.d("MainViewModel", "✅ Location exists, calculating astro data...")
+				com.android.sun.util.AppLog.d("MainViewModel", "✅ Location exists, calculating astro data...")
 				calculateAstroData()
 			} else {
-				android.util.Log.w("MainViewModel", "⚠️ Location '${currentLoc.name}' not found in DB!")
-				android.util.Log.w("MainViewModel", "⚠️ Resetting to București...")
+				com.android.sun.util.AppLog.w("MainViewModel", "⚠️ Location '${currentLoc.name}' not found in DB!")
+				com.android.sun.util.AppLog.w("MainViewModel", "⚠️ Resetting to București...")
 				resetToDefaultLocation()
 				calculateAstroData()
 			}
 			
-			android.util.Log. d("MainViewModel", "═══════════════════════════════════════")
+			com.android.sun.util.AppLog.d("MainViewModel", "═══════════════════════════════════════")
 		}
 	}
 
@@ -377,15 +377,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * Obține locația default (București)
      */
     private fun getDefaultLocation(): LocationData {
-        return LocationData(
-            id = 0,
-            name = "București",
-            latitude = 44.4268,
-            longitude = 26.1025,
-            altitude = 80.0,
-            timeZone = 2.0,
-            isCurrentLocation = false
-        )
+        return com.android.sun.util.AppDefaults.getDefaultLocationData()
     }
 
     override fun onCleared() {

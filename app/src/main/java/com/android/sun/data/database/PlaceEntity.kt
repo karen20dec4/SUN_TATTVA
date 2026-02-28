@@ -42,13 +42,5 @@ data class PlaceEntity(
  * Extensie pentru a crea locația default (București)
  */
 fun getDefaultPlace(): PlaceEntity {
-    return PlaceEntity(
-        id = 1,
-        name = "Bucuresti",
-        longitude = 26.05,
-        latitude = 44.26,
-        altitude = 80.0,
-        timeZone = 2.0,
-        dst = 0
-    )
+    return com.android.sun.util.AppDefaults.getDefaultPlaceEntity()
 }

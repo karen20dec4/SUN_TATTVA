@@ -79,7 +79,7 @@ class SubTattvaCalculator {
         
         // Verifică că e pozitiv
         if (remainingMillis < 0) {
-            android.util.Log.e("SubTattvaCalculator", "ERROR: Remaining time is negative! $remainingMillis ms")
+            com.android.sun.util.AppLog.e("SubTattvaCalculator", "ERROR: Remaining time is negative! $remainingMillis ms")
         }
         
         val safeRemainingMillis = if (remainingMillis > 0) remainingMillis else 0L
@@ -89,20 +89,20 @@ class SubTattvaCalculator {
         val remainingSeconds = ((safeRemainingMillis % 60000) / 1000).toInt()
         
         // Debug logging
-        android.util.Log.d("SubTattvaCalculator", "=== SUBTATTVA DEBUG START ===")
-        android.util.Log.d("SubTattvaCalculator", "Current time: ${formatCalendar(current)}")
-        android.util.Log.d("SubTattvaCalculator", "Sunrise time: ${formatCalendar(sunriseLocal)}")
-        android.util.Log.d("SubTattvaCalculator", "Elapsed since sunrise: ${adjustedElapsed / 1000} seconds")
-        android.util.Log.d("SubTattvaCalculator", "SubTattva index from sunrise: $subTattvaIndexFromSunrise")
-        android.util.Log.d("SubTattvaCalculator", "SubTattva index in Tattva: $subTattvaIndexInTattva")
-        android.util.Log.d("SubTattvaCalculator", "Current SubTattva: ${currentSubTattva.displayName}")
-        android.util.Log.d("SubTattvaCalculator", "SubTattva starts at: ${formatCalendar(subTattvaStart)}")
-        android.util.Log.d("SubTattvaCalculator", "SubTattva ends at: ${formatCalendar(subTattvaEnd)}")
-        android.util.Log.d("SubTattvaCalculator", "Current millis: ${current.timeInMillis}")
-        android.util.Log.d("SubTattvaCalculator", "SubTattva end millis: $subTattvaEndMillis")
-        android.util.Log.d("SubTattvaCalculator", "Remaining millis: $remainingMillis")
-        android.util.Log.d("SubTattvaCalculator", "Remaining: ${remainingMinutes}m ${remainingSeconds}s")
-        android.util.Log.d("SubTattvaCalculator", "=== SUBTATTVA DEBUG END ===")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "=== SUBTATTVA DEBUG START ===")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "Current time: ${formatCalendar(current)}")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "Sunrise time: ${formatCalendar(sunriseLocal)}")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "Elapsed since sunrise: ${adjustedElapsed / 1000} seconds")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "SubTattva index from sunrise: $subTattvaIndexFromSunrise")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "SubTattva index in Tattva: $subTattvaIndexInTattva")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "Current SubTattva: ${currentSubTattva.displayName}")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "SubTattva starts at: ${formatCalendar(subTattvaStart)}")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "SubTattva ends at: ${formatCalendar(subTattvaEnd)}")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "Current millis: ${current.timeInMillis}")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "SubTattva end millis: $subTattvaEndMillis")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "Remaining millis: $remainingMillis")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "Remaining: ${remainingMinutes}m ${remainingSeconds}s")
+        com.android.sun.util.AppLog.d("SubTattvaCalculator", "=== SUBTATTVA DEBUG END ===")
         
         return SubTattvaResult(
             subTattva = currentSubTattva,

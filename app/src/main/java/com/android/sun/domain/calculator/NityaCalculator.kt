@@ -24,9 +24,9 @@ class NityaCalculator {
     sunLongitude: Double,
     currentTime: Calendar = Calendar.getInstance()
 ): NityaResult {
-    android.util.Log.d("NityaDebug", "============================================")
-    android.util.Log.d("NityaDebug", "🌙 NITYA CALCULATION START")
-    android.util.Log.d("NityaDebug", "============================================")
+    com.android.sun.util.AppLog.d("NityaDebug", "============================================")
+    com.android.sun.util.AppLog.d("NityaDebug", "🌙 NITYA CALCULATION START")
+    com.android.sun.util.AppLog.d("NityaDebug", "============================================")
     
     // Calculează diferența (Lună - Soare)
     var diff = moonLongitude - sunLongitude
@@ -35,19 +35,19 @@ class NityaCalculator {
     while (diff < 0) diff += 360.0
     while (diff >= 360) diff -= 360.0
     
-    android.util.Log.d("NityaDebug", "Moon Longitude: %.2f°".format(moonLongitude))
-    android.util.Log.d("NityaDebug", "Sun Longitude:  %.2f°".format(sunLongitude))
-    android.util.Log.d("NityaDebug", "Difference:     %.2f°".format(diff))
+    com.android.sun.util.AppLog.d("NityaDebug", "Moon Longitude: %.2f°".format(moonLongitude))
+    com.android.sun.util.AppLog.d("NityaDebug", "Sun Longitude:  %.2f°".format(sunLongitude))
+    com.android.sun.util.AppLog.d("NityaDebug", "Difference:     %.2f°".format(diff))
     
     // ✅ Fiecare Tithi = 12 grade (360 / 30)
     val tithiIndex = (diff / 12.0).toInt()
     
-    android.util.Log.d("NityaDebug", "Tithi Index:    $tithiIndex (raw)")
+    com.android.sun.util.AppLog.d("NityaDebug", "Tithi Index:    $tithiIndex (raw)")
     
     // ✅ CORECTARE: Krishna Paksha când diff >= 180° (Luna descrește)
     val isKrishnaPaksha = diff >= 180.0
     
-    android.util.Log.d("NityaDebug", "Paksha:         ${if (isKrishnaPaksha) "Krishna (Dark)" else "Shukla (Bright)"}")
+    com.android.sun.util.AppLog.d("NityaDebug", "Paksha:         ${if (isKrishnaPaksha) "Krishna (Dark)" else "Shukla (Bright)"}")
     
     // ✅ FORMULA CORECTĂ: Krishna inversează ordinea!
     val nityaIndex = if (isKrishnaPaksha) {
@@ -59,11 +59,11 @@ class NityaCalculator {
         tithiIndex
     }.coerceIn(0, 14)
     
-    android.util.Log.d("NityaDebug", "Nitya Index:    $nityaIndex (adjusted)")
+    com.android.sun.util.AppLog.d("NityaDebug", "Nitya Index:    $nityaIndex (adjusted)")
     
     val nitya = nityaList[nityaIndex]
     
-    android.util.Log.d("NityaDebug", "Nitya Result:   ${nitya.number} - ${nitya.displayName}")
+    com.android.sun.util.AppLog.d("NityaDebug", "Nitya Result:   ${nitya.number} - ${nitya.displayName}")
     
     // ✅ CALCUL EXACT pentru Start/End Time
     val tithiStartDegree = tithiIndex * 12.0
@@ -94,12 +94,12 @@ class NityaCalculator {
     val endTime = currentTime.clone() as Calendar
     endTime.add(Calendar.MINUTE, (hoursRemainingInTithi * 60).toInt())
     
-    android.util.Log.d("NityaDebug", "Tithi Progress: %.2f%% (%.2f° in current Tithi)".format(tithiProgress * 100, progressInTithi))
-    android.util.Log.d("NityaDebug", "Hours elapsed:  %.2f hours".format(hoursElapsedInTithi))
-    android.util.Log.d("NityaDebug", "Hours remaining: %.2f hours".format(hoursRemainingInTithi))
-    android.util.Log.d("NityaDebug", "Start Time:     ${startTime.time}")
-    android.util.Log.d("NityaDebug", "End Time:       ${endTime.time}")
-    android.util.Log.d("NityaDebug", "============================================")
+    com.android.sun.util.AppLog.d("NityaDebug", "Tithi Progress: %.2f%% (%.2f° in current Tithi)".format(tithiProgress * 100, progressInTithi))
+    com.android.sun.util.AppLog.d("NityaDebug", "Hours elapsed:  %.2f hours".format(hoursElapsedInTithi))
+    com.android.sun.util.AppLog.d("NityaDebug", "Hours remaining: %.2f hours".format(hoursRemainingInTithi))
+    com.android.sun.util.AppLog.d("NityaDebug", "Start Time:     ${startTime.time}")
+    com.android.sun.util.AppLog.d("NityaDebug", "End Time:       ${endTime.time}")
+    com.android.sun.util.AppLog.d("NityaDebug", "============================================")
     
     return NityaResult(
         nitya = nitya,

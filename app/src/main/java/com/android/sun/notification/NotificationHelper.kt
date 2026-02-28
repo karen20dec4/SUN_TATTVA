@@ -48,7 +48,7 @@ class NotificationHelper(private val context: Context) {
             val notificationManager = context.getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(channel)
             
-            android.util.Log.d("NotificationHelper", "Notification channel created:  $CHANNEL_ID_MOON")
+            com.android.sun.util.AppLog.d("NotificationHelper", "Notification channel created:  $CHANNEL_ID_MOON")
         }
     }
 
@@ -77,9 +77,9 @@ class NotificationHelper(private val context: Context) {
 
         try {
             NotificationManagerCompat.from(context).notify(NOTIFICATION_ID_FULL_MOON_START, notification)
-            android.util.Log.d("NotificationHelper", "Full Moon START notification sent")
+            com.android.sun.util.AppLog.d("NotificationHelper", "Full Moon START notification sent")
         } catch (e:  SecurityException) {
-            android.util.Log.e("NotificationHelper", "No permission to send notification", e)
+            com.android.sun.util.AppLog.e("NotificationHelper", "No permission to send notification", e)
         }
     }
 
@@ -106,9 +106,9 @@ class NotificationHelper(private val context: Context) {
 
         try {
             NotificationManagerCompat.from(context).notify(NOTIFICATION_ID_FULL_MOON_END, notification)
-            android.util.Log.d("NotificationHelper", "Full Moon END notification sent")
+            com.android.sun.util.AppLog.d("NotificationHelper", "Full Moon END notification sent")
         } catch (e: SecurityException) {
-            android.util.Log.e("NotificationHelper", "No permission to send notification", e)
+            com.android.sun.util.AppLog.e("NotificationHelper", "No permission to send notification", e)
         }
     }
 
@@ -137,9 +137,9 @@ class NotificationHelper(private val context: Context) {
 
         try {
             NotificationManagerCompat.from(context).notify(NOTIFICATION_ID_TRIPURA_SUNDARI, notification)
-            android.util.Log.d("NotificationHelper", "Tripura Sundari notification sent")
+            com.android.sun.util.AppLog.d("NotificationHelper", "Tripura Sundari notification sent")
         } catch (e: SecurityException) {
-            android.util.Log.e("NotificationHelper", "No permission to send notification", e)
+            com.android.sun.util.AppLog.e("NotificationHelper", "No permission to send notification", e)
         }
     }
 
@@ -168,9 +168,9 @@ class NotificationHelper(private val context: Context) {
 
         try {
             NotificationManagerCompat.from(context).notify(NOTIFICATION_ID_NEW_MOON, notification)
-            android.util.Log.d("NotificationHelper", "New Moon notification sent")
+            com.android.sun.util.AppLog.d("NotificationHelper", "New Moon notification sent")
         } catch (e: SecurityException) {
-            android.util.Log.e("NotificationHelper", "No permission to send notification", e)
+            com.android.sun.util.AppLog.e("NotificationHelper", "No permission to send notification", e)
         }
     }
 }

@@ -89,11 +89,11 @@ class PolarityCalculator {
             }
         }
         
-        android.util.Log.d("PolarityCalculator", "=== POLARITY DEBUG ===")
-        android.util.Log.d("PolarityCalculator", "Moon: $moonLongitude°, Sun:  $sunLongitude°")
-        android.util.Log. d("PolarityCalculator", "Diff: $diff°, Paksha: ${if (paksha == 1) "Shukla" else "Krishna"}")
-        android.util.Log.d("PolarityCalculator", "Nitya: $nitya, nn: $nn (${if (nn % 2 == 0) "PAR" else "IMPAR"})")
-        android.util.Log. d("PolarityCalculator", "${if (isSunrise) "Sunrise" else "Sunset"} Polarity: ${if (polarity == 1) "(+) Pingala" else "(-) Ida"}")
+        com.android.sun.util.AppLog.d("PolarityCalculator", "=== POLARITY DEBUG ===")
+        com.android.sun.util.AppLog.d("PolarityCalculator", "Moon: $moonLongitude°, Sun:  $sunLongitude°")
+        com.android.sun.util.AppLog.d("PolarityCalculator", "Diff: $diff°, Paksha: ${if (paksha == 1) "Shukla" else "Krishna"}")
+        com.android.sun.util.AppLog.d("PolarityCalculator", "Nitya: $nitya, nn: $nn (${if (nn % 2 == 0) "PAR" else "IMPAR"})")
+        com.android.sun.util.AppLog.d("PolarityCalculator", "${if (isSunrise) "Sunrise" else "Sunset"} Polarity: ${if (polarity == 1) "(+) Pingala" else "(-) Ida"}")
         
         return polarity
     }

@@ -45,41 +45,7 @@ fun NakshatraCard(
     var isExpanded by remember { mutableStateOf(false) }
     
     // ✅ FIX DST: Folosim timezone cu suport pentru DST
-    val locationTimeZone = when {
-        locationName.contains("București", ignoreCase = true) || 
-        locationName.contains("Bucharest", ignoreCase = true) ||
-        locationName.contains("Cluj", ignoreCase = true) ||
-        locationName.contains("Timișoara", ignoreCase = true) ||
-        locationName.contains("Iași", ignoreCase = true) ||
-        locationName.contains("Constanța", ignoreCase = true) ||
-        locationName.contains("Craiova", ignoreCase = true) ||
-        locationName.contains("Brașov", ignoreCase = true) -> {
-            java.util.TimeZone.getTimeZone("Europe/Bucharest")
-        }
-        locationName.contains("Tokyo", ignoreCase = true) -> {
-            java.util.TimeZone.getTimeZone("Asia/Tokyo")
-        }
-        locationName.contains("New York", ignoreCase = true) -> {
-            java.util.TimeZone.getTimeZone("America/New_York")
-        }
-        locationName.contains("London", ignoreCase = true) -> {
-            java.util.TimeZone.getTimeZone("Europe/London")
-        }
-        locationName.contains("Paris", ignoreCase = true) -> {
-            java.util.TimeZone.getTimeZone("Europe/Paris")
-        }
-        locationName.contains("Berlin", ignoreCase = true) -> {
-            java.util.TimeZone.getTimeZone("Europe/Berlin")
-        }
-        locationName.contains("Los Angeles", ignoreCase = true) -> {
-            java.util.TimeZone.getTimeZone("America/Los_Angeles")
-        }
-        else -> {
-            // Pentru locații necunoscute, folosim offset-ul furnizat
-            val locationOffsetMillis = (timeZone * 3600 * 1000).toInt()
-            SimpleTimeZone(locationOffsetMillis, "Location")
-        }
-    }
+    val locationTimeZone = com.android.sun.util.TimeZoneUtils.getLocationTimeZone(locationName, timeZone)
     
     Card(
         modifier = modifier
@@ -412,12 +378,5 @@ private fun getNakshatraTattva(nakshatra: NakshatraType): String {
  */
 private fun getNakshatraTattvaColor(nakshatra: NakshatraType): Color {
     val tattva = getNakshatraTattva(nakshatra)
-    return when (tattva) {
-        "A" -> Color(0xFF4A00D3)   // Akasha - Purple (not currently used)
-        "V" -> Color(0xFF009AD3)   // Vayu - Blue (7 Nakshatras)
-        "T" -> Color(0xFFFF0000)   // Tejas - Red (7 Nakshatras)
-        "Ap" -> Color(0xFF8A8A8A)  // Apas - Gray (7 Nakshatras)
-        "P" -> Color(0xFFDFCD00)   // Prithivi - Yellow (6 Nakshatras)
-        else -> Color.Gray
-    }
+    return com.android.sun.util.TattvaColors.getByCode(tattva)
 }
