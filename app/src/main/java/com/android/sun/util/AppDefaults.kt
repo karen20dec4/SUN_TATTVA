@@ -21,11 +21,11 @@ object AppDefaults {
 
     // Locația default: București, România
     const val LOCATION_NAME = "București"
-    const val LATITUDE = 44.4268
-    const val LONGITUDE = 26.1025
-    const val ALTITUDE = 80.0
-    const val TIME_ZONE = 2.0
-    const val DST = 0
+    const val LATITUDE = 44.4268       // București latitude (N)
+    const val LONGITUDE = 26.1025      // București longitude (E)
+    const val ALTITUDE = 80.0          // Altitudine în metri
+    const val TIME_ZONE = 2.0          // UTC+2 (Eastern European Time)
+    const val DST = 0                  // DST offset (0 = fără DST manual)
 
     /**
      * Creează un PlaceEntity default (București)
