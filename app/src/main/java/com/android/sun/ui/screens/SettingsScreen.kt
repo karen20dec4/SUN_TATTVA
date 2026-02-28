@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -16,13 +17,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.android.sun.BuildConfig
+import com.android.sun.R
 import com.android.sun.ui.components.GradientNavigationBar
+import com.android.sun.ui.components.getTattvaIconRes
+import com.android.sun.util.TattvaColors
 
 /**
  * Ecran Settings
@@ -42,6 +48,17 @@ fun SettingsScreen(
     onTattvaNotificationChange:  (Boolean) -> Unit,    
     isPlanetaryHourNotification: Boolean,
     onPlanetaryHourNotificationChange: (Boolean) -> Unit,
+    // Tattva Sound per-tattva toggles
+    isSoundAkasha: Boolean,
+    onSoundAkashaChange: (Boolean) -> Unit,
+    isSoundVayu: Boolean,
+    onSoundVayuChange: (Boolean) -> Unit,
+    isSoundTejas: Boolean,
+    onSoundTejasChange: (Boolean) -> Unit,
+    isSoundApas: Boolean,
+    onSoundApasChange: (Boolean) -> Unit,
+    isSoundPrithivi: Boolean,
+    onSoundPrithiviChange: (Boolean) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) 
@@ -220,6 +237,20 @@ fun SettingsScreen(
 						}
 					),
 					enabled = true
+				)
+				
+				// Tattva Sound Card - colored symbols with checkboxes
+				TattvaSoundCard(
+				    isSoundAkasha = isSoundAkasha,
+				    onSoundAkashaChange = onSoundAkashaChange,
+				    isSoundVayu = isSoundVayu,
+				    onSoundVayuChange = onSoundVayuChange,
+				    isSoundTejas = isSoundTejas,
+				    onSoundTejasChange = onSoundTejasChange,
+				    isSoundApas = isSoundApas,
+				    onSoundApasChange = onSoundApasChange,
+				    isSoundPrithivi = isSoundPrithivi,
+				    onSoundPrithiviChange = onSoundPrithiviChange
 				)
 				
 				HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
@@ -431,5 +462,113 @@ private fun NotificationGroupCard(
                 }
             }
         }
+    }
+}
+
+/**
+ * Card for Tattva Sound settings — colored tattva symbols with checkboxes.
+ * No text labels, just the colored tattva icon + checkbox per tattva.
+ */
+@Composable
+private fun TattvaSoundCard(
+    isSoundAkasha: Boolean,
+    onSoundAkashaChange: (Boolean) -> Unit,
+    isSoundVayu: Boolean,
+    onSoundVayuChange: (Boolean) -> Unit,
+    isSoundTejas: Boolean,
+    onSoundTejasChange: (Boolean) -> Unit,
+    isSoundApas: Boolean,
+    onSoundApasChange: (Boolean) -> Unit,
+    isSoundPrithivi: Boolean,
+    onSoundPrithiviChange: (Boolean) -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(7.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Tattva Sound",
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                // Akasha
+                TattvaSoundItem(
+                    tattvaName = "akasha",
+                    color = TattvaColors.Akasha,
+                    checked = isSoundAkasha,
+                    onCheckedChange = onSoundAkashaChange
+                )
+                // Vayu
+                TattvaSoundItem(
+                    tattvaName = "vayu",
+                    color = TattvaColors.Vayu,
+                    checked = isSoundVayu,
+                    onCheckedChange = onSoundVayuChange
+                )
+                // Tejas
+                TattvaSoundItem(
+                    tattvaName = "tejas",
+                    color = TattvaColors.Tejas,
+                    checked = isSoundTejas,
+                    onCheckedChange = onSoundTejasChange
+                )
+                // Apas
+                TattvaSoundItem(
+                    tattvaName = "apas",
+                    color = TattvaColors.Apas,
+                    checked = isSoundApas,
+                    onCheckedChange = onSoundApasChange
+                )
+                // Prithivi
+                TattvaSoundItem(
+                    tattvaName = "prithivi",
+                    color = TattvaColors.Prithivi,
+                    checked = isSoundPrithivi,
+                    onCheckedChange = onSoundPrithiviChange
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Single tattva sound item: colored icon + checkbox (no text label)
+ */
+@Composable
+private fun TattvaSoundItem(
+    tattvaName: String,
+    color: Color,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            painter = painterResource(id = getTattvaIconRes(tattvaName)),
+            contentDescription = tattvaName,
+            modifier = Modifier.size(32.dp),
+            tint = color
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Checkbox(
+            checked = checked,
+            onCheckedChange = onCheckedChange
+        )
     }
 }

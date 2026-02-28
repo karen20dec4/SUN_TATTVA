@@ -229,14 +229,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
 
     /**
-     * Pornește actualizările în timp real
+     * Pornește actualizările în timp real.
+     * Recalculează DOAR când tattva principală se schimbă (~24 min).
+     * SubTattva și Planetary Hour sunt actualizate local în UI (LaunchedEffect).
      */
     fun startRealtimeUpdates() {
         updateJob?.cancel()
         updateJob = viewModelScope.launch {
-            var lastTattvaTime:  Calendar? = null
-            var lastSubTattvaTime: Calendar?  = null
-            var lastPlanetTime: Calendar? = null
+            var previousTattvaCode: String? = null
             
             while (true) {
                 delay(1000)
@@ -244,25 +244,60 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val currentData = _astroData.value
                 
                 if (currentData != null) {
+                    // Track tattva code changes after each recalculation
+                    val currentTattvaCode = currentData.tattva.tattva.code
+                    if (previousTattvaCode != null && currentTattvaCode != previousTattvaCode) {
+                        onTattvaChanged(currentTattvaCode)
+                    }
+                    previousTattvaCode = currentTattvaCode
+                    
                     val currentTime = Calendar.getInstance()
                     
-                    val tattvaChanged = lastTattvaTime == null || 
-                        currentTime.timeInMillis >= currentData.tattva.endTime. timeInMillis
+                    // Recalculează doar când tattva principală expiră
+                    val tattvaExpired = currentTime.timeInMillis >= currentData.tattva.endTime.timeInMillis
                     
-                    val subTattvaChanged = lastSubTattvaTime == null || 
-                        currentTime.timeInMillis >= currentData.subTattva.endTime. timeInMillis
-                    
-                    val planetChanged = lastPlanetTime == null ||
-                        currentTime.timeInMillis >= currentData.planet.endTime.timeInMillis
-                    
-                    if (tattvaChanged || subTattvaChanged || planetChanged) {
+                    if (tattvaExpired) {
                         calculateAstroData()
-                        lastTattvaTime = currentTime
-                        lastSubTattvaTime = currentTime
-                        lastPlanetTime = currentTime
                     }
                 }
             }
+        }
+    }
+    
+    /**
+     * Apelat când tattva principală se schimbă.
+     * Redă sunetul corespunzător dacă este activat în setări.
+     */
+    private fun onTattvaChanged(newTattvaCode: String) {
+        com.android.sun.util.AppLog.d("MainViewModel", "🔔 Tattva changed to: $newTattvaCode")
+        
+        val context = getApplication<Application>()
+        val settingsPreferences = com.android.sun.data.preferences.SettingsPreferences(context)
+        
+        if (settingsPreferences.isTattvaSoundEnabled(newTattvaCode)) {
+            playTattvaSound(context, newTattvaCode)
+        }
+    }
+    
+    /**
+     * Redă sunetul asociat unei tattva specifice
+     */
+    private fun playTattvaSound(context: android.content.Context, tattvaCode: String) {
+        try {
+            val resId = when (tattvaCode) {
+                "A"  -> com.android.sun.R.raw.sound_akasha
+                "V"  -> com.android.sun.R.raw.sound_vayu
+                "T"  -> com.android.sun.R.raw.sound_tejas
+                "Ap" -> com.android.sun.R.raw.sound_apas
+                "P"  -> com.android.sun.R.raw.sound_prithivi
+                else -> return
+            }
+            val mediaPlayer = android.media.MediaPlayer.create(context, resId)
+            mediaPlayer?.setOnCompletionListener { it.release() }
+            mediaPlayer?.start()
+            com.android.sun.util.AppLog.d("MainViewModel", "🔊 Playing sound for tattva: $tattvaCode")
+        } catch (e: Exception) {
+            com.android.sun.util.AppLog.e("MainViewModel", "Error playing tattva sound", e)
         }
     }
 

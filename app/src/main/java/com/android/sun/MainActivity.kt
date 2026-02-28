@@ -102,6 +102,13 @@ fun AppNavigation(
     val isTripuraSundariNotification by settingsPreferences.tripuraSundariNotification.collectAsState()
     val isNewMoonNotification by settingsPreferences.newMoonNotification.collectAsState()
     
+    // Tattva sound preferences
+    val isSoundAkasha by settingsPreferences.tattvaSoundAkasha.collectAsState()
+    val isSoundVayu by settingsPreferences.tattvaSoundVayu.collectAsState()
+    val isSoundTejas by settingsPreferences.tattvaSoundTejas.collectAsState()
+    val isSoundApas by settingsPreferences.tattvaSoundApas.collectAsState()
+    val isSoundPrithivi by settingsPreferences.tattvaSoundPrithivi.collectAsState()
+    
     // ✅ Use stable keys based on event times to prevent unnecessary rescheduling
     val fullMoonTimeMillis = astroData?.moonPhase?.nextFullMoon?.timeInMillis
     val tripuraTimeMillis = astroData?.moonPhase?.nextTripuraSundari?.timeInMillis
@@ -213,6 +220,17 @@ fun AppNavigation(
 					val intent = Intent(TattvaNotificationService.ACTION_SETTINGS_CHANGED)
 					context.sendBroadcast(intent)
 				},
+				// Tattva Sound toggles
+				isSoundAkasha = isSoundAkasha,
+				onSoundAkashaChange = { settingsPreferences.setTattvaSoundAkasha(it) },
+				isSoundVayu = isSoundVayu,
+				onSoundVayuChange = { settingsPreferences.setTattvaSoundVayu(it) },
+				isSoundTejas = isSoundTejas,
+				onSoundTejasChange = { settingsPreferences.setTattvaSoundTejas(it) },
+				isSoundApas = isSoundApas,
+				onSoundApasChange = { settingsPreferences.setTattvaSoundApas(it) },
+				isSoundPrithivi = isSoundPrithivi,
+				onSoundPrithiviChange = { settingsPreferences.setTattvaSoundPrithivi(it) },
 				onBackClick = {
 					navController.popBackStack()
 				}
