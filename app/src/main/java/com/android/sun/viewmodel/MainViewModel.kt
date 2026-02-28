@@ -244,13 +244,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val currentData = _astroData.value
                 
                 if (currentData != null) {
-                    // Track tattva code changes after each recalculation
-                    val currentTattvaCode = currentData.tattva.tattva.code
-                    if (previousTattvaCode != null && currentTattvaCode != previousTattvaCode) {
-                        onTattvaChanged(currentTattvaCode)
-                    }
-                    previousTattvaCode = currentTattvaCode
-                    
                     val currentTime = Calendar.getInstance()
                     
                     // Recalculează doar când tattva principală expiră
@@ -258,6 +251,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     
                     if (tattvaExpired) {
                         calculateAstroData()
+                    }
+                    
+                    // Detectează schimbarea de tattva DUPĂ ce recalcularea a actualizat _astroData
+                    val latestData = _astroData.value
+                    if (latestData != null) {
+                        val currentTattvaCode = latestData.tattva.tattva.code
+                        if (previousTattvaCode != null && currentTattvaCode != previousTattvaCode) {
+                            onTattvaChanged(currentTattvaCode)
+                        }
+                        previousTattvaCode = currentTattvaCode
                     }
                 }
             }
@@ -293,8 +296,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 else -> return
             }
             val mediaPlayer = android.media.MediaPlayer.create(context, resId)
-            mediaPlayer?.setOnCompletionListener { it.release() }
-            mediaPlayer?.start()
+            if (mediaPlayer == null) {
+                com.android.sun.util.AppLog.e("MainViewModel", "❌ Failed to create MediaPlayer for tattva: $tattvaCode")
+                return
+            }
+            mediaPlayer.setOnCompletionListener { it.release() }
+            mediaPlayer.start()
             com.android.sun.util.AppLog.d("MainViewModel", "🔊 Playing sound for tattva: $tattvaCode")
         } catch (e: Exception) {
             com.android.sun.util.AppLog.e("MainViewModel", "Error playing tattva sound", e)
