@@ -1,5 +1,6 @@
 package com.android.sun.service
 
+import android.app.AlarmManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -34,8 +35,13 @@ class TattvaNotificationService : Service() {
         private const val TATTVA_NOTIF_ID = 1001
         private const val PLANET_NOTIF_ID = 1002
         
+        private const val ALARM_REQUEST_CODE = 2001
+        // Safety net interval: check every 5 minutes in case alarms are missed
+        private const val SAFETY_NET_INTERVAL_MS = 5 * 60 * 1000L
+        
         const val ACTION_LOCATION_CHANGED = "com.android.sun.LOCATION_CHANGED"
         const val ACTION_SETTINGS_CHANGED = "com.android.sun.SETTINGS_CHANGED"
+        const val ACTION_ALARM_UPDATE = "com.android.sun.ACTION_ALARM_UPDATE"
         
         fun start(context: Context) {
             val intent = Intent(context, TattvaNotificationService::class.java)
@@ -54,6 +60,7 @@ class TattvaNotificationService : Service() {
     
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var updateJob: Job? = null
+    private var safetyNetJob: Job? = null
     private var locationChangeReceiver: BroadcastReceiver? = null
     private lateinit var settingsPreferences: SettingsPreferences
     
@@ -69,29 +76,85 @@ class TattvaNotificationService : Service() {
     }
     
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        AppLog.d(TAG, "onStartCommand() called")
+        AppLog.d(TAG, "onStartCommand() called, action=${intent?.action}")
         
-        // Pornire neutră
+        // Always ensure foreground with a notification (required within 5s of startForegroundService)
         val initialNotification = createDetailedNotification("Loading astro data...", R.drawable.icon, CHANNEL_ID_TATTVA, "GROUP_TATTVA")
         startForeground(TATTVA_NOTIF_ID, initialNotification)
         
         AppLog.d(TAG, "Started in foreground with initial notification")
         
-        startPeriodicUpdate()
+        // Trigger immediate update + schedule next alarm
+        triggerUpdate()
+        // Start safety net loop as fallback for missed alarms
+        startSafetyNetLoop()
         return START_STICKY
     }
-	
-	
 
-    private fun startPeriodicUpdate() {
+    /**
+     * Triggers an immediate notification update and schedules an exact alarm
+     * for the next Tattva/Planet change. Uses AlarmManager.setExactAndAllowWhileIdle()
+     * so the alarm fires even during Android Doze mode.
+     */
+    private fun triggerUpdate() {
         updateJob?.cancel()
         updateJob = serviceScope.launch {
+            val delayMs = updateNotificationAndGetDelay()
+            scheduleNextAlarm(delayMs)
+        }
+    }
+
+    /**
+     * Schedule an exact alarm to re-trigger the service at the next Tattva/Planet transition.
+     * setExactAndAllowWhileIdle() works even in Doze mode, unlike coroutine delay().
+     */
+    private fun scheduleNextAlarm(delayMs: Long) {
+        val waitMs = (delayMs + 1000L).coerceAtLeast(1000L)
+        
+        try {
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            
+            // On Android 12+ (API 31+), check if exact alarms are permitted
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
+                AppLog.w(TAG, "Exact alarm permission not granted, relying on safety net loop")
+                return
+            }
+            
+            val intent = Intent(this, TattvaNotificationService::class.java).apply {
+                action = ACTION_ALARM_UPDATE
+            }
+            val pendingIntent = PendingIntent.getForegroundService(
+                this, ALARM_REQUEST_CODE, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            val triggerAtMillis = System.currentTimeMillis() + waitMs
+            
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtMillis,
+                pendingIntent
+            )
+            
+            AppLog.d(TAG, "Exact alarm scheduled for next update in ${waitMs / 1000}s")
+        } catch (e: Exception) {
+            AppLog.e(TAG, "Failed to schedule exact alarm, relying on safety net loop", e)
+        }
+    }
+
+    /**
+     * Safety net: periodically update the notification every 5 minutes as a fallback.
+     * This handles cases where exact alarms are missed (OEM restrictions, permission issues).
+     * The coroutine delay may be deferred in Doze, but 5 minutes is short enough to limit staleness.
+     */
+    private fun startSafetyNetLoop() {
+        safetyNetJob?.cancel()
+        safetyNetJob = serviceScope.launch {
             while (isActive) {
+                delay(SAFETY_NET_INTERVAL_MS)
+                AppLog.d(TAG, "Safety net update triggered")
                 val delayMs = updateNotificationAndGetDelay()
-                // Wait until the next Tattva/Planet change (with 1s buffer to ensure the change happened)
-                val waitMs = (delayMs + 1000L).coerceAtLeast(1000L)
-                AppLog.d(TAG, "Next update in ${waitMs / 1000}s")
-                delay(waitMs)
+                scheduleNextAlarm(delayMs)
             }
         }
     }
@@ -328,11 +391,11 @@ class TattvaNotificationService : Service() {
                 when (intent?.action) {
                     ACTION_LOCATION_CHANGED -> {
                         AppLog.d(TAG, "Received ACTION_LOCATION_CHANGED broadcast")
-                        startPeriodicUpdate() // Restart loop to pick up new timing
+                        triggerUpdate() // Recalculate and reschedule alarm
                     }
                     ACTION_SETTINGS_CHANGED -> {
                         AppLog.d(TAG, "Received ACTION_SETTINGS_CHANGED broadcast")
-                        startPeriodicUpdate() // Restart loop to pick up new timing
+                        triggerUpdate() // Recalculate and reschedule alarm
                     }
                 }
             }
@@ -352,7 +415,28 @@ class TattvaNotificationService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        cancelPendingAlarm()
         serviceScope.cancel()
         try { unregisterReceiver(locationChangeReceiver) } catch (e: Exception) {}
+    }
+
+    /**
+     * Cancel any pending alarm to prevent orphaned wakeups after the service stops.
+     */
+    private fun cancelPendingAlarm() {
+        try {
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(this, TattvaNotificationService::class.java).apply {
+                action = ACTION_ALARM_UPDATE
+            }
+            val pendingIntent = PendingIntent.getForegroundService(
+                this, ALARM_REQUEST_CODE, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            alarmManager.cancel(pendingIntent)
+            AppLog.d(TAG, "Pending alarm cancelled")
+        } catch (e: Exception) {
+            AppLog.e(TAG, "Failed to cancel pending alarm", e)
+        }
     }
 }
