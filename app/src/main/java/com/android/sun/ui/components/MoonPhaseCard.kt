@@ -1,6 +1,8 @@
 package com.android.sun.ui.components
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -24,6 +26,8 @@ fun MoonPhaseCard(
     moonPhase: MoonPhaseResult,
     modifier: Modifier = Modifier
 ) {
+    var isFullMoonExpanded by remember { mutableStateOf(false) }
+    
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(7.dp),
@@ -61,21 +65,6 @@ fun MoonPhaseCard(
                 )
             }
             
-            /*
-					// ✅ DEBUG: Afișează ora curentă (mic și gri)
-					val currentTimeZone = moonPhase.nextFullMoon.timeZone
-					val currentTime = Calendar.getInstance(currentTimeZone)
-					val debugFormat = SimpleDateFormat("HH:mm:ss z (Z)", Locale.getDefault())
-					debugFormat.timeZone = currentTimeZone
-					
-					Text(
-						text = "🕐 ${debugFormat.format(currentTime.time)}",
-						style = MaterialTheme.typography.bodySmall,
-						fontSize = 12.sp,
-						color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-					)
-			*/
-            
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f),
                 thickness = 1.dp
@@ -87,12 +76,25 @@ fun MoonPhaseCard(
                 date = moonPhase.nextTripuraSundari
             )
             
-            // Full Moon (highlighted when in influence period)
+            // Full Moon (highlighted when in influence period, clickable to expand)
             MoonEventRow(
                 label = "Full moon:",
                 date = moonPhase.nextFullMoon,
-                isHighlighted = moonPhase.isInFullMoonInfluence
+                isHighlighted = moonPhase.isInFullMoonInfluence,
+                onClick = { isFullMoonExpanded = !isFullMoonExpanded }
             )
+            
+            // Expandable Full Moon influence period
+            AnimatedVisibility(
+                visible = isFullMoonExpanded,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                FullMoonInfluencePeriod(
+                    fullMoonPeak = moonPhase.nextFullMoon,
+                    isHighlighted = moonPhase.isInFullMoonInfluence
+                )
+            }
             
             // New Moon
             MoonEventRow(
@@ -104,6 +106,74 @@ fun MoonPhaseCard(
 }
 
 /**
+ * Displays the 18h influence period of the full moon
+ * Format: "1 Apr 11:11  --------   2 Apr 23:11"
+ */
+@Composable
+private fun FullMoonInfluencePeriod(
+    fullMoonPeak: Calendar,
+    isHighlighted: Boolean = false
+) {
+    val highlightBg = Color(0xFF423e48)
+    val highlightText = Color(0xFFd0ccd1)
+    
+    // Calculate 18h before and after peak
+    val influenceStart = fullMoonPeak.clone() as Calendar
+    influenceStart.add(Calendar.HOUR_OF_DAY, -18)
+    
+    val influenceEnd = fullMoonPeak.clone() as Calendar
+    influenceEnd.add(Calendar.HOUR_OF_DAY, 18)
+    
+    // Format dates using the timezone from the fullMoonPeak Calendar
+    val dateFormat = SimpleDateFormat("d MMM HH:mm", Locale.getDefault())
+    dateFormat.timeZone = fullMoonPeak.timeZone
+    
+    val startText = dateFormat.format(influenceStart.time)
+    val endText = dateFormat.format(influenceEnd.time)
+    
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(
+                if (isHighlighted) {
+                    Modifier
+                        .background(
+                            color = highlightBg,
+                            shape = RoundedCornerShape(6.dp)
+                        )
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                } else {
+                    Modifier
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                }
+            ),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = startText,
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Medium,
+            color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+        )
+        Text(
+            text = "  ────────  ",
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 13.sp,
+            color = if (isHighlighted) highlightText.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+        )
+        Text(
+            text = endText,
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Medium,
+            color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+        )
+    }
+}
+
+/**
  * ✅ Afișează data folosind timezone-ul din Calendar
  * ✅ Format: "3 Jan - 12:02 (GMT+2)" în loc de "GMT+02:00"
  */
@@ -111,7 +181,8 @@ fun MoonPhaseCard(
 private fun MoonEventRow(
     label: String,
     date: Calendar,
-    isHighlighted: Boolean = false
+    isHighlighted: Boolean = false,
+    onClick: (() -> Unit)? = null
 ) {
     // ✅ Format pentru dată și oră (fără timezone)
     val dateFormat = SimpleDateFormat("d MMM - HH:mm", Locale.getDefault())
@@ -135,6 +206,13 @@ private fun MoonEventRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable { onClick() }
+                } else {
+                    Modifier
+                }
+            )
             .then(
                 if (isHighlighted) {
                     Modifier

@@ -76,6 +76,7 @@ fun MainScreen(
                         CompactInfoCard(
                             astroData = astroData,
                             onNavigateToLocation = onNavigateToLocation,
+                            onNavigateToAllDay = onNavigateToAllDay,
                             onRefresh = onRefresh,
                             onSettings = onNavigateToSettings
                         )
@@ -167,6 +168,7 @@ fun MainScreen(
 private fun CompactInfoCard(
     astroData: AstroData,
     onNavigateToLocation:  () -> Unit,
+    onNavigateToAllDay: () -> Unit,
     onRefresh:  () -> Unit,
     onSettings: () -> Unit
 ) {
@@ -191,10 +193,7 @@ private fun CompactInfoCard(
 
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                onNavigateToLocation()
-            },
+            .fillMaxWidth(),
         shape = RoundedCornerShape(7.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -213,7 +212,9 @@ private fun CompactInfoCard(
         ) {
             
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onNavigateToAllDay() },
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -273,7 +274,9 @@ private fun CompactInfoCard(
             Spacer(modifier = Modifier.height(6.dp))
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onNavigateToLocation() },
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
