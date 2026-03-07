@@ -1,0 +1,83 @@
+Calcul Shiva ratri
+
+Capitolul 1  Modalitatea de calcul a datei in care ShivaRatri se observă
+Majoritatea Hindusilor celebreaza MahaShivaRatri in a 14 a zi lunara din chenzina intunecoasa (KRISHNA PAKSHA) a lunii Magha.
+O parte din hindusi au de asemenea obiceiul de a-L adora pe Shiva in a 14 a zi lunara - CHATURDASHI din chenzina intunecoasa a fiecarei luni si nu doar din luna Magha.
+Obs! CHATURDASHI din chenzina intunecoasa se mai numeşte şi CHATURDASHI KRISHNA PAKSHA
+
+Regula 1
+Dacă (MAGHA) KRISHNA CHATURDASHI predomina de-alungul unei perioade de NISHEETHA KAALA, atunci SHIVARATRI este chiar în noaptea respectivă.
+
+Regula 2
+Dacă (MAGHA) KRISHNA CHATURDASHI predomina de-a lungul a 2 perioade succesive de NISHEETHA KAALA, atunci SHIVARATRI va fi în noaptea în care TRAYODASHI se sfârşeşte (şi începe KRISHNA CHATURDASHI).
+
+Regula 3
+Dacă (MAGHA) KRISHNA CHATURDASHI nu predomină de-a lungul nici unei perioade de NISHEETHA KAALA (corespunzătoare vreunei zile), atunci SHIVARATRI va fi în noaptea în care KRISHNA CHATURDASHI se sfârşeşte.
+
+Observatie: În  modalitatea de calcul menţionată mai sus, calcularea momentului de Shivaratri depinde de:
+1. Perioada de CHATURDASHI- din Krishna Paksha – a 14 zi lunară din chenzina întunecoasă
+2. Perioada de NISHEETHA KAALA sau MADHYA RATRI KAALA cum mai este denumită – adică momentul de Shivaratri trebuie să fie noaptea, mai precis să includă acea perioadă specială NISHEETHA KAALA care se poate aproxima cu “mijlocul nopţii”.
+3. Modalitatea de determinare exactă a perioadelor corespunzătoare pentru CHATURDASHI şi NISHEETHA KAALA este prezentată detaliat mai jos.
+Capitolul 2
+MODALITATEA DE DETERMINARE A CELEI DE A 14 A ZI LUNARE – CHATURDASHI- KRISHNA PAKSHA
+Luna Lunară are 30 de zile lunare grupate în CHENZINA LUMINOASĂ-SHUKLA PAKSHA şi CHENZINA ÎNTUNECOASĂ-KRISHNA PAKSHA. Fiecare CHENZINĂ conţine 15 zile lunare sau TITHI. O perioadă de timp de 1 lună LUNARĂ se spune că s-a scurs (este completă) atunci când Luna, pornind de la longitudinea celestă a Soarelui (adică atunci când este în conjuncţie cu Soarele), parcurge o revoluţie completă în jurul zodiacului şi ajunge iar la aceeaşi longitudine celestă cu Soarele (deci când ajunge iar în conjuncţie cu Soarele).
+Longitudinea celestă a unui corp ceresc reprezintă poziţia acelui corp raportată la zodiac şi se exprimă în grade, minute şi secunde. Deci longitudinea celestă reprezintă o valoare între 0 şi 360 de grade.
+Ceea ce determină ziua lunară-TITHI este diferenţa dintre longitudinea celestă a Lunii şi longitudinea celestă a Soarelui.
+
+Dacă diferenţa este           atunci ziua lunară Tithi este:
+  --------------------------------------------------
+  0-12                             	Pratipada+ 1 (Shukla Paksha Begins) – La 0 grade avem Lună Nouă
+ 12-24                           	Dvitiya+ 2
+  24-36                            	Tritiya+ 3
+  36-48                            	Chaturthi+ 4 or Chauti+ 4
+  48-60                            	Panchami+ 5
+  60-72                            	Shashthi+ 6
+  72-84                            	Saptami+ 7
+  84-96                            	Ashtami+ 8
+  96-108                           	Navami+ 9
+  108-120                          	Dashami+ 10
+  120-132                          	Ekadashi+ 11
+  132-144                          	Dvadashi+ 12
+  144-156                          	Trayodashi+ 13
+  156-168                          	Chaturdashi+ 14
+  168-180                          	Poornima+ 15(Shukla Paksha se sfârşeşte) - La 180 grade avem Lună Plină
+  180-192                          	Pratipada- (Krishna Paksha începe) 1
+  192-204                          	Dvitiya- 2
+  204-216                          	Tritiya- 3
+  216-228                          	Chaturthi- 4 or Chauti- 4
+  228-240                          	Panchami- 5
+  240-252                          	Shashthi- 6
+  252-264                          	Saptami- 7
+  264-276                          	Ashtami- 8
+  276-288                          	Navami- 9
+  288-300                          	Dashami- 10
+  300-312                          	Ekadashi- 11
+  312-324                          	Dvadashi- 12
+  324-336                          	Trayodashi- 13
+  336-348                          	CHATURDASHI- a 14 a Zi lunară din Chenzina întunecoasă
+  348-360                          	Amavasya- 15 (Krishna Paksha se sfârşeşte) la 360 = 0 grade - Lună Nouă
+
+Obs. 1. CHATURDASHI- din Krishna Paksha – a 14 zi lunară din chenzina întunecoasă (perioada cand luna este descrescătoare) se  observă o singură dată pe perioada unei luni lunare:
+- Perioada CHATURDASHI din Krishna Paksha se calculeaza astfel: diferenţa dintre longitudinea celestă a Lunii şi longitudinea celestă a Soarelui să corespundă la 336-348 grade pe zodiac.
+- perioada CHATURDASHI Krishna Paksha incepe cand diferenţa dintre Soare şi Lună este de 336 grade şi se sfârşeşte când diferenţa este de 348 grade
+-  ziua lunară CHATURDASHI din Krishna Paksha este variabilă ca durată de-a lungul anului si durează aproximativ între 20h30 ore şi 26h30, deci poate acoperi doar o parte din zi si/sau o parte din noaptea corespunzătoare unei zile solare de 24 ore sau chiar întreaga zi solară de 24 ore.
+- Cel mai adesea  ziua lunară CHATURDASHI din Krishna Paksha predomina pe perioada unei singure NISHEETHA KAALA.
+- În anumite situaţii ziua lunară CHATURDASHI din Krishna Paksha poate predomina chiar pe perioada a 2 NISHEETHA KAALA consecutive sau poate să nu predomine de-a lungul nici unei perioade de NISHEETHA KAALA.
+- Am calculat zilele lunare TITHI-urile pentru tot anul 2007 cu 2 programe specializate şi le-am comparat şi cu datele calculate pe internet şi de către colegul nostru Adrian Ioniţă de la Braşov care face agenda astrologică. În fisierul denumit Tithi se găsesc aceste zile lunare pentru tot anul 2007.
+
+Capitolul 3
+MODALITATEA DE CALCUL A PERIOADEI DE NISHEETHA KAALA- MADHYA RATRI KAALA
+Ziua astrologică începe de la răsăritul Soarelui (şi nu de la 12 noaptea – miezul nopţii cum este în calendarele oficiale) şi se sfârşeşte la următorul răsărit de Soare (consecutiv).
+Se calculează mai întâi perioada de la apusul Soarelui la următorul răsărit de Soare. Prin adăugarea a 2/5 din această perioadă la ora de apus a Soarelui şi respectiv a 3/5 din această perioadă la aceeaşi ora de apus a Soarelui se obţine începutul şi respectiv sfârşitul lui MADHYA RATRI KAALA sau NISHEETHA KAALA.
+
+Obs. 2. perioada de NISHEETHA KAALA- sau altfel spus MADHYA RATRI KAALA:
+- este o perioadă specială a nopţii de aproximativ 2 ore care se determină în funcţie de apusul Soarelui corespunzător zilei respective şi următorul răsărit de Soare.
+- Are durată variabilă de-a lungul anului şi se observă aproximativ între orele 22.30 – 02.30
+- pentru a calcula  exact perioada de NISHEETHA KAALA- MADHYA RATRI KAALA mai intai se calculează perioada de timp dintre apusul Soarelui din ziua considerată şi următorul răsărit de Soare=SaSr
+- ora de inceput a perioadei NISHEETHA KAALA  se calculeaza astfel: se adauga 2/5 din perioada SaSr la ora de apus a Soarelui din ziua respectivă.
+- ora de sfarsit a perioadei NISHEETHA KAALA  se calculeaza astfel: se adauga 3/5 din perioada SaSr la ora de apus a Soarelui din ziua respectivă
+- perioada de NISHEETHA KAALA- MADHYA RATRI KAALA este intotdeauna noaptea.
+
+Obs.3. Shiva Ratri poate fi observată în zile (date) diferite în zone diferite ale globului în funcţie de îndeplinirea condiţiilor menţionate mai sus.
+
+Algoritmul mai clar daca pune conditia cu Fundul Cerului=FC sau-Imum Coeli - IC corespunzator Nesheeta Kala sa fie inclus in Chaturdashi Krisha paksha.
