@@ -261,9 +261,10 @@ private fun ShivaratriYearlyList(
     nextShivaratri: ShivaratriDate
 ) {
     // Colors for alternating rows and highlight
-    val cyanHighlight = Color(0xFFB2EBF2) // Light cyan for next Shivaratri
-    val evenRowBg = MaterialTheme.colorScheme.surfaceVariant
-    val oddRowBg = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+    val nextShivaratriHighlight = Color(0xFFB2EBF2) // Light cyan for next Shivaratri
+    val nextShivaratriText = Color(0xFF004D40) // Dark teal on cyan background
+    val primaryRowBg = MaterialTheme.colorScheme.surfaceVariant
+    val secondaryRowBg = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
     
     Column(
         modifier = Modifier
@@ -294,14 +295,14 @@ private fun ShivaratriYearlyList(
             
             // Determine row background: cyan for next, alternating for others
             val rowBg = when {
-                isNext -> cyanHighlight
-                index % 2 == 0 -> evenRowBg
-                else -> oddRowBg
+                isNext -> nextShivaratriHighlight
+                index % 2 == 0 -> primaryRowBg
+                else -> secondaryRowBg
             }
             
             // Text color: dark on cyan, dimmed for past
             val textColor = when {
-                isNext -> Color(0xFF004D40) // Dark teal on cyan background
+                isNext -> nextShivaratriText
                 isPast -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
                 else -> MaterialTheme.colorScheme.onSurfaceVariant
             }
