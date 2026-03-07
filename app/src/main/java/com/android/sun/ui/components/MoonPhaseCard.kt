@@ -104,13 +104,7 @@ fun MoonPhaseCard(
                 )
             }
             
-            // New Moon
-            MoonEventRow(
-                label = "New moon:",
-                date = moonPhase.nextNewMoon
-            )
-            
-            // Shivaratri (if available)
+            // Shivaratri (before New Moon)
             if (moonPhase.nextShivaratri != null) {
                 ShivaratriRow(
                     shivaratri = moonPhase.nextShivaratri,
@@ -130,6 +124,12 @@ fun MoonPhaseCard(
                     )
                 }
             }
+            
+            // New Moon (last)
+            MoonEventRow(
+                label = "New moon:",
+                date = moonPhase.nextNewMoon
+            )
         }
     }
 }
@@ -185,9 +185,9 @@ private fun FullMoonInfluencePeriod(
         // ✅ Single Text element to guarantee single-line display
         Text(
             text = "$startText  ────  $endText",
-            style = MaterialTheme.typography.bodyMedium,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Medium,
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
             color = textColor,
             maxLines = 1,
             softWrap = false,
@@ -221,8 +221,9 @@ private fun ShivaratriRow(
     ) {
         Text(
             text = "Shivaratri:",
-            style = MaterialTheme.typography.bodyMedium,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         
@@ -232,8 +233,8 @@ private fun ShivaratriRow(
         ) {
             Text(
                 text = "$eveningText / $morningText",
-                style = MaterialTheme.typography.bodyMedium,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -249,19 +250,36 @@ private fun ShivaratriRow(
 }
 
 /**
- * Expandable yearly Shivaratri list
- * Shows all Shivaratri dates for the current year, right-aligned
+ * Expandable yearly Shivaratri list with improved visual design:
+ * - Full-width rows with alternating backgrounds for readability
+ * - Next Shivaratri highlighted with light cyan background
+ * - Uniform 16sp bold font matching the rest of the Moon card
  */
 @Composable
 private fun ShivaratriYearlyList(
     yearlyDates: List<ShivaratriDate>,
     nextShivaratri: ShivaratriDate
 ) {
+    // Colors for alternating rows and highlight
+    val cyanHighlight = Color(0xFFB2EBF2) // Light cyan for next Shivaratri
+    val evenRowBg = MaterialTheme.colorScheme.surfaceVariant
+    val oddRowBg = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+    
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp)
     ) {
-        yearlyDates.forEach { date ->
+        // Thin separator at top of expanded list
+        HorizontalDivider(
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.15f),
+            thickness = 0.5.dp,
+            modifier = Modifier.padding(horizontal = 4.dp)
+        )
+        
+        Spacer(modifier = Modifier.height(4.dp))
+        
+        yearlyDates.forEachIndexed { index, date ->
             val dateFormat = SimpleDateFormat("d MMM", Locale.getDefault())
             dateFormat.timeZone = date.eveningDate.timeZone
             val yearFormat = SimpleDateFormat("yyyy", Locale.getDefault())
@@ -274,24 +292,50 @@ private fun ShivaratriYearlyList(
             val isNext = isSameDate(date.eveningDate, nextShivaratri.eveningDate)
             val isPast = date.morningDate.timeInMillis < System.currentTimeMillis()
             
+            // Determine row background: cyan for next, alternating for others
+            val rowBg = when {
+                isNext -> cyanHighlight
+                index % 2 == 0 -> evenRowBg
+                else -> oddRowBg
+            }
+            
+            // Text color: dark on cyan, dimmed for past
+            val textColor = when {
+                isNext -> Color(0xFF004D40) // Dark teal on cyan background
+                isPast -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                else -> MaterialTheme.colorScheme.onSurfaceVariant
+            }
+            
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 2.dp),
-                horizontalArrangement = Arrangement.End,
+                    .background(
+                        color = rowBg,
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(horizontal = 16.dp, vertical = 6.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "$eveningText / $morningText  $yearText",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 13.sp,
-                    fontWeight = if (isNext) FontWeight.Bold else FontWeight.Normal,
-                    color = when {
-                        isNext -> MaterialTheme.colorScheme.primary
-                        isPast -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
-                        else -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
-                    }
+                    text = "$eveningText / $morningText",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = textColor
                 )
+                Text(
+                    text = yearText,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = textColor
+                )
+            }
+            
+            // Small spacing between rows
+            if (index < yearlyDates.size - 1) {
+                Spacer(modifier = Modifier.height(2.dp))
             }
         }
     }
@@ -299,7 +343,8 @@ private fun ShivaratriYearlyList(
 
 /**
  * ✅ Afișează data folosind timezone-ul din Calendar
- * ✅ Format: "3 Jan - 12:02 (GMT+2)" în loc de "GMT+02:00"
+ * ✅ Format: "3 Jan - 12:02" (no GMT info)
+ * ✅ Uniform 16sp bold font matching header
  * ✅ Optional expand arrow for expandable rows
  */
 @Composable
@@ -311,21 +356,9 @@ private fun MoonEventRow(
     showExpandArrow: Boolean = false,
     isExpanded: Boolean = false
 ) {
-    // ✅ Format pentru dată și oră (fără timezone)
+    // Format pentru dată și oră
     val dateFormat = SimpleDateFormat("d MMM - HH:mm", Locale.getDefault())
     dateFormat.timeZone = date.timeZone
-    
-    // ✅ Calculează offset-ul timezone-ului în ore
-    val offsetMillis = date.timeZone.getOffset(date.timeInMillis)
-    val offsetHours = offsetMillis / (1000 * 60 * 60)
-    val timezoneText = if (offsetHours >= 0) {
-        "(GMT+$offsetHours)"
-    } else {
-        "(GMT$offsetHours)"  // Minus-ul e deja inclus
-    }
-    
-    // ✅ DEBUG: Log timezone-ul Calendar-ului primit
-    com.android.sun.util.AppLog.d("MoonPhaseCard", "🕐 $label Calendar TZ: ${date.timeZone.id}, millis: ${date.timeInMillis}")
     
     val highlightBg = Color(0xFF423e48)
     val highlightText = Color(0xFFd0ccd1)
@@ -357,30 +390,23 @@ private fun MoonEventRow(
     ) {
         Text(
             text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            fontSize = 14.sp,
-            fontWeight = if (isHighlighted) FontWeight.Bold else FontWeight.Normal,
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
             color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant
         )
         
-        // ✅ Afișează data + timezone custom format + optional expand arrow
+        // Afișează data + optional expand arrow (no GMT info)
         Row(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = dateFormat.format(date.time),
-                style = MaterialTheme.typography.bodyMedium,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = timezoneText,
-                style = MaterialTheme.typography.bodySmall,
-                fontSize = 10.sp,
-                color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
             )
             if (showExpandArrow) {
                 Spacer(modifier = Modifier.width(2.dp))
