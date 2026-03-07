@@ -55,13 +55,23 @@ class MoonPhaseCalculator(
         
         com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Full Moon angle diff: $fullMoonAngleDiff°, influence: $isInFullMoonInfluence")
         
+        // ✅ Calculate Shivaratri dates (Krishna Chaturdashi night - phase angle ~342°)
+        val nextShivaratriTime = findNextPhase(currentTime, 342.0)
+        val nextShivaratri = calculateShivaratriNight(nextShivaratriTime)
+        val yearlyShivaratri = calculateYearlyShivaratri(currentTime)
+        
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Next Shivaratri: ${formatDate(nextShivaratriTime)}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Yearly Shivaratri dates: ${yearlyShivaratri.size}")
+        
         return MoonPhaseResult(
             phaseAngle = diff,
             illuminationPercent = illuminationPercent,
             nextTripuraSundari = nextTripuraSundari,
             nextFullMoon = nextFullMoon,
             nextNewMoon = nextNewMoon,
-            isInFullMoonInfluence = isInFullMoonInfluence
+            isInFullMoonInfluence = isInFullMoonInfluence,
+            nextShivaratri = nextShivaratri,
+            yearlyShivaratri = yearlyShivaratri
         )
     }
 
@@ -201,6 +211,56 @@ class MoonPhaseCalculator(
         return diff
     }
 
+    /**
+     * Calculate the Shivaratri night from the Krishna Chaturdashi midpoint time.
+     * Shivaratri = night of Krishna Chaturdashi (14th tithi of dark fortnight, phase angle 336°-348°).
+     * The night spans from evening of one date to morning of the next.
+     */
+    private fun calculateShivaratriNight(chaturdashiMidpoint: Calendar): ShivaratriDate {
+        val hour = chaturdashiMidpoint.get(Calendar.HOUR_OF_DAY)
+        val eveningDate = chaturdashiMidpoint.clone() as Calendar
+        val morningDate = chaturdashiMidpoint.clone() as Calendar
+        
+        if (hour < 12) {
+            // Midpoint is in the morning - the night started the previous evening
+            eveningDate.add(Calendar.DAY_OF_MONTH, -1)
+        } else {
+            // Midpoint is in the afternoon/evening - the night starts this evening
+            morningDate.add(Calendar.DAY_OF_MONTH, 1)
+        }
+        
+        return ShivaratriDate(eveningDate, morningDate)
+    }
+
+    /**
+     * Calculate all Shivaratri dates for the current year.
+     * Krishna Chaturdashi occurs approximately every 29.5 days (one per synodic month).
+     * There are ~12-13 Shivaratri nights per year.
+     */
+    private fun calculateYearlyShivaratri(referenceTime: Calendar): List<ShivaratriDate> {
+        val year = referenceTime.get(Calendar.YEAR)
+        val results = mutableListOf<ShivaratriDate>()
+        
+        val searchStart = Calendar.getInstance(locationTimeZone)
+        searchStart.set(year, Calendar.JANUARY, 1, 0, 0, 0)
+        searchStart.set(Calendar.MILLISECOND, 0)
+        
+        var currentSearch = searchStart.clone() as Calendar
+        
+        for (i in 0..14) { // safety limit - max 15 iterations
+            val chaturdashiTime = findNextPhase(currentSearch, 342.0)
+            if (chaturdashiTime.get(Calendar.YEAR) > year) break
+            
+            results.add(calculateShivaratriNight(chaturdashiTime))
+            
+            // Jump forward 25 days to avoid finding the same one
+            currentSearch = chaturdashiTime.clone() as Calendar
+            currentSearch.add(Calendar.DAY_OF_MONTH, 25)
+        }
+        
+        return results
+    }
+
     private fun formatDate(cal: Calendar): String {
         return String.format(
             "%04d-%02d-%02d %02d:%02d:%02d %s",
@@ -221,5 +281,12 @@ data class MoonPhaseResult(
     val nextTripuraSundari: Calendar,
     val nextFullMoon:  Calendar,
     val nextNewMoon: Calendar,
-    val isInFullMoonInfluence: Boolean = false
+    val isInFullMoonInfluence: Boolean = false,
+    val nextShivaratri: ShivaratriDate? = null,
+    val yearlyShivaratri: List<ShivaratriDate> = emptyList()
+)
+
+data class ShivaratriDate(
+    val eveningDate: Calendar,  // Evening when Shivaratri night starts
+    val morningDate: Calendar   // Morning when Shivaratri night ends
 )

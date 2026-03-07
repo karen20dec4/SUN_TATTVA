@@ -124,7 +124,7 @@ fun CombinedTattvaCard(
                         )
                     }
 
-                    // Butonul SHOW DAY (rămâne în dreapta sus)
+                    // Butonul SHOW DAY (rămâne în dreapta sus) - ✅ Responsive: single line
                     Button(
                         onClick = { onAllDayClick() },
                         colors = ButtonDefaults.buttonColors(
@@ -133,9 +133,15 @@ fun CombinedTattvaCard(
                         ),
                         shape = RoundedCornerShape(8.dp),
                         modifier = Modifier.border(1.dp, Color.White.copy(alpha = 0.5f), RoundedCornerShape(8.dp)),
-                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                     ) {
-                        Text("SHOW DAY", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        Text(
+                            "SHOW DAY",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            softWrap = false
+                        )
                     }
                 }
 
