@@ -271,9 +271,7 @@ private fun ShivaratriYearlyList(
             val morningText = dateFormat.format(date.morningDate.time)
             val yearText = yearFormat.format(date.eveningDate.time)
             
-            val isNext = date.eveningDate.get(Calendar.DAY_OF_YEAR) == nextShivaratri.eveningDate.get(Calendar.DAY_OF_YEAR) &&
-                         date.eveningDate.get(Calendar.YEAR) == nextShivaratri.eveningDate.get(Calendar.YEAR)
-            
+            val isNext = isSameDate(date.eveningDate, nextShivaratri.eveningDate)
             val isPast = date.morningDate.timeInMillis < System.currentTimeMillis()
             
             Row(
@@ -395,4 +393,12 @@ private fun MoonEventRow(
             }
         }
     }
+}
+
+/**
+ * Helper to compare two Calendar dates (same day of year and year)
+ */
+private fun isSameDate(cal1: Calendar, cal2: Calendar): Boolean {
+    return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+           cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
 }

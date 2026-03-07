@@ -238,6 +238,12 @@ class MoonPhaseCalculator(
      * There are ~12-13 Shivaratri nights per year.
      */
     private fun calculateYearlyShivaratri(referenceTime: Calendar): List<ShivaratriDate> {
+        // Max possible Shivaratri dates in a year (12-13) plus buffer for edge cases
+        val maxShivaratriPerYear = 15
+        // Min days between consecutive Krishna Chaturdashi phases (~29.5 day synodic month)
+        // Use 25 days to safely avoid detecting the same phase twice
+        val minDaysBetweenPhases = 25
+        
         val year = referenceTime.get(Calendar.YEAR)
         val results = mutableListOf<ShivaratriDate>()
         
@@ -247,15 +253,14 @@ class MoonPhaseCalculator(
         
         var currentSearch = searchStart.clone() as Calendar
         
-        for (i in 0..14) { // safety limit - max 15 iterations
+        for (i in 0 until maxShivaratriPerYear) {
             val chaturdashiTime = findNextPhase(currentSearch, 342.0)
             if (chaturdashiTime.get(Calendar.YEAR) > year) break
             
             results.add(calculateShivaratriNight(chaturdashiTime))
             
-            // Jump forward 25 days to avoid finding the same one
             currentSearch = chaturdashiTime.clone() as Calendar
-            currentSearch.add(Calendar.DAY_OF_MONTH, 25)
+            currentSearch.add(Calendar.DAY_OF_MONTH, minDaysBetweenPhases)
         }
         
         return results
