@@ -228,7 +228,8 @@ private fun CompactInfoCard(
                         style = MaterialTheme.typography.titleMedium,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = Color.White,
+                        maxLines = 1
                     )
 
                     val timeFormat = SimpleDateFormat("HH:mm: ss", Locale.getDefault())
@@ -237,7 +238,9 @@ private fun CompactInfoCard(
                         style = MaterialTheme.typography.titleMedium,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = Color.White,
+                        maxLines = 1,
+                        softWrap = false
                     )
                 }
 
@@ -357,7 +360,9 @@ private fun CompactInfoCard(
                         style = MaterialTheme.typography.bodyMedium,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White.copy(alpha = 0.9f)
+                        color = Color.White.copy(alpha = 0.9f),
+                        maxLines = 1,
+                        softWrap = false
                     )
                 }
 
@@ -382,7 +387,9 @@ private fun CompactInfoCard(
                         style = MaterialTheme.typography.bodyMedium,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White.copy(alpha = 0.9f)
+                        color = Color.White.copy(alpha = 0.9f),
+                        maxLines = 1,
+                        softWrap = false
                     )
                 }
             }
@@ -414,7 +421,9 @@ private fun CompactInfoCard(
                         style = MaterialTheme.typography.bodySmall,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White.copy(alpha = 0.7f)
+                        color = Color.White.copy(alpha = 0.7f),
+                        maxLines = 1,
+                        softWrap = false
                     )
                 }
 
@@ -439,7 +448,9 @@ private fun CompactInfoCard(
                         style = MaterialTheme.typography.bodySmall,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White.copy(alpha = 0.7f)
+                        color = Color.White.copy(alpha = 0.7f),
+                        maxLines = 1,
+                        softWrap = false
                     )
                 }
             }

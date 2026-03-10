@@ -272,7 +272,8 @@ private fun CurrentPlanetaryHourHeader(
         // ✅ PARTEA STÂNGĂ: Simbol Planetă + Nume
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.weight(1f)
         ) {
             Text(
                 text = planet.code,
@@ -292,7 +293,8 @@ private fun CurrentPlanetaryHourHeader(
                 style = MaterialTheme.typography.titleLarge,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = getPlanetColor(planet)
+                color = getPlanetColor(planet),
+                maxLines = 1
             )
         }
         
@@ -306,7 +308,9 @@ private fun CurrentPlanetaryHourHeader(
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                softWrap = false
             )
             
             Icon(
@@ -450,7 +454,9 @@ private fun PlanetaryHourRow(
                 text = "$startTime - $endTime",
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 14.sp,
-                fontWeight = if (isCurrent) FontWeight.Normal else FontWeight.Normal
+                fontWeight = if (isCurrent) FontWeight.Normal else FontWeight.Normal,
+                maxLines = 1,
+                softWrap = false
             )
             
             if (isCurrent) {

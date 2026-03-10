@@ -59,7 +59,10 @@ fun MoonPhaseCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
                 )
                 
                 Text(
@@ -67,7 +70,8 @@ fun MoonPhaseCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1
                 )
             }
             
@@ -224,8 +228,11 @@ private fun ShivaratriRow(
             style = MaterialTheme.typography.titleMedium,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1
         )
+        
+        Spacer(modifier = Modifier.width(8.dp))
         
         Row(
             horizontalArrangement = Arrangement.End,
@@ -236,7 +243,9 @@ private fun ShivaratriRow(
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                softWrap = false
             )
             Spacer(modifier = Modifier.width(2.dp))
             Icon(
@@ -323,14 +332,18 @@ private fun ShivaratriYearlyList(
                     style = MaterialTheme.typography.titleMedium,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = textColor
+                    color = textColor,
+                    maxLines = 1,
+                    softWrap = false
                 )
                 Text(
                     text = yearText,
                     style = MaterialTheme.typography.titleMedium,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = textColor
+                    color = textColor,
+                    maxLines = 1,
+                    softWrap = false
                 )
             }
             
@@ -394,8 +407,11 @@ private fun MoonEventRow(
             style = MaterialTheme.typography.titleMedium,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant
+            color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1
         )
+        
+        Spacer(modifier = Modifier.width(8.dp))
         
         // Afișează data + optional expand arrow (no GMT info)
         Row(
@@ -407,7 +423,9 @@ private fun MoonEventRow(
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant
+                color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                softWrap = false
             )
             if (showExpandArrow) {
                 Spacer(modifier = Modifier.width(2.dp))

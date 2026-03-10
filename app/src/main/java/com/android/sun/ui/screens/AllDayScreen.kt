@@ -316,14 +316,16 @@ private fun TattvaDayItemCard(
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp,
-                            color = tattvaItem.tattvaColor
+                            color = tattvaItem.tattvaColor,
+                            maxLines = 1
                         )
                         Text(
                             text = tattvaItem.tattvaName.uppercase(),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             fontSize = 24.sp,
-                            color = tattvaItem.tattvaColor
+                            color = tattvaItem.tattvaColor,
+                            maxLines = 1
                         )
                     }
                 }

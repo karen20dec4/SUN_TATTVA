@@ -120,7 +120,9 @@ fun CombinedTattvaCard(
                             style = MaterialTheme.typography.headlineLarge,
                             fontSize = 38.sp,
                             color = Color.White,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            softWrap = false
                         )
                     }
 
@@ -182,7 +184,10 @@ fun CombinedTattvaCard(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.weight(1f)
+                            ) {
                                 Icon(
                                     painter = painterResource(id = getTattvaIconRes(subTattva.name)),
                                     contentDescription = subTattva.name,
@@ -194,7 +199,8 @@ fun CombinedTattvaCard(
                                     text = subTattva.name,
                                     fontSize = 24.sp,
                                     color = subTattva.color,
-                                    fontWeight = FontWeight.Bold
+                                    fontWeight = FontWeight.Bold,
+                                    maxLines = 1
                                 )
                             }
                             
@@ -202,7 +208,9 @@ fun CombinedTattvaCard(
                                 text = String.format("%02d:%02d", subTattvaMinutes, subTattvaSeconds),
                                 fontSize = 24.sp,
                                 color = subTattva.color,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 1,
+                                softWrap = false
                             )
                         }
                     }

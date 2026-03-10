@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.style.TextOverflow
 import com.android.sun.domain.calculator.NakshatraResult
 import com.android.sun.domain.calculator.NakshatraType
 import com.android.sun.domain.calculator.NakshatraCalculator
@@ -196,8 +197,8 @@ private fun CurrentNakshatraHeader(
         val secondsRemaining = totalSeconds % 60L
         
         when {
-            hoursRemaining > 0 -> String.format("%dh %dm %ds", hoursRemaining, minutesRemaining, secondsRemaining)
-            minutesRemaining > 0 -> String.format("%dm %ds", minutesRemaining, secondsRemaining)
+            hoursRemaining > 0 -> String.format("%dh %dm", hoursRemaining, minutesRemaining)
+            minutesRemaining > 0 -> String.format("%dm", minutesRemaining)
             else -> String.format("%ds", secondsRemaining)
         }
     }
@@ -208,13 +209,15 @@ private fun CurrentNakshatraHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // ✅ NAKSHATRA (stânga) - colored by Tattva
+        // ✅ NAKSHATRA (stânga) - colored by Tattva with prefix
         Text(
-            text = nakshatraResult.nakshatra.displayName,
+            text = "Nakshatra: ${nakshatraResult.nakshatra.displayName}",
             style = MaterialTheme.typography.titleLarge,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = getNakshatraTattvaColor(nakshatraResult.nakshatra)
+            color = getNakshatraTattvaColor(nakshatraResult.nakshatra),
+            maxLines = 1,
+            modifier = Modifier.weight(1f)
         )
         
         // ✅ COUNTDOWN + ICON (dreapta)
@@ -227,7 +230,8 @@ private fun CurrentNakshatraHeader(
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1
             )
             
             Icon(
