@@ -454,7 +454,7 @@ private fun PlanetaryHourRow(
                 text = "$startTime - $endTime",
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 14.sp,
-                fontWeight = if (isCurrent) FontWeight.Normal else FontWeight.Normal,
+                fontWeight = FontWeight.Normal,
                 maxLines = 1,
                 softWrap = false
             )
