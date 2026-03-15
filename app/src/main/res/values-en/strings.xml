@@ -106,6 +106,10 @@
     <string name="select">Select</string>
     <string name="delete_location">Delete location</string>
 
+    <string name="placeholder_city">e.g. Bucharest</string>
+    <string name="placeholder_lat">e.g. 44.4268</string>
+    <string name="placeholder_lon">e.g. 26.1025</string>
+
     <!-- Nakshatra Detail Screen -->
     <string name="deity_title">🧝 Deity</string>
     <string name="symbol_title">🔱 Symbol</string>

@@ -106,6 +106,10 @@
     <string name="select">Selectează</string>
     <string name="delete_location">Șterge locația</string>
 
+    <string name="placeholder_city">ex. București</string>
+    <string name="placeholder_lat">ex. 44.4268</string>
+    <string name="placeholder_lon">ex. 26.1025</string>
+
     <!-- Nakshatra Detail Screen -->
     <string name="deity_title">🧝 Zeitate</string>
     <string name="symbol_title">🔱 Simbol</string>

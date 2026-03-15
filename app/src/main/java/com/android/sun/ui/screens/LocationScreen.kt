@@ -716,7 +716,7 @@ private fun AddLocationDialog(
                     value = cityName,
                     onValueChange = { cityName = it },
                     label = { Text(stringResource(R.string.city_name_label)) },
-                    placeholder = { Text("e.g.Bucharest") },
+                    placeholder = { Text(stringResource(R.string.placeholder_city)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -725,7 +725,7 @@ private fun AddLocationDialog(
                     value = latitude,
                     onValueChange = { latitude = it },
                     label = { Text(stringResource(R.string.latitude)) },
-                    placeholder = { Text("e.g.44.4268") },
+                    placeholder = { Text(stringResource(R.string.placeholder_lat)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     isError = latitude.isNotEmpty() && latitude.toDoubleOrNull() == null,
@@ -741,7 +741,7 @@ private fun AddLocationDialog(
                     value = longitude,
                     onValueChange = { longitude = it },
                     label = { Text(stringResource(R.string.longitude)) },
-                    placeholder = { Text("e.g.26.1025") },
+                    placeholder = { Text(stringResource(R.string.placeholder_lon)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     isError = longitude.isNotEmpty() && longitude.toDoubleOrNull() == null,
@@ -897,7 +897,7 @@ private fun GPSLocationSection(
                     Spacer(Modifier.height(4.dp))
                     InfoRow(label = stringResource(R.string.lon_label), value = String.format("%.4f°", currentGPSLocation.longitude))
                     Spacer(Modifier.height(4.dp))
-                    InfoRow(label = "Alt:", value = "${currentGPSLocation.altitude.toInt()}m")
+                    InfoRow(label = stringResource(R.string.alt_label), value = "${currentGPSLocation.altitude.toInt()}m")
 
                     Spacer(Modifier.height(12.dp))
 
@@ -1086,7 +1086,7 @@ private fun InfoRow(label: String, value:  String) {
 								Spacer(Modifier.height(4.dp))
 								InfoRow(label = stringResource(R.string.lon_label), value = String.format("%.4f°", location.longitude))
 								Spacer(Modifier. height(4.dp))
-								InfoRow(label = "Alt:", value = location.getFormattedAltitude())
+								InfoRow(label = stringResource(R.string.alt_label), value = location.getFormattedAltitude())
 								Spacer(Modifier.height(8.dp))
 							}
 						}
