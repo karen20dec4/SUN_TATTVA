@@ -10,6 +10,14 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
+- **Current Version:** 2.12 (versionCode 6)
+
+### ⚠️ Version Increment Rule
+**IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
+- Current: **2.12**
+- Next versions: **2.13**, **2.14**, **2.15**, ...
+- Update both `versionName` and `versionCode` in `app/build.gradle.kts`
+- Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
 ---
 
@@ -49,6 +57,7 @@ app/src/main/java/com/android/sun/
 │   │   ├── PlanetaryHoursCard.kt     # Planetary hours schedule
 │   │   ├── NakshatraCard.kt          # Nakshatra display
 │   │   ├── NityaExpandableCard.kt    # Nitya (lunar day) display
+│   │   ├── LocalizationHelpers.kt    # i18n helpers for zodiac/planet/nakshatra translation
 │   │   ├── GradientNavigationBar.kt  # Bottom gradient navigation bar
 │   │   └── ...                        # Other UI components
 │   ├── screens/                       # Full-screen composables
@@ -109,9 +118,16 @@ Each day (sunrise to sunset, sunset to next sunrise) is divided into 12 planetar
 The app tracks:
 - **Tripura Sundari:** Phase angle ~154.28° (Shukla Dasami)
 - **Full Moon:** Phase angle 180° (with 18-hour influence period: ±18h from peak)
+- **Shivaratri:** Krishna Chaturdashi (phase angle ~342°) - includes yearly list with next date highlighted
 - **New Moon:** Phase angle 0°/360°
 
 The 18h influence period is calculated based on the Moon-Sun relative angular speed (~12.2°/day), where 18 hours ≈ 9.15° of relative motion (using 9.5° threshold for safety margin).
+
+**MoonPhaseCard UI:**
+- Rows display in order: Tripura Sundari → Full Moon → Shivaratri → New Moon
+- Full Moon row is expandable: shows 18h influence period (peak ± 18h)
+- Shivaratri row is expandable: shows yearly list with cyan highlight for next date
+- All rows use uniform 16sp bold titleMedium font
 
 ### Nakshatra
 
@@ -180,6 +196,7 @@ Scheduled events:
 | Setting                    | Description                                    |
 |----------------------------|------------------------------------------------|
 | Dark Theme                 | Toggle dark/light mode                         |
+| Language                   | Toggle Romanian (OFF) / English (ON)           |
 | Tattva Notification        | Persistent status bar Tattva notification       |
 | Planetary Hour Notification| Persistent status bar planetary hour notification|
 | Full Moon Notification     | Alert before/during full moon                  |
@@ -212,6 +229,17 @@ Display-friendly wrapper containing: name, color, emoji, start/end times, remain
 - `nextFullMoon: Calendar` - Time of next full moon
 - `nextNewMoon: Calendar` - Time of next new moon
 - `isInFullMoonInfluence: Boolean` - Whether currently within 18h of full moon peak
+- `nextShivaratri: ShivaratriDate` - Next Shivaratri (eveningDate/morningDate)
+- `yearlyShivaratri: List<ShivaratriDate>` - Yearly Shivaratri dates
+
+### NakshatraResult
+- `nakshatra: NakshatraType` - Current Nakshatra enum (27 types with deity/symbol/animal/planet/nature)
+- `moonLongitude: Double` - Current moon sidereal longitude
+- `startTime: Calendar` / `endTime: Calendar` - Current Nakshatra time window
+- `moonZodiacPosition: String` - Moon position as degrees/minutes/seconds (e.g., "15° 59' 55\"")
+- `moonZodiacSignIndex: Int` - Zodiac sign index (0=Aries .. 11=Pisces) for UI localization
+- `moonSpeedDegreesPerDay: Double` - Actual moon speed for time calculations
+- `zeroReferenceTime: Calendar` - Reference time for stable multi-Nakshatra timeline
 
 ---
 
@@ -247,6 +275,73 @@ All Swiss Ephemeris calculations are performed in UTC and then converted to the 
 
 ---
 
+## Internationalization (i18n)
+
+### Bilingual System (Romanian / English)
+
+The app supports two languages: **Romanian** (default) and **English**.
+
+**String Resources:**
+- `app/src/main/res/values/strings.xml` — Romanian (default)
+- `app/src/main/res/values-en/strings.xml` — English
+
+**Language Preference:**
+- Stored in SharedPreferences via `SettingsPreferences` (`KEY_LANGUAGE`, default `"ro"`)
+- Toggle in Settings: Switch OFF = Romanian, Switch ON = English
+
+**Locale Switching Mechanism (MainActivity.kt):**
+```kotlin
+val localizedContext = context.createConfigurationContext(config)
+CompositionLocalProvider(
+    LocalContext provides localizedContext,
+    LocalActivityResultRegistryOwner provides activity  // ⚠️ CRITICAL: Must provide!
+) { ... }
+```
+> **⚠️ CRITICAL:** When overriding `LocalContext` with `createConfigurationContext()`, you MUST also explicitly provide `LocalActivityResultRegistryOwner` (the Activity), otherwise `rememberLauncherForActivityResult()` crashes.
+
+### Localization Helpers
+
+**File:** `ui/components/LocalizationHelpers.kt`
+
+All hardcoded Romanian enum values (zodiac signs, planet names, nakshatra details) are translated via `@Composable` helper functions that use `stringResource()`:
+
+| Function | Purpose |
+|----------|---------|
+| `getLocalizedZodiacSign(signIndex: Int)` | Zodiac sign names (0=Aries..11=Pisces) |
+| `getLocalizedPlanetName(planet: PlanetType)` | Planet names (Sun, Moon, Mars, etc.) |
+| `getLocalizedNakshatraPlanet(nakshatra)` | Nakshatra ruling planet (incl. Rahu/Ketu) |
+| `getLocalizedNakshatraSymbol(nakshatra)` | Nakshatra symbols (sword, horse head, etc.) |
+| `getLocalizedNakshatraAnimal(nakshatra)` | Nakshatra animals (lion, horse, etc.) |
+| `getLocalizedNakshatraNature(nakshatra)` | Nakshatra natures (fierce, gentle, etc.) |
+| `getLocalizedNakshatraDegreeRange(nakshatra)` | Degree ranges with translated zodiac names |
+
+**String Resource Keys (per category):**
+- `zodiac_aries` .. `zodiac_pisces` — 12 zodiac signs
+- `planet_sun` .. `planet_ketu` — 9 planet names (7 classical + Rahu + Ketu)
+- `nakshatra_symbol_ashwini` .. `nakshatra_symbol_revati` — 27 symbols
+- `nakshatra_animal_ashwini` .. `nakshatra_animal_revati` — 27 animals
+- `nakshatra_nature_ashwini` .. `nakshatra_nature_revati` — 27 natures
+- `nakshatra_range_ashwini` .. `nakshatra_range_revati` — 27 degree ranges
+- `nakshatra_desc_ashwini` .. `nakshatra_desc_revati` — 27 descriptions
+
+**Moon Zodiac Position Format:**
+- `NakshatraResult.moonZodiacPosition` = degrees/minutes/seconds only (e.g., `"15° 59' 55\""`)
+- `NakshatraResult.moonZodiacSignIndex` = index 0-11 for localization
+- UI combines them: `stringResource(R.string.moon_zodiac_position, position, getLocalizedZodiacSign(index))`
+
+> **Rule:** Never display raw enum fields (`nakshatra.symbol`, `nakshatra.animal`, `nakshatra.planet`, `nakshatra.nature`, `nakshatra.degreeRange`, `planet.displayName`) directly in UI. Always use the corresponding `getLocalized*()` helper.
+
+---
+
+## UI Text Overflow Prevention
+
+All `Row` composables with side-by-side text must follow these rules to prevent overlapping on narrow screens:
+- Use `maxLines = 1` and `softWrap = false` on date/time texts (right side)
+- Use `Modifier.weight(1f)` on the left-side text
+- This applies to: MoonPhaseCard, NakshatraCard, PlanetaryHoursCard, CombinedTattvaCard
+
+---
+
 ## Update Mechanism
 
 ### UI Updates
@@ -261,4 +356,4 @@ All Swiss Ephemeris calculations are performed in UTC and then converted to the 
 
 ---
 
-*Last updated: March 2026 - Version 2.10*
+*Last updated: March 2026 - Version 2.12*
