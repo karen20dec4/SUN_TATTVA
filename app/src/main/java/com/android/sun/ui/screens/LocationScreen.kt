@@ -44,6 +44,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.res.stringResource
+import com.android.sun.R
 import com.android.sun.ui.components.GradientNavigationBar
 
 
@@ -123,12 +125,12 @@ fun LocationScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Select Location") },
+                    title = { Text(stringResource(R.string.select_location)) },
                     navigationIcon = {
                         IconButton(onClick = onBack) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
+                                contentDescription = stringResource(R.string.back)
                             )
                         }
                     }
@@ -165,7 +167,7 @@ fun LocationScreen(
                                 modifier = Modifier.weight(1f)
                             )
                             TextButton(onClick = { viewModel.clearError() }) {
-                                Text("OK")
+                                Text(stringResource(R.string.ok))
                             }
                         }
                     }
@@ -195,11 +197,11 @@ fun LocationScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Search,
-                            contentDescription = "Search",
+                            contentDescription = stringResource(R.string.search),
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(Modifier.width(8.dp))
-                        Text("Search location")
+                        Text(stringResource(R.string.search_location))
                     }
                     
                     FilledTonalIconButton(
@@ -207,7 +209,7 @@ fun LocationScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Add,
-                            contentDescription = "Add Location Manually"
+                            contentDescription = stringResource(R.string.add_location_manually)
                         )
                     }
                 }
@@ -215,7 +217,7 @@ fun LocationScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Saved locations (${locations.size})",
+                    text = stringResource(R.string.saved_locations, locations.size),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -234,10 +236,10 @@ fun LocationScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text("No saved locations", style = MaterialTheme.typography.bodyLarge)
+                                Text(stringResource(R.string.no_saved_locations), style = MaterialTheme.typography.bodyLarge)
                                 Spacer(Modifier.height(8.dp))
                                 Text(
-                                    text = "Use GPS or search to add locations",
+                                    text = stringResource(R.string.use_gps_or_search),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -286,7 +288,7 @@ fun LocationScreen(
                                         containerColor = MaterialTheme.colorScheme.secondary
                                     )
                                 ) {
-                                    Text("Clear saved locations")
+                                    Text(stringResource(R.string.clear_saved_locations))
                                 }
                                 
                                 // Spatiu pentru gradient
@@ -337,10 +339,10 @@ fun LocationScreen(
                 )
             },
             title = { 
-                Text("Delete location? ") 
+                Text(stringResource(R.string.delete_location_title)) 
             },
             text = { 
-                Text("Are you sure you want to delete \"${location.name}\"?") 
+                Text(stringResource(R.string.delete_location_message, location.name)) 
             },
             confirmButton = {
                 TextButton(
@@ -352,12 +354,12 @@ fun LocationScreen(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { locationToDelete = null }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -374,10 +376,10 @@ fun LocationScreen(
                 )
             },
             title = { 
-                Text("Clear all locations?") 
+                Text(stringResource(R.string.clear_all_locations_title)) 
             },
             text = { 
-                Text("This will delete all saved locations except București.This action cannot be undone.") 
+                Text(stringResource(R.string.clear_all_locations_message)) 
             },
             confirmButton = {
                 TextButton(
@@ -389,12 +391,12 @@ fun LocationScreen(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Clear All")
+                    Text(stringResource(R.string.clear_all))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showClearAllDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -443,7 +445,7 @@ private fun SearchLocationDialog(
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        title = { Text("Search Location") },
+                        title = { Text(stringResource(R.string.search_location_title)) },
                         navigationIcon = {
                             IconButton(onClick = {
                                 viewModel.clearSearchResults()
@@ -451,7 +453,7 @@ private fun SearchLocationDialog(
                             }) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = "Close"
+                                    contentDescription = stringResource(R.string.close)
                                 )
                             }
                         },
@@ -470,13 +472,13 @@ private fun SearchLocationDialog(
                     OutlinedTextField(
                         value = searchQuery,
                         onValueChange = { searchQuery = it },
-                        label = { Text("City name") },
-                        placeholder = { Text("Type to search...(e.g.London)") },
+                        label = { Text(stringResource(R.string.city_name_label)) },
+                        placeholder = { Text(stringResource(R.string.search_placeholder)) },
                         singleLine = true,
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Filled.Search,
-                                contentDescription = "Search"
+                                contentDescription = stringResource(R.string.search)
                             )
                         },
                         trailingIcon = {
@@ -487,7 +489,7 @@ private fun SearchLocationDialog(
                                 }) {
                                     Icon(
                                         imageVector = Icons.Filled.Clear,
-                                        contentDescription = "Clear"
+                                        contentDescription = stringResource(R.string.clear)
                                     )
                                 }
                             }
@@ -518,13 +520,13 @@ private fun SearchLocationDialog(
                                 )
                                 Spacer(Modifier.height(16.dp))
                                 Text(
-                                    text = "Type at least 2 characters to search",
+                                    text = stringResource(R.string.type_min_chars),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Spacer(Modifier.height(8.dp))
                                 Text(
-                                    text = "Search works without diacritics\n(e.g.\"Malmo\" finds \"Malmö\")",
+                                    text = stringResource(R.string.search_hint_diacritics),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                                     textAlign = TextAlign.Center
@@ -547,13 +549,13 @@ private fun SearchLocationDialog(
                                 )
                                 Spacer(Modifier.height(16.dp))
                                 Text(
-                                    text = "No cities found for \"$searchQuery\"",
+                                    text = stringResource(R.string.no_cities_found, searchQuery),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Spacer(Modifier.height(8.dp))
                                 Text(
-                                    text = "Try a different search term\nor use (+) button to add manually",
+                                    text = stringResource(R.string.try_different_search),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                                     textAlign = TextAlign.Center
@@ -643,7 +645,7 @@ private fun SearchResultItemLarge(
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text = "Lat: ${String.format("%.2f", city.latitude)}° Lon: ${String.format("%.2f", city.longitude)}°",
+                    text = "${stringResource(R.string.lat_label)} ${String.format("%.2f", city.latitude)}° ${stringResource(R.string.lon_label)} ${String.format("%.2f", city.longitude)}°",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.6f)
                 )
@@ -657,11 +659,11 @@ private fun SearchResultItemLarge(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
-                    contentDescription = "Add",
+                    contentDescription = stringResource(R.string.add),
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(Modifier.width(4.dp))
-                Text("Add")
+                Text(stringResource(R.string.add))
             }
         }
     }
@@ -705,7 +707,7 @@ private fun AddLocationDialog(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Add New Location",
+                    text = stringResource(R.string.add_new_location),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
@@ -713,7 +715,7 @@ private fun AddLocationDialog(
                 OutlinedTextField(
                     value = cityName,
                     onValueChange = { cityName = it },
-                    label = { Text("City Name") },
+                    label = { Text(stringResource(R.string.city_name_label)) },
                     placeholder = { Text("e.g.Bucharest") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
@@ -722,14 +724,14 @@ private fun AddLocationDialog(
                 OutlinedTextField(
                     value = latitude,
                     onValueChange = { latitude = it },
-                    label = { Text("Latitude") },
+                    label = { Text(stringResource(R.string.latitude)) },
                     placeholder = { Text("e.g.44.4268") },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     isError = latitude.isNotEmpty() && latitude.toDoubleOrNull() == null,
                     supportingText = {
                         if (latitude.isNotEmpty() && latitude.toDoubleOrNull() == null) {
-                            Text("Enter a valid number")
+                            Text(stringResource(R.string.enter_valid_number))
                         }
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -738,14 +740,14 @@ private fun AddLocationDialog(
                 OutlinedTextField(
                     value = longitude,
                     onValueChange = { longitude = it },
-                    label = { Text("Longitude") },
+                    label = { Text(stringResource(R.string.longitude)) },
                     placeholder = { Text("e.g.26.1025") },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     isError = longitude.isNotEmpty() && longitude.toDoubleOrNull() == null,
                     supportingText = {
                         if (longitude.isNotEmpty() && longitude.toDoubleOrNull() == null) {
-                            Text("Enter a valid number")
+                            Text(stringResource(R.string.enter_valid_number))
                         }
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -758,7 +760,7 @@ private fun AddLocationDialog(
                     OutlinedTextField(
                         value = altitude,
                         onValueChange = { altitude = it },
-                        label = { Text("Alt (m)") },
+                        label = { Text(stringResource(R.string.alt_label)) },
                         placeholder = { Text("85") },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -769,14 +771,14 @@ private fun AddLocationDialog(
                     OutlinedTextField(
                         value = timeZone,
                         onValueChange = { timeZone = it },
-                        label = { Text("UTC±") },
+                        label = { Text(stringResource(R.string.utc_label)) },
                         placeholder = { Text("2.0") },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                         isError = timeZone.isNotEmpty() && timeZone.toDoubleOrNull() == null,
                         supportingText = {
                             if (timeZone.isNotEmpty() && timeZone.toDoubleOrNull() == null) {
-                                Text("Invalid")
+                                Text(stringResource(R.string.invalid))
                             }
                         },
                         modifier = Modifier.weight(1f)
@@ -791,7 +793,7 @@ private fun AddLocationDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextButton(onClick = onDismiss) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.cancel))
                     }
                     Spacer(Modifier.width(8.dp))
                     Button(
@@ -815,7 +817,7 @@ private fun AddLocationDialog(
                             modifier = Modifier.size(18.dp)
                         )
                         Spacer(Modifier.width(4.dp))
-                        Text("Save")
+                        Text(stringResource(R.string.save))
                     }
                 }
             }
@@ -856,7 +858,7 @@ private fun GPSLocationSection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "GPS Location",
+                    text = stringResource(R.string.gps_location),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
@@ -879,7 +881,7 @@ private fun GPSLocationSection(
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.Refresh,
-                                contentDescription = "Refresh GPS location",
+                                contentDescription = stringResource(R.string.refresh_gps),
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
@@ -891,9 +893,9 @@ private fun GPSLocationSection(
 
             if (currentGPSLocation != null) {
                 Column(Modifier.fillMaxWidth()) {
-                    InfoRow(label = "Lat:", value = String.format("%.4f°", currentGPSLocation.latitude))
+                    InfoRow(label = stringResource(R.string.lat_label), value = String.format("%.4f°", currentGPSLocation.latitude))
                     Spacer(Modifier.height(4.dp))
-                    InfoRow(label = "Lon:", value = String.format("%.4f°", currentGPSLocation.longitude))
+                    InfoRow(label = stringResource(R.string.lon_label), value = String.format("%.4f°", currentGPSLocation.longitude))
                     Spacer(Modifier.height(4.dp))
                     InfoRow(label = "Alt:", value = "${currentGPSLocation.altitude.toInt()}m")
 
@@ -907,7 +909,7 @@ private fun GPSLocationSection(
                     ) {
                         Icon(imageVector = Icons.Filled.Check, contentDescription = null, modifier = Modifier.size(20.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("Use this location")
+                        Text(stringResource(R.string.use_this_location))
                     }
                 }
             } else {
@@ -918,13 +920,13 @@ private fun GPSLocationSection(
                 ) {
                     Icon(imageVector = Icons.Filled.LocationOn, contentDescription = null, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text("Get GPS Location")
+                    Text(stringResource(R.string.get_gps_location))
                 }
 
                 Spacer(Modifier.height(8.dp))
 
                 Text(
-                    text = "Tap to request your current location",
+                    text = stringResource(R.string.tap_for_gps),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                 )
@@ -1024,7 +1026,7 @@ private fun InfoRow(label: String, value:  String) {
 							}) {
 								Icon(
 									imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-									contentDescription = if (expanded) "Collapse" else "Expand",
+									contentDescription = if (expanded) stringResource(R.string.collapse) else stringResource(R.string.expand),
 									tint = if (isSelected) 
 										MaterialTheme. colorScheme.onPrimaryContainer 
 									else 
@@ -1043,7 +1045,7 @@ private fun InfoRow(label: String, value:  String) {
 										contentColor = MaterialTheme.colorScheme. error
 									)
 								) {
-									Icon(imageVector = Icons. Filled.Delete, contentDescription = "Delete location")
+									Icon(imageVector = Icons. Filled.Delete, contentDescription = stringResource(R.string.delete_location))
 								}
 							} else {
 								// Placeholder pentru a păstra alinierea
@@ -1056,7 +1058,7 @@ private fun InfoRow(label: String, value:  String) {
 									onClick = { },
 									enabled = false
 								) {
-									Text("Active", color = MaterialTheme. colorScheme.primary)
+									Text(stringResource(R.string.active), color = MaterialTheme. colorScheme.primary)
 								}
 							} else {
 								TextButton(
@@ -1068,7 +1070,7 @@ private fun InfoRow(label: String, value:  String) {
 										contentColor = MaterialTheme.colorScheme.primary
 									)
 								) {
-									Text("Select")
+									Text(stringResource(R.string.select))
 								}
 							}
 						}
@@ -1080,9 +1082,9 @@ private fun InfoRow(label: String, value:  String) {
 									.fillMaxWidth()
 									. padding(horizontal = 16.dp, vertical = 8.dp)
 							) {
-								InfoRow(label = "Lat:", value = String.format("%.4f°", location.latitude))
+								InfoRow(label = stringResource(R.string.lat_label), value = String.format("%.4f°", location.latitude))
 								Spacer(Modifier.height(4.dp))
-								InfoRow(label = "Lon:", value = String.format("%.4f°", location.longitude))
+								InfoRow(label = stringResource(R.string.lon_label), value = String.format("%.4f°", location.longitude))
 								Spacer(Modifier. height(4.dp))
 								InfoRow(label = "Alt:", value = location.getFormattedAltitude())
 								Spacer(Modifier.height(8.dp))
