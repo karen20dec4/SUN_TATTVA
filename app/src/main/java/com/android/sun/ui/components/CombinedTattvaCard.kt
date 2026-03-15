@@ -24,6 +24,7 @@ import java.util.*
 import androidx.compose.foundation.border
 import com.android.sun.R
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 
 
 @Composable
@@ -138,7 +139,7 @@ fun CombinedTattvaCard(
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Text(
-                            "SHOW DAY",
+                            stringResource(R.string.show_day),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             maxLines = 1,

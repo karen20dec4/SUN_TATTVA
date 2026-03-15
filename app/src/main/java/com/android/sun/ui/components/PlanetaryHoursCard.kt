@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sun.domain.calculator.PlanetType
 import kotlinx.coroutines.delay
+import androidx.compose.ui.res.stringResource
+import com.android.sun.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -319,7 +321,7 @@ private fun CurrentPlanetaryHourHeader(
                 } else {
                     Icons.Default.KeyboardArrowDown
                 },
-                contentDescription = if (isExpanded) "Collapse" else "Expand",
+                contentDescription = if (isExpanded) stringResource(R.string.collapse) else stringResource(R.string.expand),
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
@@ -461,7 +463,7 @@ private fun PlanetaryHourRow(
             
             if (isCurrent) {
                 Text(
-                    text = "◄ NOW",
+                    text = stringResource(R.string.now_indicator),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.sp,
