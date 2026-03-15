@@ -49,6 +49,7 @@
     <string name="moon_position">🌙 Moon: %1$s</string>
     <string name="nitya_label">Nitya</string>
     <string name="moon_label">Moon: %1$s</string>
+    <string name="moon_zodiac_position">%1$s %2$s</string>
 
     <!-- Moon Phase Card -->
     <string name="tripura_sundari_label">Tripura Sundari:</string>
