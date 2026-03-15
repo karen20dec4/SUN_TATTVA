@@ -12,10 +12,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.sun.R
 import com.android.sun.domain.calculator.MoonPhaseResult
 import com.android.sun.domain.calculator.ShivaratriDate
 import androidx.compose.ui.graphics.Color
@@ -55,7 +57,7 @@ fun MoonPhaseCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Moon:   $moonSign",
+                    text = stringResource(R.string.moon_label, moonSign),
                     style = MaterialTheme.typography.titleMedium,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
@@ -82,13 +84,13 @@ fun MoonPhaseCard(
             
             // Tripura Sundari
             MoonEventRow(
-                label = "Tripura Sundari:",
+                label = stringResource(R.string.tripura_sundari_label),
                 date = moonPhase.nextTripuraSundari
             )
             
             // Full Moon (highlighted when in influence period, clickable to expand)
             MoonEventRow(
-                label = "Full moon:",
+                label = stringResource(R.string.full_moon_label),
                 date = moonPhase.nextFullMoon,
                 isHighlighted = moonPhase.isInFullMoonInfluence,
                 onClick = { isFullMoonExpanded = !isFullMoonExpanded },
@@ -131,7 +133,7 @@ fun MoonPhaseCard(
             
             // New Moon (last)
             MoonEventRow(
-                label = "New moon:",
+                label = stringResource(R.string.new_moon_label),
                 date = moonPhase.nextNewMoon
             )
         }
@@ -224,7 +226,7 @@ private fun ShivaratriRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Shivaratri:",
+            text = stringResource(R.string.shivaratri_label),
             style = MaterialTheme.typography.titleMedium,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
@@ -250,7 +252,7 @@ private fun ShivaratriRow(
             Spacer(modifier = Modifier.width(2.dp))
             Icon(
                 imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                contentDescription = if (isExpanded) "Collapse" else "Expand",
+                contentDescription = if (isExpanded) stringResource(R.string.collapse) else stringResource(R.string.expand),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(18.dp)
             )
@@ -431,7 +433,7 @@ private fun MoonEventRow(
                 Spacer(modifier = Modifier.width(2.dp))
                 Icon(
                     imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (isExpanded) stringResource(R.string.collapse) else stringResource(R.string.expand),
                     tint = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(18.dp)
                 )
