@@ -15,6 +15,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
+import com.android.sun.R
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -142,12 +144,12 @@ fun MainScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Loading, please wait...",
+                        text = stringResource(R.string.loading),
                         style = MaterialTheme.typography.headlineSmall
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = onRefresh) {
-                        Text("Refresh")
+                        Text(stringResource(R.string.refresh))
                     }
                 }
             }
@@ -254,7 +256,7 @@ private fun CompactInfoCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Settings,
-                            contentDescription = "Settings",
+                            contentDescription = stringResource(R.string.settings_title),
                             tint = Color.White
                         )
                     }
@@ -265,7 +267,7 @@ private fun CompactInfoCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = "Refresh",
+                            contentDescription = stringResource(R.string.refresh),
                             tint = Color.White
                         )
                     }
@@ -290,7 +292,7 @@ private fun CompactInfoCard(
                         text = when {
                             astroData.isGPSLocation -> "GPS"
                             astroData.locationName.isNotEmpty() -> astroData.locationName
-                            else -> "No location"
+                            else -> stringResource(R.string.no_location)
                         },
                         style = MaterialTheme.typography.titleMedium,
                         fontSize = 22.sp,
@@ -316,7 +318,7 @@ private fun CompactInfoCard(
                             Spacer(modifier = Modifier.width(4.dp))
                             
                             Text(
-                                text = "Local time:  ${localTimeFormat.format(currentTime.time)} $gmtOffsetFormatted",
+                                text = stringResource(R.string.local_time, localTimeFormat.format(currentTime.time), gmtOffsetFormatted),
                                 style = MaterialTheme.typography.bodySmall,
                                 fontSize = 12.sp,
                                 color = Color.White.copy(alpha = 0.9f)
@@ -327,7 +329,7 @@ private fun CompactInfoCard(
 
                 Icon(
                     imageVector = Icons.Default.LocationOn,
-                    contentDescription = "Change location",
+                    contentDescription = stringResource(R.string.change_location),
                     tint = Color.White,
                     modifier = Modifier.size(32.dp)
                 )
