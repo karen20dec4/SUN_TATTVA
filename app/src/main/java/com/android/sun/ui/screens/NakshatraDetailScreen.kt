@@ -14,9 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.sun.R
 import com.android.sun.domain.calculator.NakshatraType
 
 /**
@@ -45,7 +47,7 @@ fun NakshatraDetailScreen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -118,27 +120,27 @@ fun NakshatraDetailScreen(
             
             // Informații principale
             InfoCard(
-                title = "🧝 Zeitate",
+                title = stringResource(R.string.deity_title),
                 content = nakshatra.deity
             )
             
             InfoCard(
-                title = "🔱 Simbol",
+                title = stringResource(R.string.symbol_title),
                 content = nakshatra.symbol
             )
             
             InfoCard(
-                title = "🐾 Animal",
+                title = stringResource(R.string.animal_title),
                 content = nakshatra.animal
             )
             
             InfoCard(
-                title = "🪐 Planetă",
+                title = stringResource(R.string.planet_title),
                 content = nakshatra.planet
             )
             
             InfoCard(
-                title = "🌿 Natură",
+                title = stringResource(R.string.nature_title),
                 content = nakshatra.nature
             )
             
@@ -154,7 +156,7 @@ fun NakshatraDetailScreen(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "📖 Descriere",
+                        text = stringResource(R.string.description_title),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
@@ -164,7 +166,7 @@ fun NakshatraDetailScreen(
                     Spacer(modifier = Modifier.height(8.dp))
                     
                     Text(
-                        text = getGenericDescription(nakshatra),
+                        text = getLocalizedDescription(nakshatra),
                         style = MaterialTheme.typography.bodyMedium,
                         fontSize = 14.sp,
                         lineHeight = 20.sp,
@@ -216,65 +218,39 @@ private fun InfoCard(
 }
 
 /**
- * Generic description for each Nakshatra
- * Can be modified later by the user
- * Descriere generică pentru fiecare Nakshatra - poate fi modificată mai târziu de utilizator
+ * Localized description for each Nakshatra using string resources
+ * Descriere localizată pentru fiecare Nakshatra folosind resurse de string
  */
-private fun getGenericDescription(nakshatra: NakshatraType): String {
+@Composable
+private fun getLocalizedDescription(nakshatra: NakshatraType): String {
     return when (nakshatra) {
-        NakshatraType.ASHWINI -> "Prima Nakshatra din zodiac, Ashwini reprezintă începutul, vindecarea și energia vitală. Sub protecția gemenilor divini Ashwini Kumara, vindecătorii cerești, această Nakshatra aduce rapiditate, spontaneitate și putere de vindecare."
-        
-        NakshatraType.BHARANI -> "Bharani este Nakshatra a nașterii și transformării, guvernată de Yama, zeul morții. Reprezintă ciclul vieții, fertilitatea și responsabilitatea. Energia sa este profundă și transformatoare."
-        
-        NakshatraType.KRITTIKA -> "Krittika, flacăra purificatoare, este guvernată de Agni, zeul focului. Simbolizează arderea impurităților și claritatea mentală. Aduce energie puternică de transformare și iluminare."
-        
-        NakshatraType.ROHINI -> "Rohini este considerată cea mai favorabilă Nakshatra pentru creștere și abundență. Sub guvernarea Lunii, ea reprezintă fertilitatea, creativitatea și frumusețea materială."
-        
-        NakshatraType.MRIGASHIRA -> "Mrigashira, capul de cerb, reprezintă căutarea și explorarea. Guvernată de Marte și asociată cu Soma, aduce curiozitate, sensibilitate și dorința de a descoperi adevărul."
-        
-        NakshatraType.ARDRA -> "Ardra este Nakshatra furtunii și transformării radicale. Sub protecția lui Rudra (Shiva), ea aduce schimbări intense, purificare prin suferință și renaștere spirituală."
-        
-        NakshatraType.PUNARVASU -> "Punarvasu înseamnă 'întoarcerea luminii'. Guvernată de Jupiter și protejată de Aditi, mama zeilor, ea aduce optimism, reînnoire și posibilitatea unui nou început."
-        
-        NakshatraType.PUSHYA -> "Pushya este considerată cea mai norocoasă și mai nutritivă Nakshatra. Guvernată de Saturn și protejată de Brihaspati, ea aduce creștere spirituală, hrană și protecție."
-        
-        NakshatraType.ASHLESHA -> "Ashlesha, șarpele cosmic, este guvernată de Mercur și asociată cu Naga. Reprezintă puterea kundalini, intuiția profundă și înțelepciunea ascunsă, dar și posibilitatea de manipulare."
-        
-        NakshatraType.MAGHA -> "Magha reprezintă tronul ancestral și puterea regală. Guvernată de Ketu și protejată de Pitri (strămoși), ea aduce onoare, respect pentru tradiție și conexiune cu rădăcinile spirituale."
-        
-        NakshatraType.PURVA_PHALGUNI -> "Purva Phalguni este Nakshatra plăcerii, relaxării și creativității artistice. Guvernată de Venus și protejată de Bhaga, zeul bunăstării, ea aduce bucurie, romantism și apreciere pentru frumusețe."
-        
-        NakshatraType.UTTARA_PHALGUNI -> "Uttara Phalguni reprezintă parteneriatele benefice și sprijinul mutual. Guvernată de Soare și protejată de Aryaman, zeul prieteniei, ea aduce loialitate, generozitate și stabilitate în relații."
-        
-        NakshatraType.HASTA -> "Hasta, mâna, simbolizează îndemânarea, precizia și capacitatea de a manifesta. Guvernată de Lună și protejată de Savitar, zeul soarelui, ea aduce talent practic și abilitatea de a crea."
-        
-        NakshatraType.CHITRA -> "Chitra este Nakshatra bijuteriei divine și a frumuseții perfecte. Guvernată de Marte și protejată de Tvashtar, arhitectul cosmic, ea aduce creativitate, estetică și dorința de perfecțiune."
-        
-        NakshatraType.SWATI -> "Swati, frunza purtată de vânt, reprezintă independența și adaptabilitatea. Guvernată de Rahu și protejată de Vayu, zeul vântului, ea aduce libertate, flexibilitate și dorința de schimbare."
-        
-        NakshatraType.VISHAKHA -> "Vishakha este Nakshatra determinării și ambiției. Guvernată de Jupiter și protejată de Indra și Agni, ea aduce putere de concentrare, perseverență și capacitatea de a atinge obiective mari."
-        
-        NakshatraType.ANURADHA -> "Anuradha reprezintă prietenia devotată și colaborarea spirituală. Guvernată de Saturn și protejată de Mitra, zeul prieteniei, ea aduce loialitate, devotament și capacitatea de a lucra în armonie."
-        
-        NakshatraType.JYESHTHA -> "Jyeshtha este Nakshatra seniorității și puterii. Guvernată de Mercur și protejată de Indra, regele zeilor, ea aduce autoritate, protecție și responsabilitatea conducerii."
-        
-        NakshatraType.MULA -> "Mula reprezintă rădăcina și investigarea profundă. Guvernată de Ketu și protejată de Nirriti, zeița distrugerii, ea aduce transformare radicală, căutarea adevărului și eliminarea a ceea ce nu mai servește."
-        
-        NakshatraType.PURVA_ASHADHA -> "Purva Ashadha este Nakshatra invincibilității și optimismului. Guvernată de Venus și protejată de Apah, zeița apelor, ea aduce încredere, energie de învingere și capacitatea de purificare."
-        
-        NakshatraType.UTTARA_ASHADHA -> "Uttara Ashadha reprezintă victoria finală și realizarea permanentă. Guvernată de Soare și protejată de Vishvadeva, ea aduce succes durabil, recunoaștere și autoritate universală."
-        
-        NakshatraType.SHRAVANA -> "Shravana este Nakshatra ascultării și învățării. Guvernată de Lună și protejată de Vishnu, păstrătorul, ea aduce înțelepciune prin ascultare, conexiune spirituală și capacitatea de a primi cunoaștere."
-        
-        NakshatraType.DHANISHTA -> "Dhanishta reprezintă prosperitatea și ritmul cosmic. Guvernată de Marte și protejată de Vasus, zeii abundenței, ea aduce succes material, muzicalitate și capacitatea de a lucra în ritm cu universul."
-        
-        NakshatraType.SHATABHISHA -> "Shatabhisha, cele o sută de vindecători, este guvernată de Rahu și protejată de Varuna, zeul apelor cosmice. Ea aduce vindecarea misterioasă, intuiția profundă și capacitatea de a descoperi secrete ascunse."
-        
-        NakshatraType.PURVA_BHADRAPADA -> "Purva Bhadrapada reprezintă arderea karmei și transformarea spirituală intensă. Guvernată de Jupiter și protejată de Aja Ekapada, ea aduce intensitate, pasiune spirituală și dorința de transcendență."
-        
-        NakshatraType.UTTARA_BHADRAPADA -> "Uttara Bhadrapada este Nakshatra profunzimii și înțelepciunii cosmice. Guvernată de Saturn și protejată de Ahirbudhnya, șarpele adâncurilor, ea aduce stabilitate spirituală, înțelepciune profundă și capacitatea de a susține lumea."
-        
-        NakshatraType.REVATI -> "Revati, ultima Nakshatra, reprezintă călătoria finală și protecția divină. Guvernată de Mercur și protejată de Pushan, zeul călătoriilor, ea aduce hrănire spirituală, completare și ghidare către destinație."
+        NakshatraType.ASHWINI -> stringResource(R.string.nakshatra_desc_ashwini)
+        NakshatraType.BHARANI -> stringResource(R.string.nakshatra_desc_bharani)
+        NakshatraType.KRITTIKA -> stringResource(R.string.nakshatra_desc_krittika)
+        NakshatraType.ROHINI -> stringResource(R.string.nakshatra_desc_rohini)
+        NakshatraType.MRIGASHIRA -> stringResource(R.string.nakshatra_desc_mrigashira)
+        NakshatraType.ARDRA -> stringResource(R.string.nakshatra_desc_ardra)
+        NakshatraType.PUNARVASU -> stringResource(R.string.nakshatra_desc_punarvasu)
+        NakshatraType.PUSHYA -> stringResource(R.string.nakshatra_desc_pushya)
+        NakshatraType.ASHLESHA -> stringResource(R.string.nakshatra_desc_ashlesha)
+        NakshatraType.MAGHA -> stringResource(R.string.nakshatra_desc_magha)
+        NakshatraType.PURVA_PHALGUNI -> stringResource(R.string.nakshatra_desc_purva_phalguni)
+        NakshatraType.UTTARA_PHALGUNI -> stringResource(R.string.nakshatra_desc_uttara_phalguni)
+        NakshatraType.HASTA -> stringResource(R.string.nakshatra_desc_hasta)
+        NakshatraType.CHITRA -> stringResource(R.string.nakshatra_desc_chitra)
+        NakshatraType.SWATI -> stringResource(R.string.nakshatra_desc_swati)
+        NakshatraType.VISHAKHA -> stringResource(R.string.nakshatra_desc_vishakha)
+        NakshatraType.ANURADHA -> stringResource(R.string.nakshatra_desc_anuradha)
+        NakshatraType.JYESHTHA -> stringResource(R.string.nakshatra_desc_jyeshtha)
+        NakshatraType.MULA -> stringResource(R.string.nakshatra_desc_mula)
+        NakshatraType.PURVA_ASHADHA -> stringResource(R.string.nakshatra_desc_purva_ashadha)
+        NakshatraType.UTTARA_ASHADHA -> stringResource(R.string.nakshatra_desc_uttara_ashadha)
+        NakshatraType.SHRAVANA -> stringResource(R.string.nakshatra_desc_shravana)
+        NakshatraType.DHANISHTA -> stringResource(R.string.nakshatra_desc_dhanishta)
+        NakshatraType.SHATABHISHA -> stringResource(R.string.nakshatra_desc_shatabhisha)
+        NakshatraType.PURVA_BHADRAPADA -> stringResource(R.string.nakshatra_desc_purva_bhadrapada)
+        NakshatraType.UTTARA_BHADRAPADA -> stringResource(R.string.nakshatra_desc_uttara_bhadrapada)
+        NakshatraType.REVATI -> stringResource(R.string.nakshatra_desc_revati)
     }
 }
 
