@@ -19,9 +19,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.sun.R
 import com.android.sun.domain.calculator.NakshatraResult
 import com.android.sun.domain.calculator.NakshatraType
 import com.android.sun.domain.calculator.NakshatraCalculator
@@ -83,7 +85,7 @@ fun NakshatraCard(
                     Spacer(modifier = Modifier.height(12.dp))
                     
                     Text(
-                        text = "Toate cele 27 Nakshatra",
+                        text = stringResource(R.string.all_27_nakshatras),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                         fontSize = 14.sp
@@ -93,7 +95,7 @@ fun NakshatraCard(
                     if (nakshatraResult.moonZodiacPosition.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "🌙 Luna: ${nakshatraResult.moonZodiacPosition}",
+                            text = stringResource(R.string.moon_position, nakshatraResult.moonZodiacPosition),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 13.sp,
@@ -210,7 +212,7 @@ private fun CurrentNakshatraHeader(
     ) {
         // ✅ NAKSHATRA (stânga) - colored by Tattva with prefix
         Text(
-            text = "Nakshatra: ${nakshatraResult.nakshatra.displayName}",
+            text = "${stringResource(R.string.nakshatra_label)} ${nakshatraResult.nakshatra.displayName}",
             style = MaterialTheme.typography.titleLarge,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
@@ -239,7 +241,7 @@ private fun CurrentNakshatraHeader(
                 } else {
                     Icons.Default.KeyboardArrowDown
                 },
-                contentDescription = if (isExpanded) "Collapse" else "Expand",
+                contentDescription = if (isExpanded) stringResource(R.string.collapse) else stringResource(R.string.expand),
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
@@ -305,7 +307,7 @@ private fun NakshatraRow(
         
         if (isCurrent) {
             Text(
-                text = "◄ NOW",
+                text = stringResource(R.string.now_indicator),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
                 fontSize = 12.sp,
