@@ -33,6 +33,7 @@ import com.android.sun.viewmodel.LocationViewModel
 import com.android.sun.viewmodel.MainViewModel
 import com.android.sun.service.TattvaNotificationService
 import androidx.compose.ui.platform.LocalContext
+import androidx.activity.compose.LocalActivityResultRegistryOwner
 import com.android.sun.domain.calculator.NakshatraCalculator
 
 class MainActivity : ComponentActivity() {
@@ -70,7 +71,12 @@ class MainActivity : ComponentActivity() {
                 context.createConfigurationContext(config)
             }
             
-            CompositionLocalProvider(LocalContext provides localizedContext) {
+            // Preserve ActivityResultRegistryOwner when overriding LocalContext,
+            // otherwise rememberLauncherForActivityResult() crashes in SettingsScreen
+            CompositionLocalProvider(
+                LocalContext provides localizedContext,
+                LocalActivityResultRegistryOwner provides this@MainActivity
+            ) {
                 SunTheme(darkTheme = isDarkTheme) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
