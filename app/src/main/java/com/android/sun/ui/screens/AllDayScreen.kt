@@ -22,9 +22,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.sun.R
 import com.android.sun.data.model.TattvaDayItem
 import com.android.sun.ui.components.GradientNavigationBar
 import kotlinx.coroutines.delay
@@ -135,7 +137,7 @@ fun AllDayScreen(
                         IconButton(onClick = onBackClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
+                                contentDescription = stringResource(R.string.back)
                             )
                         }
                     },
@@ -166,7 +168,7 @@ fun AllDayScreen(
 							)
 							Spacer(modifier = Modifier.width(4.dp))
 							Text(
-								text = "CALENDAR",
+								text = stringResource(R.string.calendar),
 								fontWeight = FontWeight.Bold,
 								fontSize = 14.sp
 							)
@@ -237,7 +239,7 @@ private fun CycleDelimiter(cycleNumber: Int) {
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
         )
         Text(
-            text = "Cycle $cycleNumber",
+            text = stringResource(R.string.cycle_label, cycleNumber),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -333,7 +335,7 @@ private fun TattvaDayItemCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (isTattvaCurrentNow) {
                         Text(
-                            text = "◄ NOW",
+                            text = stringResource(R.string.now_indicator),
                             style = MaterialTheme.typography.labelLarge,
                             color = tattvaItem.tattvaColor,
                             fontWeight = FontWeight.Bold,
