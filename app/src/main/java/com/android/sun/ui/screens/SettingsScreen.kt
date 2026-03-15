@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,6 +60,8 @@ fun SettingsScreen(
     onSoundApasChange: (Boolean) -> Unit,
     isSoundPrithivi: Boolean,
     onSoundPrithiviChange: (Boolean) -> Unit,
+    currentLanguage: String,
+    onLanguageChange: (String) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) 
@@ -91,7 +94,7 @@ fun SettingsScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Settings",
+                            text = stringResource(R.string.settings_title),
                             fontWeight = FontWeight.Bold
                         )
                     },
@@ -99,7 +102,7 @@ fun SettingsScreen(
                         IconButton(onClick = onBackClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
+                                contentDescription = stringResource(R.string.back)
                             )
                         }
                     }
@@ -118,7 +121,7 @@ fun SettingsScreen(
                 
                 // SECTIUNEA:  APARENTA
                 Text(
-                    text = "Appearance",
+                    text = stringResource(R.string.section_appearance),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
@@ -128,17 +131,28 @@ fun SettingsScreen(
                 // Dark Theme Toggle
                 SettingsSwitchItem(
                     icon = Icons.Default.Star,
-                    title = "Dark Theme",
-                    subtitle = "Enable dark mode for better visibility at night",
+                    title = stringResource(R.string.dark_theme_title),
+                    subtitle = stringResource(R.string.dark_theme_subtitle),
                     checked = isDarkTheme,
                     onCheckedChange = onDarkThemeChange
+                )
+
+                // Language Toggle
+                SettingsSwitchItem(
+                    icon = Icons.Default.Star,
+                    title = stringResource(R.string.language_title),
+                    subtitle = stringResource(R.string.language_subtitle),
+                    checked = currentLanguage == "en",
+                    onCheckedChange = { isEnglish ->
+                        onLanguageChange(if (isEnglish) "en" else "ro")
+                    }
                 )
                 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                 
                 // SECTIUNEA: NOTIFICARI
                 Text(
-                    text = "Notifications",
+                    text = stringResource(R.string.section_notifications),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
@@ -166,12 +180,12 @@ fun SettingsScreen(
                             Spacer(modifier = Modifier.width(12.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = "Notification permission required",
+                                    text = stringResource(R.string.notification_permission_required),
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onErrorContainer
                                 )
                                 Text(
-                                    text = "Tap to enable notifications",
+                                    text = stringResource(R.string.tap_to_enable_notifications),
                                     fontSize = 12.sp,
                                     color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.7f)
                                 )
@@ -185,7 +199,7 @@ fun SettingsScreen(
                                     }
                                 }
                             ) {
-                                Text("Enable")
+                                Text(stringResource(R.string.enable))
                             }
                         }
                     }
@@ -194,23 +208,23 @@ fun SettingsScreen(
                 
                 // Combined Notification Card - Full Moon, Tripura Sundari, New Moon
                 NotificationGroupCard(
-                    title = "Notification",
+                    title = stringResource(R.string.notification_title),
                     items = listOf(
-                        NotificationItem("Full Moon", isFullMoonNotification) { enabled ->
+                        NotificationItem(stringResource(R.string.full_moon), isFullMoonNotification) { enabled ->
                             if (enabled && !hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                             } else {
                                 onFullMoonNotificationChange(enabled)
                             }
                         },
-                        NotificationItem("Tripura Sundari", isTripuraSundariNotification) { enabled ->
+                        NotificationItem(stringResource(R.string.tripura_sundari), isTripuraSundariNotification) { enabled ->
                             if (enabled && !hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                             } else {
                                 onTripuraSundariNotificationChange(enabled)
                             }
                         },
-                        NotificationItem("New Moon", isNewMoonNotification) { enabled ->
+                        NotificationItem(stringResource(R.string.new_moon), isNewMoonNotification) { enabled ->
                             if (enabled && !hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                             } else {
@@ -225,13 +239,13 @@ fun SettingsScreen(
 				
 				// Combined Status Bar Card - Tattva and Planetary Hour
 				NotificationGroupCard(
-					title = "Status Bar",
+					title = stringResource(R.string.status_bar),
 					items = listOf(
-						NotificationItem("Tattva", isTattvaNotification) { enabled ->
+						NotificationItem(stringResource(R.string.tattva_label), isTattvaNotification) { enabled ->
 							onTattvaNotificationChange(enabled)
 							context.sendBroadcast(android.content.Intent("com.android.sun.ACTION_SETTINGS_CHANGED"))
 						},
-						NotificationItem("Planetary Hour", isPlanetaryHourNotification) { enabled ->
+						NotificationItem(stringResource(R.string.planetary_hour), isPlanetaryHourNotification) { enabled ->
 							onPlanetaryHourNotificationChange(enabled)
 							context.sendBroadcast(android.content.Intent("com.android.sun.ACTION_SETTINGS_CHANGED"))
 						}
@@ -257,7 +271,7 @@ fun SettingsScreen(
                 
                 // SECTIUNEA: DESPRE
                 Text(
-                    text = "About",
+                    text = stringResource(R.string.section_about),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
@@ -287,11 +301,11 @@ fun SettingsScreen(
                         Spacer(modifier = Modifier.width(16.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = "Version",
+                                text = stringResource(R.string.version),
                                 fontWeight = FontWeight.Medium
                             )
                             Text(
-                                text = "SUN TIME",
+                                text = stringResource(R.string.sun_time),
                                 fontSize = 12.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                             )
@@ -495,7 +509,7 @@ private fun TattvaSoundCard(
                 .padding(16.dp)
         ) {
             Text(
-                text = "Tattva Sound",
+                text = stringResource(R.string.tattva_sound),
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
