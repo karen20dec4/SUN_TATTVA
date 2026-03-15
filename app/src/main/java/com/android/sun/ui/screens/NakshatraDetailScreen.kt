@@ -20,6 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sun.R
 import com.android.sun.domain.calculator.NakshatraType
+import com.android.sun.ui.components.getLocalizedNakshatraSymbol
+import com.android.sun.ui.components.getLocalizedNakshatraAnimal
+import com.android.sun.ui.components.getLocalizedNakshatraPlanet
+import com.android.sun.ui.components.getLocalizedNakshatraNature
+import com.android.sun.ui.components.getLocalizedNakshatraDegreeRange
 
 /**
  * Detailed screen for a specific Nakshatra
@@ -110,7 +115,7 @@ fun NakshatraDetailScreen(
                     }
                     
                     Text(
-                        text = nakshatra.degreeRange,
+                        text = getLocalizedNakshatraDegreeRange(nakshatra),
                         style = MaterialTheme.typography.titleMedium,
                         fontSize = 16.sp,
                         color = Color.White.copy(alpha = 0.9f)
@@ -126,22 +131,22 @@ fun NakshatraDetailScreen(
             
             InfoCard(
                 title = stringResource(R.string.symbol_title),
-                content = nakshatra.symbol
+                content = getLocalizedNakshatraSymbol(nakshatra)
             )
             
             InfoCard(
                 title = stringResource(R.string.animal_title),
-                content = nakshatra.animal
+                content = getLocalizedNakshatraAnimal(nakshatra)
             )
             
             InfoCard(
                 title = stringResource(R.string.planet_title),
-                content = nakshatra.planet
+                content = getLocalizedNakshatraPlanet(nakshatra)
             )
             
             InfoCard(
                 title = stringResource(R.string.nature_title),
-                content = nakshatra.nature
+                content = getLocalizedNakshatraNature(nakshatra)
             )
             
             // Card cu descriere generică

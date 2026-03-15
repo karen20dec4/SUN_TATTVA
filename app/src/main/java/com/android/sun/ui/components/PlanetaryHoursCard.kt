@@ -291,7 +291,7 @@ private fun CurrentPlanetaryHourHeader(
             )
             
             Text(
-                text = planet.displayName,
+                text = getLocalizedPlanetName(planet),
                 style = MaterialTheme.typography.titleLarge,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
@@ -435,7 +435,7 @@ private fun PlanetaryHourRow(
                 color = getPlanetColor(planet)
             )
             Text(
-                text = planet.displayName,
+                text = getLocalizedPlanetName(planet),
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 14.sp,
                 fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,

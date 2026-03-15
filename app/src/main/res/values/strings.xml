@@ -146,4 +146,145 @@
     <string name="nakshatra_desc_purva_bhadrapada">Purva Bhadrapada reprezintă arderea karmei și transformarea spirituală intensă. Guvernată de Jupiter și protejată de Aja Ekapada, ea aduce intensitate, pasiune spirituală și dorința de transcendență.</string>
     <string name="nakshatra_desc_uttara_bhadrapada">Uttara Bhadrapada este Nakshatra profunzimii și înțelepciunii cosmice. Guvernată de Saturn și protejată de Ahirbudhnya, șarpele adâncurilor, ea aduce stabilitate spirituală, înțelepciune profundă și capacitatea de a susține lumea.</string>
     <string name="nakshatra_desc_revati">Revati, ultima Nakshatra, reprezintă călătoria finală și protecția divină. Guvernată de Mercur și protejată de Pushan, zeul călătoriilor, ea aduce hrănire spirituală, completare și ghidare către destinație.</string>
+
+    <!-- Zodiac Signs -->
+    <string name="zodiac_aries">Berbec</string>
+    <string name="zodiac_taurus">Taur</string>
+    <string name="zodiac_gemini">Gemeni</string>
+    <string name="zodiac_cancer">Rac</string>
+    <string name="zodiac_leo">Leu</string>
+    <string name="zodiac_virgo">Fecioară</string>
+    <string name="zodiac_libra">Balanță</string>
+    <string name="zodiac_scorpio">Scorpion</string>
+    <string name="zodiac_sagittarius">Săgetător</string>
+    <string name="zodiac_capricorn">Capricorn</string>
+    <string name="zodiac_aquarius">Vărsător</string>
+    <string name="zodiac_pisces">Pești</string>
+
+    <!-- Planet Names -->
+    <string name="planet_sun">Soare</string>
+    <string name="planet_moon">Lună</string>
+    <string name="planet_mars">Marte</string>
+    <string name="planet_mercury">Mercur</string>
+    <string name="planet_jupiter">Jupiter</string>
+    <string name="planet_venus">Venus</string>
+    <string name="planet_saturn">Saturn</string>
+    <string name="planet_rahu">Rahu</string>
+    <string name="planet_ketu">Ketu</string>
+
+    <!-- Nakshatra Symbols -->
+    <string name="nakshatra_symbol_ashwini">🐎 cap de cal</string>
+    <string name="nakshatra_symbol_bharani">yoni</string>
+    <string name="nakshatra_symbol_krittika">🔥 lamă / foc</string>
+    <string name="nakshatra_symbol_rohini">car / germinare</string>
+    <string name="nakshatra_symbol_mrigashira">🦌 cap de cerb</string>
+    <string name="nakshatra_symbol_ardra">💧 lacrimă / furtună</string>
+    <string name="nakshatra_symbol_punarvasu">🏹 arc</string>
+    <string name="nakshatra_symbol_pushya">uger / floare de lotus</string>
+    <string name="nakshatra_symbol_ashlesha">🐍 șarpe</string>
+    <string name="nakshatra_symbol_magha">👑 tron regal</string>
+    <string name="nakshatra_symbol_purva_phalguni">pat / hamac</string>
+    <string name="nakshatra_symbol_uttara_phalguni">pat</string>
+    <string name="nakshatra_symbol_hasta">✋ mână</string>
+    <string name="nakshatra_symbol_chitra">💎 bijuterie</string>
+    <string name="nakshatra_symbol_swati">🍃 frunză în vânt</string>
+    <string name="nakshatra_symbol_vishakha">arc triunfal</string>
+    <string name="nakshatra_symbol_anuradha">🪷 lotus</string>
+    <string name="nakshatra_symbol_jyeshtha">cerc / talisman</string>
+    <string name="nakshatra_symbol_mula">rădăcină</string>
+    <string name="nakshatra_symbol_purva_ashadha">evantai</string>
+    <string name="nakshatra_symbol_uttara_ashadha">🐘 colți de elefant</string>
+    <string name="nakshatra_symbol_shravana">👂 ureche</string>
+    <string name="nakshatra_symbol_dhanishta">🥁 tobă</string>
+    <string name="nakshatra_symbol_shatabhisha">⭕ cerc</string>
+    <string name="nakshatra_symbol_purva_bhadrapada">⚔️ sabie</string>
+    <string name="nakshatra_symbol_uttara_bhadrapada">🐍 șarpe</string>
+    <string name="nakshatra_symbol_revati">🐟 pește</string>
+
+    <!-- Nakshatra Animals -->
+    <string name="nakshatra_animal_ashwini">cal</string>
+    <string name="nakshatra_animal_bharani">elefant</string>
+    <string name="nakshatra_animal_krittika">oaie</string>
+    <string name="nakshatra_animal_rohini">șarpe</string>
+    <string name="nakshatra_animal_mrigashira">cerb</string>
+    <string name="nakshatra_animal_ardra">câine</string>
+    <string name="nakshatra_animal_punarvasu">pisică</string>
+    <string name="nakshatra_animal_pushya">berbec</string>
+    <string name="nakshatra_animal_ashlesha">șarpe</string>
+    <string name="nakshatra_animal_magha">șobolan</string>
+    <string name="nakshatra_animal_purva_phalguni">șobolan</string>
+    <string name="nakshatra_animal_uttara_phalguni">vacă</string>
+    <string name="nakshatra_animal_hasta">bivol</string>
+    <string name="nakshatra_animal_chitra">tigru</string>
+    <string name="nakshatra_animal_swati">bivol</string>
+    <string name="nakshatra_animal_vishakha">tigru</string>
+    <string name="nakshatra_animal_anuradha">cerb</string>
+    <string name="nakshatra_animal_jyeshtha">cerb</string>
+    <string name="nakshatra_animal_mula">câine</string>
+    <string name="nakshatra_animal_purva_ashadha">maimuță</string>
+    <string name="nakshatra_animal_uttara_ashadha">mangustă</string>
+    <string name="nakshatra_animal_shravana">maimuță</string>
+    <string name="nakshatra_animal_dhanishta">leu</string>
+    <string name="nakshatra_animal_shatabhisha">cal</string>
+    <string name="nakshatra_animal_purva_bhadrapada">leu</string>
+    <string name="nakshatra_animal_uttara_bhadrapada">vacă</string>
+    <string name="nakshatra_animal_revati">elefant</string>
+
+    <!-- Nakshatra Natures -->
+    <string name="nakshatra_nature_ashwini">ușoară / rapidă</string>
+    <string name="nakshatra_nature_bharani">dură</string>
+    <string name="nakshatra_nature_krittika">aspră / tăioasă</string>
+    <string name="nakshatra_nature_rohini">blândă</string>
+    <string name="nakshatra_nature_mrigashira">blândă</string>
+    <string name="nakshatra_nature_ardra">dură</string>
+    <string name="nakshatra_nature_punarvasu">blândă</string>
+    <string name="nakshatra_nature_pushya">blândă</string>
+    <string name="nakshatra_nature_ashlesha">aspră</string>
+    <string name="nakshatra_nature_magha">dură</string>
+    <string name="nakshatra_nature_purva_phalguni">blândă</string>
+    <string name="nakshatra_nature_uttara_phalguni">blândă</string>
+    <string name="nakshatra_nature_hasta">ușoară</string>
+    <string name="nakshatra_nature_chitra">dură</string>
+    <string name="nakshatra_nature_swati">flexibilă</string>
+    <string name="nakshatra_nature_vishakha">dură</string>
+    <string name="nakshatra_nature_anuradha">blândă</string>
+    <string name="nakshatra_nature_jyeshtha">aspră</string>
+    <string name="nakshatra_nature_mula">dură</string>
+    <string name="nakshatra_nature_purva_ashadha">ușoară</string>
+    <string name="nakshatra_nature_uttara_ashadha">fixă</string>
+    <string name="nakshatra_nature_shravana">blândă</string>
+    <string name="nakshatra_nature_dhanishta">mobilă</string>
+    <string name="nakshatra_nature_shatabhisha">aspră</string>
+    <string name="nakshatra_nature_purva_bhadrapada">dură</string>
+    <string name="nakshatra_nature_uttara_bhadrapada">fixă</string>
+    <string name="nakshatra_nature_revati">blândă</string>
+
+    <!-- Nakshatra Degree Ranges -->
+    <string name="nakshatra_range_ashwini">0°–13°20′ Berbec</string>
+    <string name="nakshatra_range_bharani">13°20′–26°40′ Berbec</string>
+    <string name="nakshatra_range_krittika">26°40′ Berbec – 10° Taur</string>
+    <string name="nakshatra_range_rohini">10°–23°20′ Taur</string>
+    <string name="nakshatra_range_mrigashira">23°20′ Taur – 6°40′ Gemeni</string>
+    <string name="nakshatra_range_ardra">6°40′–20° Gemeni</string>
+    <string name="nakshatra_range_punarvasu">20° Gemeni – 3°20′ Rac</string>
+    <string name="nakshatra_range_pushya">3°20′–16°40′ Rac</string>
+    <string name="nakshatra_range_ashlesha">16°40′–30° Rac</string>
+    <string name="nakshatra_range_magha">0°–13°20′ Leu</string>
+    <string name="nakshatra_range_purva_phalguni">13°20′–26°40′ Leu</string>
+    <string name="nakshatra_range_uttara_phalguni">26°40′ Leu – 10° Fecioară</string>
+    <string name="nakshatra_range_hasta">10°–23°20′ Fecioară</string>
+    <string name="nakshatra_range_chitra">23°20′ Fecioară – 6°40′ Balanță</string>
+    <string name="nakshatra_range_swati">6°40′–20° Balanță</string>
+    <string name="nakshatra_range_vishakha">20° Balanță – 3°20′ Scorpion</string>
+    <string name="nakshatra_range_anuradha">3°20′–16°40′ Scorpion</string>
+    <string name="nakshatra_range_jyeshtha">16°40′–30° Scorpion</string>
+    <string name="nakshatra_range_mula">0°–13°20′ Săgetător</string>
+    <string name="nakshatra_range_purva_ashadha">13°20′–26°40′ Săgetător</string>
+    <string name="nakshatra_range_uttara_ashadha">26°40′ Săgetător – 10° Capricorn</string>
+    <string name="nakshatra_range_shravana">10°–23°20′ Capricorn</string>
+    <string name="nakshatra_range_dhanishta">23°20′ Capricorn – 6°40′ Vărsător</string>
+    <string name="nakshatra_range_shatabhisha">6°40′–20° Vărsător</string>
+    <string name="nakshatra_range_purva_bhadrapada">20° Vărsător – 3°20′ Pești</string>
+    <string name="nakshatra_range_uttara_bhadrapada">3°20′–16°40′ Pești</string>
+    <string name="nakshatra_range_revati">16°40′–30° Pești</string>
 </resources>

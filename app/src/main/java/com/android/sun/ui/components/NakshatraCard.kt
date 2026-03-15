@@ -93,9 +93,11 @@ fun NakshatraCard(
                     
                     // ✅ DEBUG: Show current moon position in zodiac
                     if (nakshatraResult.moonZodiacPosition.isNotEmpty()) {
+                        val zodiacSignName = getLocalizedZodiacSign(nakshatraResult.moonZodiacSignIndex)
+                        val localizedMoonPosition = "${nakshatraResult.moonZodiacPosition} $zodiacSignName"
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = stringResource(R.string.moon_position, nakshatraResult.moonZodiacPosition),
+                            text = stringResource(R.string.moon_position, localizedMoonPosition),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 13.sp,
@@ -299,7 +301,7 @@ private fun NakshatraRow(
         
         // Planetă
         Text(
-            text = nakshatra.planet,
+            text = getLocalizedNakshatraPlanet(nakshatra),
             style = MaterialTheme.typography.bodySmall,
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)

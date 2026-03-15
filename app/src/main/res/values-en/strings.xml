@@ -146,4 +146,145 @@
     <string name="nakshatra_desc_purva_bhadrapada">Purva Bhadrapada represents the burning of karma and intense spiritual transformation. Ruled by Jupiter and protected by Aja Ekapada, it brings intensity, spiritual passion and the desire for transcendence.</string>
     <string name="nakshatra_desc_uttara_bhadrapada">Uttara Bhadrapada is the Nakshatra of depth and cosmic wisdom. Ruled by Saturn and protected by Ahirbudhnya, the serpent of the depths, it brings spiritual stability, profound wisdom and the ability to sustain the world.</string>
     <string name="nakshatra_desc_revati">Revati, the last Nakshatra, represents the final journey and divine protection. Ruled by Mercury and protected by Pushan, the god of journeys, it brings spiritual nourishment, completion and guidance to destination.</string>
+
+    <!-- Zodiac Signs -->
+    <string name="zodiac_aries">Aries</string>
+    <string name="zodiac_taurus">Taurus</string>
+    <string name="zodiac_gemini">Gemini</string>
+    <string name="zodiac_cancer">Cancer</string>
+    <string name="zodiac_leo">Leo</string>
+    <string name="zodiac_virgo">Virgo</string>
+    <string name="zodiac_libra">Libra</string>
+    <string name="zodiac_scorpio">Scorpio</string>
+    <string name="zodiac_sagittarius">Sagittarius</string>
+    <string name="zodiac_capricorn">Capricorn</string>
+    <string name="zodiac_aquarius">Aquarius</string>
+    <string name="zodiac_pisces">Pisces</string>
+
+    <!-- Planet Names -->
+    <string name="planet_sun">Sun</string>
+    <string name="planet_moon">Moon</string>
+    <string name="planet_mars">Mars</string>
+    <string name="planet_mercury">Mercury</string>
+    <string name="planet_jupiter">Jupiter</string>
+    <string name="planet_venus">Venus</string>
+    <string name="planet_saturn">Saturn</string>
+    <string name="planet_rahu">Rahu</string>
+    <string name="planet_ketu">Ketu</string>
+
+    <!-- Nakshatra Symbols -->
+    <string name="nakshatra_symbol_ashwini">🐎 horse head</string>
+    <string name="nakshatra_symbol_bharani">yoni</string>
+    <string name="nakshatra_symbol_krittika">🔥 blade / fire</string>
+    <string name="nakshatra_symbol_rohini">chariot / sprouting</string>
+    <string name="nakshatra_symbol_mrigashira">🦌 deer head</string>
+    <string name="nakshatra_symbol_ardra">💧 teardrop / storm</string>
+    <string name="nakshatra_symbol_punarvasu">🏹 bow</string>
+    <string name="nakshatra_symbol_pushya">udder / lotus flower</string>
+    <string name="nakshatra_symbol_ashlesha">🐍 serpent</string>
+    <string name="nakshatra_symbol_magha">👑 royal throne</string>
+    <string name="nakshatra_symbol_purva_phalguni">bed / hammock</string>
+    <string name="nakshatra_symbol_uttara_phalguni">bed</string>
+    <string name="nakshatra_symbol_hasta">✋ hand</string>
+    <string name="nakshatra_symbol_chitra">💎 jewel</string>
+    <string name="nakshatra_symbol_swati">🍃 leaf in wind</string>
+    <string name="nakshatra_symbol_vishakha">triumphal arch</string>
+    <string name="nakshatra_symbol_anuradha">🪷 lotus</string>
+    <string name="nakshatra_symbol_jyeshtha">circle / talisman</string>
+    <string name="nakshatra_symbol_mula">root</string>
+    <string name="nakshatra_symbol_purva_ashadha">fan</string>
+    <string name="nakshatra_symbol_uttara_ashadha">🐘 elephant tusks</string>
+    <string name="nakshatra_symbol_shravana">👂 ear</string>
+    <string name="nakshatra_symbol_dhanishta">🥁 drum</string>
+    <string name="nakshatra_symbol_shatabhisha">⭕ circle</string>
+    <string name="nakshatra_symbol_purva_bhadrapada">⚔️ sword</string>
+    <string name="nakshatra_symbol_uttara_bhadrapada">🐍 serpent</string>
+    <string name="nakshatra_symbol_revati">🐟 fish</string>
+
+    <!-- Nakshatra Animals -->
+    <string name="nakshatra_animal_ashwini">horse</string>
+    <string name="nakshatra_animal_bharani">elephant</string>
+    <string name="nakshatra_animal_krittika">sheep</string>
+    <string name="nakshatra_animal_rohini">serpent</string>
+    <string name="nakshatra_animal_mrigashira">deer</string>
+    <string name="nakshatra_animal_ardra">dog</string>
+    <string name="nakshatra_animal_punarvasu">cat</string>
+    <string name="nakshatra_animal_pushya">ram</string>
+    <string name="nakshatra_animal_ashlesha">serpent</string>
+    <string name="nakshatra_animal_magha">rat</string>
+    <string name="nakshatra_animal_purva_phalguni">rat</string>
+    <string name="nakshatra_animal_uttara_phalguni">cow</string>
+    <string name="nakshatra_animal_hasta">buffalo</string>
+    <string name="nakshatra_animal_chitra">tiger</string>
+    <string name="nakshatra_animal_swati">buffalo</string>
+    <string name="nakshatra_animal_vishakha">tiger</string>
+    <string name="nakshatra_animal_anuradha">deer</string>
+    <string name="nakshatra_animal_jyeshtha">deer</string>
+    <string name="nakshatra_animal_mula">dog</string>
+    <string name="nakshatra_animal_purva_ashadha">monkey</string>
+    <string name="nakshatra_animal_uttara_ashadha">mongoose</string>
+    <string name="nakshatra_animal_shravana">monkey</string>
+    <string name="nakshatra_animal_dhanishta">lion</string>
+    <string name="nakshatra_animal_shatabhisha">horse</string>
+    <string name="nakshatra_animal_purva_bhadrapada">lion</string>
+    <string name="nakshatra_animal_uttara_bhadrapada">cow</string>
+    <string name="nakshatra_animal_revati">elephant</string>
+
+    <!-- Nakshatra Natures -->
+    <string name="nakshatra_nature_ashwini">light / swift</string>
+    <string name="nakshatra_nature_bharani">fierce</string>
+    <string name="nakshatra_nature_krittika">harsh / sharp</string>
+    <string name="nakshatra_nature_rohini">gentle</string>
+    <string name="nakshatra_nature_mrigashira">gentle</string>
+    <string name="nakshatra_nature_ardra">fierce</string>
+    <string name="nakshatra_nature_punarvasu">gentle</string>
+    <string name="nakshatra_nature_pushya">gentle</string>
+    <string name="nakshatra_nature_ashlesha">harsh</string>
+    <string name="nakshatra_nature_magha">fierce</string>
+    <string name="nakshatra_nature_purva_phalguni">gentle</string>
+    <string name="nakshatra_nature_uttara_phalguni">gentle</string>
+    <string name="nakshatra_nature_hasta">light</string>
+    <string name="nakshatra_nature_chitra">fierce</string>
+    <string name="nakshatra_nature_swati">flexible</string>
+    <string name="nakshatra_nature_vishakha">fierce</string>
+    <string name="nakshatra_nature_anuradha">gentle</string>
+    <string name="nakshatra_nature_jyeshtha">harsh</string>
+    <string name="nakshatra_nature_mula">fierce</string>
+    <string name="nakshatra_nature_purva_ashadha">light</string>
+    <string name="nakshatra_nature_uttara_ashadha">fixed</string>
+    <string name="nakshatra_nature_shravana">gentle</string>
+    <string name="nakshatra_nature_dhanishta">movable</string>
+    <string name="nakshatra_nature_shatabhisha">harsh</string>
+    <string name="nakshatra_nature_purva_bhadrapada">fierce</string>
+    <string name="nakshatra_nature_uttara_bhadrapada">fixed</string>
+    <string name="nakshatra_nature_revati">gentle</string>
+
+    <!-- Nakshatra Degree Ranges -->
+    <string name="nakshatra_range_ashwini">0°–13°20′ Aries</string>
+    <string name="nakshatra_range_bharani">13°20′–26°40′ Aries</string>
+    <string name="nakshatra_range_krittika">26°40′ Aries – 10° Taurus</string>
+    <string name="nakshatra_range_rohini">10°–23°20′ Taurus</string>
+    <string name="nakshatra_range_mrigashira">23°20′ Taurus – 6°40′ Gemini</string>
+    <string name="nakshatra_range_ardra">6°40′–20° Gemini</string>
+    <string name="nakshatra_range_punarvasu">20° Gemini – 3°20′ Cancer</string>
+    <string name="nakshatra_range_pushya">3°20′–16°40′ Cancer</string>
+    <string name="nakshatra_range_ashlesha">16°40′–30° Cancer</string>
+    <string name="nakshatra_range_magha">0°–13°20′ Leo</string>
+    <string name="nakshatra_range_purva_phalguni">13°20′–26°40′ Leo</string>
+    <string name="nakshatra_range_uttara_phalguni">26°40′ Leo – 10° Virgo</string>
+    <string name="nakshatra_range_hasta">10°–23°20′ Virgo</string>
+    <string name="nakshatra_range_chitra">23°20′ Virgo – 6°40′ Libra</string>
+    <string name="nakshatra_range_swati">6°40′–20° Libra</string>
+    <string name="nakshatra_range_vishakha">20° Libra – 3°20′ Scorpio</string>
+    <string name="nakshatra_range_anuradha">3°20′–16°40′ Scorpio</string>
+    <string name="nakshatra_range_jyeshtha">16°40′–30° Scorpio</string>
+    <string name="nakshatra_range_mula">0°–13°20′ Sagittarius</string>
+    <string name="nakshatra_range_purva_ashadha">13°20′–26°40′ Sagittarius</string>
+    <string name="nakshatra_range_uttara_ashadha">26°40′ Sagittarius – 10° Capricorn</string>
+    <string name="nakshatra_range_shravana">10°–23°20′ Capricorn</string>
+    <string name="nakshatra_range_dhanishta">23°20′ Capricorn – 6°40′ Aquarius</string>
+    <string name="nakshatra_range_shatabhisha">6°40′–20° Aquarius</string>
+    <string name="nakshatra_range_purva_bhadrapada">20° Aquarius – 3°20′ Pisces</string>
+    <string name="nakshatra_range_uttara_bhadrapada">3°20′–16°40′ Pisces</string>
+    <string name="nakshatra_range_revati">16°40′–30° Pisces</string>
 </resources>

@@ -116,6 +116,7 @@ class NakshatraCalculator {
         
         // ✅ Convert moon longitude to zodiac sign with degrees and minutes
         val moonZodiacPosition = moonLongitudeToZodiacString(normalizedLon)
+        val moonZodiacSignIndex = moonLongitudeToZodiacSignIndex(normalizedLon)
         
         com.android.sun.util.AppLog.d("NakshatraDebug", "Moon Position in Zodiac: $moonZodiacPosition")
         
@@ -131,6 +132,7 @@ class NakshatraCalculator {
             code = "NK${nakshatra.number}",
             zeroReferenceTime = zeroReferenceTime,
             moonZodiacPosition = moonZodiacPosition,
+            moonZodiacSignIndex = moonZodiacSignIndex,
             moonSpeedDegreesPerDay = actualDegreesPerDay
         )
     }
@@ -142,16 +144,10 @@ class NakshatraCalculator {
          * Includes raw longitude for debugging
          */
         fun moonLongitudeToZodiacString(longitude: Double): String {
-            val signs = listOf(
-                "Berbec", "Taur", "Gemeni", "Rac", "Leu", "Fecioară",
-                "Balanță", "Scorpion", "Săgetător", "Capricorn", "Vărsător", "Pești"
-            )
-            
             var normalizedLon = longitude
             while (normalizedLon < 0) normalizedLon += 360.0
             while (normalizedLon >= 360) normalizedLon -= 360.0
             
-            val signIndex = (normalizedLon / 30.0).toInt().coerceIn(0, 11)  // ✅ Prevent array bounds error
             val degreeInSign = normalizedLon % 30.0
             val degrees = degreeInSign.toInt()
             val fractionalDegrees = degreeInSign - degrees
@@ -159,8 +155,19 @@ class NakshatraCalculator {
             val minutes = totalMinutes.toInt()
             val seconds = ((totalMinutes - minutes) * 60.0).toInt()
             
-            // Show with seconds for more precision
-            return "${degrees}°${minutes}'${String.format("%02d", seconds)}\" ${signs[signIndex]} (${String.format("%.2f", normalizedLon)}°)"
+            // Return degrees/minutes/seconds without zodiac sign name (localized in UI)
+            return "${degrees}° ${minutes}' ${String.format("%02d", seconds)}\""
+        }
+        
+        /**
+         * Get the zodiac sign index (0-11) for a given longitude
+         * 0=Aries, 1=Taurus, ..., 11=Pisces
+         */
+        fun moonLongitudeToZodiacSignIndex(longitude: Double): Int {
+            var normalizedLon = longitude
+            while (normalizedLon < 0) normalizedLon += 360.0
+            while (normalizedLon >= 360) normalizedLon -= 360.0
+            return (normalizedLon / 30.0).toInt().coerceIn(0, 11)
         }
         
         // Lista completă a celor 27 Nakshatra
@@ -259,6 +266,7 @@ data class NakshatraResult(
     val name: String = nakshatra.displayName,
     val code: String = "NK${nakshatra.number}",
     val zeroReferenceTime: Calendar,  // ✅ Required parameter - no default to ensure stability
-    val moonZodiacPosition: String = "",  // ✅ Moon position in zodiac format
+    val moonZodiacPosition: String = "",  // ✅ Moon position in zodiac format (degrees only, no sign name)
+    val moonZodiacSignIndex: Int = 0,  // ✅ Zodiac sign index (0=Aries..11=Pisces) for UI localization
     val moonSpeedDegreesPerDay: Double = 13.2  // ✅ Actual moon speed used for time calculations
 )
