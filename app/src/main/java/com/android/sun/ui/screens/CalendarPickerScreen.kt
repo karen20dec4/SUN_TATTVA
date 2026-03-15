@@ -7,9 +7,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.sun.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,7 +35,7 @@ fun CalendarPickerScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Select Date",
+                        text = stringResource(R.string.select_date),
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp
@@ -43,7 +45,7 @@ fun CalendarPickerScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 }
@@ -63,7 +65,7 @@ fun CalendarPickerScreen(
                 modifier = Modifier.weight(1f),
                 title = {
                     Text(
-                        text = "Select a date to calculate Tattvas",
+                        text = stringResource(R.string.select_date_hint),
                         modifier = Modifier.padding(16.dp),
                         style = MaterialTheme.typography.bodyLarge
                     )
@@ -93,7 +95,7 @@ fun CalendarPickerScreen(
                 )
             ) {
                 Text(
-                    text = "SELECT DATE",
+                    text = stringResource(R.string.select_date_button),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     modifier = Modifier.padding(vertical = 8.dp)
