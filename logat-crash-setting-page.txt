@@ -1,0 +1,389 @@
+﻿2026-03-15 21:10:26.060  1390-1390  CarrierSvcBindHelper    com.android.phone                    D  onHandleForceStop: [com.android.sun.tattva]
+2026-03-15 21:10:26.993  1390-1390  CarrierSvcBindHelper    com.android.phone                    D  onHandleForceStop: [com.android.sun.tattva]
+2026-03-15 21:10:27.589   722-2160  CoreBackPreview         system_server                        D  Window{63bc461 u0 Splash Screen com.android.sun.tattva}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@524aa12, mPriority=0, mIsAnimationCallback=false, mOverrideBehavior=0}
+---------------------------- PROCESS STARTED (9609) for package com.android.sun.tattva ----------------------------
+2026-03-15 21:10:27.749  9609-9609  nativeloader            com.android.sun.tattva               D  Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+2026-03-15 21:10:27.850  9609-9609  nativeloader            com.android.sun.tattva               D  Load /data/user/0/com.android.sun.tattva/code_cache/startup_agents/5b4f70e9-agent.so using system ns (caller=<unknown>): ok
+2026-03-15 21:10:28.048  9609-9609  CompatChangeReporter    com.android.sun.tattva               D  Compat change id reported: 242716250; UID 10219; state: ENABLED
+2026-03-15 21:10:28.291  9609-9609  nativeloader            com.android.sun.tattva               D  Configuring clns-9 for other apk /data/app/~~eZaDoJR6JPzEYGYzhY6Exg==/com.android.sun.tattva-Q9Db3GsEWwqyC3qaLMnFYA==/base.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~eZaDoJR6JPzEYGYzhY6Exg==/com.android.sun.tattva-Q9Db3GsEWwqyC3qaLMnFYA==/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.android.sun.tattva
+2026-03-15 21:10:28.358  9609-9609  WM-WrkMgrInitializer    com.android.sun.tattva               D  Initializing WorkManager with default configuration.
+2026-03-15 21:10:28.430  9609-9609  WM-PackageManagerHelper com.android.sun.tattva               D  Skipping component enablement for androidx.work.impl.background.systemjob.SystemJobService
+2026-03-15 21:10:28.430  9609-9609  WM-Schedulers           com.android.sun.tattva               D  Created SystemJobScheduler and enabled SystemJobService
+2026-03-15 21:10:28.460  9609-9625  ashmem                  com.android.sun.tattva               E  Pinning is deprecated since Android Q. Please use trim or other methods.
+2026-03-15 21:10:28.461  9609-9609  BootReceiver            com.android.sun.tattva               D  Boot completed - rescheduling notifications
+2026-03-15 21:10:28.524  9609-9609  DesktopModeFlags        com.android.sun.tattva               D  Toggle override initialized to: OVERRIDE_UNSET
+2026-03-15 21:10:28.561  9609-9609  NotificationHelper      com.android.sun.tattva               D  Notification channel created:  moon_notifications
+2026-03-15 21:10:29.127  9609-9609  SwissEphWrapper         com.android.sun.tattva               D  Deleting existing seas_18.se1 to prevent corruption
+2026-03-15 21:10:29.149  9609-9609  SwissEphWrapper         com.android.sun.tattva               D  ✓ Copied seas_18.se1 (223002 bytes)
+2026-03-15 21:10:29.149  9609-9609  SwissEphWrapper         com.android.sun.tattva               D  Deleting existing semo_18.se1 to prevent corruption
+2026-03-15 21:10:29.174  9609-9609  SwissEphWrapper         com.android.sun.tattva               D  ✓ Copied semo_18.se1 (1304771 bytes)
+2026-03-15 21:10:29.174  9609-9609  SwissEphWrapper         com.android.sun.tattva               D  Deleting existing sepl_18.se1 to prevent corruption
+2026-03-15 21:10:29.194  9609-9609  SwissEphWrapper         com.android.sun.tattva               D  ✓ Copied sepl_18.se1 (484055 bytes)
+2026-03-15 21:10:29.219  9609-9609  SwissEphWrapper         com.android.sun.tattva               D  ✅ Sidereal mode set to Lahiri ayanamsa
+2026-03-15 21:10:29.219  9609-9609  SwissEphWrapper         com.android.sun.tattva               D  ✅ Swiss Ephemeris initialized at:  /data/user/0/com.android.sun.tattva/files/sweph/data
+2026-03-15 21:10:29.288  9609-9609  MainViewModel           com.android.sun.tattva               D  🔵 init called
+2026-03-15 21:10:29.288  9609-9609  MainViewModel           com.android.sun.tattva               D  🔵 loadSavedLocationSync() called
+2026-03-15 21:10:29.289  9609-9609  MainViewModel           com.android.sun.tattva               D  ⚠️ No saved location, using București
+2026-03-15 21:10:29.290  9609-9609  MainViewModel           com.android.sun.tattva               D  ───────────────────────────────────────
+2026-03-15 21:10:29.290  9609-9609  MainViewModel           com.android.sun.tattva               D  🔵 calculateAstroData() START
+2026-03-15 21:10:29.290  9609-9609  MainViewModel           com.android.sun.tattva               D  🔵 Using location: București
+2026-03-15 21:10:29.290  9609-9609  MainViewModel           com.android.sun.tattva               D  🔵   Lat: 44.4268, Lon: 26.1025
+2026-03-15 21:10:29.290  9609-9609  MainViewModel           com.android.sun.tattva               D  🔵   TimeZone: 2.0
+2026-03-15 21:10:29.299  9609-9609  MainViewModel           com.android.sun.tattva               D  ▶️ startRealtimeUpdates() started
+2026-03-15 21:10:29.370  9609-9609  LocationViewModel       com.android.sun.tattva               D  ℹ️ No saved GPS location found
+2026-03-15 21:10:29.370  9609-9609  LocationViewModel       com.android.sun.tattva               D  🔵 loadGPSLocation() CALLED
+2026-03-15 21:10:29.372  9609-9609  LocationViewModel       com.android.sun.tattva               D  🔵 Starting GPS location request...
+2026-03-15 21:10:29.374  9609-9609  SwissEphWrapper         com.android.sun.tattva               D  ✅ Already initialized globally, reusing path
+2026-03-15 21:10:29.375  9609-9635  LocationRepository      com.android.sun.tattva               D  🟡 getCurrentLocation() called
+2026-03-15 21:10:29.379  9609-9635  LocationRepository      com.android.sun.tattva               E  ❌ No location permission!
+2026-03-15 21:10:29.389  9609-9634  AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:29.389  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Julian Day: 2461114.6862892313
+2026-03-15 21:10:29.389  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Unix millis (UTC): 1773548895389
+2026-03-15 21:10:29.389  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: UTC
+2026-03-15 21:10:29.396  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Ora UTC: 4:28:15
+2026-03-15 21:10:29.396  9609-9634  AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:29.460  9609-9634  AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:29.461  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Julian Day: 2461115.1815828495
+2026-03-15 21:10:29.461  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Unix millis (UTC): 1773591688758
+2026-03-15 21:10:29.462  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: UTC
+2026-03-15 21:10:29.463  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Ora UTC: 16:21:28
+2026-03-15 21:10:29.463  9609-9634  AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:29.527  9609-9634  AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:29.527  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Julian Day: 2461114.1806995883
+2026-03-15 21:10:29.527  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Unix millis (UTC): 1773505212444
+2026-03-15 21:10:29.527  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: UTC
+2026-03-15 21:10:29.528  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Ora UTC: 16:20:12
+2026-03-15 21:10:29.528  9609-9634  AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:29.570  9609-9634  AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:29.570  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Julian Day: 2461115.685019573
+2026-03-15 21:10:29.571  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Unix millis (UTC): 1773635185691
+2026-03-15 21:10:29.572  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: UTC
+2026-03-15 21:10:29.572  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Ora UTC: 4:26:25
+2026-03-15 21:10:29.573  9609-9634  AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:29.574  9609-9634  TattvaCalculator        com.android.sun.tattva               D  === TATTVA DEBUG START ===
+2026-03-15 21:10:29.575  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Current time: 2026-03-15 21:10:29
+2026-03-15 21:10:29.576  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Sunrise time: 2026-03-15 04:28:15
+2026-03-15 21:10:29.576  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Elapsed since sunrise: 882 minutes
+2026-03-15 21:10:29.576  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Tattva index from sunrise: 36
+2026-03-15 21:10:29.576  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Cycle number: 7
+2026-03-15 21:10:29.576  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Tattva index in cycle: 1
+2026-03-15 21:10:29.576  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Current Tattva: Vayu
+2026-03-15 21:10:29.577  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Tattva starts at: 2026-03-15 20:52:15
+2026-03-15 21:10:29.577  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Tattva ends at: 2026-03-15 21:16:15
+2026-03-15 21:10:29.577  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Current millis: 1773601829311
+2026-03-15 21:10:29.577  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Tattva end millis: 1773602175389
+2026-03-15 21:10:29.578  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Remaining millis: 346078
+2026-03-15 21:10:29.578  9609-9634  TattvaCalculator        com.android.sun.tattva               D  Remaining: 5m 46s
+2026-03-15 21:10:29.578  9609-9634  TattvaCalculator        com.android.sun.tattva               D  === TATTVA DEBUG END ===
+2026-03-15 21:10:29.581  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  === SUBTATTVA DEBUG START ===
+2026-03-15 21:10:29.581  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  Current time: 2026-03-15 21:10:29
+2026-03-15 21:10:29.582  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  Sunrise time: 2026-03-15 04:28:15
+2026-03-15 21:10:29.582  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  Elapsed since sunrise: 52933 seconds
+2026-03-15 21:10:29.583  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  SubTattva index from sunrise: 183
+2026-03-15 21:10:29.583  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  SubTattva index in Tattva: 3
+2026-03-15 21:10:29.584  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  Current SubTattva: Apas
+2026-03-15 21:10:29.585  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  SubTattva starts at: 2026-03-15 21:06:39
+2026-03-15 21:10:29.585  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  SubTattva ends at: 2026-03-15 21:11:27
+2026-03-15 21:10:29.586  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  Current millis: 1773601829311
+2026-03-15 21:10:29.586  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  SubTattva end millis: 1773601887389
+2026-03-15 21:10:29.586  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  Remaining millis: 58078
+2026-03-15 21:10:29.586  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  Remaining: 0m 58s
+2026-03-15 21:10:29.586  9609-9634  SubTattvaCalculator     com.android.sun.tattva               D  === SUBTATTVA DEBUG END ===
+2026-03-15 21:10:29.594  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=154.2833°, current=319.52865928688533°
+2026-03-15 21:10:29.594  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 194.75464071311467°, estimated days: 15
+2026-03-15 21:10:29.598  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-03-30 19:10:29 UTC
+2026-03-15 21:10:29.604  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-03-30 22:10:29 UTC
+2026-03-15 21:10:29.619   722-1898  CoreBackPreview         system_server                        D  Window{7c5d79 u0 com.android.sun.tattva/com.android.sun.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@767158, mPriority=0, mIsAnimationCallback=false, mOverrideBehavior=0}
+2026-03-15 21:10:29.629  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 154.2833° (UTC):  2026-03-30 22:00:29 UTC, diff=0.002277803715259097°
+2026-03-15 21:10:29.630  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-03-31 01:00:29 Europe/Bucharest
+2026-03-15 21:10:29.635  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=180.0°, current=319.52865928688533°
+2026-03-15 21:10:29.636  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 220.47134071311467°, estimated days: 17
+2026-03-15 21:10:29.643  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-04-01 19:10:29 UTC
+2026-03-15 21:10:29.654  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-04-02 02:10:29 UTC
+2026-03-15 21:10:29.681  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 180.0° (UTC):  2026-04-02 02:11:29 UTC, diff=0.0023064677498609854°
+2026-03-15 21:10:29.681  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-04-02 05:11:29 Europe/Bucharest
+2026-03-15 21:10:29.682  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=0.0°, current=319.52865928688533°
+2026-03-15 21:10:29.682  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 40.47134071311467°, estimated days: 4
+2026-03-15 21:10:29.686  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-03-18 19:10:29 UTC
+2026-03-15 21:10:29.690  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-03-19 01:10:29 UTC
+2026-03-15 21:10:29.711  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 0.0° (UTC):  2026-03-19 01:23:29 UTC, diff=0.0018082183702290422°
+2026-03-15 21:10:29.711  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-03-19 03:23:29 Europe/Bucharest
+2026-03-15 21:10:29.711  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  === MOON PHASE DEBUG ===
+2026-03-15 21:10:29.711  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  Location TZ: Europe/Bucharest
+2026-03-15 21:10:29.711  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  Moon:      314.73311116652366°, Sun:   355.2044518796383°
+2026-03-15 21:10:29.712  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  Phase angle: 319.52865928688533°
+2026-03-15 21:10:29.712  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  Illumination:  11%
+2026-03-15 21:10:29.712  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  Next Tripura Sundari: 2026-03-31 01:00:29 Europe/Bucharest
+2026-03-15 21:10:29.713  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  Next Full Moon:    2026-04-02 05:11:29 Europe/Bucharest
+2026-03-15 21:10:29.714  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  Next New Moon:   2026-03-19 03:23:29 Europe/Bucharest
+2026-03-15 21:10:29.714  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  Full Moon angle diff: 139.52865928688533°, influence: false
+2026-03-15 21:10:29.715  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=319.52865928688533°
+2026-03-15 21:10:29.715  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 22.47134071311467°, estimated days: 2
+2026-03-15 21:10:29.717  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-03-17 19:10:29 UTC
+2026-03-15 21:10:29.722  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-03-17 15:10:29 UTC
+2026-03-15 21:10:29.744  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-03-17 15:29:29 UTC, diff=0.002290464024042649°
+2026-03-15 21:10:29.744  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-03-17 17:29:29 Europe/Bucharest
+2026-03-15 21:10:29.746  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=144.985369031081°
+2026-03-15 21:10:29.746  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 197.014630968919°, estimated days: 15
+2026-03-15 21:10:29.751  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-01-16 22:00:00 UTC
+2026-03-15 21:10:29.754  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-01-17 06:00:00 UTC
+2026-03-15 21:10:29.777  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-01-17 05:46:00 UTC, diff=0.0012433390564865476°
+2026-03-15 21:10:29.777  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-01-17 07:46:00 Europe/Bucharest
+2026-03-15 21:10:29.779  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=288.58102868943774°
+2026-03-15 21:10:29.779  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 53.418971310562256°, estimated days: 5
+2026-03-15 21:10:29.783  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-02-16 05:46:00 UTC
+2026-03-15 21:10:29.788  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-02-15 23:46:00 UTC
+2026-03-15 21:10:29.806  9609-9609  LocationViewModel       com.android.sun.tattva               D  🔵 GPS result: null
+2026-03-15 21:10:29.806  9609-9609  LocationViewModel       com.android.sun.tattva               D  ℹ️ No saved GPS location found
+2026-03-15 21:10:29.806  9609-9609  LocationViewModel       com.android.sun.tattva               E  ❌ GPS returned null and no saved location
+2026-03-15 21:10:29.806  9609-9609  LocationViewModel       com.android.sun.tattva               D  🔵 GPS request finished
+2026-03-15 21:10:29.810  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-02-15 23:54:00 UTC, diff=1.3225773989233858E-4°
+2026-03-15 21:10:29.811  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-02-16 01:54:00 Europe/Bucharest
+2026-03-15 21:10:29.812  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=287.49705269924846°
+2026-03-15 21:10:29.812  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 54.50294730075154°, estimated days: 5
+2026-03-15 21:10:29.815  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-03-17 23:54:00 UTC
+2026-03-15 21:10:29.820  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-03-17 15:54:00 UTC
+2026-03-15 21:10:29.825  9609-9609  InsetsController        com.android.sun.tattva               D  hide(ime(), fromIme=false)
+2026-03-15 21:10:29.857  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-03-17 15:29:00 UTC, diff=0.0019057839561469336°
+2026-03-15 21:10:29.859  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-03-17 17:29:00 Europe/Bucharest
+2026-03-15 21:10:29.860  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=285.77737170038256°
+2026-03-15 21:10:29.860  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 56.22262829961744°, estimated days: 5
+2026-03-15 21:10:29.862  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-04-16 14:29:00 UTC
+2026-03-15 21:10:29.869  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-04-16 03:29:00 UTC
+2026-03-15 21:10:29.892  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-04-16 03:56:00 UTC, diff=8.813930552378224E-4°
+2026-03-15 21:10:29.892  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-04-16 06:56:00 Europe/Bucharest
+2026-03-15 21:10:29.894  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=285.00863231762435°
+2026-03-15 21:10:29.894  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 56.99136768237565°, estimated days: 5
+2026-03-15 21:10:29.897  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-05-15 03:56:00 UTC
+2026-03-15 21:10:29.907  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-05-15 12:56:00 UTC
+2026-03-15 21:10:29.930  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-05-15 13:25:00 UTC, diff=0.002731436119574937°
+2026-03-15 21:10:29.930  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-05-15 16:25:00 Europe/Bucharest
+2026-03-15 21:10:29.933  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=283.98429419857956°
+2026-03-15 21:10:29.933  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 58.01570580142044°, estimated days: 5
+2026-03-15 21:10:29.936  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-06-13 13:25:00 UTC
+2026-03-15 21:10:29.939  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-06-13 20:25:00 UTC
+2026-03-15 21:10:29.957  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-06-13 20:46:00 UTC, diff=0.0025826518535723153°
+2026-03-15 21:10:29.958  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-06-13 23:46:00 Europe/Bucharest
+2026-03-15 21:10:29.959  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=283.44843256207355°
+2026-03-15 21:10:29.960  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 58.55156743792645°, estimated days: 5
+2026-03-15 21:10:29.963  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-07-12 20:46:00 UTC
+2026-03-15 21:10:29.969  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-07-13 02:46:00 UTC
+2026-03-15 21:10:29.986  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-07-13 03:10:00 UTC, diff=0.0015391069430279458°
+2026-03-15 21:10:29.986  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-07-13 06:10:00 Europe/Bucharest
+2026-03-15 21:10:29.987  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=283.58300238206243°
+2026-03-15 21:10:29.987  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 58.41699761793757°, estimated days: 5
+2026-03-15 21:10:29.989  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-08-11 03:10:00 UTC
+2026-03-15 21:10:29.992  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-08-11 10:10:00 UTC
+2026-03-15 21:10:30.006  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-08-11 09:53:00 UTC, diff=0.0018385561205036538°
+2026-03-15 21:10:30.006  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-08-11 12:53:00 Europe/Bucharest
+2026-03-15 21:10:30.007  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=284.38515539581715°
+2026-03-15 21:10:30.007  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 57.61484460418285°, estimated days: 5
+2026-03-15 21:10:30.010  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-09-09 09:53:00 UTC
+2026-03-15 21:10:30.012  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-09-09 17:53:00 UTC
+2026-03-15 21:10:30.024  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-09-09 18:00:00 UTC, diff=0.0014071063676510676°
+2026-03-15 21:10:30.024  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-09-09 21:00:00 Europe/Bucharest
+2026-03-15 21:10:30.025  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=285.6111675780693°
+2026-03-15 21:10:30.026  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 56.388832421930715°, estimated days: 5
+2026-03-15 21:10:30.028  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-10-08 18:00:00 UTC
+2026-03-15 21:10:30.030  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-10-09 04:00:00 UTC
+2026-03-15 21:10:30.046  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-10-09 04:23:00 UTC, diff=0.003580504275760177°
+2026-03-15 21:10:30.046  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-10-09 07:23:00 Europe/Bucharest
+2026-03-15 21:10:30.049  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=287.46082508554434°
+2026-03-15 21:10:30.049  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 54.53917491445566°, estimated days: 5
+2026-03-15 21:10:30.051  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-11-08 05:23:00 UTC
+2026-03-15 21:10:30.053  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-11-07 17:23:00 UTC
+2026-03-15 21:10:30.067  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-11-07 17:35:00 UTC, diff=0.0022966253424101524°
+2026-03-15 21:10:30.068  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-11-07 19:35:00 Europe/Bucharest
+2026-03-15 21:10:30.069  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=288.1060472789254°
+2026-03-15 21:10:30.069  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 53.893952721074584°, estimated days: 5
+2026-03-15 21:10:30.073  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2026-12-07 17:35:00 UTC
+2026-03-15 21:10:30.075  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2026-12-07 09:35:00 UTC
+2026-03-15 21:10:30.090  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2026-12-07 09:45:00 UTC, diff=0.0014403969918816983°
+2026-03-15 21:10:30.091  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2026-12-07 11:45:00 Europe/Bucharest
+2026-03-15 21:10:30.092  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  📍 START SEARCH: target=342.0°, current=288.99838321070126°
+2026-03-15 21:10:30.093  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    Degrees to go: 53.00161678929874°, estimated days: 5
+2026-03-15 21:10:30.094  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After DAY search:   2027-01-06 09:45:00 UTC
+2026-03-15 21:10:30.099  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D    After HOUR search:  2027-01-06 04:45:00 UTC
+2026-03-15 21:10:30.114  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ FOUND phase 342.0° (UTC):  2027-01-06 04:26:00 UTC, diff=0.0010569073662054507°
+2026-03-15 21:10:30.116  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  ✅ Converted to Europe/Bucharest: 2027-01-06 06:26:00 Europe/Bucharest
+2026-03-15 21:10:30.116  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  Next Shivaratri: 2026-03-17 17:29:29 Europe/Bucharest
+2026-03-15 21:10:30.116  9609-9634  MoonPhaseCalculator     com.android.sun.tattva               D  Yearly Shivaratri dates: 12
+2026-03-15 21:10:30.119  9609-9634  PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-03-15 21:10:30.120  9609-9634  PlanetDebug             com.android.sun.tattva               D  🔍 PLANETARY HOUR CALCULATION START
+2026-03-15 21:10:30.120  9609-9634  PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-03-15 21:10:30.120  9609-9634  PlanetDebug             com.android.sun.tattva               D  📅 currentTime:     2026-03-15 21:10:29
+2026-03-15 21:10:30.125  9609-9634  PlanetDebug             com.android.sun.tattva               D  🌅 sunrise:         2026-03-15 06:28:15
+2026-03-15 21:10:30.125  9609-9634  PlanetDebug             com.android.sun.tattva               D  🌇 sunset:          2026-03-15 18:21:28
+2026-03-15 21:10:30.127  9609-9634  PlanetDebug             com.android.sun.tattva               D  🌇 previousSunset:  2026-03-14 18:20:12
+2026-03-15 21:10:30.127  9609-9634  PlanetDebug             com.android.sun.tattva               D  🌅 nextSunrise:     2026-03-16 06:26:25
+2026-03-15 21:10:30.127  9609-9634  PlanetDebug             com.android.sun.tattva               D  ☀️ isDayTime: false
+2026-03-15 21:10:30.128  9609-9634  PlanetDebug             com.android.sun.tattva               D  🌙 NIGHT (after sunset): from sunset to nextSunrise
+2026-03-15 21:10:30.128  9609-9634  PlanetDebug             com.android.sun.tattva               D  ⏰ startMillis: 1773591688758 (2026-03-15 18:21:28)
+2026-03-15 21:10:30.128  9609-9634  PlanetDebug             com.android.sun.tattva               D  ⏰ endMillis:   1773635185691 (2026-03-16 06:26:25)
+2026-03-15 21:10:30.128  9609-9634  PlanetDebug             com.android.sun.tattva               D  ⏱ totalDuration: 724.9488833333334 minutes
+2026-03-15 21:10:30.128  9609-9634  PlanetDebug             com.android.sun.tattva               D  ⏱ planetaryHourDuration: 60.4124 minutes
+2026-03-15 21:10:30.128  9609-9634  PlanetDebug             com.android.sun.tattva               D  ⏱ elapsedTime: 169.00921666666667 minutes
+2026-03-15 21:10:30.128  9609-9634  PlanetDebug             com.android.sun.tattva               D  🔢 hourIndex: 2 (hour 3 of 12)
+2026-03-15 21:10:30.128  9609-9634  PlanetDebug             com.android.sun.tattva               D  🌙 NIGHT: globalHourIndex = 14 (hours 13-24 of day)
+2026-03-15 21:10:30.131  9609-9634  PlanetDebug             com.android.sun.tattva               D  ⏰ hourStart: 2026-03-15 20:22:18
+2026-03-15 21:10:30.134  9609-9634  PlanetDebug             com.android.sun.tattva               D  ⏰ hourEnd:   2026-03-15 21:22:42
+2026-03-15 21:10:30.134  9609-9634  PlanetDebug             com.android.sun.tattva               D  📅 referenceDay: 2026-03-15 06:28:15
+2026-03-15 21:10:30.134  9609-9634  PlanetDebug             com.android.sun.tattva               D  📅 dayOfWeek: 0 (SUN)
+2026-03-15 21:10:30.135  9609-9634  PlanetDebug             com.android.sun.tattva               D  📅 dayRuler: Sun
+2026-03-15 21:10:30.135  9609-9634  PlanetDebug             com.android.sun.tattva               D  🔢 globalHourIndex: 14 (hour 15 of 24)
+2026-03-15 21:10:30.136  9609-9634  PlanetDebug             com.android.sun.tattva               D  🔍 getPlanetForHour: dayOfWeek=0, globalHourIndex=14
+2026-03-15 21:10:30.137  9609-9634  PlanetDebug             com.android.sun.tattva               D  🔍 startPlanet: Soare (index 3 in chaldeanOrder)
+2026-03-15 21:10:30.137  9609-9634  PlanetDebug             com.android.sun.tattva               D  🔍 planetIndex: (3 + 14) % 7 = 3
+2026-03-15 21:10:30.137  9609-9634  PlanetDebug             com.android.sun.tattva               D  🔍 result: Soare
+2026-03-15 21:10:30.138  9609-9634  PlanetDebug             com.android.sun.tattva               D  🪐 RESULT: Soare (☉)
+2026-03-15 21:10:30.138  9609-9634  PlanetDebug             com.android.sun.tattva               D  ============================================
+2026-03-15 21:10:30.139  9609-9634  NityaDebug              com.android.sun.tattva               D  ============================================
+2026-03-15 21:10:30.140  9609-9634  NityaDebug              com.android.sun.tattva               D  🌙 NITYA CALCULATION START
+2026-03-15 21:10:30.140  9609-9634  NityaDebug              com.android.sun.tattva               D  ============================================
+2026-03-15 21:10:30.140  9609-9634  NityaDebug              com.android.sun.tattva               D  Moon Longitude: 314,73°
+2026-03-15 21:10:30.141  9609-9634  NityaDebug              com.android.sun.tattva               D  Sun Longitude:  355,20°
+2026-03-15 21:10:30.141  9609-9634  NityaDebug              com.android.sun.tattva               D  Difference:     319,53°
+2026-03-15 21:10:30.143  9609-9634  NityaDebug              com.android.sun.tattva               D  Tithi Index:    26 (raw)
+2026-03-15 21:10:30.143  9609-9634  NityaDebug              com.android.sun.tattva               D  Paksha:         Krishna (Dark)
+2026-03-15 21:10:30.144  9609-9634  NityaDebug              com.android.sun.tattva               D  Nitya Index:    3 (adjusted)
+2026-03-15 21:10:30.144  9609-9634  NityaDebug              com.android.sun.tattva               D  Nitya Result:   4 - Bherunda
+2026-03-15 21:10:30.144  9609-9634  NityaDebug              com.android.sun.tattva               D  Tithi Progress: 62,74% (7,53° in current Tithi)
+2026-03-15 21:10:30.145  9609-9634  NityaDebug              com.android.sun.tattva               D  Hours elapsed:  14,81 hours
+2026-03-15 21:10:30.148  9609-9634  NityaDebug              com.android.sun.tattva               D  Hours remaining: 8,80 hours
+2026-03-15 21:10:30.150   722-743   CoreBackPreview         system_server                        D  Window{63bc461 u0 Splash Screen com.android.sun.tattva EXITING}: Setting back callback null
+2026-03-15 21:10:30.153  9609-9634  NityaDebug              com.android.sun.tattva               D  Start Time:     Sun Mar 15 06:22:29 GMT+02:00 2026
+2026-03-15 21:10:30.154  9609-9634  NityaDebug              com.android.sun.tattva               D  End Time:       Mon Mar 16 05:57:29 GMT+02:00 2026
+2026-03-15 21:10:30.155  9609-9634  NityaDebug              com.android.sun.tattva               D  ============================================
+2026-03-15 21:10:30.158  9609-9634  NakshatraDebug          com.android.sun.tattva               D  ============================================
+2026-03-15 21:10:30.158  9609-9634  NakshatraDebug          com.android.sun.tattva               D  🌙 NAKSHATRA CALCULATION START
+2026-03-15 21:10:30.159  9609-9634  NakshatraDebug          com.android.sun.tattva               D  ============================================
+2026-03-15 21:10:30.160  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Moon Longitude (current): 314,73°
+2026-03-15 21:10:30.160  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Current Time: Sun Mar 15 21:10:29 GMT+02:00 2026
+2026-03-15 21:10:30.161  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Nakshatra Index: 23
+2026-03-15 21:10:30.161  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Nakshatra: Shatabhisha
+2026-03-15 21:10:30.161  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Progress: 60,50% (8,0664° in current Nakshatra)
+2026-03-15 21:10:30.162  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Hours elapsed since Nakshatra start: 19,36 hours
+2026-03-15 21:10:30.162  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Hours remaining until Nakshatra end: 12,64 hours
+2026-03-15 21:10:30.163  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Start Time: Sun Mar 15 01:48:55 GMT+02:00 2026
+2026-03-15 21:10:30.163  9609-9634  NakshatraDebug          com.android.sun.tattva               D  End Time: Mon Mar 16 09:48:54 GMT+02:00 2026
+2026-03-15 21:10:30.163  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Reference Moon Longitude: 306,93°
+2026-03-15 21:10:30.165  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Reference Time: Sun Mar 15 06:28:15 GMT+02:00 2026
+2026-03-15 21:10:30.165  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Zero Reference Time: Thu Feb 12 13:50:32 GMT+02:00 2026
+2026-03-15 21:10:30.165  9609-9634  NakshatraDebug          com.android.sun.tattva               D  ============================================
+2026-03-15 21:10:30.166  9609-9634  NakshatraDebug          com.android.sun.tattva               D  Moon Position in Zodiac: 14°43'59" Vărsător (314,73°)
+2026-03-15 21:10:30.168  9609-9634  PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-03-15 21:10:30.169  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Moon: 306.92859133704826°, Sun:  354.59377143777743°
+2026-03-15 21:10:30.169  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Diff: 47.665180100729174°, Paksha: Krishna
+2026-03-15 21:10:30.169  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Nitya: 4, nn: 1 (IMPAR)
+2026-03-15 21:10:30.170  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Sunrise Polarity: (-) Ida
+2026-03-15 21:10:30.170  9609-9634  PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-03-15 21:10:30.171  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Moon: 313.2282924488415°, Sun:  355.0874730794444°
+2026-03-15 21:10:30.171  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Diff: 41.85918063060285°, Paksha: Krishna
+2026-03-15 21:10:30.171  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Nitya: 4, nn: 1 (IMPAR)
+2026-03-15 21:10:30.172  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Sunset Polarity: (+) Pingala
+2026-03-15 21:10:30.173  9609-9634  AstroRepository         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:30.175  9609-9634  AstroRepository         com.android.sun.tattva               D  📍 Location: București
+2026-03-15 21:10:30.175  9609-9634  AstroRepository         com.android.sun.tattva               D  📍 TimeZone offset: 2.0 ore
+2026-03-15 21:10:30.175  9609-9634  AstroRepository         com.android.sun.tattva               D  📍 LocationTimeZone: Europe/Bucharest
+2026-03-15 21:10:30.175  9609-9634  AstroRepository         com.android.sun.tattva               D  🌅 Sunrise formatted: 06:28:15
+2026-03-15 21:10:30.175  9609-9634  AstroRepository         com.android.sun.tattva               D  🌇 Sunset formatted:  18:21:28
+2026-03-15 21:10:30.175  9609-9634  AstroRepository         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:30.175  9609-9634  AstroRepository         com.android.sun.tattva               D  🌙 Zodiac: lon=355.2044518796383° → 355.2044518796383° → Pești 25°12'16"
+2026-03-15 21:10:30.176  9609-9634  AstroRepository         com.android.sun.tattva               D  🌙 Zodiac: lon=314.73311116652366° → 314.73311116652366° → Vărsător 14°43'59"
+2026-03-15 21:10:30.194  9609-9634  AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:30.194  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Julian Day: 2461116.182464204
+2026-03-15 21:10:30.194  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Unix millis (UTC): 1773678164907
+2026-03-15 21:10:30.195  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Calendar TimeZone: UTC
+2026-03-15 21:10:30.197  9609-9634  AstroCalculator         com.android.sun.tattva               D  📍 Ora UTC: 16:22:44
+2026-03-15 21:10:30.197  9609-9634  AstroCalculator         com.android.sun.tattva               D  ═══════════════════════════════════════
+2026-03-15 21:10:30.198  9609-9634  PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-03-15 21:10:30.200  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Moon: 319.71614555706°, Sun:  355.5891730283231°
+2026-03-15 21:10:30.200  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Diff: 35.873027471263185°, Paksha: Krishna
+2026-03-15 21:10:30.200  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Nitya: 3, nn: 0 (PAR)
+2026-03-15 21:10:30.200  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Sunrise Polarity: (+) Pingala
+2026-03-15 21:10:30.200  9609-9634  PolarityCalculator      com.android.sun.tattva               D  === POLARITY DEBUG ===
+2026-03-15 21:10:30.200  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Moon: 326.21402920877097°, Sun:  356.08477404113086°
+2026-03-15 21:10:30.201  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Diff: 29.87074483235989°, Paksha: Krishna
+2026-03-15 21:10:30.201  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Nitya: 3, nn: 0 (PAR)
+2026-03-15 21:10:30.201  9609-9634  PolarityCalculator      com.android.sun.tattva               D  Sunset Polarity: (-) Ida
+2026-03-15 21:10:30.212  9609-9609  MainViewModel           com.android.sun.tattva               D  ✅ Calculation completed!
+2026-03-15 21:10:30.212  9609-9609  MainViewModel           com.android.sun.tattva               D  ✅ Result: sunrise=06:28:15
+2026-03-15 21:10:30.212  9609-9609  MainViewModel           com.android.sun.tattva               D  ✅ Location in result: București
+2026-03-15 21:10:30.214  9609-9609  MainViewModel           com.android.sun.tattva               D  📍 Broadcast sent after calculation complete
+2026-03-15 21:10:30.214  9609-9609  MainViewModel           com.android.sun.tattva               D  ───────────────────────────────────────
+2026-03-15 21:10:30.214  9609-9609  MainViewModel           com.android.sun.tattva               D  🔵 isLoading set to false
+2026-03-15 21:10:30.872  9609-9609  MainViewModel           com.android.sun.tattva               D  🔵 Initial tattva code: V
+2026-03-15 21:10:34.142  9609-9657  ProfileInstaller        com.android.sun.tattva               D  Installing profile for com.android.sun.tattva
+2026-03-15 21:10:51.327  9609-9609  AndroidRuntime          com.android.sun.tattva               E  FATAL EXCEPTION: main
+                                                                                                    Process: com.android.sun.tattva, PID: 9609
+                                                                                                    java.lang.IllegalStateException: No ActivityResultRegistryOwner was provided via LocalActivityResultRegistryOwner
+                                                                                                    	at androidx.activity.compose.ActivityResultRegistryKt.rememberLauncherForActivityResult(ActivityResultRegistry.kt:94)
+                                                                                                    	at com.android.sun.ui.screens.SettingsScreenKt.SettingsScreen(SettingsScreen.kt:85)
+                                                                                                    	at com.android.sun.MainActivityKt$AppNavigation$2$3.invoke(MainActivity.kt:199)
+                                                                                                    	at com.android.sun.MainActivityKt$AppNavigation$2$3.invoke(MainActivity.kt:198)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:139)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+                                                                                                    	at androidx.navigation.compose.NavHostKt$NavHost$14$1.invoke(NavHost.kt:308)
+                                                                                                    	at androidx.navigation.compose.NavHostKt$NavHost$14$1.invoke(NavHost.kt:306)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+                                                                                                    	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:248)
+                                                                                                    	at androidx.compose.runtime.saveable.SaveableStateHolderImpl.SaveableStateProvider(SaveableStateHolder.kt:84)
+                                                                                                    	at androidx.navigation.compose.NavBackStackEntryProviderKt.SaveableStateProvider(NavBackStackEntryProvider.kt:65)
+                                                                                                    	at androidx.navigation.compose.NavBackStackEntryProviderKt.access$SaveableStateProvider(NavBackStackEntryProvider.kt:1)
+                                                                                                    	at androidx.navigation.compose.NavBackStackEntryProviderKt$LocalOwnersProvider$1.invoke(NavBackStackEntryProvider.kt:52)
+                                                                                                    	at androidx.navigation.compose.NavBackStackEntryProviderKt$LocalOwnersProvider$1.invoke(NavBackStackEntryProvider.kt:51)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+                                                                                                    	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:228)
+                                                                                                    	at androidx.navigation.compose.NavBackStackEntryProviderKt.LocalOwnersProvider(NavBackStackEntryProvider.kt:47)
+                                                                                                    	at androidx.navigation.compose.NavHostKt$NavHost$14.invoke(NavHost.kt:306)
+                                                                                                    	at androidx.navigation.compose.NavHostKt$NavHost$14.invoke(NavHost.kt:295)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:139)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+                                                                                                    	at androidx.compose.animation.AnimatedContentKt$AnimatedContent$6$1$5.invoke(AnimatedContent.kt:755)
+                                                                                                    	at androidx.compose.animation.AnimatedContentKt$AnimatedContent$6$1$5.invoke(AnimatedContent.kt:744)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:118)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+                                                                                                    	at androidx.compose.animation.AnimatedVisibilityKt.AnimatedEnterExitImpl(AnimatedVisibility.kt:818)
+                                                                                                    	at androidx.compose.animation.AnimatedContentKt$AnimatedContent$6$1.invoke(AnimatedContent.kt:726)
+                                                                                                    	at androidx.compose.animation.AnimatedContentKt$AnimatedContent$6$1.invoke(AnimatedContent.kt:709)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+                                                                                                    	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+                                                                                                    	at androidx.compose.animation.AnimatedContentKt.AnimatedContent(AnimatedContent.kt:768)
+                                                                                                    	at androidx.navigation.compose.NavHostKt.NavHost(NavHost.kt:273)
+                                                                                                    	at androidx.navigation.compose.NavHostKt$NavHost$17.invoke(Unknown Source:27)
+                                                                                                    	at androidx.navigation.compose.NavHostKt$NavHost$17.invoke(Unknown Source:10)
+                                                                                                    	at androidx.compose.runtime.RecomposeScopeImpl.compose(RecomposeScopeImpl.kt:192)
+                                                                                                    	at androidx.compose.runtime.ComposerImpl.recomposeToGroupEnd(Composer.kt:2556)
+                                                                                                    	at androidx.compose.runtime.ComposerImpl.skipCurrentGroup(Composer.kt:2827)
+                                                                                                    	at androidx.compose.runtime.ComposerImpl.doCompose(Composer.kt:3314)
+2026-03-15 21:10:51.330  9609-9609  AndroidRuntime          com.android.sun.tattva               E  	at androidx.compose.runtime.ComposerImpl.recompose$runtime_release(Composer.kt:3265)
+                                                                                                    	at androidx.compose.runtime.CompositionImpl.recompose(Composition.kt:940)
+                                                                                                    	at androidx.compose.runtime.Recomposer.performRecompose(Recomposer.kt:1155)
+                                                                                                    	at androidx.compose.runtime.Recomposer.access$performRecompose(Recomposer.kt:127)
+                                                                                                    	at androidx.compose.runtime.Recomposer$runRecomposeAndApplyChanges$2$1.invoke(Recomposer.kt:583)
+                                                                                                    	at androidx.compose.runtime.Recomposer$runRecomposeAndApplyChanges$2$1.invoke(Recomposer.kt:551)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiFrameClock$withFrameNanos$2$callback$1.doFrame(AndroidUiFrameClock.android.kt:41)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.performFrameDispatch(AndroidUiDispatcher.android.kt:109)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher.access$performFrameDispatch(AndroidUiDispatcher.android.kt:41)
+                                                                                                    	at androidx.compose.ui.platform.AndroidUiDispatcher$dispatchCallback$1.doFrame(AndroidUiDispatcher.android.kt:69)
+                                                                                                    	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1568)
+                                                                                                    	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1579)
+                                                                                                    	at android.view.Choreographer.doCallbacks(Choreographer.java:1179)
+                                                                                                    	at android.view.Choreographer.doFrame(Choreographer.java:1104)
+                                                                                                    	at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:1553)
+                                                                                                    	at android.os.Handler.handleCallback(Handler.java:995)
+                                                                                                    	at android.os.Handler.dispatchMessage(Handler.java:103)
+                                                                                                    	at android.os.Looper.loopOnce(Looper.java:248)
+                                                                                                    	at android.os.Looper.loop(Looper.java:338)
+                                                                                                    	at android.app.ActivityThread.main(ActivityThread.java:9067)
+                                                                                                    	at java.lang.reflect.Method.invoke(Native Method)
+                                                                                                    	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:593)
+                                                                                                    	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:932)
+                                                                                                    	Suppressed: kotlinx.coroutines.internal.DiagnosticCoroutineContextException: [androidx.compose.runtime.PausableMonotonicFrameClock@256e986, androidx.compose.ui.platform.MotionDurationScaleImpl@dcc7247, StandaloneCoroutine{Cancelling}@4c87a74, AndroidUiDispatcher@863ab9d]
+2026-03-15 21:10:51.402   722-751   CoreBackPreview         system_server                        D  Window{162711 u0 Application Error: com.android.sun.tattva}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.WindowOnBackInvokedDispatcher$OnBackInvokedCallbackWrapper@9ca18b, mPriority=-1, mIsAnimationCallback=false, mOverrideBehavior=0}
+2026-03-15 21:10:56.411   722-9785  ActivityManager         system_server                        D  Completed ANR of com.android.sun.tattva in 1ms, latency 1ms
+2026-03-15 21:10:57.449   722-751   CoreBackPreview         system_server                        D  Window{162711 u0 Application Error: com.android.sun.tattva}: Setting back callback null
+2026-03-15 21:10:57.464  1390-1390  CarrierSvcBindHelper    com.android.phone                    D  onHandleForceStop: [com.android.sun.tattva]
+---------------------------- PROCESS ENDED (9609) for package com.android.sun.tattva ----------------------------
