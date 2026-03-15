@@ -1,3 +1,145 @@
 <resources>
     <string name="app_name">SUN TATTVA</string>
+
+    <!-- Common -->
+    <string name="back">Înapoi</string>
+    <string name="collapse">Restrânge</string>
+    <string name="expand">Extinde</string>
+    <string name="cancel">Anulează</string>
+    <string name="save">Salvează</string>
+    <string name="delete">Șterge</string>
+    <string name="enable">Activează</string>
+    <string name="ok">OK</string>
+    <string name="now_indicator">◄ ACUM</string>
+    <string name="loading">Se încarcă, vă rugăm așteptați…</string>
+    <string name="refresh">Reîmprospătare</string>
+    <string name="no_location">Fără locație</string>
+    <string name="local_time">Ora locală: %1$s %2$s</string>
+    <string name="change_location">Schimbă locația</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Setări</string>
+    <string name="section_appearance">Aspect</string>
+    <string name="dark_theme_title">Temă întunecată</string>
+    <string name="dark_theme_subtitle">Mod întunecat pentru noapte</string>
+    <string name="section_language">Limbă</string>
+    <string name="language_title">Limba</string>
+    <string name="language_subtitle">Română este limba curentă</string>
+    <string name="language_ro">Română</string>
+    <string name="language_en">English</string>
+    <string name="section_notifications">Notificări</string>
+    <string name="notification_permission_required">Permisiune notificări necesară</string>
+    <string name="tap_to_enable_notifications">Apasă pentru a activa notificările</string>
+    <string name="notification_title">Notificări</string>
+    <string name="full_moon">Lună plină</string>
+    <string name="tripura_sundari">Tripura Sundari</string>
+    <string name="new_moon">Lună nouă</string>
+    <string name="status_bar">Bară de stare</string>
+    <string name="tattva_label">Tattva</string>
+    <string name="planetary_hour">Oră planetară</string>
+    <string name="tattva_sound">Sunet Tattva</string>
+    <string name="section_about">Despre</string>
+    <string name="version">Versiune</string>
+    <string name="sun_time">SUN TIME</string>
+
+    <!-- Main Screen / Cards -->
+    <string name="show_day">ARATĂ ZIUA</string>
+    <string name="nakshatra_label">Nakshatra:</string>
+    <string name="all_27_nakshatras">Toate cele 27 Nakshatra</string>
+    <string name="moon_position">🌙 Luna: %1$s</string>
+    <string name="nitya_label">Nitya</string>
+    <string name="moon_label">Luna: %1$s</string>
+
+    <!-- Moon Phase Card -->
+    <string name="tripura_sundari_label">Tripura Sundari:</string>
+    <string name="full_moon_label">Lună plină:</string>
+    <string name="shivaratri_label">Shivaratri:</string>
+    <string name="new_moon_label">Lună nouă:</string>
+
+    <!-- All Day Screen -->
+    <string name="calendar">CALENDAR</string>
+    <string name="cycle_label">Ciclu %1$d</string>
+    <string name="select_date">Selectează data</string>
+    <string name="select_date_hint">Selectează o dată pentru a calcula Tattva</string>
+    <string name="select_date_button">SELECTEAZĂ DATA</string>
+
+    <!-- Location Screen -->
+    <string name="select_location">Selectează locația</string>
+    <string name="search_location">Caută locația</string>
+    <string name="add_location_manually">Adaugă locație manual</string>
+    <string name="saved_locations">Locații salvate (%1$d)</string>
+    <string name="no_saved_locations">Nicio locație salvată</string>
+    <string name="use_gps_or_search">Folosește GPS sau caută locații</string>
+    <string name="clear_saved_locations">Șterge locațiile salvate</string>
+    <string name="delete_location_title">Ștergi locația?</string>
+    <string name="delete_location_message">Sigur dorești să ștergi \"%1$s\"?</string>
+    <string name="clear_all_locations_title">Ștergi toate locațiile?</string>
+    <string name="clear_all_locations_message">Aceasta va șterge toate locațiile salvate cu excepția București. Acțiunea nu poate fi anulată.</string>
+    <string name="clear_all">Șterge tot</string>
+    <string name="search_location_title">Caută locația</string>
+    <string name="city_name_label">Nume oraș</string>
+    <string name="search_placeholder">Caută…(ex. Londra)</string>
+    <string name="search">Caută</string>
+    <string name="clear">Șterge</string>
+    <string name="close">Închide</string>
+    <string name="type_min_chars">Tastează cel puțin 2 caractere</string>
+    <string name="search_hint_diacritics">Căutarea funcționează fără diacritice\n(ex. \"Malmo\" găsește \"Malmö\")</string>
+    <string name="no_cities_found">Niciun oraș găsit pentru \"%1$s\"</string>
+    <string name="try_different_search">Încearcă alt termen\nsau folosește (+) pentru a adăuga manual</string>
+    <string name="lat_label">Lat:</string>
+    <string name="lon_label">Lon:</string>
+    <string name="add">Adaugă</string>
+    <string name="add_new_location">Adaugă locație nouă</string>
+    <string name="latitude">Latitudine</string>
+    <string name="longitude">Longitudine</string>
+    <string name="enter_valid_number">Introduceți un număr valid</string>
+    <string name="alt_label">Alt (m)</string>
+    <string name="utc_label">UTC±</string>
+    <string name="invalid">Invalid</string>
+    <string name="gps_location">Locație GPS</string>
+    <string name="refresh_gps">Reîmprospătare locație GPS</string>
+    <string name="alt_value">Alt: %1$s m</string>
+    <string name="use_this_location">Folosește această locație</string>
+    <string name="get_gps_location">Obține locația GPS</string>
+    <string name="tap_for_gps">Apasă pentru locația ta curentă</string>
+    <string name="active">Activă</string>
+    <string name="select">Selectează</string>
+    <string name="delete_location">Șterge locația</string>
+
+    <!-- Nakshatra Detail Screen -->
+    <string name="deity_title">🧝 Zeitate</string>
+    <string name="symbol_title">🔱 Simbol</string>
+    <string name="animal_title">🐾 Animal</string>
+    <string name="planet_title">🪐 Planetă</string>
+    <string name="nature_title">🌿 Natură</string>
+    <string name="description_title">📖 Descriere</string>
+
+    <!-- Nakshatra Descriptions -->
+    <string name="nakshatra_desc_ashwini">Prima Nakshatra din zodiac, Ashwini reprezintă începutul, vindecarea și energia vitală. Sub protecția gemenilor divini Ashwini Kumara, vindecătorii cerești, această Nakshatra aduce rapiditate, spontaneitate și putere de vindecare.</string>
+    <string name="nakshatra_desc_bharani">Bharani este Nakshatra a nașterii și transformării, guvernată de Yama, zeul morții. Reprezintă ciclul vieții, fertilitatea și responsabilitatea. Energia sa este profundă și transformatoare.</string>
+    <string name="nakshatra_desc_krittika">Krittika, flacăra purificatoare, este guvernată de Agni, zeul focului. Simbolizează arderea impurităților și claritatea mentală. Aduce energie puternică de transformare și iluminare.</string>
+    <string name="nakshatra_desc_rohini">Rohini este considerată cea mai favorabilă Nakshatra pentru creștere și abundență. Sub guvernarea Lunii, ea reprezintă fertilitatea, creativitatea și frumusețea materială.</string>
+    <string name="nakshatra_desc_mrigashira">Mrigashira, capul de cerb, reprezintă căutarea și explorarea. Guvernată de Marte și asociată cu Soma, aduce curiozitate, sensibilitate și dorința de a descoperi adevărul.</string>
+    <string name="nakshatra_desc_ardra">Ardra este Nakshatra furtunii și transformării radicale. Sub protecția lui Rudra (Shiva), ea aduce schimbări intense, purificare prin suferință și renaștere spirituală.</string>
+    <string name="nakshatra_desc_punarvasu">Punarvasu înseamnă \'întoarcerea luminii\'. Guvernată de Jupiter și protejată de Aditi, mama zeilor, ea aduce optimism, reînnoire și posibilitatea unui nou început.</string>
+    <string name="nakshatra_desc_pushya">Pushya este considerată cea mai norocoasă și mai nutritivă Nakshatra. Guvernată de Saturn și protejată de Brihaspati, ea aduce creștere spirituală, hrană și protecție.</string>
+    <string name="nakshatra_desc_ashlesha">Ashlesha, șarpele cosmic, este guvernată de Mercur și asociată cu Naga. Reprezintă puterea kundalini, intuiția profundă și înțelepciunea ascunsă, dar și posibilitatea de manipulare.</string>
+    <string name="nakshatra_desc_magha">Magha reprezintă tronul ancestral și puterea regală. Guvernată de Ketu și protejată de Pitri (strămoși), ea aduce onoare, respect pentru tradiție și conexiune cu rădăcinile spirituale.</string>
+    <string name="nakshatra_desc_purva_phalguni">Purva Phalguni este Nakshatra plăcerii, relaxării și creativității artistice. Guvernată de Venus și protejată de Bhaga, zeul bunăstării, ea aduce bucurie, romantism și apreciere pentru frumusețe.</string>
+    <string name="nakshatra_desc_uttara_phalguni">Uttara Phalguni reprezintă parteneriatele benefice și sprijinul mutual. Guvernată de Soare și protejată de Aryaman, zeul prieteniei, ea aduce loialitate, generozitate și stabilitate în relații.</string>
+    <string name="nakshatra_desc_hasta">Hasta, mâna, simbolizează îndemânarea, precizia și capacitatea de a manifesta. Guvernată de Lună și protejată de Savitar, zeul soarelui, ea aduce talent practic și abilitatea de a crea.</string>
+    <string name="nakshatra_desc_chitra">Chitra este Nakshatra bijuteriei divine și a frumuseții perfecte. Guvernată de Marte și protejată de Tvashtar, arhitectul cosmic, ea aduce creativitate, estetică și dorința de perfecțiune.</string>
+    <string name="nakshatra_desc_swati">Swati, frunza purtată de vânt, reprezintă independența și adaptabilitatea. Guvernată de Rahu și protejată de Vayu, zeul vântului, ea aduce libertate, flexibilitate și dorința de schimbare.</string>
+    <string name="nakshatra_desc_vishakha">Vishakha este Nakshatra determinării și ambiției. Guvernată de Jupiter și protejată de Indra și Agni, ea aduce putere de concentrare, perseverență și capacitatea de a atinge obiective mari.</string>
+    <string name="nakshatra_desc_anuradha">Anuradha reprezintă prietenia devotată și colaborarea spirituală. Guvernată de Saturn și protejată de Mitra, zeul prieteniei, ea aduce loialitate, devotament și capacitatea de a lucra în armonie.</string>
+    <string name="nakshatra_desc_jyeshtha">Jyeshtha este Nakshatra seniorității și puterii. Guvernată de Mercur și protejată de Indra, regele zeilor, ea aduce autoritate, protecție și responsabilitatea conducerii.</string>
+    <string name="nakshatra_desc_mula">Mula reprezintă rădăcina și investigarea profundă. Guvernată de Ketu și protejată de Nirriti, zeița distrugerii, ea aduce transformare radicală, căutarea adevărului și eliminarea a ceea ce nu mai servește.</string>
+    <string name="nakshatra_desc_purva_ashadha">Purva Ashadha este Nakshatra invincibilității și optimismului. Guvernată de Venus și protejată de Apah, zeița apelor, ea aduce încredere, energie de învingere și capacitatea de purificare.</string>
+    <string name="nakshatra_desc_uttara_ashadha">Uttara Ashadha reprezintă victoria finală și realizarea permanentă. Guvernată de Soare și protejată de Vishvadeva, ea aduce succes durabil, recunoaștere și autoritate universală.</string>
+    <string name="nakshatra_desc_shravana">Shravana este Nakshatra ascultării și învățării. Guvernată de Lună și protejată de Vishnu, păstrătorul, ea aduce înțelepciune prin ascultare, conexiune spirituală și capacitatea de a primi cunoaștere.</string>
+    <string name="nakshatra_desc_dhanishta">Dhanishta reprezintă prosperitatea și ritmul cosmic. Guvernată de Marte și protejată de Vasus, zeii abundenței, ea aduce succes material, muzicalitate și capacitatea de a lucra în ritm cu universul.</string>
+    <string name="nakshatra_desc_shatabhisha">Shatabhisha, cele o sută de vindecători, este guvernată de Rahu și protejată de Varuna, zeul apelor cosmice. Ea aduce vindecarea misterioasă, intuiția profundă și capacitatea de a descoperi secrete ascunse.</string>
+    <string name="nakshatra_desc_purva_bhadrapada">Purva Bhadrapada reprezintă arderea karmei și transformarea spirituală intensă. Guvernată de Jupiter și protejată de Aja Ekapada, ea aduce intensitate, pasiune spirituală și dorința de transcendență.</string>
+    <string name="nakshatra_desc_uttara_bhadrapada">Uttara Bhadrapada este Nakshatra profunzimii și înțelepciunii cosmice. Guvernată de Saturn și protejată de Ahirbudhnya, șarpele adâncurilor, ea aduce stabilitate spirituală, înțelepciune profundă și capacitatea de a susține lumea.</string>
+    <string name="nakshatra_desc_revati">Revati, ultima Nakshatra, reprezintă călătoria finală și protecția divină. Guvernată de Mercur și protejată de Pushan, zeul călătoriilor, ea aduce hrănire spirituală, completare și ghidare către destinație.</string>
 </resources>

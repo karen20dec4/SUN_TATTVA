@@ -1,0 +1,145 @@
+<resources>
+    <string name="app_name">SUN TATTVA</string>
+
+    <!-- Common -->
+    <string name="back">Back</string>
+    <string name="collapse">Collapse</string>
+    <string name="expand">Expand</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="enable">Enable</string>
+    <string name="ok">OK</string>
+    <string name="now_indicator">◄ NOW</string>
+    <string name="loading">Loading, please wait…</string>
+    <string name="refresh">Refresh</string>
+    <string name="no_location">No location</string>
+    <string name="local_time">Local time: %1$s %2$s</string>
+    <string name="change_location">Change location</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="section_appearance">Appearance</string>
+    <string name="dark_theme_title">Dark Theme</string>
+    <string name="dark_theme_subtitle">Enable dark mode for night</string>
+    <string name="section_language">Language</string>
+    <string name="language_title">Language</string>
+    <string name="language_subtitle">English is current language</string>
+    <string name="language_ro">Română</string>
+    <string name="language_en">English</string>
+    <string name="section_notifications">Notifications</string>
+    <string name="notification_permission_required">Notification permission required</string>
+    <string name="tap_to_enable_notifications">Tap to enable notifications</string>
+    <string name="notification_title">Notification</string>
+    <string name="full_moon">Full Moon</string>
+    <string name="tripura_sundari">Tripura Sundari</string>
+    <string name="new_moon">New Moon</string>
+    <string name="status_bar">Status Bar</string>
+    <string name="tattva_label">Tattva</string>
+    <string name="planetary_hour">Planetary Hour</string>
+    <string name="tattva_sound">Tattva Sound</string>
+    <string name="section_about">About</string>
+    <string name="version">Version</string>
+    <string name="sun_time">SUN TIME</string>
+
+    <!-- Main Screen / Cards -->
+    <string name="show_day">SHOW DAY</string>
+    <string name="nakshatra_label">Nakshatra:</string>
+    <string name="all_27_nakshatras">All 27 Nakshatras</string>
+    <string name="moon_position">🌙 Moon: %1$s</string>
+    <string name="nitya_label">Nitya</string>
+    <string name="moon_label">Moon: %1$s</string>
+
+    <!-- Moon Phase Card -->
+    <string name="tripura_sundari_label">Tripura Sundari:</string>
+    <string name="full_moon_label">Full moon:</string>
+    <string name="shivaratri_label">Shivaratri:</string>
+    <string name="new_moon_label">New moon:</string>
+
+    <!-- All Day Screen -->
+    <string name="calendar">CALENDAR</string>
+    <string name="cycle_label">Cycle %1$d</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_date_hint">Select a date to calculate Tattvas</string>
+    <string name="select_date_button">SELECT DATE</string>
+
+    <!-- Location Screen -->
+    <string name="select_location">Select Location</string>
+    <string name="search_location">Search location</string>
+    <string name="add_location_manually">Add Location Manually</string>
+    <string name="saved_locations">Saved locations (%1$d)</string>
+    <string name="no_saved_locations">No saved locations</string>
+    <string name="use_gps_or_search">Use GPS or search to add locations</string>
+    <string name="clear_saved_locations">Clear saved locations</string>
+    <string name="delete_location_title">Delete location?</string>
+    <string name="delete_location_message">Are you sure you want to delete \"%1$s\"?</string>
+    <string name="clear_all_locations_title">Clear all locations?</string>
+    <string name="clear_all_locations_message">This will delete all saved locations except București. This action cannot be undone.</string>
+    <string name="clear_all">Clear All</string>
+    <string name="search_location_title">Search Location</string>
+    <string name="city_name_label">City name</string>
+    <string name="search_placeholder">Type to search…(e.g. London)</string>
+    <string name="search">Search</string>
+    <string name="clear">Clear</string>
+    <string name="close">Close</string>
+    <string name="type_min_chars">Type at least 2 characters to search</string>
+    <string name="search_hint_diacritics">Search works without diacritics\n(e.g. \"Malmo\" finds \"Malmö\")</string>
+    <string name="no_cities_found">No cities found for \"%1$s\"</string>
+    <string name="try_different_search">Try a different search term\nor use (+) button to add manually</string>
+    <string name="lat_label">Lat:</string>
+    <string name="lon_label">Lon:</string>
+    <string name="add">Add</string>
+    <string name="add_new_location">Add New Location</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="enter_valid_number">Enter a valid number</string>
+    <string name="alt_label">Alt (m)</string>
+    <string name="utc_label">UTC±</string>
+    <string name="invalid">Invalid</string>
+    <string name="gps_location">GPS Location</string>
+    <string name="refresh_gps">Refresh GPS location</string>
+    <string name="alt_value">Alt: %1$s m</string>
+    <string name="use_this_location">Use this location</string>
+    <string name="get_gps_location">Get GPS Location</string>
+    <string name="tap_for_gps">Tap to request your current location</string>
+    <string name="active">Active</string>
+    <string name="select">Select</string>
+    <string name="delete_location">Delete location</string>
+
+    <!-- Nakshatra Detail Screen -->
+    <string name="deity_title">🧝 Deity</string>
+    <string name="symbol_title">🔱 Symbol</string>
+    <string name="animal_title">🐾 Animal</string>
+    <string name="planet_title">🪐 Planet</string>
+    <string name="nature_title">🌿 Nature</string>
+    <string name="description_title">📖 Description</string>
+
+    <!-- Nakshatra Descriptions -->
+    <string name="nakshatra_desc_ashwini">The first Nakshatra of the zodiac, Ashwini represents beginnings, healing and vital energy. Under the protection of the divine twins Ashwini Kumara, the celestial healers, this Nakshatra brings swiftness, spontaneity and healing power.</string>
+    <string name="nakshatra_desc_bharani">Bharani is the Nakshatra of birth and transformation, ruled by Yama, the god of death. It represents the cycle of life, fertility and responsibility. Its energy is profound and transformative.</string>
+    <string name="nakshatra_desc_krittika">Krittika, the purifying flame, is ruled by Agni, the god of fire. It symbolizes the burning of impurities and mental clarity. It brings powerful energy of transformation and illumination.</string>
+    <string name="nakshatra_desc_rohini">Rohini is considered the most favorable Nakshatra for growth and abundance. Under the rule of the Moon, it represents fertility, creativity and material beauty.</string>
+    <string name="nakshatra_desc_mrigashira">Mrigashira, the deer\'s head, represents seeking and exploration. Ruled by Mars and associated with Soma, it brings curiosity, sensitivity and the desire to discover truth.</string>
+    <string name="nakshatra_desc_ardra">Ardra is the Nakshatra of storms and radical transformation. Under the protection of Rudra (Shiva), it brings intense changes, purification through suffering and spiritual rebirth.</string>
+    <string name="nakshatra_desc_punarvasu">Punarvasu means \'return of the light\'. Ruled by Jupiter and protected by Aditi, mother of the gods, it brings optimism, renewal and the possibility of a new beginning.</string>
+    <string name="nakshatra_desc_pushya">Pushya is considered the most auspicious and nourishing Nakshatra. Ruled by Saturn and protected by Brihaspati, it brings spiritual growth, nourishment and protection.</string>
+    <string name="nakshatra_desc_ashlesha">Ashlesha, the cosmic serpent, is ruled by Mercury and associated with Naga. It represents kundalini power, deep intuition and hidden wisdom, but also the possibility of manipulation.</string>
+    <string name="nakshatra_desc_magha">Magha represents the ancestral throne and royal power. Ruled by Ketu and protected by Pitri (ancestors), it brings honor, respect for tradition and connection with spiritual roots.</string>
+    <string name="nakshatra_desc_purva_phalguni">Purva Phalguni is the Nakshatra of pleasure, relaxation and artistic creativity. Ruled by Venus and protected by Bhaga, the god of welfare, it brings joy, romance and appreciation for beauty.</string>
+    <string name="nakshatra_desc_uttara_phalguni">Uttara Phalguni represents beneficial partnerships and mutual support. Ruled by the Sun and protected by Aryaman, the god of friendship, it brings loyalty, generosity and stability in relationships.</string>
+    <string name="nakshatra_desc_hasta">Hasta, the hand, symbolizes skill, precision and the ability to manifest. Ruled by the Moon and protected by Savitar, the sun god, it brings practical talent and the ability to create.</string>
+    <string name="nakshatra_desc_chitra">Chitra is the Nakshatra of the divine jewel and perfect beauty. Ruled by Mars and protected by Tvashtar, the cosmic architect, it brings creativity, aesthetics and the desire for perfection.</string>
+    <string name="nakshatra_desc_swati">Swati, the leaf carried by the wind, represents independence and adaptability. Ruled by Rahu and protected by Vayu, the wind god, it brings freedom, flexibility and the desire for change.</string>
+    <string name="nakshatra_desc_vishakha">Vishakha is the Nakshatra of determination and ambition. Ruled by Jupiter and protected by Indra and Agni, it brings concentration power, perseverance and the ability to achieve great objectives.</string>
+    <string name="nakshatra_desc_anuradha">Anuradha represents devoted friendship and spiritual collaboration. Ruled by Saturn and protected by Mitra, the god of friendship, it brings loyalty, devotion and the ability to work in harmony.</string>
+    <string name="nakshatra_desc_jyeshtha">Jyeshtha is the Nakshatra of seniority and power. Ruled by Mercury and protected by Indra, the king of gods, it brings authority, protection and the responsibility of leadership.</string>
+    <string name="nakshatra_desc_mula">Mula represents the root and deep investigation. Ruled by Ketu and protected by Nirriti, the goddess of destruction, it brings radical transformation, the search for truth and the elimination of what no longer serves.</string>
+    <string name="nakshatra_desc_purva_ashadha">Purva Ashadha is the Nakshatra of invincibility and optimism. Ruled by Venus and protected by Apah, the water goddess, it brings confidence, conquering energy and the capacity for purification.</string>
+    <string name="nakshatra_desc_uttara_ashadha">Uttara Ashadha represents final victory and permanent achievement. Ruled by the Sun and protected by Vishvadeva, it brings lasting success, recognition and universal authority.</string>
+    <string name="nakshatra_desc_shravana">Shravana is the Nakshatra of listening and learning. Ruled by the Moon and protected by Vishnu, the preserver, it brings wisdom through listening, spiritual connection and the ability to receive knowledge.</string>
+    <string name="nakshatra_desc_dhanishta">Dhanishta represents prosperity and cosmic rhythm. Ruled by Mars and protected by Vasus, the gods of abundance, it brings material success, musicality and the ability to work in rhythm with the universe.</string>
+    <string name="nakshatra_desc_shatabhisha">Shatabhisha, the hundred healers, is ruled by Rahu and protected by Varuna, the god of cosmic waters. It brings mysterious healing, deep intuition and the ability to discover hidden secrets.</string>
+    <string name="nakshatra_desc_purva_bhadrapada">Purva Bhadrapada represents the burning of karma and intense spiritual transformation. Ruled by Jupiter and protected by Aja Ekapada, it brings intensity, spiritual passion and the desire for transcendence.</string>
+    <string name="nakshatra_desc_uttara_bhadrapada">Uttara Bhadrapada is the Nakshatra of depth and cosmic wisdom. Ruled by Saturn and protected by Ahirbudhnya, the serpent of the depths, it brings spiritual stability, profound wisdom and the ability to sustain the world.</string>
+    <string name="nakshatra_desc_revati">Revati, the last Nakshatra, represents the final journey and divine protection. Ruled by Mercury and protected by Pushan, the god of journeys, it brings spiritual nourishment, completion and guidance to destination.</string>
+</resources>

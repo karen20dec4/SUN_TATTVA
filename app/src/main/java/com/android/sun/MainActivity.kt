@@ -1,7 +1,9 @@
 package com.android.sun
 
 import android.content.Intent
+import android.content.res.Configuration
 import java.util.Calendar
+import java.util.Locale
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -55,18 +58,31 @@ class MainActivity : ComponentActivity() {
 		
 		setContent {
             val isDarkTheme by settingsPreferences.isDarkTheme.collectAsState()
+            val currentLanguage by settingsPreferences.language.collectAsState()
             
-            SunTheme(darkTheme = isDarkTheme) {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    AppNavigation(
-                        application = application,
-                        settingsPreferences = settingsPreferences,
-                        notificationScheduler = notificationScheduler,
-                        isDarkTheme = isDarkTheme
-                    )
+            // Apply locale based on language preference
+            val context = LocalContext.current
+            val localizedContext = remember(currentLanguage) {
+                val locale = Locale(currentLanguage)
+                Locale.setDefault(locale)
+                val config = Configuration(context.resources.configuration)
+                config.setLocale(locale)
+                context.createConfigurationContext(config)
+            }
+            
+            CompositionLocalProvider(LocalContext provides localizedContext) {
+                SunTheme(darkTheme = isDarkTheme) {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        AppNavigation(
+                            application = application,
+                            settingsPreferences = settingsPreferences,
+                            notificationScheduler = notificationScheduler,
+                            isDarkTheme = isDarkTheme
+                        )
+                    }
                 }
             }
         }
@@ -83,6 +99,7 @@ fun AppNavigation(
 ) {
     val isTattvaNotification by settingsPreferences.tattvaNotification.collectAsState()
 	val isPlanetaryHourNotification by settingsPreferences.planetaryHourNotification.collectAsState()
+	val currentLanguage by settingsPreferences.language.collectAsState()
 	
 	val context = LocalContext.current
 	val navController = rememberNavController()
@@ -183,6 +200,10 @@ fun AppNavigation(
 				isDarkTheme = isDarkTheme,
 				onDarkThemeChange = { enabled ->
 					settingsPreferences.setDarkTheme(enabled)
+				},
+				currentLanguage = currentLanguage,
+				onLanguageChange = { lang ->
+					settingsPreferences.setLanguage(lang)
 				},
 				isFullMoonNotification = isFullMoonNotification,
 				onFullMoonNotificationChange = { enabled ->

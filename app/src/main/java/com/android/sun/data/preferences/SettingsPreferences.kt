@@ -21,6 +21,22 @@ class SettingsPreferences(context: Context) {
     )
     
     // ═══════════════════════════════════════════════════════════════════
+    // LIMBĂ / LANGUAGE
+    // ═══════════════════════════════════════════════════════════════════
+    
+    private val _language = MutableStateFlow(getLanguage())
+    val language: StateFlow<String> = _language.asStateFlow()
+    
+    fun getLanguage(): String {
+        return prefs.getString(KEY_LANGUAGE, "ro") ?: "ro"
+    }
+    
+    fun setLanguage(lang: String) {
+        prefs.edit().putString(KEY_LANGUAGE, lang).apply()
+        _language.value = lang
+    }
+    
+    // ═══════════════════════════════════════════════════════════════════
     // DARK THEME
     // ═══════════════════════════════════════════════════════════════════
     
@@ -179,6 +195,7 @@ class SettingsPreferences(context: Context) {
     companion object {
         private const val PREFS_NAME = "sun_settings_prefs"
         
+        private const val KEY_LANGUAGE = "language_preference"
         private const val KEY_DARK_THEME = "dark_theme"
         private const val KEY_FULL_MOON_NOTIFICATION = "full_moon_notification"
         private const val KEY_TRIPURA_SUNDARI_NOTIFICATION = "tripura_sundari_notification"
