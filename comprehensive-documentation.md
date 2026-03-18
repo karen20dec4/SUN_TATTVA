@@ -10,12 +10,12 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
-- **Current Version:** 2.12 (versionCode 6)
+- **Current Version:** 2.13 (versionCode 7)
 
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
-- Current: **2.12**
-- Next versions: **2.13**, **2.14**, **2.15**, ...
+- Current: **2.13**
+- Next versions: **2.14**, **2.15**, **2.16**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
@@ -356,4 +356,4 @@ All `Row` composables with side-by-side text must follow these rules to prevent 
 
 ---
 
-*Last updated: March 2026 - Version 2.12*
+*Last updated: March 2026 - Version 2.13*
