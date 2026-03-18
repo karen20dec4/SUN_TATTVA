@@ -137,9 +137,14 @@ fun NakshatraCard(
                             // ✅ FIX: Calculate ABSOLUTE start and end time from zero reference
                             val nakshatraIndex = nakshatra.number - 1  // 0-based index
                             
-                            // Time from 0° to start of this Nakshatra
-                            val hoursToStart = nakshatraIndex * nakshatraDegrees / avgDegreesPerHour
-                            val hoursToEnd = (nakshatraIndex + 1) * nakshatraDegrees / avgDegreesPerHour
+                            // ✅ FIX WRAP: If this Nakshatra appears after the current one in the
+                            // reordered list but has a smaller index (e.g., #1 after #27), it belongs
+                            // to the NEXT lunar cycle. Add a full 27-Nakshatra cycle offset.
+                            val cycleOffset = if (nakshatraIndex < currentIndex) 27.0 else 0.0
+                            
+                            // Time from 0° to start of this Nakshatra (with cycle wrap correction)
+                            val hoursToStart = (nakshatraIndex + cycleOffset) * nakshatraDegrees / avgDegreesPerHour
+                            val hoursToEnd = (nakshatraIndex + cycleOffset + 1) * nakshatraDegrees / avgDegreesPerHour
                             
                             val startTime = zeroRef.clone() as Calendar
                             startTime.add(Calendar.MINUTE, (hoursToStart * 60).toInt())
