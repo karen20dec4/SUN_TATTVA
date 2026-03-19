@@ -3,6 +3,7 @@ package com.android.sun.ui.screens
 import android.content.Context
 import android.content.Intent
 import android.provider.OpenableColumns
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -85,6 +86,10 @@ fun TattvaSoundPickerScreen(
 
     val tattvaDisplayName = tattvaName.replaceFirstChar { it.uppercase() }
 
+    // Intercept the system/hardware back button so it dismisses the overlay (→ Settings),
+    // not the Navigation back stack (→ main screen).
+    BackHandler(onBack = onDismiss)
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -135,17 +140,20 @@ fun TattvaSoundPickerScreen(
                     )
                 }
 
-                // Buton back (stânga-sus)
+                // Buton back: 20% mai mare și coborât sub bara de stare
                 IconButton(
                     onClick = onDismiss,
                     modifier = Modifier
                         .align(Alignment.TopStart)
-                        .padding(4.dp)
+                        .statusBarsPadding()
+                        .padding(start = 4.dp, top = 8.dp)
+                        .size(58.dp)   // default 48dp × 1.2 ≈ 58dp
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.back),
-                        tint = Color.White
+                        tint = Color.White,
+                        modifier = Modifier.size(29.dp)   // default 24dp × 1.2 ≈ 29dp
                     )
                 }
             }
@@ -268,15 +276,7 @@ fun TattvaSoundPickerScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
-            // ── BUTON RESET (jos, lipit de margine) ───────────────────────
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
-            ) {
+                // Buton reset – imediat sub "Selectează fișier audio"
                 OutlinedButton(
                     onClick = {
                         currentFileName = null
@@ -299,6 +299,8 @@ fun TattvaSoundPickerScreen(
                         fontWeight = FontWeight.Medium
                     )
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }

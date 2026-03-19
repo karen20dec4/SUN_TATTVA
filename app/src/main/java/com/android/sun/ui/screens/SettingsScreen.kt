@@ -10,7 +10,6 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -658,8 +657,8 @@ private fun TattvaSoundCard(
 }
 
 /**
- * Single tattva sound item: colored icon (tappable to pick custom sound) + checkbox.
- * A small music-note dot is shown when a custom sound is active.
+ * Single tattva sound item: colored icon wrapped in a raised Surface (button-like),
+ * tappable to pick a custom sound. A small dot badge is shown when a custom sound is active.
  * Plays a sound preview when the checkbox is checked.
  */
 @Composable
@@ -675,22 +674,32 @@ private fun TattvaSoundItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(contentAlignment = Alignment.BottomEnd) {
-            Icon(
-                painter = painterResource(id = getTattvaIconRes(tattvaName)),
-                contentDescription = tattvaName,
-                modifier = Modifier
-                    .size(32.dp)
-                    .clickable { onIconClick() },
-                tint = color
-            )
-            if (hasCustomSound) {
-                Box(
-                    modifier = Modifier
-                        .size(10.dp)
-                        .background(color, androidx.compose.foundation.shape.CircleShape)
-                        .offset(x = 2.dp, y = 2.dp)
+        // Wrap icon in a Surface so it looks like a pressable button
+        Surface(
+            onClick = onIconClick,
+            shape = RoundedCornerShape(8.dp),
+            color = color.copy(alpha = 0.13f),
+            shadowElevation = 3.dp,
+            modifier = Modifier.padding(2.dp)
+        ) {
+            Box(
+                contentAlignment = Alignment.BottomEnd,
+                modifier = Modifier.padding(6.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = getTattvaIconRes(tattvaName)),
+                    contentDescription = tattvaName,
+                    modifier = Modifier.size(35.dp),   // +10% from 32dp
+                    tint = color
                 )
+                if (hasCustomSound) {
+                    Box(
+                        modifier = Modifier
+                            .size(10.dp)
+                            .background(color, androidx.compose.foundation.shape.CircleShape)
+                            .offset(x = 2.dp, y = 2.dp)
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.height(4.dp))
@@ -721,12 +730,12 @@ private fun playTattvaPreviewSound(
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .build()
 
-        val mp: MediaPlayer?
+        val mediaPlayer: MediaPlayer?
         if (customUri != null) {
-            mp = MediaPlayer()
-            mp.setAudioAttributes(audioAttributes)
-            mp.setDataSource(context, android.net.Uri.parse(customUri))
-            mp.prepare()
+            mediaPlayer = MediaPlayer()
+            mediaPlayer.setAudioAttributes(audioAttributes)
+            mediaPlayer.setDataSource(context, android.net.Uri.parse(customUri))
+            mediaPlayer.prepare()
         } else {
             val resId = when (tattvaName) {
                 "akasha"   -> com.android.sun.R.raw.sound_akasha
@@ -736,19 +745,19 @@ private fun playTattvaPreviewSound(
                 "prithivi" -> com.android.sun.R.raw.sound_prithivi
                 else       -> return
             }
-            mp = MediaPlayer.create(
+            mediaPlayer = MediaPlayer.create(
                 context, resId, audioAttributes,
                 AudioManager.AUDIO_SESSION_ID_GENERATE
             )
         }
-        mp ?: return
-        mp.setVolume(volume, volume)
-        mp.setOnCompletionListener { it.release() }
-        mp.setOnErrorListener { it, what, extra ->
+        mediaPlayer ?: return
+        mediaPlayer.setVolume(volume, volume)
+        mediaPlayer.setOnCompletionListener { player -> player.release() }
+        mediaPlayer.setOnErrorListener { player, what, extra ->
             com.android.sun.util.AppLog.e("SettingsScreen", "❌ Preview MediaPlayer error: what=$what extra=$extra")
-            it.release()
+            player.release()
             true
         }
-        mp.start()
+        mediaPlayer.start()
     } catch (_: Exception) { }
 }
