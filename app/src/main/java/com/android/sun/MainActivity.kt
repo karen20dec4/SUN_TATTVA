@@ -131,6 +131,7 @@ fun AppNavigation(
     val isSoundTejas by settingsPreferences.tattvaSoundTejas.collectAsState()
     val isSoundApas by settingsPreferences.tattvaSoundApas.collectAsState()
     val isSoundPrithivi by settingsPreferences.tattvaSoundPrithivi.collectAsState()
+    val soundVolume by settingsPreferences.tattvaSoundVolume.collectAsState()
     
     // ✅ Use stable keys based on event times to prevent unnecessary rescheduling
     val fullMoonTimeMillis = astroData?.moonPhase?.nextFullMoon?.timeInMillis
@@ -258,6 +259,8 @@ fun AppNavigation(
 				onSoundApasChange = { settingsPreferences.setTattvaSoundApas(it) },
 				isSoundPrithivi = isSoundPrithivi,
 				onSoundPrithiviChange = { settingsPreferences.setTattvaSoundPrithivi(it) },
+				soundVolume = soundVolume,
+				onSoundVolumeChange = { settingsPreferences.setTattvaSoundVolume(it) },
 				onBackClick = {
 					navController.popBackStack()
 				}

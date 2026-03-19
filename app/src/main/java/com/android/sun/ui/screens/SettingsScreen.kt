@@ -1,7 +1,11 @@
 package com.android.sun.ui.screens
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -60,6 +64,8 @@ fun SettingsScreen(
     onSoundApasChange: (Boolean) -> Unit,
     isSoundPrithivi: Boolean,
     onSoundPrithiviChange: (Boolean) -> Unit,
+    soundVolume: Float,
+    onSoundVolumeChange: (Float) -> Unit,
     currentLanguage: String,
     onLanguageChange: (String) -> Unit,
     onBackClick: () -> Unit,
@@ -264,7 +270,9 @@ fun SettingsScreen(
 				    isSoundApas = isSoundApas,
 				    onSoundApasChange = onSoundApasChange,
 				    isSoundPrithivi = isSoundPrithivi,
-				    onSoundPrithiviChange = onSoundPrithiviChange
+				    onSoundPrithiviChange = onSoundPrithiviChange,
+				    soundVolume = soundVolume,
+				    onSoundVolumeChange = onSoundVolumeChange
 				)
 				
 				HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
@@ -482,6 +490,8 @@ private fun NotificationGroupCard(
 /**
  * Card for Tattva Sound settings — colored tattva symbols with checkboxes.
  * No text labels, just the colored tattva icon + checkbox per tattva.
+ * Checking a tattva plays a sound preview at the current volume.
+ * A volume slider below the checkboxes controls playback level.
  */
 @Composable
 private fun TattvaSoundCard(
@@ -494,8 +504,11 @@ private fun TattvaSoundCard(
     isSoundApas: Boolean,
     onSoundApasChange: (Boolean) -> Unit,
     isSoundPrithivi: Boolean,
-    onSoundPrithiviChange: (Boolean) -> Unit
+    onSoundPrithiviChange: (Boolean) -> Unit,
+    soundVolume: Float,
+    onSoundVolumeChange: (Float) -> Unit
 ) {
+    val context = LocalContext.current
     Card(
         shape = RoundedCornerShape(7.dp),
         colors = CardDefaults.cardColors(
@@ -525,35 +538,67 @@ private fun TattvaSoundCard(
                     tattvaName = "akasha",
                     color = TattvaColors.Akasha,
                     checked = isSoundAkasha,
-                    onCheckedChange = onSoundAkashaChange
+                    onCheckedChange = onSoundAkashaChange,
+                    onPlaySound = { playTattvaPreviewSound(context, "akasha", soundVolume) }
                 )
                 // Vayu
                 TattvaSoundItem(
                     tattvaName = "vayu",
                     color = TattvaColors.Vayu,
                     checked = isSoundVayu,
-                    onCheckedChange = onSoundVayuChange
+                    onCheckedChange = onSoundVayuChange,
+                    onPlaySound = { playTattvaPreviewSound(context, "vayu", soundVolume) }
                 )
                 // Tejas
                 TattvaSoundItem(
                     tattvaName = "tejas",
                     color = TattvaColors.Tejas,
                     checked = isSoundTejas,
-                    onCheckedChange = onSoundTejasChange
+                    onCheckedChange = onSoundTejasChange,
+                    onPlaySound = { playTattvaPreviewSound(context, "tejas", soundVolume) }
                 )
                 // Apas
                 TattvaSoundItem(
                     tattvaName = "apas",
                     color = TattvaColors.Apas,
                     checked = isSoundApas,
-                    onCheckedChange = onSoundApasChange
+                    onCheckedChange = onSoundApasChange,
+                    onPlaySound = { playTattvaPreviewSound(context, "apas", soundVolume) }
                 )
                 // Prithivi
                 TattvaSoundItem(
                     tattvaName = "prithivi",
                     color = TattvaColors.Prithivi,
                     checked = isSoundPrithivi,
-                    onCheckedChange = onSoundPrithiviChange
+                    onCheckedChange = onSoundPrithiviChange,
+                    onPlaySound = { playTattvaPreviewSound(context, "prithivi", soundVolume) }
+                )
+            }
+
+            // Volume slider
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.VolumeDown,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    modifier = Modifier.size(20.dp)
+                )
+                Slider(
+                    value = soundVolume,
+                    onValueChange = onSoundVolumeChange,
+                    valueRange = 0f..1f,
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    imageVector = Icons.Default.VolumeUp,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    modifier = Modifier.size(20.dp)
                 )
             }
         }
@@ -561,14 +606,16 @@ private fun TattvaSoundCard(
 }
 
 /**
- * Single tattva sound item: colored icon + checkbox (no text label)
+ * Single tattva sound item: colored icon + checkbox (no text label).
+ * Plays a sound preview when the checkbox is checked.
  */
 @Composable
 private fun TattvaSoundItem(
     tattvaName: String,
     color: Color,
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
+    onPlaySound: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -582,7 +629,39 @@ private fun TattvaSoundItem(
         Spacer(modifier = Modifier.height(4.dp))
         Checkbox(
             checked = checked,
-            onCheckedChange = onCheckedChange
+            onCheckedChange = { newValue ->
+                onCheckedChange(newValue)
+                if (newValue) onPlaySound()
+            }
         )
     }
+}
+
+/**
+ * Plays a one-shot preview of the tattva sound at the specified volume.
+ * The MediaPlayer is released automatically on completion.
+ */
+private fun playTattvaPreviewSound(context: Context, tattvaName: String, volume: Float) {
+    val resId = when (tattvaName) {
+        "akasha"   -> com.android.sun.R.raw.sound_akasha
+        "vayu"     -> com.android.sun.R.raw.sound_vayu
+        "tejas"    -> com.android.sun.R.raw.sound_tejas
+        "apas"     -> com.android.sun.R.raw.sound_apas
+        "prithivi" -> com.android.sun.R.raw.sound_prithivi
+        else       -> return
+    }
+    try {
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+        val mp = MediaPlayer.create(
+            context, resId, audioAttributes,
+            AudioManager.AUDIO_SESSION_ID_GENERATE
+        ) ?: return
+        mp.setVolume(volume, volume)
+        mp.setOnCompletionListener { it.release() }
+        mp.setOnErrorListener { it, _, _ -> it.release(); true }
+        mp.start()
+    } catch (_: Exception) { }
 }

@@ -191,7 +191,21 @@ class SettingsPreferences(context: Context) {
             else -> false
         }
     }
-    	
+
+    // ═══════════════════════════════════════════════════════════════════
+    // VOLUM SUNETE TATTVA (0.0 - 1.0)
+    // ═══════════════════════════════════════════════════════════════════
+
+    private val _tattvaSoundVolume = MutableStateFlow(getTattvaSoundVolume())
+    val tattvaSoundVolume: StateFlow<Float> = _tattvaSoundVolume.asStateFlow()
+
+    fun getTattvaSoundVolume(): Float = prefs.getFloat(KEY_TATTVA_SOUND_VOLUME, 1.0f)
+
+    fun setTattvaSoundVolume(volume: Float) {
+        prefs.edit().putFloat(KEY_TATTVA_SOUND_VOLUME, volume.coerceIn(0f, 1f)).apply()
+        _tattvaSoundVolume.value = volume.coerceIn(0f, 1f)
+    }
+
     companion object {
         private const val PREFS_NAME = "sun_settings_prefs"
         
@@ -209,5 +223,6 @@ class SettingsPreferences(context: Context) {
         private const val KEY_TATTVA_SOUND_TEJAS = "tattva_sound_tejas"
         private const val KEY_TATTVA_SOUND_APAS = "tattva_sound_apas"
         private const val KEY_TATTVA_SOUND_PRITHIVI = "tattva_sound_prithivi"
+        private const val KEY_TATTVA_SOUND_VOLUME = "tattva_sound_volume"
     }
 }

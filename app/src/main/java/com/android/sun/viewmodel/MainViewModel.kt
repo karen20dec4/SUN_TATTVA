@@ -333,8 +333,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 com.android.sun.util.AppLog.e("MainViewModel", "❌ MediaPlayer error for tattva $tattvaCode: what=$what extra=$extra")
                 true
             }
-            // Volum redus la 50% pentru a preveni distorsiunea
-            val volume = 0.5f
+            // Volum din preferințe utilizator
+            val volume = settingsPreferences.getTattvaSoundVolume()
             mediaPlayer.setVolume(volume, volume)
             mediaPlayer.start()
             val durationMs = try { mediaPlayer.duration } catch (_: Exception) { -1 }

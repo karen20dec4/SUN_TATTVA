@@ -10,12 +10,12 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
-- **Current Version:** 2.13 (versionCode 7)
+- **Current Version:** 2.14 (versionCode 8)
 
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
-- Current: **2.13**
-- Next versions: **2.14**, **2.15**, **2.16**, ...
+- Current: **2.14**
+- Next versions: **2.15**, **2.16**, **2.17**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
@@ -203,6 +203,7 @@ Scheduled events:
 | Tripura Sundari Notification| Alert before Tripura Sundari                  |
 | New Moon Notification      | Alert before new moon                          |
 | Tattva Sound (per element) | Individual sound alerts for each Tattva change |
+| Tattva Sound Volume        | Slider (0–100%) to control Tattva sound playback volume. Stored in SharedPrefs. Checking a sound checkbox also previews the sound at the current volume. |
 
 ---
 
@@ -356,4 +357,4 @@ All `Row` composables with side-by-side text must follow these rules to prevent 
 
 ---
 
-*Last updated: March 2026 - Version 2.13*
+*Last updated: March 2026 - Version 2.14*
