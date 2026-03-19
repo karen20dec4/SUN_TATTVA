@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Document with embedded music note – replaces Icons.Default.AudioFile from material-icons-extended -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Document body + folded corner -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M14,2H6C4.9,2 4,2.9 4,4v16c0,1.1 0.9,2 2,2h12c1.1,0 2,-0.9 2,-2V8L14,2zm-1,2l4,4h-4V4z" />
+    <!-- Mini music note in the lower half -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M13,12v5.55c-0.44,-0.35 -0.99,-0.55 -1.5,-0.55c-1.38,0 -2.5,1.12 -2.5,2.5S10.12,22 11.5,22s2.5,-1.12 2.5,-2.5V14h2v-2H13z" />
+</vector>

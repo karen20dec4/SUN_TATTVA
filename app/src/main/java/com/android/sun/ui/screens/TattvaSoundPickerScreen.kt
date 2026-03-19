@@ -13,10 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AudioFile
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.MusicNote
-import androidx.compose.material.icons.filled.RestartAlt
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -196,7 +194,7 @@ fun TattvaSoundPickerScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = Icons.Default.MusicNote,
+                            painter = painterResource(R.drawable.ic_music_note),
                             contentDescription = null,
                             tint = tattvaColor,
                             modifier = Modifier.size(28.dp)
@@ -250,7 +248,7 @@ fun TattvaSoundPickerScreen(
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                imageVector = Icons.Default.AudioFile,
+                                painter = painterResource(R.drawable.ic_audio_file),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.secondary,
                                 modifier = Modifier.size(18.dp)
@@ -277,7 +275,7 @@ fun TattvaSoundPickerScreen(
                     )
                 ) {
                     Icon(
-                        imageVector = Icons.Default.AudioFile,
+                        painter = painterResource(R.drawable.ic_audio_file),
                         contentDescription = null,
                         modifier = Modifier.size(20.dp)
                     )
@@ -301,7 +299,7 @@ fun TattvaSoundPickerScreen(
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.RestartAlt,
+                        imageVector = Icons.Default.Refresh,
                         contentDescription = null,
                         modifier = Modifier.size(20.dp)
                     )

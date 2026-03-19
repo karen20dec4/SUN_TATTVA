@@ -16,8 +16,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.VolumeDown
-import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -634,7 +632,7 @@ private fun TattvaSoundCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.VolumeDown,
+                    painter = painterResource(R.drawable.ic_volume_down),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     modifier = Modifier.size(20.dp)
@@ -646,7 +644,7 @@ private fun TattvaSoundCard(
                     modifier = Modifier.weight(1f)
                 )
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                    painter = painterResource(R.drawable.ic_volume_up),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     modifier = Modifier.size(20.dp)
@@ -759,5 +757,7 @@ private fun playTattvaPreviewSound(
             true
         }
         mediaPlayer.start()
-    } catch (_: Exception) { }
+    } catch (e: Exception) {
+        com.android.sun.util.AppLog.e("SettingsScreen", "❌ playTattvaPreviewSound failed: ${e.message}")
+    }
 }

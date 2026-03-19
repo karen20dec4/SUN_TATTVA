@@ -13,9 +13,11 @@
 -keep @androidx.room.Entity class *
 -dontwarn androidx.room.paging.**
 
-# Keep Compose
--dontwarn androidx.compose.**
--keep class androidx.compose.** { *; }
+# Keep Compose runtime/UI framework – but NOT all icons (allows R8 to remove unused icon vectors)
+-dontwarn androidx.compose.runtime.**
+-dontwarn androidx.compose.ui.**
+-dontwarn androidx.compose.foundation.**
+-dontwarn androidx.compose.material3.**
 
 # Keep data classes (pentru serializare)
 -keepclassmembers class com.android.sun.data.** {

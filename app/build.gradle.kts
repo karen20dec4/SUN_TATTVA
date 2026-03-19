@@ -12,8 +12,8 @@ android {
         applicationId = "com.android.sun.tattva"
         minSdk = 26
         targetSdk = 34
-        versionCode = 10
-        versionName = "2.16"
+        versionCode = 11
+        versionName = "2.17"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -52,6 +52,17 @@ android {
         }
         abi {
             enableSplit = true
+        }
+    }
+
+    // ✅ Splits per-ABI pentru APK – fiecare APK conține o singură arhitectură
+    // Reduce dimensiunea fișierului APK cu ~30-40% pe dispozitiv
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+            isUniversalApk = false
         }
     }
 
@@ -104,7 +115,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics:1.6.2")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.2")
     implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("androidx.compose.material:material-icons-extended:1.6.2")
+    // material-icons-extended removed – replaced with lightweight vector drawables in res/drawable/
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
     // Lifecycle & ViewModel
