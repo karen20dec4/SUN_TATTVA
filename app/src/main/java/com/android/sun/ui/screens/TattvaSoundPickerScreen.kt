@@ -32,6 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sun.R
 import com.android.sun.ui.components.getTattvaIconRes
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.StrokeJoin
+
 
 /**
  * Ecran full-screen pentru selectarea unui sunet personalizat per tattva.
@@ -101,7 +106,7 @@ fun TattvaSoundPickerScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(220.dp)
+                    .height(320.dp)
             ) {
                 // Fundal gradient de la culoarea tattva (sus) la transparent (jos)
                 Box(
@@ -121,11 +126,12 @@ fun TattvaSoundPickerScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = 48.dp),
+                        .padding(top = 18.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Icon(
+                    
+					Icon(
                         painter = painterResource(id = getTattvaIconRes(tattvaName)),
                         contentDescription = tattvaDisplayName,
                         modifier = Modifier.size(64.dp),
@@ -133,11 +139,18 @@ fun TattvaSoundPickerScreen(
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = stringResource(R.string.tattva_sound_picker_title, tattvaDisplayName),
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
+						text = stringResource(R.string.tattva_sound_picker_title, tattvaDisplayName),
+						style = MaterialTheme.typography.headlineSmall.copy(
+							fontSize = 36.sp, // Aici modifici dimensiunea
+							fontWeight = FontWeight.Bold,
+							shadow = Shadow(
+								color = Color.Black,
+								offset = Offset(1f, 1f),
+								blurRadius = 1f
+							)
+						),
+						color = Color.White
+					)
                 }
 
                 // Buton back: 20% mai mare și coborât sub bara de stare

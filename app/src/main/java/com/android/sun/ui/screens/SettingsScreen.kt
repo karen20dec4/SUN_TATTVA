@@ -677,9 +677,9 @@ private fun TattvaSoundItem(
         // Wrap icon in a Surface so it looks like a pressable button
         Surface(
             onClick = onIconClick,
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(1.dp),
             color = color.copy(alpha = 0.13f),
-            shadowElevation = 3.dp,
+            shadowElevation = 1.dp,
             modifier = Modifier.padding(2.dp)
         ) {
             Box(
