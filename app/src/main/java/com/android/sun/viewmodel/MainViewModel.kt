@@ -334,6 +334,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 true
             }
             // Volum din preferințe utilizator
+            val settingsPreferences = com.android.sun.data.preferences.SettingsPreferences(context)
             val volume = settingsPreferences.getTattvaSoundVolume()
             mediaPlayer.setVolume(volume, volume)
             mediaPlayer.start()
