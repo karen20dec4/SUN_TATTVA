@@ -38,6 +38,14 @@
     <string name="tattva_label">Tattva</string>
     <string name="planetary_hour">Planetary Hour</string>
     <string name="tattva_sound">Tattva Sound</string>
+    <string name="tattva_sound_picker_title">Sound for %1$s</string>
+    <string name="tattva_sound_current">Current sound:</string>
+    <string name="tattva_sound_default_label">Default (built-in sound)</string>
+    <string name="tattva_sound_browse">Select audio file</string>
+    <string name="tattva_sound_accepted_formats">Accepted formats: MP3, OGG, WAV, AAC, FLAC, M4A</string>
+    <string name="tattva_sound_reset_default">Reset to default sound</string>
+    <string name="tattva_sound_nav_hint">Tip: you can browse Recent, Audio or Downloads in your phone\'s file picker.</string>
+    <string name="tattva_sound_tap_to_pick">Tap the tattva symbol to select a custom sound</string>
     <string name="section_about">About</string>
     <string name="version">Version</string>
     <string name="sun_time">SUN TIME</string>

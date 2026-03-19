@@ -10,12 +10,15 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.VolumeDown
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -66,6 +69,8 @@ fun SettingsScreen(
     onSoundPrithiviChange: (Boolean) -> Unit,
     soundVolume: Float,
     onSoundVolumeChange: (Float) -> Unit,
+    customSoundUris: Map<String, String?> = emptyMap(),
+    onCustomSoundUriChange: (String, String?) -> Unit = { _, _ -> },
     currentLanguage: String,
     onLanguageChange: (String) -> Unit,
     onBackClick: () -> Unit,
@@ -74,6 +79,9 @@ fun SettingsScreen(
 {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
+    
+    // State for the full-screen tattva sound picker overlay: (tattvaName, tattvaCode)
+    var tattvaPickerFor by remember { mutableStateOf<Pair<String, String>?>(null) }
     
     var hasNotificationPermission by remember {
         mutableStateOf(
@@ -272,7 +280,9 @@ fun SettingsScreen(
 				    isSoundPrithivi = isSoundPrithivi,
 				    onSoundPrithiviChange = onSoundPrithiviChange,
 				    soundVolume = soundVolume,
-				    onSoundVolumeChange = onSoundVolumeChange
+				    onSoundVolumeChange = onSoundVolumeChange,
+				    customSoundUris = customSoundUris,
+				    onTattvaIconClick = { name, code -> tattvaPickerFor = name to code }
 				)
 				
 				HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
@@ -338,6 +348,30 @@ fun SettingsScreen(
             isDarkTheme = isDarkTheme,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
+        
+        // Full-screen tattva sound picker overlay
+        tattvaPickerFor?.let { (tattvaName, tattvaCode) ->
+            val tattvaColor = when (tattvaCode) {
+                "A"  -> com.android.sun.util.TattvaColors.Akasha
+                "V"  -> com.android.sun.util.TattvaColors.Vayu
+                "T"  -> com.android.sun.util.TattvaColors.Tejas
+                "Ap" -> com.android.sun.util.TattvaColors.Apas
+                "P"  -> com.android.sun.util.TattvaColors.Prithivi
+                else -> androidx.compose.ui.graphics.Color.Gray
+            }
+            TattvaSoundPickerScreen(
+                tattvaName = tattvaName,
+                tattvaColor = tattvaColor,
+                currentUri = customSoundUris[tattvaCode],
+                onUriSelected = { uri ->
+                    onCustomSoundUriChange(tattvaCode, uri)
+                },
+                onResetToDefault = {
+                    onCustomSoundUriChange(tattvaCode, null)
+                },
+                onDismiss = { tattvaPickerFor = null }
+            )
+        }
     }
 }
 
@@ -506,7 +540,9 @@ private fun TattvaSoundCard(
     isSoundPrithivi: Boolean,
     onSoundPrithiviChange: (Boolean) -> Unit,
     soundVolume: Float,
-    onSoundVolumeChange: (Float) -> Unit
+    onSoundVolumeChange: (Float) -> Unit,
+    customSoundUris: Map<String, String?> = emptyMap(),
+    onTattvaIconClick: (tattvaName: String, tattvaCode: String) -> Unit = { _, _ -> }
 ) {
     val context = LocalContext.current
     Card(
@@ -526,6 +562,12 @@ private fun TattvaSoundCard(
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Text(
+                text = stringResource(R.string.tattva_sound_tap_to_pick),
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 modifier = Modifier.padding(bottom = 12.dp)
             )
             
@@ -539,7 +581,9 @@ private fun TattvaSoundCard(
                     color = TattvaColors.Akasha,
                     checked = isSoundAkasha,
                     onCheckedChange = onSoundAkashaChange,
-                    onPlaySound = { playTattvaPreviewSound(context, "akasha", soundVolume) }
+                    hasCustomSound = customSoundUris["A"] != null,
+                    onIconClick = { onTattvaIconClick("akasha", "A") },
+                    onPlaySound = { playTattvaPreviewSound(context, "akasha", soundVolume, customSoundUris["A"]) }
                 )
                 // Vayu
                 TattvaSoundItem(
@@ -547,7 +591,9 @@ private fun TattvaSoundCard(
                     color = TattvaColors.Vayu,
                     checked = isSoundVayu,
                     onCheckedChange = onSoundVayuChange,
-                    onPlaySound = { playTattvaPreviewSound(context, "vayu", soundVolume) }
+                    hasCustomSound = customSoundUris["V"] != null,
+                    onIconClick = { onTattvaIconClick("vayu", "V") },
+                    onPlaySound = { playTattvaPreviewSound(context, "vayu", soundVolume, customSoundUris["V"]) }
                 )
                 // Tejas
                 TattvaSoundItem(
@@ -555,7 +601,9 @@ private fun TattvaSoundCard(
                     color = TattvaColors.Tejas,
                     checked = isSoundTejas,
                     onCheckedChange = onSoundTejasChange,
-                    onPlaySound = { playTattvaPreviewSound(context, "tejas", soundVolume) }
+                    hasCustomSound = customSoundUris["T"] != null,
+                    onIconClick = { onTattvaIconClick("tejas", "T") },
+                    onPlaySound = { playTattvaPreviewSound(context, "tejas", soundVolume, customSoundUris["T"]) }
                 )
                 // Apas
                 TattvaSoundItem(
@@ -563,7 +611,9 @@ private fun TattvaSoundCard(
                     color = TattvaColors.Apas,
                     checked = isSoundApas,
                     onCheckedChange = onSoundApasChange,
-                    onPlaySound = { playTattvaPreviewSound(context, "apas", soundVolume) }
+                    hasCustomSound = customSoundUris["Ap"] != null,
+                    onIconClick = { onTattvaIconClick("apas", "Ap") },
+                    onPlaySound = { playTattvaPreviewSound(context, "apas", soundVolume, customSoundUris["Ap"]) }
                 )
                 // Prithivi
                 TattvaSoundItem(
@@ -571,7 +621,9 @@ private fun TattvaSoundCard(
                     color = TattvaColors.Prithivi,
                     checked = isSoundPrithivi,
                     onCheckedChange = onSoundPrithiviChange,
-                    onPlaySound = { playTattvaPreviewSound(context, "prithivi", soundVolume) }
+                    hasCustomSound = customSoundUris["P"] != null,
+                    onIconClick = { onTattvaIconClick("prithivi", "P") },
+                    onPlaySound = { playTattvaPreviewSound(context, "prithivi", soundVolume, customSoundUris["P"]) }
                 )
             }
 
@@ -583,7 +635,7 @@ private fun TattvaSoundCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Default.VolumeDown,
+                    imageVector = Icons.AutoMirrored.Filled.VolumeDown,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     modifier = Modifier.size(20.dp)
@@ -595,7 +647,7 @@ private fun TattvaSoundCard(
                     modifier = Modifier.weight(1f)
                 )
                 Icon(
-                    imageVector = Icons.Default.VolumeUp,
+                    imageVector = Icons.AutoMirrored.Filled.VolumeUp,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     modifier = Modifier.size(20.dp)
@@ -606,7 +658,8 @@ private fun TattvaSoundCard(
 }
 
 /**
- * Single tattva sound item: colored icon + checkbox (no text label).
+ * Single tattva sound item: colored icon (tappable to pick custom sound) + checkbox.
+ * A small music-note dot is shown when a custom sound is active.
  * Plays a sound preview when the checkbox is checked.
  */
 @Composable
@@ -615,17 +668,31 @@ private fun TattvaSoundItem(
     color: Color,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
+    hasCustomSound: Boolean = false,
+    onIconClick: () -> Unit = {},
     onPlaySound: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            painter = painterResource(id = getTattvaIconRes(tattvaName)),
-            contentDescription = tattvaName,
-            modifier = Modifier.size(32.dp),
-            tint = color
-        )
+        Box(contentAlignment = Alignment.BottomEnd) {
+            Icon(
+                painter = painterResource(id = getTattvaIconRes(tattvaName)),
+                contentDescription = tattvaName,
+                modifier = Modifier
+                    .size(32.dp)
+                    .clickable { onIconClick() },
+                tint = color
+            )
+            if (hasCustomSound) {
+                Box(
+                    modifier = Modifier
+                        .size(10.dp)
+                        .background(color, androidx.compose.foundation.shape.CircleShape)
+                        .offset(x = 2.dp, y = 2.dp)
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(4.dp))
         Checkbox(
             checked = checked,
@@ -639,29 +706,49 @@ private fun TattvaSoundItem(
 
 /**
  * Plays a one-shot preview of the tattva sound at the specified volume.
+ * If [customUri] is non-null, the custom file is used; otherwise the built-in raw resource.
  * The MediaPlayer is released automatically on completion.
  */
-private fun playTattvaPreviewSound(context: Context, tattvaName: String, volume: Float) {
-    val resId = when (tattvaName) {
-        "akasha"   -> com.android.sun.R.raw.sound_akasha
-        "vayu"     -> com.android.sun.R.raw.sound_vayu
-        "tejas"    -> com.android.sun.R.raw.sound_tejas
-        "apas"     -> com.android.sun.R.raw.sound_apas
-        "prithivi" -> com.android.sun.R.raw.sound_prithivi
-        else       -> return
-    }
+private fun playTattvaPreviewSound(
+    context: Context,
+    tattvaName: String,
+    volume: Float,
+    customUri: String? = null
+) {
     try {
         val audioAttributes = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_NOTIFICATION)
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .build()
-        val mp = MediaPlayer.create(
-            context, resId, audioAttributes,
-            AudioManager.AUDIO_SESSION_ID_GENERATE
-        ) ?: return
+
+        val mp: MediaPlayer?
+        if (customUri != null) {
+            mp = MediaPlayer()
+            mp.setAudioAttributes(audioAttributes)
+            mp.setDataSource(context, android.net.Uri.parse(customUri))
+            mp.prepare()
+        } else {
+            val resId = when (tattvaName) {
+                "akasha"   -> com.android.sun.R.raw.sound_akasha
+                "vayu"     -> com.android.sun.R.raw.sound_vayu
+                "tejas"    -> com.android.sun.R.raw.sound_tejas
+                "apas"     -> com.android.sun.R.raw.sound_apas
+                "prithivi" -> com.android.sun.R.raw.sound_prithivi
+                else       -> return
+            }
+            mp = MediaPlayer.create(
+                context, resId, audioAttributes,
+                AudioManager.AUDIO_SESSION_ID_GENERATE
+            )
+        }
+        mp ?: return
         mp.setVolume(volume, volume)
         mp.setOnCompletionListener { it.release() }
-        mp.setOnErrorListener { it, _, _ -> it.release(); true }
+        mp.setOnErrorListener { it, what, extra ->
+            com.android.sun.util.AppLog.e("SettingsScreen", "❌ Preview MediaPlayer error: what=$what extra=$extra")
+            it.release()
+            true
+        }
         mp.start()
     } catch (_: Exception) { }
 }

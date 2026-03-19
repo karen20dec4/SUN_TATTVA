@@ -38,6 +38,14 @@
     <string name="tattva_label">Tattva</string>
     <string name="planetary_hour">Oră planetară</string>
     <string name="tattva_sound">Sunet Tattva</string>
+    <string name="tattva_sound_picker_title">Sunet pentru %1$s</string>
+    <string name="tattva_sound_current">Sunet curent:</string>
+    <string name="tattva_sound_default_label">Implicit (sunet default)</string>
+    <string name="tattva_sound_browse">Selectează fișier audio</string>
+    <string name="tattva_sound_accepted_formats">Formate acceptate: MP3, OGG, WAV, AAC, FLAC, M4A</string>
+    <string name="tattva_sound_reset_default">Revino la sunetul implicit</string>
+    <string name="tattva_sound_nav_hint">Sfat: poți naviga prin Recente, Audio sau Descărcări din selectorul de fișiere al telefonului.</string>
+    <string name="tattva_sound_tap_to_pick">Apasă pe simbolul tattva pentru a selecta un sunet personalizat</string>
     <string name="section_about">Despre</string>
     <string name="version">Versiune</string>
     <string name="sun_time">SUN TIME</string>

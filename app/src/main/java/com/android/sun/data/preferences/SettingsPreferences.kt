@@ -206,6 +206,48 @@ class SettingsPreferences(context: Context) {
         _tattvaSoundVolume.value = volume.coerceIn(0f, 1f)
     }
 
+    // ═══════════════════════════════════════════════════════════════════
+    // URI-URI PERSONALIZATE PENTRU SUNETE TATTVA
+    // ═══════════════════════════════════════════════════════════════════
+
+    private val _customSoundUris = MutableStateFlow(getAllCustomSoundUris())
+    val customSoundUris: StateFlow<Map<String, String?>> = _customSoundUris.asStateFlow()
+
+    fun getAllCustomSoundUris(): Map<String, String?> = mapOf(
+        "A"  to prefs.getString(KEY_TATTVA_CUSTOM_URI_AKASHA,   null),
+        "V"  to prefs.getString(KEY_TATTVA_CUSTOM_URI_VAYU,     null),
+        "T"  to prefs.getString(KEY_TATTVA_CUSTOM_URI_TEJAS,    null),
+        "Ap" to prefs.getString(KEY_TATTVA_CUSTOM_URI_APAS,     null),
+        "P"  to prefs.getString(KEY_TATTVA_CUSTOM_URI_PRITHIVI, null)
+    )
+
+    fun getCustomSoundUri(tattvaCode: String): String? {
+        val key = when (tattvaCode) {
+            "A"  -> KEY_TATTVA_CUSTOM_URI_AKASHA
+            "V"  -> KEY_TATTVA_CUSTOM_URI_VAYU
+            "T"  -> KEY_TATTVA_CUSTOM_URI_TEJAS
+            "Ap" -> KEY_TATTVA_CUSTOM_URI_APAS
+            "P"  -> KEY_TATTVA_CUSTOM_URI_PRITHIVI
+            else -> return null
+        }
+        return prefs.getString(key, null)
+    }
+
+    fun setCustomSoundUri(tattvaCode: String, uri: String?) {
+        val key = when (tattvaCode) {
+            "A"  -> KEY_TATTVA_CUSTOM_URI_AKASHA
+            "V"  -> KEY_TATTVA_CUSTOM_URI_VAYU
+            "T"  -> KEY_TATTVA_CUSTOM_URI_TEJAS
+            "Ap" -> KEY_TATTVA_CUSTOM_URI_APAS
+            "P"  -> KEY_TATTVA_CUSTOM_URI_PRITHIVI
+            else -> return
+        }
+        val editor = prefs.edit()
+        if (uri == null) editor.remove(key) else editor.putString(key, uri)
+        editor.apply()
+        _customSoundUris.value = getAllCustomSoundUris()
+    }
+
     companion object {
         private const val PREFS_NAME = "sun_settings_prefs"
         
@@ -224,5 +266,12 @@ class SettingsPreferences(context: Context) {
         private const val KEY_TATTVA_SOUND_APAS = "tattva_sound_apas"
         private const val KEY_TATTVA_SOUND_PRITHIVI = "tattva_sound_prithivi"
         private const val KEY_TATTVA_SOUND_VOLUME = "tattva_sound_volume"
+
+        // Custom sound URI keys
+        private const val KEY_TATTVA_CUSTOM_URI_AKASHA   = "tattva_custom_uri_akasha"
+        private const val KEY_TATTVA_CUSTOM_URI_VAYU     = "tattva_custom_uri_vayu"
+        private const val KEY_TATTVA_CUSTOM_URI_TEJAS    = "tattva_custom_uri_tejas"
+        private const val KEY_TATTVA_CUSTOM_URI_APAS     = "tattva_custom_uri_apas"
+        private const val KEY_TATTVA_CUSTOM_URI_PRITHIVI = "tattva_custom_uri_prithivi"
     }
 }

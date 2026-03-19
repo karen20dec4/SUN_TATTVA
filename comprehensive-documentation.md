@@ -10,12 +10,12 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
-- **Current Version:** 2.14 (versionCode 8)
+- **Current Version:** 2.15 (versionCode 9)
 
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
-- Current: **2.14**
-- Next versions: **2.15**, **2.16**, **2.17**, ...
+- Current: **2.15**
+- Next versions: **2.16**, **2.17**, **2.18**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
@@ -204,6 +204,7 @@ Scheduled events:
 | New Moon Notification      | Alert before new moon                          |
 | Tattva Sound (per element) | Individual sound alerts for each Tattva change |
 | Tattva Sound Volume        | Slider (0–100%) to control Tattva sound playback volume. Stored in SharedPrefs. Checking a sound checkbox also previews the sound at the current volume. |
+| Tattva Custom Sound        | Tap the tattva symbol icon to open a full-screen picker (gradient header in tattva color). Select any audio file (MP3, OGG, WAV, AAC, FLAC, M4A) from device. Persistent URI permission is taken. Reset button reverts to built-in default. Custom URI stored in SharedPrefs per tattva code. A colored dot on the icon indicates a custom sound is active. |
 
 ---
 
@@ -357,4 +358,4 @@ All `Row` composables with side-by-side text must follow these rules to prevent 
 
 ---
 
-*Last updated: March 2026 - Version 2.14*
+*Last updated: March 2026 - Version 2.15*

@@ -298,44 +298,53 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      */
     private fun playTattvaSound(context: android.content.Context, tattvaCode: String) {
         try {
-            val resId = when (tattvaCode) {
-                "A"  -> com.android.sun.R.raw.sound_akasha
-                "V"  -> com.android.sun.R.raw.sound_vayu
-                "T"  -> com.android.sun.R.raw.sound_tejas
-                "Ap" -> com.android.sun.R.raw.sound_apas
-                "P"  -> com.android.sun.R.raw.sound_prithivi
-                else -> {
-                    com.android.sun.util.AppLog.e("MainViewModel", "❌ Unknown tattva code: $tattvaCode")
-                    return
-                }
-            }
-            com.android.sun.util.AppLog.d("MainViewModel", "🔊 Creating MediaPlayer for tattva: $tattvaCode (resId=$resId)")
-            
+            val settingsPreferences = com.android.sun.data.preferences.SettingsPreferences(context)
+            val volume = settingsPreferences.getTattvaSoundVolume()
+            val customUri = settingsPreferences.getCustomSoundUri(tattvaCode)
+
             val audioAttributes = android.media.AudioAttributes.Builder()
                 .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION)
                 .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .build()
-            
-            val mediaPlayer = android.media.MediaPlayer.create(
-                context, resId, audioAttributes,
-                android.media.AudioManager.AUDIO_SESSION_ID_GENERATE
-            )
-            if (mediaPlayer == null) {
-                com.android.sun.util.AppLog.e("MainViewModel", "❌ Failed to create MediaPlayer for tattva: $tattvaCode — resource might be missing or corrupt")
-                return
+
+            val mediaPlayer: android.media.MediaPlayer
+            if (customUri != null) {
+                com.android.sun.util.AppLog.d("MainViewModel", "🔊 Using custom URI for tattva: $tattvaCode")
+                mediaPlayer = android.media.MediaPlayer()
+                mediaPlayer.setAudioAttributes(audioAttributes)
+                mediaPlayer.setDataSource(context, android.net.Uri.parse(customUri))
+                mediaPlayer.prepare()
+            } else {
+                val resId = when (tattvaCode) {
+                    "A"  -> com.android.sun.R.raw.sound_akasha
+                    "V"  -> com.android.sun.R.raw.sound_vayu
+                    "T"  -> com.android.sun.R.raw.sound_tejas
+                    "Ap" -> com.android.sun.R.raw.sound_apas
+                    "P"  -> com.android.sun.R.raw.sound_prithivi
+                    else -> {
+                        com.android.sun.util.AppLog.e("MainViewModel", "❌ Unknown tattva code: $tattvaCode")
+                        return
+                    }
+                }
+                com.android.sun.util.AppLog.d("MainViewModel", "🔊 Creating MediaPlayer for tattva: $tattvaCode (resId=$resId)")
+                mediaPlayer = android.media.MediaPlayer.create(
+                    context, resId, audioAttributes,
+                    android.media.AudioManager.AUDIO_SESSION_ID_GENERATE
+                ) ?: run {
+                    com.android.sun.util.AppLog.e("MainViewModel", "❌ Failed to create MediaPlayer for tattva: $tattvaCode")
+                    return
+                }
             }
-            
+
             mediaPlayer.setOnCompletionListener { mp ->
                 com.android.sun.util.AppLog.d("MainViewModel", "🔊 Sound playback completed for tattva: $tattvaCode")
                 mp.release()
             }
-            mediaPlayer.setOnErrorListener { _, what, extra ->
+            mediaPlayer.setOnErrorListener { mp, what, extra ->
                 com.android.sun.util.AppLog.e("MainViewModel", "❌ MediaPlayer error for tattva $tattvaCode: what=$what extra=$extra")
+                mp.release()
                 true
             }
-            // Volum din preferințe utilizator
-            val settingsPreferences = com.android.sun.data.preferences.SettingsPreferences(context)
-            val volume = settingsPreferences.getTattvaSoundVolume()
             mediaPlayer.setVolume(volume, volume)
             mediaPlayer.start()
             val durationMs = try { mediaPlayer.duration } catch (_: Exception) { -1 }
