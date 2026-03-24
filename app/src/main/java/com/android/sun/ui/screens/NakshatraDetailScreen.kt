@@ -15,7 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sun.R
@@ -149,7 +152,7 @@ fun NakshatraDetailScreen(
                 content = getLocalizedNakshatraNature(nakshatra)
             )
             
-            // Card cu descriere generică
+            // Card cu descriere detaliată
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
@@ -170,11 +173,15 @@ fun NakshatraDetailScreen(
                     
                     Spacer(modifier = Modifier.height(8.dp))
                     
+                    // Render description with bold "Ce se face:" / "Ce nu se face:" markers
+                    val descriptionText = getLocalizedDescription(nakshatra)
+                    val formattedDescription = formatNakshatraDescription(descriptionText)
+                    
                     Text(
-                        text = getLocalizedDescription(nakshatra),
+                        text = formattedDescription,
                         style = MaterialTheme.typography.bodyMedium,
                         fontSize = 14.sp,
-                        lineHeight = 20.sp,
+                        lineHeight = 22.sp,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                     )
                 }
@@ -256,6 +263,55 @@ private fun getLocalizedDescription(nakshatra: NakshatraType): String {
         NakshatraType.PURVA_BHADRAPADA -> stringResource(R.string.nakshatra_desc_purva_bhadrapada)
         NakshatraType.UTTARA_BHADRAPADA -> stringResource(R.string.nakshatra_desc_uttara_bhadrapada)
         NakshatraType.REVATI -> stringResource(R.string.nakshatra_desc_revati)
+    }
+}
+
+/**
+ * Formats a Nakshatra description text with bold markers for
+ * "Ce se face:" / "Ce nu se face:" (RO) and "What to do:" / "What NOT to do:" (EN).
+ * Adds paragraph spacing between sections for readability.
+ */
+@Composable
+private fun formatNakshatraDescription(text: String): androidx.compose.ui.text.AnnotatedString {
+    // Bold markers for Romanian and English
+    val boldMarkers = listOf(
+        "Ce se face:",
+        "Ce nu se face:",
+        "What to do:",
+        "What NOT to do:"
+    )
+    
+    return buildAnnotatedString {
+        var remaining = text
+        while (remaining.isNotEmpty()) {
+            // Find the next bold marker
+            var nearestIdx = Int.MAX_VALUE
+            var nearestMarker = ""
+            for (marker in boldMarkers) {
+                val idx = remaining.indexOf(marker)
+                if (idx in 0 until nearestIdx) {
+                    nearestIdx = idx
+                    nearestMarker = marker
+                }
+            }
+            
+            if (nearestMarker.isNotEmpty() && nearestIdx != Int.MAX_VALUE) {
+                // Append text before the marker
+                val before = remaining.substring(0, nearestIdx)
+                append(before)
+                
+                // Append the bold marker
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                    append(nearestMarker)
+                }
+                
+                remaining = remaining.substring(nearestIdx + nearestMarker.length)
+            } else {
+                // No more markers, append the rest
+                append(remaining)
+                remaining = ""
+            }
+        }
     }
 }
 
