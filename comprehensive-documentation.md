@@ -10,12 +10,12 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
-- **Current Version:** 2.19 (versionCode 13)
+- **Current Version:** 2.20 (versionCode 14)
 
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
-- Current: **2.19**
-- Next versions: **2.20**, **2.21**, **2.22**, ...
+- Current: **2.20**
+- Next versions: **2.21**, **2.22**, **2.23**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
@@ -134,6 +134,8 @@ The 18h influence period is calculated based on the Moon-Sun relative angular sp
 Lunar mansions (27 divisions of the ecliptic, each ~13.33°), calculated from the Moon's sidereal longitude using Swiss Ephemeris with ayanamsa correction.
 
 **Future Nakshatra Calculation (v2.18+):** All 27 future Nakshatra time intervals are calculated using actual ephemeris data for each boundary crossing (Newton-Raphson refinement), instead of extrapolating with a single constant moon speed. This eliminates the large cumulative errors that occurred because the Moon's speed varies from ~11.8° to ~15.2° per day. See `nakshatra-fix-resolution.md` for details.
+
+**Extended Descriptions (v2.20+):** Each Nakshatra has a detailed description including symbolism, **Ce se face:** (What to do) and **Ce nu se face:** (What NOT to do) — practical guidance for each lunar mansion. The descriptions are rendered with bold markers and paragraph spacing. See `Nakshatra-descriere-extinsa.txt` for the source and `nakshatra-calculation.md` for the full technical documentation.
 
 ---
 
@@ -328,7 +330,7 @@ All hardcoded Romanian enum values (zodiac signs, planet names, nakshatra detail
 - `nakshatra_animal_ashwini` .. `nakshatra_animal_revati` — 27 animals
 - `nakshatra_nature_ashwini` .. `nakshatra_nature_revati` — 27 natures
 - `nakshatra_range_ashwini` .. `nakshatra_range_revati` — 27 degree ranges
-- `nakshatra_desc_ashwini` .. `nakshatra_desc_revati` — 27 descriptions
+- `nakshatra_desc_ashwini` .. `nakshatra_desc_revati` — 27 extended descriptions (v2.20+: symbolism + "Ce se face:" + "Ce nu se face:" with `\n\n` paragraph separators; rendered with bold markers via `formatNakshatraDescription()` in `NakshatraDetailScreen.kt`)
 
 **Moon Zodiac Position Format:**
 - `NakshatraResult.moonZodiacPosition` = degrees/minutes/seconds only (e.g., `"15° 59' 55\""`)
