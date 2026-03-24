@@ -274,7 +274,7 @@ class SettingsPreferences(context: Context) {
 
     /**
      * Returnează Calendar-ul de debug dacă este activat, altfel null.
-     * Când este activat, creează un Calendar cu data de debug dar cu ora curentă (12:00 implicit).
+     * Timestamp-ul stocat include deja ora 12:00 (setată în DebugDateCard la selectarea datei).
      */
     fun getDebugCalendar(): java.util.Calendar? {
         if (!getDebugDateEnabled()) return null
