@@ -248,6 +248,43 @@ class SettingsPreferences(context: Context) {
         _customSoundUris.value = getAllCustomSoundUris()
     }
 
+    // ═══════════════════════════════════════════════════════════════════
+    // DEBUG: DATA OVERRIDE PENTRU TESTARE NAKSHATRA
+    // ═══════════════════════════════════════════════════════════════════
+
+    private val _debugDateEnabled = MutableStateFlow(getDebugDateEnabled())
+    val debugDateEnabled: StateFlow<Boolean> = _debugDateEnabled.asStateFlow()
+
+    private val _debugDateMillis = MutableStateFlow(getDebugDateMillis())
+    val debugDateMillis: StateFlow<Long> = _debugDateMillis.asStateFlow()
+
+    fun getDebugDateEnabled(): Boolean = prefs.getBoolean(KEY_DEBUG_DATE_ENABLED, false)
+
+    fun setDebugDateEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_DEBUG_DATE_ENABLED, enabled).apply()
+        _debugDateEnabled.value = enabled
+    }
+
+    fun getDebugDateMillis(): Long = prefs.getLong(KEY_DEBUG_DATE_MILLIS, 0L)
+
+    fun setDebugDateMillis(millis: Long) {
+        prefs.edit().putLong(KEY_DEBUG_DATE_MILLIS, millis).apply()
+        _debugDateMillis.value = millis
+    }
+
+    /**
+     * Returnează Calendar-ul de debug dacă este activat, altfel null.
+     * Când este activat, creează un Calendar cu data de debug dar cu ora curentă (12:00 implicit).
+     */
+    fun getDebugCalendar(): java.util.Calendar? {
+        if (!getDebugDateEnabled()) return null
+        val millis = getDebugDateMillis()
+        if (millis == 0L) return null
+        val cal = java.util.Calendar.getInstance()
+        cal.timeInMillis = millis
+        return cal
+    }
+
     companion object {
         private const val PREFS_NAME = "sun_settings_prefs"
         
@@ -273,5 +310,9 @@ class SettingsPreferences(context: Context) {
         private const val KEY_TATTVA_CUSTOM_URI_TEJAS    = "tattva_custom_uri_tejas"
         private const val KEY_TATTVA_CUSTOM_URI_APAS     = "tattva_custom_uri_apas"
         private const val KEY_TATTVA_CUSTOM_URI_PRITHIVI = "tattva_custom_uri_prithivi"
+
+        // Debug date override keys
+        private const val KEY_DEBUG_DATE_ENABLED = "debug_date_enabled"
+        private const val KEY_DEBUG_DATE_MILLIS = "debug_date_millis"
     }
 }

@@ -43,6 +43,7 @@ fun MainScreen(
     isLoading: Boolean,
     codeMode: Boolean,
     isDarkTheme: Boolean = false,
+    debugDateLabel: String? = null,
     onCodeModeChange:  (Boolean) -> Unit,
     onRefresh: () -> Unit,
     onNavigateToLocation: () -> Unit,
@@ -74,6 +75,27 @@ fun MainScreen(
                         bottom = 100.dp
                     )
                 ) {
+                    // ✅ DEBUG BANNER: Show when debug date is active
+                    if (debugDateLabel != null) {
+                        item(key = "debug_banner") {
+                            Card(
+                                shape = RoundedCornerShape(7.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = Color(0xFFFF6B00).copy(alpha = 0.2f)
+                                ),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = "🐛 DEBUG: $debugDateLabel",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Color(0xFFFF6B00),
+                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                                )
+                            }
+                        }
+                    }
+                    
                     item(key = "info_compact") {
                         CompactInfoCard(
                             astroData = astroData,

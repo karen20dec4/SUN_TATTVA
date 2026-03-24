@@ -70,6 +70,12 @@ fun SettingsScreen(
     onCustomSoundUriChange: (String, String?) -> Unit = { _, _ -> },
     currentLanguage: String,
     onLanguageChange: (String) -> Unit,
+    // Debug date override
+    isDebugDateEnabled: Boolean = false,
+    debugDateMillis: Long = 0L,
+    onDebugDateChange: (Long) -> Unit = {},
+    onDebugDateEnabledChange: (Boolean) -> Unit = {},
+    onDebugRecalculate: () -> Unit = {},
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) 
@@ -283,6 +289,27 @@ fun SettingsScreen(
 				)
 				
 				HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                
+                // ═══════════════════════════════════════════════════════════════
+                // SECTIUNEA: DEBUG - Dată de test pentru Nakshatra
+                // ═══════════════════════════════════════════════════════════════
+                Text(
+                    text = stringResource(R.string.section_debug),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFFF6B00),  // Orange for debug visibility
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                
+                DebugDateCard(
+                    isEnabled = isDebugDateEnabled,
+                    dateMillis = debugDateMillis,
+                    onDateChange = onDebugDateChange,
+                    onEnabledChange = onDebugDateEnabledChange,
+                    onRecalculate = onDebugRecalculate
+                )
+                
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                 
                 // SECTIUNEA: DESPRE
                 Text(
@@ -759,5 +786,167 @@ private fun playTattvaPreviewSound(
         mediaPlayer.start()
     } catch (e: Exception) {
         com.android.sun.util.AppLog.e("SettingsScreen", "❌ playTattvaPreviewSound failed: ${e.message}")
+    }
+}
+
+/**
+ * ✅ Debug Date Card - permite setarea unei date de test pentru calculele Nakshatra
+ * Afișează un DatePicker și butoane de activare/dezactivare + recalculare
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DebugDateCard(
+    isEnabled: Boolean,
+    dateMillis: Long,
+    onDateChange: (Long) -> Unit,
+    onEnabledChange: (Boolean) -> Unit,
+    onRecalculate: () -> Unit
+) {
+    var showDatePicker by remember { mutableStateOf(false) }
+    val dateFormat = remember { java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale.getDefault()) }
+    
+    Card(
+        shape = RoundedCornerShape(7.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isEnabled) {
+                Color(0xFFFF6B00).copy(alpha = 0.15f)
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant
+            }
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = null,
+                    tint = if (isEnabled) Color(0xFFFF6B00) else MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.debug_date_title),
+                        fontWeight = FontWeight.Medium
+                    )
+                    Text(
+                        text = stringResource(R.string.debug_date_subtitle),
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Current debug date status
+            if (isEnabled && dateMillis > 0L) {
+                val cal = java.util.Calendar.getInstance().apply { timeInMillis = dateMillis }
+                Text(
+                    text = stringResource(R.string.debug_date_active, dateFormat.format(cal.time)),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    color = Color(0xFFFF6B00)
+                )
+            } else {
+                Text(
+                    text = stringResource(R.string.debug_date_none),
+                    fontSize = 13.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Action buttons
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // Pick date button
+                Button(
+                    onClick = { showDatePicker = true },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFF6B00)
+                    ),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = stringResource(R.string.debug_date_pick),
+                        fontSize = 13.sp
+                    )
+                }
+                
+                // Clear/disable button
+                if (isEnabled) {
+                    OutlinedButton(
+                        onClick = {
+                            onEnabledChange(false)
+                            onRecalculate()
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.debug_date_clear),
+                            fontSize = 13.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+    
+    // DatePicker Dialog
+    if (showDatePicker) {
+        val datePickerState = rememberDatePickerState(
+            initialSelectedDateMillis = if (dateMillis > 0L) dateMillis else System.currentTimeMillis()
+        )
+        
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        datePickerState.selectedDateMillis?.let { selectedMillis ->
+                            // Set the date with 12:00 local time for stable calculations
+                            val selectedCal = java.util.Calendar.getInstance().apply {
+                                timeInMillis = selectedMillis
+                                set(java.util.Calendar.HOUR_OF_DAY, 12)
+                                set(java.util.Calendar.MINUTE, 0)
+                                set(java.util.Calendar.SECOND, 0)
+                                set(java.util.Calendar.MILLISECOND, 0)
+                            }
+                            onDateChange(selectedCal.timeInMillis)
+                            onEnabledChange(true)
+                            onRecalculate()
+                        }
+                        showDatePicker = false
+                    }
+                ) {
+                    Text("OK")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDatePicker = false }) {
+                    Text(stringResource(R.string.debug_date_clear))
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
     }
 }

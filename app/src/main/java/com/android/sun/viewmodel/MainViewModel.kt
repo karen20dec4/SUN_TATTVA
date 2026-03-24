@@ -188,12 +188,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 				com.android.sun.util.AppLog.d("MainViewModel", "🔵   Lat: ${location.latitude}, Lon: ${location.longitude}")
 				com.android.sun.util.AppLog.d("MainViewModel", "🔵   TimeZone: ${location.timeZone}")
 				
+				// ✅ DEBUG: Check for debug date override
+				val settingsPreferences = com.android.sun.data.preferences.SettingsPreferences(getApplication())
+				val debugCalendar = settingsPreferences.getDebugCalendar()
+				if (debugCalendar != null) {
+					com.android.sun.util.AppLog.d("MainViewModel", "🐛 DEBUG MODE: Override date = ${debugCalendar.time}")
+				}
+				
 				val data = astroRepository.calculateAstroData(
 					latitude = location.latitude,
 					longitude = location.longitude,
 					timeZone = location.timeZone,
 					locationName = location.name,
-					isGPSLocation = location.isCurrentLocation
+					isGPSLocation = location.isCurrentLocation,
+					debugCalendar = debugCalendar
 				)
 				_astroData.value = data
 				
