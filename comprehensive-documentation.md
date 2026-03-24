@@ -10,12 +10,12 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
-- **Current Version:** 2.17 (versionCode 11)
+- **Current Version:** 2.18 (versionCode 12)
 
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
-- Current: **2.17**
-- Next versions: **2.18**, **2.19**, **2.20**, ...
+- Current: **2.18**
+- Next versions: **2.19**, **2.20**, **2.21**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
@@ -133,6 +133,8 @@ The 18h influence period is calculated based on the Moon-Sun relative angular sp
 
 Lunar mansions (27 divisions of the ecliptic, each ~13.33°), calculated from the Moon's sidereal longitude using Swiss Ephemeris with ayanamsa correction.
 
+**Future Nakshatra Calculation (v2.18+):** All 27 future Nakshatra time intervals are calculated using actual ephemeris data for each boundary crossing (Newton-Raphson refinement), instead of extrapolating with a single constant moon speed. This eliminates the large cumulative errors that occurred because the Moon's speed varies from ~11.8° to ~15.2° per day. See `nakshatra-fix-resolution.md` for details.
+
 ---
 
 ## Navigation Structure
@@ -242,6 +244,7 @@ Display-friendly wrapper containing: name, color, emoji, start/end times, remain
 - `moonZodiacSignIndex: Int` - Zodiac sign index (0=Aries .. 11=Pisces) for UI localization
 - `moonSpeedDegreesPerDay: Double` - Actual moon speed for time calculations
 - `zeroReferenceTime: Calendar` - Reference time for stable multi-Nakshatra timeline
+- `futureNakshatras: List<NakshatraTimeSlot>` - Pre-computed time intervals for all 27 Nakshatras using real ephemeris data at each boundary (v2.18+)
 
 ---
 

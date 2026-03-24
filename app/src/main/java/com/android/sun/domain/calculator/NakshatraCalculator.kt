@@ -137,6 +137,139 @@ class NakshatraCalculator {
         )
     }
     
+    /**
+     * Calculează intervalele de timp exacte pentru toate cele 27 Nakshatre folosind
+     * date reale din efemeride (Swiss Ephemeris) pentru fiecare limită de trecere.
+     * 
+     * ✅ FIX CRITICAL: Viteza Lunii NU este constantă (~11.8° - 15.2° pe zi).
+     * Folosirea unei singure viteze pentru proiecția pe 27 de zile introduce erori MARI.
+     * Această metodă calculează poziția reală a Lunii la fiecare limită de Nakshatra
+     * folosind date din efemeride, obținând timpi preciși pentru zilele viitoare.
+     * 
+     * Algoritm: Forward-stepping cu rafinare Newton-Raphson
+     * 1. Pornește de la poziția/viteza curentă a Lunii
+     * 2. Estimează momentul trecerii la următoarea limită de Nakshatra
+     * 3. Interogează efemerida la momentul estimat pentru poziția reală
+     * 4. Rafinează cu Newton's method (ajustează pe baza erorii și vitezei reale)
+     * 5. Repetă pentru toate cele 27 de Nakshatre
+     * 
+     * @param currentMoonLongitude Longitudinea curentă a Lunii (sidereal, 0-360°)
+     * @param currentMoonSpeedDegreesPerDay Viteza curentă a Lunii (°/zi)
+     * @param currentTime Momentul curent (Calendar)
+     * @param getMoonPositionAndSpeed Funcție care returnează (longitudine, viteză °/zi) 
+     *        pentru un Calendar dat, folosind Swiss Ephemeris
+     * @return Lista cu 27 NakshatraTimeSlot, începând cu Nakshatra curentă
+     */
+    fun calculateFutureNakshatras(
+        currentMoonLongitude: Double,
+        currentMoonSpeedDegreesPerDay: Double,
+        currentTime: Calendar,
+        getMoonPositionAndSpeed: (Calendar) -> Pair<Double, Double>
+    ): List<NakshatraTimeSlot> {
+        val NAKSHATRA_DEG = 360.0 / 27.0  // 13.333333°
+        val slots = mutableListOf<NakshatraTimeSlot>()
+        
+        // Normalize current moon longitude
+        val normalizedLon = ((currentMoonLongitude % 360.0) + 360.0) % 360.0
+        var moonSpeed = currentMoonSpeedDegreesPerDay.coerceIn(10.0, 16.0)
+        
+        // Current Nakshatra index (0-based)
+        val startIdx = (normalizedLon / NAKSHATRA_DEG).toInt().coerceIn(0, 26)
+        
+        // Calculate start time of current Nakshatra (backwards from current position)
+        val degreesElapsedInCurrent = normalizedLon - startIdx * NAKSHATRA_DEG
+        val hoursElapsedInCurrent = degreesElapsedInCurrent / (moonSpeed / 24.0)
+        val currentNakshatraStartTime = currentTime.clone() as Calendar
+        currentNakshatraStartTime.add(Calendar.SECOND, -(hoursElapsedInCurrent * 3600).toInt())
+        
+        // Track the boundary time as we step forward
+        var boundaryTime = currentNakshatraStartTime.clone() as Calendar
+        
+        com.android.sun.util.AppLog.d("NakshatraFuture", "============================================")
+        com.android.sun.util.AppLog.d("NakshatraFuture", "🔮 CALCULATING FUTURE NAKSHATRAS WITH EPHEMERIS")
+        com.android.sun.util.AppLog.d("NakshatraFuture", "Current Moon: %.4f° Speed: %.2f°/day".format(normalizedLon, moonSpeed))
+        com.android.sun.util.AppLog.d("NakshatraFuture", "============================================")
+        
+        for (i in 0 until 27) {
+            val nakshatraIdx = (startIdx + i) % 27
+            val nakshatra = nakshatraList[nakshatraIdx]
+            
+            val nakshatraStartTime = boundaryTime.clone() as Calendar
+            
+            // Calculate end boundary for this Nakshatra
+            // The end boundary degree is (nakshatraIdx + 1) * NAKSHATRA_DEG
+            // For idx 26, end boundary = 360° which wraps to 0°
+            val endBoundaryDeg = ((nakshatraIdx + 1) * NAKSHATRA_DEG) % 360.0
+            
+            // Degrees the moon needs to traverse in this Nakshatra
+            val degreesToTraverse: Double
+            if (i == 0) {
+                // For current Nakshatra: remaining degrees from current position
+                degreesToTraverse = NAKSHATRA_DEG - degreesElapsedInCurrent
+            } else {
+                // For future Nakshatras: full 13.333°
+                degreesToTraverse = NAKSHATRA_DEG
+            }
+            
+            // Estimate time to traverse using current known speed
+            val hoursToTraverse = degreesToTraverse / (moonSpeed / 24.0)
+            var estimatedEndTime = (if (i == 0) currentTime.clone() else nakshatraStartTime.clone()) as Calendar
+            if (i == 0) {
+                // For current Nakshatra, estimate from current time + remaining time
+                val hoursRemaining = (NAKSHATRA_DEG - degreesElapsedInCurrent) / (moonSpeed / 24.0)
+                estimatedEndTime.add(Calendar.SECOND, (hoursRemaining * 3600).toInt())
+            } else {
+                estimatedEndTime.add(Calendar.SECOND, (hoursToTraverse * 3600).toInt())
+            }
+            
+            // ✅ REFINE with actual ephemeris data (Newton-Raphson, up to 3 iterations)
+            var refinedEndTime = estimatedEndTime
+            for (iteration in 0 until 3) {
+                try {
+                    val (actualLon, actualSpeed) = getMoonPositionAndSpeed(refinedEndTime)
+                    val normalizedActualLon = ((actualLon % 360.0) + 360.0) % 360.0
+                    val clampedSpeed = actualSpeed.coerceIn(10.0, 16.0)
+                    
+                    // Calculate error: how far is actual position from the target boundary?
+                    var error = normalizedActualLon - endBoundaryDeg
+                    
+                    // Handle 360°/0° wrap-around
+                    if (error > 180.0) error -= 360.0
+                    if (error < -180.0) error += 360.0
+                    
+                    // If error is small enough (< 0.01° ≈ ~1 minute of time), stop refining
+                    if (Math.abs(error) < 0.01) {
+                        moonSpeed = clampedSpeed  // Update speed for next Nakshatra
+                        break
+                    }
+                    
+                    // Newton's method: adjust time by error/speed
+                    val speedPerSecond = clampedSpeed / 86400.0  // degrees per second
+                    val timeAdjustSeconds = -(error / speedPerSecond).toLong()
+                    refinedEndTime = refinedEndTime.clone() as Calendar
+                    refinedEndTime.add(Calendar.SECOND, timeAdjustSeconds.toInt().coerceIn(-86400, 86400))
+                    
+                    moonSpeed = clampedSpeed  // Update speed for next Nakshatra
+                } catch (e: Exception) {
+                    com.android.sun.util.AppLog.w("NakshatraFuture", 
+                        "⚠️ Ephemeris query failed for Nakshatra ${nakshatra.displayName}, iteration $iteration: ${e.message}")
+                    // Fall back to the estimate
+                    break
+                }
+            }
+            
+            com.android.sun.util.AppLog.d("NakshatraFuture", 
+                "${nakshatra.number}. ${nakshatra.displayName}: ${nakshatraStartTime.time} → ${refinedEndTime.time} (speed: %.2f°/day)".format(moonSpeed))
+            
+            slots.add(NakshatraTimeSlot(nakshatra, nakshatraStartTime, refinedEndTime))
+            
+            // The end of this Nakshatra is the start of the next one
+            boundaryTime = refinedEndTime.clone() as Calendar
+        }
+        
+        return slots
+    }
+    
     companion object {
         /**
          * Convert moon longitude (0-360°) to zodiac sign with degrees, minutes, and seconds
@@ -246,6 +379,17 @@ enum class NakshatraType(
 }
 
 /**
+ * Pre-computed time slot for a single Nakshatra
+ * Contains the Nakshatra type and its exact start/end times calculated using
+ * actual ephemeris data (real moon positions and speeds at each boundary).
+ */
+data class NakshatraTimeSlot(
+    val nakshatra: NakshatraType,
+    val startTime: Calendar,
+    val endTime: Calendar
+)
+
+/**
  * Rezultatul calculului Nakshatra
  * 
  * ✅ FIXED DRIFT: zeroReferenceTime este calculat folosind poziția lunii la un moment fix (răsărit),
@@ -254,6 +398,10 @@ enum class NakshatraType(
  * asigurând că intervalele Nakshatra rămân constante.
  * 
  * ✅ ADDED moonZodiacPosition: Poziția lunii în zodiac (ex: "13°20′ Capricorn")
+ * 
+ * ✅ FIXED FUTURE NAKSHATRAS: futureNakshatras contains pre-computed time intervals
+ * for all 27 Nakshatras using actual ephemeris data for each boundary crossing,
+ * instead of extrapolating with a single constant moon speed.
  */
 data class NakshatraResult(
     val nakshatra: NakshatraType,
@@ -268,5 +416,6 @@ data class NakshatraResult(
     val zeroReferenceTime: Calendar,  // ✅ Required parameter - no default to ensure stability
     val moonZodiacPosition: String = "",  // ✅ Moon position in zodiac format (degrees only, no sign name)
     val moonZodiacSignIndex: Int = 0,  // ✅ Zodiac sign index (0=Aries..11=Pisces) for UI localization
-    val moonSpeedDegreesPerDay: Double = 13.2  // ✅ Actual moon speed used for time calculations
+    val moonSpeedDegreesPerDay: Double = 13.2,  // ✅ Actual moon speed used for time calculations
+    val futureNakshatras: List<NakshatraTimeSlot> = emptyList()  // ✅ Pre-computed Nakshatra intervals using real ephemeris data
 )

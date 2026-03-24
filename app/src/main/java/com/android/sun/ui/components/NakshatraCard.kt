@@ -114,52 +114,64 @@ fun NakshatraCard(
                             .heightIn(max = 400.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
-                        // Build reordered list: current Nakshatra first, then the rest in circular order
-                        val currentIndex = nakshatraResult.number - 1
-                        val reorderedList = buildList {
-                            // Add current Nakshatra first
-                            add(NakshatraCalculator.nakshatraList[currentIndex])
-                            // Add remaining Nakshatras in circular order
-                            for (i in 1 until 27) {
-                                val index = (currentIndex + i) % 27
-                                add(NakshatraCalculator.nakshatraList[index])
+                        // ✅ FIX: Use pre-computed future Nakshatras from ephemeris data
+                        // Each Nakshatra's time interval was calculated using actual moon
+                        // positions and speeds at each boundary (not a single constant speed).
+                        // This eliminates the large errors that accumulated when projecting
+                        // days ahead with a single speed value.
+                        val futureSlots = nakshatraResult.futureNakshatras
+                        
+                        if (futureSlots.isNotEmpty()) {
+                            // Use pre-computed ephemeris-based time slots
+                            futureSlots.forEachIndexed { displayIndex, slot ->
+                                val isCurrent = displayIndex == 0
+                                
+                                NakshatraRow(
+                                    nakshatra = slot.nakshatra,
+                                    isCurrent = isCurrent,
+                                    startTime = slot.startTime,
+                                    endTime = slot.endTime,
+                                    locationTimeZone = locationTimeZone,
+                                    onClick = { onNakshatraClick(slot.nakshatra) }
+                                )
                             }
-                        }
-                        
-                        // ✅ FIX: Use zeroReferenceTime to calculate ABSOLUTE times for all Nakshatras
-                        val nakshatraDegrees = 360.0 / 27.0  // 13.333333°
-                        val avgDegreesPerHour = nakshatraResult.moonSpeedDegreesPerDay / 24.0
-                        val zeroRef = nakshatraResult.zeroReferenceTime
-                        
-                        reorderedList.forEachIndexed { displayIndex, nakshatra ->
-                            val isCurrent = displayIndex == 0 // First item is always current
+                        } else {
+                            // Fallback: old method using single constant speed (backward compatibility)
+                            val currentIndex = nakshatraResult.number - 1
+                            val reorderedList = buildList {
+                                add(NakshatraCalculator.nakshatraList[currentIndex])
+                                for (i in 1 until 27) {
+                                    val index = (currentIndex + i) % 27
+                                    add(NakshatraCalculator.nakshatraList[index])
+                                }
+                            }
                             
-                            // ✅ FIX: Calculate ABSOLUTE start and end time from zero reference
-                            val nakshatraIndex = nakshatra.number - 1  // 0-based index
+                            val nakshatraDegrees = 360.0 / 27.0
+                            val avgDegreesPerHour = nakshatraResult.moonSpeedDegreesPerDay / 24.0
+                            val zeroRef = nakshatraResult.zeroReferenceTime
                             
-                            // ✅ FIX WRAP: If this Nakshatra appears after the current one in the
-                            // reordered list but has a smaller index (e.g., #1 after #27), it belongs
-                            // to the NEXT lunar cycle. Add a full 27-Nakshatra cycle offset.
-                            val cycleOffset = if (nakshatraIndex < currentIndex) 27.0 else 0.0
-                            
-                            // Time from 0° to start of this Nakshatra (with cycle wrap correction)
-                            val hoursToStart = (nakshatraIndex + cycleOffset) * nakshatraDegrees / avgDegreesPerHour
-                            val hoursToEnd = (nakshatraIndex + cycleOffset + 1) * nakshatraDegrees / avgDegreesPerHour
-                            
-                            val startTime = zeroRef.clone() as Calendar
-                            startTime.add(Calendar.MINUTE, (hoursToStart * 60).toInt())
-                            
-                            val endTime = zeroRef.clone() as Calendar
-                            endTime.add(Calendar.MINUTE, (hoursToEnd * 60).toInt())
-                            
-                            NakshatraRow(
-                                nakshatra = nakshatra,
-                                isCurrent = isCurrent,
-                                startTime = startTime,
-                                endTime = endTime,
-                                locationTimeZone = locationTimeZone,
-                                onClick = { onNakshatraClick(nakshatra) }
-                            )
+                            reorderedList.forEachIndexed { displayIndex, nakshatra ->
+                                val isCurrent = displayIndex == 0
+                                val nakshatraIndex = nakshatra.number - 1
+                                val cycleOffset = if (nakshatraIndex < currentIndex) 27.0 else 0.0
+                                val hoursToStart = (nakshatraIndex + cycleOffset) * nakshatraDegrees / avgDegreesPerHour
+                                val hoursToEnd = (nakshatraIndex + cycleOffset + 1) * nakshatraDegrees / avgDegreesPerHour
+                                
+                                val startTime = zeroRef.clone() as Calendar
+                                startTime.add(Calendar.MINUTE, (hoursToStart * 60).toInt())
+                                
+                                val endTime = zeroRef.clone() as Calendar
+                                endTime.add(Calendar.MINUTE, (hoursToEnd * 60).toInt())
+                                
+                                NakshatraRow(
+                                    nakshatra = nakshatra,
+                                    isCurrent = isCurrent,
+                                    startTime = startTime,
+                                    endTime = endTime,
+                                    locationTimeZone = locationTimeZone,
+                                    onClick = { onNakshatraClick(nakshatra) }
+                                )
+                            }
                         }
                     }
                     

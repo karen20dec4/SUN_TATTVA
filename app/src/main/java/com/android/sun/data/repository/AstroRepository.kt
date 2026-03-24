@@ -229,13 +229,38 @@ class AstroRepository(private val context: Context) {
         // The current moon position is used to identify which Nakshatra is active now,
         // but the sunrise moon position provides a STABLE reference point for all 27 Nakshatra intervals
         
-        val nakshatra = nakshatraCalculator.calculateNakshatra(
+        var nakshatra = nakshatraCalculator.calculateNakshatra(
             moonLongitude = moonLongitude,              // Current position → determines WHICH Nakshatra ✅
             currentTime = calendar,                     // Current time → for countdown ✅
             referenceMoonLongitude = moonLongitudeAtSunrise,  // Sunrise position → STABLE reference ✅
             referenceTime = sunrise,                    // Sunrise time → STABLE timestamp ✅
             moonSpeedDegreesPerDay = moonSpeedDegreesPerDay   // Actual moon speed → accurate timing ✅
         )
+        
+        // ✅ FIX FUTURE NAKSHATRAS: Calculate all 27 Nakshatra intervals using actual
+        // ephemeris data for each boundary crossing, instead of single constant speed.
+        // The moon speed varies from ~11.8° to ~15.2°/day, so using a single speed
+        // for projections spanning ~27 days causes large errors in future Nakshatras.
+        val futureNakshatras = nakshatraCalculator.calculateFutureNakshatras(
+            currentMoonLongitude = moonLongitude,
+            currentMoonSpeedDegreesPerDay = moonSpeedDegreesPerDay,
+            currentTime = calendar,
+            getMoonPositionAndSpeed = { queryTime ->
+                val utcQuery = queryTime.clone() as Calendar
+                utcQuery.timeZone = TimeZone.getTimeZone("UTC")
+                astroCalculator.calculateMoonLongitudeWithSpeed(
+                    utcQuery.get(Calendar.YEAR),
+                    utcQuery.get(Calendar.MONTH) + 1,
+                    utcQuery.get(Calendar.DAY_OF_MONTH),
+                    utcQuery.get(Calendar.HOUR_OF_DAY),
+                    utcQuery.get(Calendar.MINUTE),
+                    utcQuery.get(Calendar.SECOND)
+                )
+            }
+        )
+        
+        // Update nakshatra result with pre-computed future intervals
+        nakshatra = nakshatra.copy(futureNakshatras = futureNakshatras)
         
         // ✅ FIX: Apelează cu 2 parametri Double, nu Calendar
         val sunrisePolarity = polarityCalculator.calculateSunrisePolarity(
