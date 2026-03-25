@@ -10,12 +10,12 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
-- **Current Version:** 2.20 (versionCode 14)
+- **Current Version:** 2.21 (versionCode 15)
 
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
-- Current: **2.20**
-- Next versions: **2.21**, **2.22**, **2.23**, ...
+- Current: **2.21**
+- Next versions: **2.22**, **2.23**, **2.24**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
@@ -136,6 +136,10 @@ Lunar mansions (27 divisions of the ecliptic, each ~13.33°), calculated from th
 **Future Nakshatra Calculation (v2.18+):** All 27 future Nakshatra time intervals are calculated using actual ephemeris data for each boundary crossing (Newton-Raphson refinement), instead of extrapolating with a single constant moon speed. This eliminates the large cumulative errors that occurred because the Moon's speed varies from ~11.8° to ~15.2° per day. See `nakshatra-fix-resolution.md` for details.
 
 **Extended Descriptions (v2.20+):** Each Nakshatra has a detailed description including symbolism, **Ce se face:** (What to do) and **Ce nu se face:** (What NOT to do) — practical guidance for each lunar mansion. The descriptions are rendered with bold markers and paragraph spacing. See `Nakshatra-descriere-extinsa.txt` for the source and `nakshatra-calculation.md` for the full technical documentation.
+
+**NakshatraCard UI (v2.21+):**
+- **Countdown fix:** The remaining time countdown now uses the ephemeris-refined `endTime` from `futureNakshatras[0]` instead of the simple extrapolation `endTime` from `calculateNakshatra()`. This fixes cases where the countdown showed incorrect values (e.g. 28h instead of ~12h).
+- **Layout fix:** "Nakshatra:" label moved to card title row (smaller, above the name). The Nakshatra name now has the full row width, preventing truncation of long names like "Purva Bhadrapada" or "Uttara Bhadrapada" on smaller screens.
 
 ---
 

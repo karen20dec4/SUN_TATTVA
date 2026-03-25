@@ -185,7 +185,10 @@ fun NakshatraCard(
 }
 
 /**
- * Header compact: Shows current Nakshatra + countdown (no title, single line)
+ * Header compact: Shows "Nakshatra" as card title on first row,
+ * then Nakshatra name + countdown on second row.
+ * ✅ FIX: Uses ephemeris-refined endTime from futureNakshatras[0] for accurate countdown
+ * ✅ FIX: "Nakshatra:" moved to title row to prevent long names from being cut off
  */
 @Suppress("UNUSED_PARAMETER")
 @Composable
@@ -203,8 +206,16 @@ private fun CurrentNakshatraHeader(
         }
     }
     
-    // Calculează countdown
-    val timeRemaining = nakshatraResult.endTime.timeInMillis - currentTime.timeInMillis
+    // ✅ FIX: Use ephemeris-refined endTime from futureNakshatras[0] if available,
+    // otherwise fall back to the simple extrapolation endTime.
+    // The futureNakshatras endTime is calculated using actual Swiss Ephemeris data
+    // at each boundary (Newton-Raphson refinement), while nakshatraResult.endTime
+    // uses a simple speed extrapolation which can be off by hours.
+    val accurateEndTime = nakshatraResult.futureNakshatras.firstOrNull()?.endTime
+        ?: nakshatraResult.endTime
+    
+    // Calculează countdown folosind endTime-ul precis
+    val timeRemaining = accurateEndTime.timeInMillis - currentTime.timeInMillis
     
     // ✅ FIX: Handle negative time (when Nakshatra has ended)
     val countdownText = if (timeRemaining <= 0) {
@@ -223,35 +234,18 @@ private fun CurrentNakshatraHeader(
         }
     }
     
-    // Single row with Nakshatra name and countdown
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // ✅ NAKSHATRA (stânga) - colored by Tattva with prefix
-        Text(
-            text = "${stringResource(R.string.nakshatra_label)} ${nakshatraResult.nakshatra.displayName}",
-            style = MaterialTheme.typography.titleLarge,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = getNakshatraTattvaColor(nakshatraResult.nakshatra),
-            maxLines = 1,
-            modifier = Modifier.weight(1f)
-        )
-        
-        // ✅ COUNTDOWN + ICON (dreapta)
+    Column(modifier = Modifier.fillMaxWidth()) {
+        // ✅ ROW 1: "Nakshatra" title + expand/collapse icon
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = countdownText,
-                style = MaterialTheme.typography.titleMedium,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1
+                text = stringResource(R.string.nakshatra_label),
+                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
             
             Icon(
@@ -263,6 +257,36 @@ private fun CurrentNakshatraHeader(
                 contentDescription = if (isExpanded) stringResource(R.string.collapse) else stringResource(R.string.expand),
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
+            )
+        }
+        
+        Spacer(modifier = Modifier.height(4.dp))
+        
+        // ✅ ROW 2: Nakshatra name (colored by Tattva) + countdown
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Nakshatra name (stânga) - colored by Tattva, full space for long names
+            Text(
+                text = nakshatraResult.nakshatra.displayName,
+                style = MaterialTheme.typography.titleLarge,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = getNakshatraTattvaColor(nakshatraResult.nakshatra),
+                maxLines = 1,
+                modifier = Modifier.weight(1f)
+            )
+            
+            // Countdown (dreapta)
+            Text(
+                text = countdownText,
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1
             )
         }
     }
