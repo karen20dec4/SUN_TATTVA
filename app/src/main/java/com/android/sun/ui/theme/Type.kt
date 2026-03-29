@@ -1,6 +1,7 @@
 package com.android.sun.ui.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -9,175 +10,318 @@ import androidx.compose.ui.unit.sp
 import com.android.sun.R
 
 /**
- * Tipografie pentru aplicația SUN
+ * Tipografie pentru aplicația SUN — 3 profiluri selectabile din Settings
  *
- * Quicksand Bold     → Titluri principale (display, headline, title)
- * Work Sans Medium   → Subtitluri și label-uri (label, body)
- * Nunito Sans        → Date numerice, ore (countdown, timestamps)
- * Monospace           → Coduri Tattva (G, O, A, U, L)
+ * Profil 1 „Quicksand+" (default, 40% mai gros decât înainte):
+ *   Titluri:   Quicksand  ExtraBold (800)
+ *   Subtitluri: Work Sans  Bold (700)
+ *   Cifre:     Nunito Sans SemiBold (600)
+ *
+ * Profil 2 „Kanit":
+ *   Titluri:   Kanit Bold / ExtraBold
+ *   Subtitluri: Open Sans SemiBold
+ *   Cifre:     Lato Bold
+ *
+ * Profil 3 „Claritate Maximă":
+ *   Titluri:   Public Sans Bold
+ *   Subtitluri: Inter SemiBold
+ *   Cifre:     Rubik Bold
  */
 
-// ── Custom Font Families ──────────────────────────────────────
+// ── Font Profile IDs ──────────────────────────────────────────
+const val FONT_PROFILE_QUICKSAND = 1
+const val FONT_PROFILE_KANIT = 2
+const val FONT_PROFILE_PUBLIC_SANS = 3
+
+// ── CompositionLocal for current font profile ─────────────────
+val LocalFontProfile = staticCompositionLocalOf { FONT_PROFILE_QUICKSAND }
+
+// ══════════════════════════════════════════════════════════════
+//  PROFIL 1  —  Quicksand + Work Sans + Nunito Sans (40% bolder)
+// ══════════════════════════════════════════════════════════════
+
 val QuicksandFamily = FontFamily(
-    Font(R.font.quicksand, FontWeight.Bold)
+    Font(R.font.quicksand, FontWeight.Bold),
+    Font(R.font.quicksand, FontWeight.ExtraBold),
+    Font(R.font.quicksand, FontWeight.Black)
 )
 
 val WorkSansFamily = FontFamily(
-    Font(R.font.work_sans, FontWeight.Medium)
+    Font(R.font.work_sans, FontWeight.Medium),
+    Font(R.font.work_sans, FontWeight.SemiBold),
+    Font(R.font.work_sans, FontWeight.Bold)
 )
 
 val NunitoSansFamily = FontFamily(
-    Font(R.font.nunito_sans, FontWeight.Normal)
+    Font(R.font.nunito_sans, FontWeight.Normal),
+    Font(R.font.nunito_sans, FontWeight.Medium),
+    Font(R.font.nunito_sans, FontWeight.SemiBold),
+    Font(R.font.nunito_sans, FontWeight.Bold)
 )
 
-// ── Material 3 Typography ─────────────────────────────────────
-val Typography = Typography(
-    // Display styles — Quicksand Bold (titluri mari)
-    displayLarge = TextStyle(
-        fontFamily = QuicksandFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 57.sp,
-        lineHeight = 64.sp,
-        letterSpacing = (-0.25).sp
-    ),
-    displayMedium = TextStyle(
-        fontFamily = QuicksandFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 45.sp,
-        lineHeight = 52.sp,
+// ══════════════════════════════════════════════════════════════
+//  PROFIL 2  —  Kanit + Open Sans + Lato
+// ══════════════════════════════════════════════════════════════
+
+val KanitFamily = FontFamily(
+    Font(R.font.kanit_bold, FontWeight.Bold),
+    Font(R.font.kanit_extrabold, FontWeight.ExtraBold)
+)
+
+val OpenSansFamily = FontFamily(
+    Font(R.font.open_sans, FontWeight.Normal),
+    Font(R.font.open_sans, FontWeight.Medium),
+    Font(R.font.open_sans, FontWeight.SemiBold),
+    Font(R.font.open_sans, FontWeight.Bold)
+)
+
+val LatoFamily = FontFamily(
+    Font(R.font.lato_bold, FontWeight.Bold)
+)
+
+// ══════════════════════════════════════════════════════════════
+//  PROFIL 3  —  Public Sans + Inter + Rubik
+// ══════════════════════════════════════════════════════════════
+
+val PublicSansFamily = FontFamily(
+    Font(R.font.public_sans, FontWeight.Normal),
+    Font(R.font.public_sans, FontWeight.Medium),
+    Font(R.font.public_sans, FontWeight.SemiBold),
+    Font(R.font.public_sans, FontWeight.Bold)
+)
+
+val InterFamily = FontFamily(
+    Font(R.font.inter, FontWeight.Normal),
+    Font(R.font.inter, FontWeight.Medium),
+    Font(R.font.inter, FontWeight.SemiBold),
+    Font(R.font.inter, FontWeight.Bold)
+)
+
+val RubikFamily = FontFamily(
+    Font(R.font.rubik, FontWeight.Normal),
+    Font(R.font.rubik, FontWeight.Medium),
+    Font(R.font.rubik, FontWeight.SemiBold),
+    Font(R.font.rubik, FontWeight.Bold)
+)
+
+// ══════════════════════════════════════════════════════════════
+//  Font profile data class
+// ══════════════════════════════════════════════════════════════
+
+private data class FontProfileSpec(
+    val titleFamily: FontFamily,
+    val titleWeight: FontWeight,
+    val subtitleFamily: FontFamily,
+    val subtitleWeight: FontWeight,
+    val numericFamily: FontFamily,
+    val numericWeight: FontWeight,
+    val numericBoldWeight: FontWeight
+)
+
+private fun getFontProfileSpec(profile: Int): FontProfileSpec = when (profile) {
+    FONT_PROFILE_KANIT -> FontProfileSpec(
+        titleFamily = KanitFamily,
+        titleWeight = FontWeight.ExtraBold,
+        subtitleFamily = OpenSansFamily,
+        subtitleWeight = FontWeight.SemiBold,
+        numericFamily = LatoFamily,
+        numericWeight = FontWeight.Bold,
+        numericBoldWeight = FontWeight.Bold
+    )
+    FONT_PROFILE_PUBLIC_SANS -> FontProfileSpec(
+        titleFamily = PublicSansFamily,
+        titleWeight = FontWeight.Bold,
+        subtitleFamily = InterFamily,
+        subtitleWeight = FontWeight.SemiBold,
+        numericFamily = RubikFamily,
+        numericWeight = FontWeight.Medium,
+        numericBoldWeight = FontWeight.Bold
+    )
+    else -> FontProfileSpec(  // FONT_PROFILE_QUICKSAND (default, 40% bolder)
+        titleFamily = QuicksandFamily,
+        titleWeight = FontWeight.ExtraBold,     // was Bold (700) → ExtraBold (800)
+        subtitleFamily = WorkSansFamily,
+        subtitleWeight = FontWeight.Bold,        // was Medium (500) → Bold (700)
+        numericFamily = NunitoSansFamily,
+        numericWeight = FontWeight.SemiBold,     // was Normal (400) → SemiBold (600)
+        numericBoldWeight = FontWeight.ExtraBold // was Bold (700) → ExtraBold (800)
+    )
+}
+
+// ══════════════════════════════════════════════════════════════
+//  Build Typography from profile
+// ══════════════════════════════════════════════════════════════
+
+fun buildTypography(profile: Int): Typography {
+    val spec = getFontProfileSpec(profile)
+    return Typography(
+        // Display styles — titluri mari
+        displayLarge = TextStyle(
+            fontFamily = spec.titleFamily,
+            fontWeight = spec.titleWeight,
+            fontSize = 57.sp,
+            lineHeight = 64.sp,
+            letterSpacing = (-0.25).sp
+        ),
+        displayMedium = TextStyle(
+            fontFamily = spec.titleFamily,
+            fontWeight = spec.titleWeight,
+            fontSize = 45.sp,
+            lineHeight = 52.sp,
+            letterSpacing = 0.sp
+        ),
+        displaySmall = TextStyle(
+            fontFamily = spec.titleFamily,
+            fontWeight = spec.titleWeight,
+            fontSize = 36.sp,
+            lineHeight = 44.sp,
+            letterSpacing = 0.sp
+        ),
+
+        // Headline styles — titluri secțiuni
+        headlineLarge = TextStyle(
+            fontFamily = spec.titleFamily,
+            fontWeight = spec.titleWeight,
+            fontSize = 32.sp,
+            lineHeight = 40.sp,
+            letterSpacing = 0.sp
+        ),
+        headlineMedium = TextStyle(
+            fontFamily = spec.titleFamily,
+            fontWeight = spec.titleWeight,
+            fontSize = 28.sp,
+            lineHeight = 36.sp,
+            letterSpacing = 0.sp
+        ),
+        headlineSmall = TextStyle(
+            fontFamily = spec.titleFamily,
+            fontWeight = spec.titleWeight,
+            fontSize = 24.sp,
+            lineHeight = 32.sp,
+            letterSpacing = 0.sp
+        ),
+
+        // Title styles — titluri carduri
+        titleLarge = TextStyle(
+            fontFamily = spec.titleFamily,
+            fontWeight = spec.titleWeight,
+            fontSize = 22.sp,
+            lineHeight = 28.sp,
+            letterSpacing = 0.sp
+        ),
+        titleMedium = TextStyle(
+            fontFamily = spec.titleFamily,
+            fontWeight = spec.titleWeight,
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            letterSpacing = 0.15.sp
+        ),
+        titleSmall = TextStyle(
+            fontFamily = spec.titleFamily,
+            fontWeight = spec.titleWeight,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            letterSpacing = 0.1.sp
+        ),
+
+        // Body styles — text normal / subtitluri
+        bodyLarge = TextStyle(
+            fontFamily = spec.subtitleFamily,
+            fontWeight = spec.subtitleWeight,
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            letterSpacing = 0.5.sp
+        ),
+        bodyMedium = TextStyle(
+            fontFamily = spec.subtitleFamily,
+            fontWeight = spec.subtitleWeight,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            letterSpacing = 0.25.sp
+        ),
+        bodySmall = TextStyle(
+            fontFamily = spec.subtitleFamily,
+            fontWeight = spec.subtitleWeight,
+            fontSize = 12.sp,
+            lineHeight = 16.sp,
+            letterSpacing = 0.4.sp
+        ),
+
+        // Label styles — label-uri și butoane
+        labelLarge = TextStyle(
+            fontFamily = spec.subtitleFamily,
+            fontWeight = spec.subtitleWeight,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            letterSpacing = 0.1.sp
+        ),
+        labelMedium = TextStyle(
+            fontFamily = spec.subtitleFamily,
+            fontWeight = spec.subtitleWeight,
+            fontSize = 12.sp,
+            lineHeight = 16.sp,
+            letterSpacing = 0.5.sp
+        ),
+        labelSmall = TextStyle(
+            fontFamily = spec.subtitleFamily,
+            fontWeight = spec.subtitleWeight,
+            fontSize = 11.sp,
+            lineHeight = 16.sp,
+            letterSpacing = 0.5.sp
+        )
+    )
+}
+
+// Default typography (Profile 1) — for backwards compat
+val Typography = buildTypography(FONT_PROFILE_QUICKSAND)
+
+// ══════════════════════════════════════════════════════════════
+//  Extra TextStyles — profile-aware via Composable accessors
+// ══════════════════════════════════════════════════════════════
+
+/**
+ * Nunito Sans / Lato / Rubik — date numerice, ore, countdown-uri
+ */
+fun buildMonospaceTextStyle(profile: Int): TextStyle {
+    val spec = getFontProfileSpec(profile)
+    return TextStyle(
+        fontFamily = spec.numericFamily,
+        fontWeight = spec.numericWeight,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
         letterSpacing = 0.sp
-    ),
-    displaySmall = TextStyle(
-        fontFamily = QuicksandFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 36.sp,
-        lineHeight = 44.sp,
+    )
+}
+
+/**
+ * Titluri Tattva/SubTattva/Planet
+ */
+fun buildTattvaNameStyle(profile: Int): TextStyle {
+    val spec = getFontProfileSpec(profile)
+    return TextStyle(
+        fontFamily = spec.titleFamily,
+        fontWeight = spec.titleWeight,
+        fontSize = 20.sp,
+        lineHeight = 28.sp,
         letterSpacing = 0.sp
-    ),
-    
-    // Headline styles — Quicksand Bold (titluri secțiuni)
-    headlineLarge = TextStyle(
-        fontFamily = QuicksandFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 32.sp,
-        lineHeight = 40.sp,
-        letterSpacing = 0.sp
-    ),
-    headlineMedium = TextStyle(
-        fontFamily = QuicksandFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 28.sp,
-        lineHeight = 36.sp,
-        letterSpacing = 0.sp
-    ),
-    headlineSmall = TextStyle(
-        fontFamily = QuicksandFamily,
-        fontWeight = FontWeight.Bold,
+    )
+}
+
+/**
+ * Coduri Tattva (G, O, A, U, L)
+ */
+fun buildTattvaCodeStyle(profile: Int): TextStyle {
+    val spec = getFontProfileSpec(profile)
+    return TextStyle(
+        fontFamily = spec.numericFamily,
+        fontWeight = spec.numericBoldWeight,
         fontSize = 24.sp,
         lineHeight = 32.sp,
         letterSpacing = 0.sp
-    ),
-    
-    // Title styles — Quicksand Bold (titluri carduri)
-    titleLarge = TextStyle(
-        fontFamily = QuicksandFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ),
-    titleMedium = TextStyle(
-        fontFamily = QuicksandFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.15.sp
-    ),
-    titleSmall = TextStyle(
-        fontFamily = QuicksandFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.1.sp
-    ),
-    
-    // Body styles — Work Sans Medium (text normal / subtitluri)
-    bodyLarge = TextStyle(
-        fontFamily = WorkSansFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = WorkSansFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.25.sp
-    ),
-    bodySmall = TextStyle(
-        fontFamily = WorkSansFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 12.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.4.sp
-    ),
-    
-    // Label styles — Work Sans Medium (label-uri și butoane)
-    labelLarge = TextStyle(
-        fontFamily = WorkSansFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.1.sp
-    ),
-    labelMedium = TextStyle(
-        fontFamily = WorkSansFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 12.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    ),
-    labelSmall = TextStyle(
-        fontFamily = WorkSansFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
     )
-)
+}
 
-/**
- * Nunito Sans — date numerice, ore, countdown-uri
- * Cifre cu lățime uniformă pentru aliniere perfectă
- */
-val MonospaceTextStyle = TextStyle(
-    fontFamily = NunitoSansFamily,
-    fontWeight = FontWeight.Normal,
-    fontSize = 16.sp,
-    lineHeight = 24.sp,
-    letterSpacing = 0.sp
-)
-
-/**
- * Quicksand Bold — titluri Tattva/SubTattva/Planet
- */
-val TattvaNameStyle = TextStyle(
-    fontFamily = QuicksandFamily,
-    fontWeight = FontWeight.Bold,
-    fontSize = 20.sp,
-    lineHeight = 28.sp,
-    letterSpacing = 0.sp
-)
-
-/**
- * Nunito Sans — coduri Tattva (G, O, A, U, L)
- */
-val TattvaCodeStyle = TextStyle(
-    fontFamily = NunitoSansFamily,
-    fontWeight = FontWeight.Bold,
-    fontSize = 24.sp,
-    lineHeight = 32.sp,
-    letterSpacing = 0.sp
-)
+// ── Static defaults for non-Composable contexts ───────────────
+val MonospaceTextStyle = buildMonospaceTextStyle(FONT_PROFILE_QUICKSAND)
+val TattvaNameStyle = buildTattvaNameStyle(FONT_PROFILE_QUICKSAND)
+val TattvaCodeStyle = buildTattvaCodeStyle(FONT_PROFILE_QUICKSAND)

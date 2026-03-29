@@ -48,6 +48,14 @@
     <string name="tattva_sound_tap_to_pick">Tap the tattva symbol to select a custom sound</string>
     <string name="tattva_sound_phone_muted">🔇 Phone is on silent — you won\'t hear the sound</string>
     <string name="tattva_sound_phone_vibrate">📳 Phone is on vibrate — you won\'t hear the sound</string>
+    <string name="font_profile_title">Font Profile</string>
+    <string name="font_profile_subtitle">Choose your preferred typography style</string>
+    <string name="font_profile_1_name">Quicksand+</string>
+    <string name="font_profile_1_desc">Quicksand ExtraBold · Work Sans Bold · Nunito Sans</string>
+    <string name="font_profile_2_name">Kanit</string>
+    <string name="font_profile_2_desc">Kanit ExtraBold · Open Sans SemiBold · Lato Bold</string>
+    <string name="font_profile_3_name">Maximum Clarity</string>
+    <string name="font_profile_3_desc">Public Sans Bold · Inter SemiBold · Rubik Bold</string>
     <string name="notification_until">until</string>
     <string name="section_about">About</string>
     <string name="version">Version</string>

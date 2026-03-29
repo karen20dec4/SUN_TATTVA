@@ -60,6 +60,7 @@ class MainActivity : ComponentActivity() {
 		setContent {
             val isDarkTheme by settingsPreferences.isDarkTheme.collectAsState()
             val currentLanguage by settingsPreferences.language.collectAsState()
+            val fontProfile by settingsPreferences.fontProfile.collectAsState()
             
             // Apply locale based on language preference
             val context = LocalContext.current
@@ -77,7 +78,7 @@ class MainActivity : ComponentActivity() {
                 LocalContext provides localizedContext,
                 LocalActivityResultRegistryOwner provides this@MainActivity
             ) {
-                SunTheme(darkTheme = isDarkTheme) {
+                SunTheme(darkTheme = isDarkTheme, fontProfile = fontProfile) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
@@ -208,6 +209,10 @@ fun AppNavigation(
 				isDarkTheme = isDarkTheme,
 				onDarkThemeChange = { enabled ->
 					settingsPreferences.setDarkTheme(enabled)
+				},
+				fontProfile = fontProfile,
+				onFontProfileChange = { profile ->
+					settingsPreferences.setFontProfile(profile)
 				},
 				currentLanguage = currentLanguage,
 				onLanguageChange = { lang ->

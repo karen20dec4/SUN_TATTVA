@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -13,7 +14,7 @@ import androidx.core.view.WindowCompat
 
 /**
  * Tema principală a aplicației SUN
- * Suportă Light și Dark mode
+ * Suportă Light și Dark mode + Font Profiles
  */
 
 	private val LightColorScheme = lightColorScheme(
@@ -83,11 +84,13 @@ import androidx.core.view.WindowCompat
 	 * 
 	 * @param darkTheme Activează dark mode (default = setare sistem)
 	 * @param dynamicColor Activează Material You colors (Android 12+)
+	 * @param fontProfile Profilul de fonturi (1, 2, sau 3)
 	 */
 	@Composable
 	fun SunTheme(
 		darkTheme: Boolean = isSystemInDarkTheme(),
 		dynamicColor: Boolean = false,  // Dezactivat pentru culori consistente Tattva
+		fontProfile: Int = FONT_PROFILE_QUICKSAND,
 		content: @Composable () -> Unit
 	) {
 		val colorScheme = when {
@@ -102,6 +105,8 @@ import androidx.core.view.WindowCompat
 			darkTheme -> DarkColorScheme
 			else -> LightColorScheme
 		}
+		
+		val typography = buildTypography(fontProfile)
 		
 		val view = LocalView.current
 		if (!view.isInEditMode) {
@@ -121,18 +126,13 @@ import androidx.core.view.WindowCompat
 				// Iconite navigation bar
 				WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
 			}
-		
-		
-		
-		
-		
-		
-		
 		}
 
-		MaterialTheme(
-			colorScheme = colorScheme,
-			typography = Typography,
-			content = content
-		)
+		CompositionLocalProvider(LocalFontProfile provides fontProfile) {
+			MaterialTheme(
+				colorScheme = colorScheme,
+				typography = typography,
+				content = content
+			)
+		}
 	}

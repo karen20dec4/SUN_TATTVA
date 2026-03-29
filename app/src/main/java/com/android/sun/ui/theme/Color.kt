@@ -34,14 +34,13 @@ val ErrorContainer = Color(0xFFF9DEDC)
 val OnErrorContainer = Color(0xFF410E0B)
 
 val Background = Color(0xFFFFFBFE)
-val OnBackground = Color(0xFF1C1B1F)
+val OnBackground = Color(0xFF141414)
 val Surface = Color(0xFFFFFBFE)
-val OnSurface = Color(0xFF1C1B1F)
+val OnSurface = Color(0xFF141414)
 
 // val SurfaceVariant = Color(0xFFE7E0EC)  // de inlocuit CU F1EDF0
 val SurfaceVariant = Color(0xFFF1EDF0)  
-// val OnSurfaceVariant = Color(0xFF49454F) // inlocuim cu 2D2A34
-val OnSurfaceVariant = Color(0xFF2D2A34)
+val OnSurfaceVariant = Color(0xFF141414)
 val Outline = Color(0xFF79747E)
 
 // Dark Theme
@@ -66,14 +65,14 @@ val ErrorContainerDark = Color(0xFF8C1D18)
 val OnErrorContainerDark = Color(0xFFF9DEDC)
 
 val BackgroundDark = Color(0xFF1C1B1F)
-val OnBackgroundDark = Color(0xFFE6E1E5)
+val OnBackgroundDark = Color(0xFFF1F1F1)
 val SurfaceDark = Color(0xFF1C1B1F)
-val OnSurfaceDark = Color(0xFFE6E1E5)
+val OnSurfaceDark = Color(0xFFF1F1F1)
 
 // val SurfaceVariantDark = Color(0xFF49454F) // Ilocuim cu 2D2A34
 val SurfaceVariantDark = Color(0xFF2D2A34)
 
-val OnSurfaceVariantDark = Color(0xFFCAC4D0)
+val OnSurfaceVariantDark = Color(0xFFF1F1F1)
 val OutlineDark = Color(0xFF938F99)
 
 // ============================================

@@ -44,6 +44,8 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(
     isDarkTheme: Boolean,
     onDarkThemeChange: (Boolean) -> Unit,
+    fontProfile: Int,
+    onFontProfileChange: (Int) -> Unit,
     isFullMoonNotification: Boolean,
     onFullMoonNotificationChange: (Boolean) -> Unit,
     isTripuraSundariNotification: Boolean,
@@ -281,6 +283,12 @@ fun SettingsScreen(
 				    onSoundVolumeChange = onSoundVolumeChange,
 				    customSoundUris = customSoundUris,
 				    onTattvaIconClick = { name, code -> tattvaPickerFor = name to code }
+				)
+				
+				// Font Profile Card
+				FontProfileCard(
+				    fontProfile = fontProfile,
+				    onFontProfileChange = onFontProfileChange
 				)
 				
 				HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
@@ -701,6 +709,116 @@ private fun TattvaSoundCard(
         )
     }
     } // Box
+}
+
+/**
+ * Card for Font Profile selection — 3 radio button options
+ */
+@Composable
+private fun FontProfileCard(
+    fontProfile: Int,
+    onFontProfileChange: (Int) -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(7.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.font_profile_title),
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Text(
+                text = stringResource(R.string.font_profile_subtitle),
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+            
+            // Profile 1
+            FontProfileOption(
+                profileId = 1,
+                name = stringResource(R.string.font_profile_1_name),
+                description = stringResource(R.string.font_profile_1_desc),
+                isSelected = fontProfile == 1,
+                onSelect = { onFontProfileChange(1) }
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            // Profile 2
+            FontProfileOption(
+                profileId = 2,
+                name = stringResource(R.string.font_profile_2_name),
+                description = stringResource(R.string.font_profile_2_desc),
+                isSelected = fontProfile == 2,
+                onSelect = { onFontProfileChange(2) }
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            // Profile 3
+            FontProfileOption(
+                profileId = 3,
+                name = stringResource(R.string.font_profile_3_name),
+                description = stringResource(R.string.font_profile_3_desc),
+                isSelected = fontProfile == 3,
+                onSelect = { onFontProfileChange(3) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun FontProfileOption(
+    profileId: Int,
+    name: String,
+    description: String,
+    isSelected: Boolean,
+    onSelect: () -> Unit
+) {
+    Surface(
+        onClick = onSelect,
+        shape = RoundedCornerShape(6.dp),
+        color = if (isSelected) {
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant
+        },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(
+                selected = isSelected,
+                onClick = onSelect
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = name,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = description,
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                )
+            }
+        }
+    }
 }
 
 /**
