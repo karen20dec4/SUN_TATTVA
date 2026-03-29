@@ -53,15 +53,6 @@
     <string name="version">Version</string>
     <string name="sun_time">SUN TIME</string>
 
-    <!-- Debug Section -->
-    <string name="section_debug">🐛 Debug</string>
-    <string name="debug_date_title">Test date</string>
-    <string name="debug_date_subtitle">Override current date for testing Nakshatra calculations</string>
-    <string name="debug_date_active">🐛 DEBUG ACTIVE: %s</string>
-    <string name="debug_date_pick">Pick date</string>
-    <string name="debug_date_clear">Disable</string>
-    <string name="debug_date_none">No date set (using real date)</string>
-
     <!-- Main Screen / Cards -->
     <string name="show_day">SHOW DAY</string>
     <string name="nakshatra_label">Nakshatra:</string>

@@ -43,7 +43,6 @@ fun MainScreen(
     isLoading: Boolean,
     codeMode: Boolean,
     isDarkTheme: Boolean = false,
-    debugDateLabel: String? = null,
     onCodeModeChange:  (Boolean) -> Unit,
     onRefresh: () -> Unit,
     onNavigateToLocation: () -> Unit,
@@ -75,27 +74,6 @@ fun MainScreen(
                         bottom = 100.dp
                     )
                 ) {
-                    // ✅ DEBUG BANNER: Show when debug date is active
-                    if (debugDateLabel != null) {
-                        item(key = "debug_banner") {
-                            Card(
-                                shape = RoundedCornerShape(7.dp),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = Color(0xFFFF6B00).copy(alpha = 0.2f)
-                                ),
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = "🐛 DEBUG: $debugDateLabel",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 14.sp,
-                                    color = Color(0xFFFF6B00),
-                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                                )
-                            }
-                        }
-                    }
-                    
                     item(key = "info_compact") {
                         CompactInfoCard(
                             astroData = astroData,
@@ -207,13 +185,14 @@ private fun CompactInfoCard(
 
     val tattvaColor = astroData.tattva.toTattvaInfo().color
     
-    val locationOffsetMillis = (astroData.timeZone * 3600 * 1000).toInt()
-    val locationTimeZone = SimpleTimeZone(locationOffsetMillis, "Location")
+    // ✅ DST-aware timezone from TimeZoneUtils
+    val locationTimeZone = com.android.sun.util.TimeZoneUtils.getLocationTimeZone(astroData.locationName, astroData.timeZone)
     
     val phoneTimeZone = TimeZone.getDefault()
-    val phoneOffsetHours = phoneTimeZone.rawOffset / (1000.0 * 60.0 * 60.0)
+    val phoneOffsetMs = phoneTimeZone.getOffset(System.currentTimeMillis())
+    val locationOffsetMs = locationTimeZone.getOffset(System.currentTimeMillis())
     
-    val isDifferentTimeZone = kotlin.math.abs(astroData.timeZone - phoneOffsetHours) > 0.1
+    val isDifferentTimeZone = kotlin.math.abs(locationOffsetMs - phoneOffsetMs) > 60_000 // >1 min difference
 
     Card(
         modifier = Modifier
@@ -325,17 +304,19 @@ private fun CompactInfoCard(
                     if (isDifferentTimeZone) {
                         Spacer(modifier = Modifier.height(4.dp))
                         
-                        val localTimeFormat = SimpleDateFormat("HH:mm: ss", Locale.getDefault()).apply {
+                        val localTimeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).apply {
                             timeZone = locationTimeZone
                         }
                         
-                        // ✅ DST-aware offset: use locationTimeZone.getOffset() instead of static astroData.timeZone
+                        // ✅ DST-aware offset with simple format: GMT+1, GMT+3, GMT+5.5
                         val actualOffsetMs = locationTimeZone.getOffset(System.currentTimeMillis())
-                        val actualOffsetTotalMinutes = actualOffsetMs / (1000 * 60)
-                        val gmtOffsetHours = actualOffsetTotalMinutes / 60
-                        val gmtOffsetMinutes = kotlin.math.abs(actualOffsetTotalMinutes % 60)
-                        val gmtSign = if (actualOffsetTotalMinutes >= 0) "+" else "-"
-                        val gmtOffsetFormatted = String.format("GMT%s%02d:%02d", gmtSign, kotlin.math.abs(gmtOffsetHours), gmtOffsetMinutes)
+                        val actualOffsetHours = actualOffsetMs / 3600000.0
+                        val gmtSign = if (actualOffsetHours >= 0) "+" else ""
+                        val gmtOffsetFormatted = if (actualOffsetHours == actualOffsetHours.toLong().toDouble()) {
+                            String.format("GMT%s%d", gmtSign, actualOffsetHours.toLong())
+                        } else {
+                            String.format("GMT%s%.1f", gmtSign, actualOffsetHours)
+                        }
                         
                         Row(
                             verticalAlignment = Alignment.CenterVertically

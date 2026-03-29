@@ -134,10 +134,6 @@ fun AppNavigation(
     val soundVolume by settingsPreferences.tattvaSoundVolume.collectAsState()
     val customSoundUris by settingsPreferences.customSoundUris.collectAsState()
     
-    // Debug date preferences
-    val isDebugDateEnabled by settingsPreferences.debugDateEnabled.collectAsState()
-    val debugDateMillis by settingsPreferences.debugDateMillis.collectAsState()
-    
     // ✅ Use stable keys based on event times to prevent unnecessary rescheduling
     val fullMoonTimeMillis = astroData?.moonPhase?.nextFullMoon?.timeInMillis
     val tripuraTimeMillis = astroData?.moonPhase?.nextTripuraSundari?.timeInMillis
@@ -168,18 +164,11 @@ fun AppNavigation(
         startDestination = "main"
     ) {
         composable("main") {
-            // Format debug date label if active
-            val debugDateLabel = if (isDebugDateEnabled && debugDateMillis > 0L) {
-                val fmt = java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale.getDefault())
-                fmt.format(java.util.Date(debugDateMillis))
-            } else null
-            
             MainScreen(
                 astroData = astroData,
                 isLoading = isLoading,
                 codeMode = codeMode,
                 isDarkTheme = isDarkTheme,
-                debugDateLabel = debugDateLabel,
                 onCodeModeChange = { mainViewModel.toggleCodeMode() },
                 onRefresh = { mainViewModel.refresh() },
                 onNavigateToLocation = {
@@ -276,18 +265,6 @@ fun AppNavigation(
 				customSoundUris = customSoundUris,
 				onCustomSoundUriChange = { tattvaCode, uri ->
 					settingsPreferences.setCustomSoundUri(tattvaCode, uri)
-				},
-				// Debug date override
-				isDebugDateEnabled = isDebugDateEnabled,
-				debugDateMillis = debugDateMillis,
-				onDebugDateChange = { millis ->
-					settingsPreferences.setDebugDateMillis(millis)
-				},
-				onDebugDateEnabledChange = { enabled ->
-					settingsPreferences.setDebugDateEnabled(enabled)
-				},
-				onDebugRecalculate = {
-					mainViewModel.calculateAstroData()
 				},
 				onBackClick = {
 					navController.popBackStack()

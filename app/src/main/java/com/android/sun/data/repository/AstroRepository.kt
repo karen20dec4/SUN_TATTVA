@@ -38,20 +38,15 @@ class AstroRepository(private val context: Context) {
 
     /**
      * Calculează toate datele astro pentru locația și timpul curent
-     * @param debugCalendar Optional debug date override. When set, calculations use this date instead of current time.
      */
     suspend fun calculateAstroData(
         latitude: Double,
         longitude: Double,
         timeZone: Double,
         locationName: String,
-        isGPSLocation: Boolean = false,
-        debugCalendar: Calendar? = null
+        isGPSLocation: Boolean = false
     ): AstroData = withContext(Dispatchers.Default) {
-        val currentTime = debugCalendar ?: Calendar.getInstance()
-        if (debugCalendar != null) {
-            com.android.sun.util.AppLog.d("AstroRepository", "🐛 DEBUG MODE: Using override date: ${currentTime.time}")
-        }
+        val currentTime = Calendar.getInstance()
         calculateAstroDataForTime(currentTime, latitude, longitude, timeZone, locationName, isGPSLocation)
     }
 

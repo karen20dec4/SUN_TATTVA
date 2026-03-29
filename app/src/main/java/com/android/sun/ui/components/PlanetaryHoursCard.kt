@@ -300,6 +300,13 @@ private fun CurrentPlanetaryHourHeader(
             )
         }
         
+        // ✅ CENTRU: Simbol Tattva
+        Text(
+            text = getPlanetTattvaEmoji(planet),
+            fontSize = 18.sp,
+            modifier = Modifier.padding(horizontal = 8.dp)
+        )
+        
         // ✅ PARTEA DREAPTĂ: Countdown + Iconiță
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -447,6 +454,14 @@ private fun PlanetaryHourRow(
             )
         }
         
+        // ✅ CENTRU: Simbol Tattva
+        Text(
+            text = getPlanetTattvaEmoji(planet),
+            fontSize = 14.sp,
+            modifier = Modifier.padding(horizontal = 4.dp),
+            textAlign = TextAlign.Center
+        )
+        
         // ✅ TIMP (dreapta)
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -512,5 +527,23 @@ private fun getPlanetColor(planet: PlanetType): Color {
         PlanetType.MARS -> Color(0xFFFF4500)     // Red-Orange
         PlanetType.JUPITER -> Color(0xFF4169E1)  // Royal Blue
         PlanetType.SATURN -> Color(0xFF2F4F4F)   // Dark Slate Gray
+    }
+}
+
+/**
+ * Simbolul Tattva asociat fiecărei planete:
+ * Jupiter → Prithivi 🟨
+ * Luna, Venus → Apas 🌙
+ * Soare, Marte → Tejas 🔺
+ * Mercur → Vayu 🔵
+ * Saturn → Akasha 🟣
+ */
+private fun getPlanetTattvaEmoji(planet: PlanetType): String {
+    return when (planet) {
+        PlanetType.JUPITER -> "🟨"
+        PlanetType.MOON, PlanetType.VENUS -> "🌙"
+        PlanetType.SUN, PlanetType.MARS -> "🔺"
+        PlanetType.MERCURY -> "🔵"
+        PlanetType.SATURN -> "🟣"
     }
 }

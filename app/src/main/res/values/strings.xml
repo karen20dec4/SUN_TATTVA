@@ -53,15 +53,6 @@
     <string name="version">Versiune</string>
     <string name="sun_time">SUN TIME</string>
 
-    <!-- Debug Section -->
-    <string name="section_debug">🐛 Debug</string>
-    <string name="debug_date_title">Dată de test</string>
-    <string name="debug_date_subtitle">Suprascrie data curentă pentru testarea calculelor Nakshatra</string>
-    <string name="debug_date_active">🐛 DEBUG ACTIV: %s</string>
-    <string name="debug_date_pick">Alege dată</string>
-    <string name="debug_date_clear">Dezactivează</string>
-    <string name="debug_date_none">Nicio dată setată (folosește data reală)</string>
-
     <!-- Main Screen / Cards -->
     <string name="show_day">ARATĂ ZIUA</string>
     <string name="nakshatra_label">Nakshatra:</string>

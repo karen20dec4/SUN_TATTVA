@@ -12,8 +12,8 @@ android {
         applicationId = "com.android.sun.tattva"
         minSdk = 26
         targetSdk = 34
-        versionCode = 18
-        versionName = "2.24"
+        versionCode = 19
+        versionName = "2.25"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
