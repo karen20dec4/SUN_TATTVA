@@ -186,9 +186,18 @@ fun PlanetaryHoursCard(
 						val sunriseFormat = SimpleDateFormat("HH:mm", Locale.getDefault()).apply {
 							this.timeZone = locationTimeZone
 						}
+						// ✅ DST-aware GMT offset (not static timeZone Double)
+						val actualDebugOffsetMs = locationTimeZone.getOffset(System.currentTimeMillis())
+						val actualDebugOffsetHours = actualDebugOffsetMs / 3600000.0
+						val gmtDebugSign = if (actualDebugOffsetHours >= 0) "+" else ""
+						val gmtDebugFormatted = if (actualDebugOffsetHours == actualDebugOffsetHours.toLong().toDouble()) {
+							String.format("GMT%s%d", gmtDebugSign, actualDebugOffsetHours.toLong())
+						} else {
+							String.format("GMT%s%.1f", gmtDebugSign, actualDebugOffsetHours)
+						}
 						Text(
 							modifier = Modifier.fillMaxWidth(),
-							text = "debug️: Sunrise - ${sunriseFormat.format(sunrise.time)} • GMT${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)}",
+							text = "debug️: Sunrise - ${sunriseFormat.format(sunrise.time)} • $gmtDebugFormatted",
 							textAlign = TextAlign.Center,
 							style = MaterialTheme.typography.bodySmall,
 							color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
@@ -516,17 +525,22 @@ private fun getPlanetForGlobalIndex(dayOfWeek: Int, globalIndex: Int): PlanetTyp
 }
 
 /**
- * Culori pentru planete
+ * Culori Tattva pentru planete:
+ * Jupiter → Prithivi (Galben/Gold)
+ * Luna, Venus → Apas (Albastru deschis)
+ * Soare, Marte → Tejas (Roșu)
+ * Mercur → Vayu (Albastru)
+ * Saturn → Akasha (Violet)
  */
 private fun getPlanetColor(planet: PlanetType): Color {
     return when (planet) {
-        PlanetType.SUN -> Color(0xFFFFD700)      // Gold
-        PlanetType.MOON -> Color(0xFFC0C0C0)     // Silver
-        PlanetType.MERCURY -> Color(0xFF808080)  // Gray
-        PlanetType.VENUS -> Color(0xFF00CED1)    // Turquoise
-        PlanetType.MARS -> Color(0xFFFF4500)     // Red-Orange
-        PlanetType.JUPITER -> Color(0xFF4169E1)  // Royal Blue
-        PlanetType.SATURN -> Color(0xFF2F4F4F)   // Dark Slate Gray
+        PlanetType.JUPITER -> Color(0xFFFFC107)  // Prithivi - Yellow/Amber
+        PlanetType.MOON -> Color(0xFF81D4FA)     // Apas - Light Blue
+        PlanetType.VENUS -> Color(0xFF4FC3F7)    // Apas - Light Blue
+        PlanetType.SUN -> Color(0xFFFF5722)      // Tejas - Deep Orange-Red
+        PlanetType.MARS -> Color(0xFFE53935)     // Tejas - Red
+        PlanetType.MERCURY -> Color(0xFF42A5F5)  // Vayu - Blue
+        PlanetType.SATURN -> Color(0xFF9C27B0)   // Akasha - Purple
     }
 }
 

@@ -20,6 +20,41 @@ import com.android.sun.data.model.remaining
 import com.android.sun.data.model.getFormattedRemainingTime
 
 /**
+ * Culori Tattva pentru planete (bazate pe codul planetei):
+ * ♃ Jupiter → Prithivi (Galben/Gold)
+ * ☽ Luna, ♀ Venus → Apas (Albastru deschis)
+ * ☉ Soare, ♂ Marte → Tejas (Roșu)
+ * ☿ Mercur → Vayu (Albastru)
+ * ♄ Saturn → Akasha (Violet)
+ */
+private fun getPlanetTattvaColor(code: String): Color {
+    return when (code) {
+        "♃" -> Color(0xFFFFC107)  // Jupiter - Prithivi - Yellow/Amber
+        "☽" -> Color(0xFF81D4FA)  // Moon - Apas - Light Blue
+        "♀" -> Color(0xFF4FC3F7)  // Venus - Apas - Light Blue
+        "☉" -> Color(0xFFFF5722)  // Sun - Tejas - Deep Orange-Red
+        "♂" -> Color(0xFFE53935)  // Mars - Tejas - Red
+        "☿" -> Color(0xFF42A5F5)  // Mercury - Vayu - Blue
+        "♄" -> Color(0xFF9C27B0)  // Saturn - Akasha - Purple
+        else -> Color(0xFF808080) // fallback gray
+    }
+}
+
+/**
+ * Simbolul Tattva asociat planetei (bazat pe codul planetei)
+ */
+private fun getPlanetTattvaEmoji(code: String): String {
+    return when (code) {
+        "♃" -> "🟨"  // Jupiter - Prithivi
+        "☽", "♀" -> "🌙"  // Moon, Venus - Apas
+        "☉", "♂" -> "🔺"  // Sun, Mars - Tejas
+        "☿" -> "🔵"  // Mercury - Vayu
+        "♄" -> "🟣"  // Saturn - Akasha
+        else -> "⬜"
+    }
+}
+
+/**
  * Card pentru afișarea planetei curente (ora planetară)
  */
 @Composable
@@ -28,6 +63,8 @@ fun PlanetCard(
     showCode: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val tattvaColor = getPlanetTattvaColor(planet.code)
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -65,23 +102,32 @@ fun PlanetCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Numele sau codul planetei
+            // Numele sau codul planetei - colorat cu culoarea Tattva
             Box(
                 modifier = Modifier
                     .background(
-                        color = MaterialTheme.colorScheme.primaryContainer,
+                        color = tattvaColor.copy(alpha = 0.15f),
                         shape = RoundedCornerShape(7.dp)
                     )
                     .padding(20.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = if (showCode) planet.code else planet.name,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontSize = 36.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = if (showCode) planet.code else planet.name,
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = tattvaColor
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = getPlanetTattvaEmoji(planet.code),
+                        fontSize = 20.sp
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -101,7 +147,7 @@ fun PlanetCard(
                     text = "${planet.hour}/12",
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
+                    color = tattvaColor
                 )
             }
 
@@ -154,7 +200,7 @@ fun PlanetCard(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(
-                                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                                color = tattvaColor.copy(alpha = 0.15f),
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .padding(12.dp),
@@ -173,7 +219,7 @@ fun PlanetCard(
                                 text = planet.getFormattedRemainingTime(),
                                 style = MaterialTheme.typography.bodyLarge,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary
+                                color = tattvaColor
                             )
                         }
                     }
