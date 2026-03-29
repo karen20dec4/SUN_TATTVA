@@ -96,38 +96,36 @@ fun CombinedTattvaCard(
                             colors = listOf(tattva.color, tattva.color.copy(alpha = 0.7f))
                         )
                     )
-                    .padding(36.dp) // Padding-ul original
+                    .padding(horizontal = 24.dp, vertical = 36.dp)
             ) {
-                // Rândul principal: Icon + Timp + Buton
+                // Rândul principal: Icon + Timp + Buton — responsive cu weight
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        // REVENIRE LA 45.dp conform fișierului tău original
-                        Icon(
-                            painter = painterResource(id = getTattvaIconRes(tattva.name)),
-                            contentDescription = tattva.name,
-                            modifier = Modifier.size(45.dp),
-                            tint = Color.White
-                        )
+                    // Icon tattva
+                    Icon(
+                        painter = painterResource(id = getTattvaIconRes(tattva.name)),
+                        contentDescription = tattva.name,
+                        modifier = Modifier.size(45.dp),
+                        tint = Color.White
+                    )
 
-                        Spacer(modifier = Modifier.width(16.dp))
+                    // Timp ramas — centered in remaining space
+                    Text(
+                        text = String.format("%02d:%02d", tattvaMinutes, tattvaSeconds),
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontSize = 38.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        softWrap = false,
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                    )
 
-                        // REVENIRE LA 38.sp
-                        Text(
-                            text = String.format("%02d:%02d", tattvaMinutes, tattvaSeconds),
-                            style = MaterialTheme.typography.headlineLarge,
-                            fontSize = 38.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 1,
-                            softWrap = false
-                        )
-                    }
-
-                    // Butonul SHOW DAY (rămâne în dreapta sus) - ✅ Responsive: single line
+                    // Butonul SHOW DAY (dreapta) - ✅ Responsive: single line
                     Button(
                         onClick = { onAllDayClick() },
                         colors = ButtonDefaults.buttonColors(
@@ -155,8 +153,8 @@ fun CombinedTattvaCard(
                     tint = Color.White.copy(alpha = 0.8f),
                     modifier = Modifier
                         .size(24.dp)
-                        .align(Alignment.BottomEnd) // O forțează în colțul dreapta-jos
-                        .offset(x = 20.dp, y = 32.dp) // O ajustăm ușor să nu stea lipită de margini
+                        .align(Alignment.BottomEnd)
+                        .offset(x = 12.dp, y = 32.dp)
                 )
             }
 

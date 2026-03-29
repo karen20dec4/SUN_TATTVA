@@ -10,12 +10,12 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
-- **Current Version:** 2.21 (versionCode 15)
+- **Current Version:** 2.22 (versionCode 16)
 
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
-- Current: **2.21**
-- Next versions: **2.22**, **2.23**, **2.24**, ...
+- Current: **2.22**
+- Next versions: **2.23**, **2.24**, **2.25**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
@@ -125,8 +125,8 @@ The 18h influence period is calculated based on the Moon-Sun relative angular sp
 
 **MoonPhaseCard UI:**
 - Rows display in order: Tripura Sundari → Full Moon → Shivaratri → New Moon
-- Full Moon row is expandable: shows 18h influence period (peak ± 18h)
-- Shivaratri row is expandable: shows yearly list with cyan highlight for next date
+- Full Moon row is expandable: shows 18h influence period (peak ± 18h) + next 12 full moon dates with cyan highlight for nearest
+- Shivaratri row is expandable: shows next 12 Shivaratri periods (across years if needed) with cyan highlight for next date. Past dates (after 6:00 AM on morning date) are filtered out.
 - All rows use uniform 16sp bold titleMedium font
 
 ### Nakshatra
@@ -212,6 +212,7 @@ Scheduled events:
 | New Moon Notification      | Alert before new moon                          |
 | Tattva Sound (per element) | Individual sound alerts for each Tattva change |
 | Tattva Sound Volume        | Slider (0–100%) to control Tattva sound playback volume. Stored in SharedPrefs. Checking a sound checkbox also previews the sound at the current volume. |
+| Tattva Sound Mute Warning  | (v2.22+) When phone is on silent or vibrate mode, a Snackbar popup warns the user that they won't hear the sound preview. Uses AudioManager.ringerMode detection. |
 | Tattva Custom Sound        | Tap the tattva symbol icon to open a full-screen picker (gradient header in tattva color). Select any audio file (MP3, OGG, WAV, AAC, FLAC, M4A) from device. Persistent URI permission is taken. Reset button reverts to built-in default. Custom URI stored in SharedPrefs per tattva code. A colored dot on the icon indicates a custom sound is active. |
 | 🐛 Debug Date Override    | (v2.19+) Set a custom date to test Nakshatra calculations without waiting days. Opens a DatePicker, overrides `Calendar.getInstance()` in all calculations. Orange debug banner shown on MainScreen when active. Disable to return to real-time mode. Stored in SharedPrefs as `debug_date_enabled` (Boolean) and `debug_date_millis` (Long). |
 
@@ -241,7 +242,8 @@ Display-friendly wrapper containing: name, color, emoji, start/end times, remain
 - `nextNewMoon: Calendar` - Time of next new moon
 - `isInFullMoonInfluence: Boolean` - Whether currently within 18h of full moon peak
 - `nextShivaratri: ShivaratriDate` - Next Shivaratri (eveningDate/morningDate)
-- `yearlyShivaratri: List<ShivaratriDate>` - Yearly Shivaratri dates
+- `yearlyShivaratri: List<ShivaratriDate>` - Next 12 Shivaratri periods (past ones filtered after 6 AM on morning date, spans across year boundary)
+- `futureFullMoons: List<Calendar>` - Next 12 full moon peak times (computed using ephemeris search)
 
 ### NakshatraResult
 - `nakshatra: NakshatraType` - Current Nakshatra enum (27 types with deity/symbol/animal/planet/nature)
@@ -358,7 +360,7 @@ All `Row` composables with side-by-side text must follow these rules to prevent 
 
 ### UI Updates
 - **MainViewModel:** 1-second loop checking if current Tattva has expired → recalculates when needed
-- **CombinedTattvaCard:** 1-second countdown timer for remaining time display
+- **CombinedTattvaCard:** 1-second countdown timer for remaining time display. (v2.22+) Responsive layout uses Compose weight-based distribution: icon → centered countdown → right-aligned "SHOW DAY" button, preventing overlap on narrow screens.
 - **CompactInfoCard:** 1-second clock update for live time display
 
 ### Notification Updates

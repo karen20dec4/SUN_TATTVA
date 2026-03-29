@@ -98,16 +98,26 @@ fun MoonPhaseCard(
                 isExpanded = isFullMoonExpanded
             )
             
-            // Expandable Full Moon influence period
+            // Expandable Full Moon influence period + future full moons list
             AnimatedVisibility(
                 visible = isFullMoonExpanded,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut()
             ) {
-                FullMoonInfluencePeriod(
-                    fullMoonPeak = moonPhase.nextFullMoon,
-                    isHighlighted = moonPhase.isInFullMoonInfluence
-                )
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    FullMoonInfluencePeriod(
+                        fullMoonPeak = moonPhase.nextFullMoon,
+                        isHighlighted = moonPhase.isInFullMoonInfluence
+                    )
+                    
+                    if (moonPhase.futureFullMoons.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        FullMoonYearlyList(
+                            futureFullMoons = moonPhase.futureFullMoons,
+                            nextFullMoon = moonPhase.nextFullMoon
+                        )
+                    }
+                }
             }
             
             // Shivaratri (before New Moon)
@@ -203,6 +213,96 @@ private fun FullMoonInfluencePeriod(
 }
 
 /**
+ * Expandable list of future full moon dates.
+ * - First (nearest) full moon is highlighted with cyan
+ * - Shows date + year for each full moon
+ * - Alternating backgrounds for readability
+ * - Same visual style as ShivaratriYearlyList
+ */
+@Composable
+private fun FullMoonYearlyList(
+    futureFullMoons: List<Calendar>,
+    nextFullMoon: Calendar
+) {
+    val nextHighlightBg = Color(0xFFB2EBF2) // Light cyan
+    val nextHighlightText = Color(0xFF004D40) // Dark teal
+    val primaryRowBg = MaterialTheme.colorScheme.surfaceVariant
+    val secondaryRowBg = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+    
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp)
+    ) {
+        HorizontalDivider(
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.15f),
+            thickness = 0.5.dp,
+            modifier = Modifier.padding(horizontal = 4.dp)
+        )
+        
+        Spacer(modifier = Modifier.height(4.dp))
+        
+        futureFullMoons.forEachIndexed { index, fullMoonDate ->
+            val dateFormat = SimpleDateFormat("d MMM - HH:mm", Locale.getDefault())
+            dateFormat.timeZone = fullMoonDate.timeZone
+            val yearFormat = SimpleDateFormat("yyyy", Locale.getDefault())
+            yearFormat.timeZone = fullMoonDate.timeZone
+            
+            val dateText = dateFormat.format(fullMoonDate.time)
+            val yearText = yearFormat.format(fullMoonDate.time)
+            
+            val isNext = isSameDate(fullMoonDate, nextFullMoon)
+            
+            val rowBg = when {
+                isNext -> nextHighlightBg
+                index % 2 == 0 -> primaryRowBg
+                else -> secondaryRowBg
+            }
+            
+            val textColor = when {
+                isNext -> nextHighlightText
+                else -> MaterialTheme.colorScheme.onSurfaceVariant
+            }
+            
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = rowBg,
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(horizontal = 16.dp, vertical = 6.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = dateText,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = textColor,
+                    maxLines = 1,
+                    softWrap = false
+                )
+                Text(
+                    text = yearText,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = textColor,
+                    maxLines = 1,
+                    softWrap = false
+                )
+            }
+            
+            if (index < futureFullMoons.size - 1) {
+                Spacer(modifier = Modifier.height(2.dp))
+            }
+        }
+    }
+}
+
+/**
  * Shivaratri row with expand arrow
  * Format: "Shivaratri:    17 Mar / 18 Mar ▾"
  */
@@ -262,6 +362,7 @@ private fun ShivaratriRow(
 
 /**
  * Expandable yearly Shivaratri list with improved visual design:
+ * - Shows next 12 future Shivaratri periods (past ones filtered out)
  * - Full-width rows with alternating backgrounds for readability
  * - Next Shivaratri highlighted with light cyan background
  * - Uniform 16sp bold font matching the rest of the Moon card
@@ -302,7 +403,6 @@ private fun ShivaratriYearlyList(
             val yearText = yearFormat.format(date.eveningDate.time)
             
             val isNext = isSameDate(date.eveningDate, nextShivaratri.eveningDate)
-            val isPast = date.morningDate.timeInMillis < System.currentTimeMillis()
             
             // Determine row background: cyan for next, alternating for others
             val rowBg = when {
@@ -311,10 +411,9 @@ private fun ShivaratriYearlyList(
                 else -> secondaryRowBg
             }
             
-            // Text color: dark on cyan, dimmed for past
+            // Text color: dark on cyan, normal for others
             val textColor = when {
                 isNext -> nextShivaratriText
-                isPast -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
                 else -> MaterialTheme.colorScheme.onSurfaceVariant
             }
             

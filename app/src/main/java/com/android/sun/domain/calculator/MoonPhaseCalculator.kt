@@ -58,10 +58,14 @@ class MoonPhaseCalculator(
         // ✅ Calculate Shivaratri dates (Krishna Chaturdashi night - phase angle ~342°)
         val nextShivaratriTime = findNextPhase(currentTime, 342.0)
         val nextShivaratri = calculateShivaratriNight(nextShivaratriTime)
-        val yearlyShivaratri = calculateYearlyShivaratri(currentTime)
+        val yearlyShivaratri = calculateNextShivaratriPeriods(currentTime, 12)
+        
+        // ✅ Calculate next 12 full moon dates
+        val futureFullMoons = calculateNextFullMoons(currentTime, 12)
         
         com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Next Shivaratri: ${formatDate(nextShivaratriTime)}")
-        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Yearly Shivaratri dates: ${yearlyShivaratri.size}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Future Shivaratri dates: ${yearlyShivaratri.size}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Future Full Moons: ${futureFullMoons.size}")
         
         return MoonPhaseResult(
             phaseAngle = diff,
@@ -71,7 +75,8 @@ class MoonPhaseCalculator(
             nextNewMoon = nextNewMoon,
             isInFullMoonInfluence = isInFullMoonInfluence,
             nextShivaratri = nextShivaratri,
-            yearlyShivaratri = yearlyShivaratri
+            yearlyShivaratri = yearlyShivaratri,
+            futureFullMoons = futureFullMoons
         )
     }
 
@@ -266,6 +271,82 @@ class MoonPhaseCalculator(
         return results
     }
 
+    /**
+     * Calculate the next N Shivaratri periods starting from referenceTime.
+     * A Shivaratri is considered past after 6:00 AM on the morning date.
+     * Returns only future periods (not yet expired), up to count items.
+     */
+    private fun calculateNextShivaratriPeriods(referenceTime: Calendar, count: Int): List<ShivaratriDate> {
+        val minDaysBetweenPhases = 25
+        val maxSearch = count + 5 // Buffer for filtering past dates
+        val results = mutableListOf<ShivaratriDate>()
+        
+        // Start searching from a bit before referenceTime to catch current period
+        var currentSearch = referenceTime.clone() as Calendar
+        currentSearch.add(Calendar.DAY_OF_MONTH, -2)
+        
+        for (i in 0 until maxSearch * 2) {
+            if (results.size >= count) break
+            
+            val chaturdashiTime = findNextPhase(currentSearch, 342.0)
+            val shivaratri = calculateShivaratriNight(chaturdashiTime)
+            
+            // A Shivaratri is considered past after 6:00 AM on the morning date
+            val expiryTime = shivaratri.morningDate.clone() as Calendar
+            expiryTime.set(Calendar.HOUR_OF_DAY, 6)
+            expiryTime.set(Calendar.MINUTE, 0)
+            expiryTime.set(Calendar.SECOND, 0)
+            
+            if (expiryTime.timeInMillis > referenceTime.timeInMillis) {
+                // Only add if not already in the list (avoid duplicates)
+                val isDuplicate = results.any { isSameDay(it.eveningDate, shivaratri.eveningDate) }
+                if (!isDuplicate) {
+                    results.add(shivaratri)
+                }
+            }
+            
+            currentSearch = chaturdashiTime.clone() as Calendar
+            currentSearch.add(Calendar.DAY_OF_MONTH, minDaysBetweenPhases)
+        }
+        
+        return results.take(count)
+    }
+
+    /**
+     * Calculate the next N full moon dates starting from referenceTime.
+     * Returns future full moon peak times.
+     */
+    private fun calculateNextFullMoons(referenceTime: Calendar, count: Int): List<Calendar> {
+        val minDaysBetweenPhases = 25
+        val results = mutableListOf<Calendar>()
+        
+        var currentSearch = referenceTime.clone() as Calendar
+        
+        for (i in 0 until count + 3) {
+            if (results.size >= count) break
+            
+            val fullMoonTime = findNextPhase(currentSearch, 180.0)
+            
+            // Only add if it's in the future
+            if (fullMoonTime.timeInMillis > referenceTime.timeInMillis) {
+                results.add(fullMoonTime)
+            }
+            
+            currentSearch = fullMoonTime.clone() as Calendar
+            currentSearch.add(Calendar.DAY_OF_MONTH, minDaysBetweenPhases)
+        }
+        
+        return results.take(count)
+    }
+
+    /**
+     * Helper to compare two Calendar dates (same day)
+     */
+    private fun isSameDay(cal1: Calendar, cal2: Calendar): Boolean {
+        return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+               cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
+    }
+
     private fun formatDate(cal: Calendar): String {
         return String.format(
             "%04d-%02d-%02d %02d:%02d:%02d %s",
@@ -288,7 +369,8 @@ data class MoonPhaseResult(
     val nextNewMoon: Calendar,
     val isInFullMoonInfluence: Boolean = false,
     val nextShivaratri: ShivaratriDate? = null,
-    val yearlyShivaratri: List<ShivaratriDate> = emptyList()
+    val yearlyShivaratri: List<ShivaratriDate> = emptyList(),
+    val futureFullMoons: List<Calendar> = emptyList()
 )
 
 data class ShivaratriDate(

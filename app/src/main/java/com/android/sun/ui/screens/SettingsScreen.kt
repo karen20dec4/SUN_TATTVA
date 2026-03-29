@@ -34,6 +34,7 @@ import com.android.sun.R
 import com.android.sun.ui.components.GradientNavigationBar
 import com.android.sun.ui.components.getTattvaIconRes
 import com.android.sun.util.TattvaColors
+import kotlinx.coroutines.launch
 
 /**
  * Ecran Settings
@@ -550,6 +551,7 @@ private fun NotificationGroupCard(
  * No text labels, just the colored tattva icon + checkbox per tattva.
  * Checking a tattva plays a sound preview at the current volume.
  * A volume slider below the checkboxes controls playback level.
+ * ✅ Shows a fading Snackbar warning when phone is on silent/vibrate mode.
  */
 @Composable
 private fun TattvaSoundCard(
@@ -569,6 +571,40 @@ private fun TattvaSoundCard(
     onTattvaIconClick: (tattvaName: String, tattvaCode: String) -> Unit = { _, _ -> }
 ) {
     val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val muteWarning = stringResource(R.string.tattva_sound_phone_muted)
+    val vibrateWarning = stringResource(R.string.tattva_sound_phone_vibrate)
+    
+    /**
+     * Checks phone ringer mode and shows a warning Snackbar if phone is on
+     * silent or vibrate, so the user knows why they can't hear the preview.
+     */
+    fun checkAndWarnRingerMode() {
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        when (audioManager.ringerMode) {
+            AudioManager.RINGER_MODE_SILENT -> {
+                scope.launch {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(
+                        message = muteWarning,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+            AudioManager.RINGER_MODE_VIBRATE -> {
+                scope.launch {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(
+                        message = vibrateWarning,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+    }
+    
+    Box(modifier = Modifier.fillMaxWidth()) {
     Card(
         shape = RoundedCornerShape(7.dp),
         colors = CardDefaults.cardColors(
@@ -607,7 +643,7 @@ private fun TattvaSoundCard(
                     onCheckedChange = onSoundAkashaChange,
                     hasCustomSound = customSoundUris["A"] != null,
                     onIconClick = { onTattvaIconClick("akasha", "A") },
-                    onPlaySound = { playTattvaPreviewSound(context, "akasha", soundVolume, customSoundUris["A"]) }
+                    onPlaySound = { playTattvaPreviewSound(context, "akasha", soundVolume, customSoundUris["A"]); checkAndWarnRingerMode() }
                 )
                 // Vayu
                 TattvaSoundItem(
@@ -617,7 +653,7 @@ private fun TattvaSoundCard(
                     onCheckedChange = onSoundVayuChange,
                     hasCustomSound = customSoundUris["V"] != null,
                     onIconClick = { onTattvaIconClick("vayu", "V") },
-                    onPlaySound = { playTattvaPreviewSound(context, "vayu", soundVolume, customSoundUris["V"]) }
+                    onPlaySound = { playTattvaPreviewSound(context, "vayu", soundVolume, customSoundUris["V"]); checkAndWarnRingerMode() }
                 )
                 // Tejas
                 TattvaSoundItem(
@@ -627,7 +663,7 @@ private fun TattvaSoundCard(
                     onCheckedChange = onSoundTejasChange,
                     hasCustomSound = customSoundUris["T"] != null,
                     onIconClick = { onTattvaIconClick("tejas", "T") },
-                    onPlaySound = { playTattvaPreviewSound(context, "tejas", soundVolume, customSoundUris["T"]) }
+                    onPlaySound = { playTattvaPreviewSound(context, "tejas", soundVolume, customSoundUris["T"]); checkAndWarnRingerMode() }
                 )
                 // Apas
                 TattvaSoundItem(
@@ -637,7 +673,7 @@ private fun TattvaSoundCard(
                     onCheckedChange = onSoundApasChange,
                     hasCustomSound = customSoundUris["Ap"] != null,
                     onIconClick = { onTattvaIconClick("apas", "Ap") },
-                    onPlaySound = { playTattvaPreviewSound(context, "apas", soundVolume, customSoundUris["Ap"]) }
+                    onPlaySound = { playTattvaPreviewSound(context, "apas", soundVolume, customSoundUris["Ap"]); checkAndWarnRingerMode() }
                 )
                 // Prithivi
                 TattvaSoundItem(
@@ -647,7 +683,7 @@ private fun TattvaSoundCard(
                     onCheckedChange = onSoundPrithiviChange,
                     hasCustomSound = customSoundUris["P"] != null,
                     onIconClick = { onTattvaIconClick("prithivi", "P") },
-                    onPlaySound = { playTattvaPreviewSound(context, "prithivi", soundVolume, customSoundUris["P"]) }
+                    onPlaySound = { playTattvaPreviewSound(context, "prithivi", soundVolume, customSoundUris["P"]); checkAndWarnRingerMode() }
                 )
             }
 
@@ -679,6 +715,19 @@ private fun TattvaSoundCard(
             }
         }
     }
+    // ✅ SnackbarHost overlaid at bottom of the Box for mute/vibrate warnings
+    SnackbarHost(
+        hostState = snackbarHostState,
+        modifier = Modifier.align(Alignment.BottomCenter)
+    ) { data ->
+        Snackbar(
+            snackbarData = data,
+            containerColor = MaterialTheme.colorScheme.inverseSurface,
+            contentColor = MaterialTheme.colorScheme.inverseOnSurface,
+            shape = RoundedCornerShape(8.dp)
+        )
+    }
+    } // Box
 }
 
 /**
