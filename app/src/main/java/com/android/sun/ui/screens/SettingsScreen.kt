@@ -747,7 +747,6 @@ private fun FontProfileCard(
             
             // Profile 1
             FontProfileOption(
-                profileId = 1,
                 name = stringResource(R.string.font_profile_1_name),
                 description = stringResource(R.string.font_profile_1_desc),
                 isSelected = fontProfile == 1,
@@ -756,7 +755,6 @@ private fun FontProfileCard(
             Spacer(modifier = Modifier.height(6.dp))
             // Profile 2
             FontProfileOption(
-                profileId = 2,
                 name = stringResource(R.string.font_profile_2_name),
                 description = stringResource(R.string.font_profile_2_desc),
                 isSelected = fontProfile == 2,
@@ -765,7 +763,6 @@ private fun FontProfileCard(
             Spacer(modifier = Modifier.height(6.dp))
             // Profile 3
             FontProfileOption(
-                profileId = 3,
                 name = stringResource(R.string.font_profile_3_name),
                 description = stringResource(R.string.font_profile_3_desc),
                 isSelected = fontProfile == 3,
@@ -777,7 +774,6 @@ private fun FontProfileCard(
 
 @Composable
 private fun FontProfileOption(
-    profileId: Int,
     name: String,
     description: String,
     isSelected: Boolean,

@@ -121,7 +121,7 @@ fun PlanetaryHoursCard(
                     ) {
                         // Build reordered list: current hour first, then remaining in circular order
                         val dayOfWeek = sunrise.get(Calendar.DAY_OF_WEEK) - 1
-                        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).apply {
+                        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault()).apply {
                             this.timeZone = locationTimeZone
                         }
                         
@@ -333,7 +333,7 @@ private fun CurrentPlanetaryHourHeader(
                 text = countdownText,
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 softWrap = false
@@ -389,7 +389,7 @@ private fun PlanetaryHourSection(
         val totalDuration = endTime.timeInMillis - startTime.timeInMillis
         val planetaryHourDuration = totalDuration / 12
         
-        val timeFormat = SimpleDateFormat("HH:mm: ss", Locale.getDefault()).apply {
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault()).apply {
             this.timeZone = locationTimeZone
         }
         

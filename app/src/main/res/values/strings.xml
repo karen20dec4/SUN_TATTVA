@@ -10,7 +10,7 @@
     <string name="delete">Șterge</string>
     <string name="enable">Activează</string>
     <string name="ok">OK</string>
-    <string name="now_indicator">◄ ACUM</string>
+    <string name="now_indicator">◄</string>
     <string name="loading">Se încarcă, vă rugăm așteptați…</string>
     <string name="refresh">Reîmprospătare</string>
     <string name="no_location">Fără locație</string>

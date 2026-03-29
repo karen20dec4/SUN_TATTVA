@@ -44,7 +44,7 @@ class SettingsPreferences(context: Context) {
     val fontProfile: StateFlow<Int> = _fontProfile.asStateFlow()
     
     fun getFontProfile(): Int {
-        return prefs.getInt(KEY_FONT_PROFILE, 1)
+        return prefs.getInt(KEY_FONT_PROFILE, 3)
     }
     
     fun setFontProfile(profile: Int) {
@@ -60,7 +60,7 @@ class SettingsPreferences(context: Context) {
     val isDarkTheme: StateFlow<Boolean> = _isDarkTheme.asStateFlow()
     
     fun getDarkTheme(): Boolean {
-        return prefs.getBoolean(KEY_DARK_THEME, false)
+        return prefs.getBoolean(KEY_DARK_THEME, true)
     }
     
     fun setDarkTheme(enabled: Boolean) {
