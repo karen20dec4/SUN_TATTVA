@@ -12,10 +12,10 @@ import com.android.sun.R
 /**
  * Tipografie pentru aplicația SUN — 3 profiluri selectabile din Settings
  *
- * Profil 1 „Quicksand+" (default, 40% mai gros decât înainte):
- *   Titluri:   Quicksand  ExtraBold (800)
+ * Profil 1 „Quicksand+":
+ *   Titluri:   Quicksand  Bold (700) — max weight for this font
  *   Subtitluri: Work Sans  Bold (700)
- *   Cifre:     Nunito Sans SemiBold (600)
+ *   Cifre:     Nunito Sans SemiBold (600) / ExtraBold (800)
  *
  * Profil 2 „Kanit":
  *   Titluri:   Kanit Bold / ExtraBold
@@ -23,9 +23,12 @@ import com.android.sun.R
  *   Cifre:     Lato Bold
  *
  * Profil 3 „Claritate Maximă":
- *   Titluri:   Public Sans Bold
+ *   Titluri:   Public Sans Bold (+ ExtraBold 800, Black 900 available)
  *   Subtitluri: Inter SemiBold
  *   Cifre:     Rubik Bold
+ *
+ * All fonts use separate STATIC .ttf files per weight (not variable fonts)
+ * to ensure Android Compose correctly differentiates FontWeight variants.
  */
 
 // ── Font Profile IDs ──────────────────────────────────────────
@@ -38,25 +41,25 @@ val LocalFontProfile = staticCompositionLocalOf { FONT_PROFILE_QUICKSAND }
 
 // ══════════════════════════════════════════════════════════════
 //  PROFIL 1  —  Quicksand + Work Sans + Nunito Sans (40% bolder)
+//  NOTE: Quicksand max weight is 700 (Bold) — no ExtraBold/Black
 // ══════════════════════════════════════════════════════════════
 
 val QuicksandFamily = FontFamily(
-    Font(R.font.quicksand, FontWeight.Bold),
-    Font(R.font.quicksand, FontWeight.ExtraBold),
-    Font(R.font.quicksand, FontWeight.Black)
+    Font(R.font.quicksand_bold, FontWeight.Bold)
 )
 
 val WorkSansFamily = FontFamily(
-    Font(R.font.work_sans, FontWeight.Medium),
-    Font(R.font.work_sans, FontWeight.SemiBold),
-    Font(R.font.work_sans, FontWeight.Bold)
+    Font(R.font.work_sans_medium, FontWeight.Medium),
+    Font(R.font.work_sans_semibold, FontWeight.SemiBold),
+    Font(R.font.work_sans_bold, FontWeight.Bold)
 )
 
 val NunitoSansFamily = FontFamily(
-    Font(R.font.nunito_sans, FontWeight.Normal),
-    Font(R.font.nunito_sans, FontWeight.Medium),
-    Font(R.font.nunito_sans, FontWeight.SemiBold),
-    Font(R.font.nunito_sans, FontWeight.Bold)
+    Font(R.font.nunito_sans_regular, FontWeight.Normal),
+    Font(R.font.nunito_sans_medium, FontWeight.Medium),
+    Font(R.font.nunito_sans_semibold, FontWeight.SemiBold),
+    Font(R.font.nunito_sans_bold, FontWeight.Bold),
+    Font(R.font.nunito_sans_extrabold, FontWeight.ExtraBold)
 )
 
 // ══════════════════════════════════════════════════════════════
@@ -69,10 +72,10 @@ val KanitFamily = FontFamily(
 )
 
 val OpenSansFamily = FontFamily(
-    Font(R.font.open_sans, FontWeight.Normal),
-    Font(R.font.open_sans, FontWeight.Medium),
-    Font(R.font.open_sans, FontWeight.SemiBold),
-    Font(R.font.open_sans, FontWeight.Bold)
+    Font(R.font.open_sans_regular, FontWeight.Normal),
+    Font(R.font.open_sans_medium, FontWeight.Medium),
+    Font(R.font.open_sans_semibold, FontWeight.SemiBold),
+    Font(R.font.open_sans_bold, FontWeight.Bold)
 )
 
 val LatoFamily = FontFamily(
@@ -84,24 +87,26 @@ val LatoFamily = FontFamily(
 // ══════════════════════════════════════════════════════════════
 
 val PublicSansFamily = FontFamily(
-    Font(R.font.public_sans, FontWeight.Normal),
-    Font(R.font.public_sans, FontWeight.Medium),
-    Font(R.font.public_sans, FontWeight.SemiBold),
-    Font(R.font.public_sans, FontWeight.Bold)
+    Font(R.font.public_sans_regular, FontWeight.Normal),
+    Font(R.font.public_sans_medium, FontWeight.Medium),
+    Font(R.font.public_sans_semibold, FontWeight.SemiBold),
+    Font(R.font.public_sans_bold, FontWeight.Bold),
+    Font(R.font.public_sans_extrabold, FontWeight.ExtraBold),
+    Font(R.font.public_sans_black, FontWeight.Black)
 )
 
 val InterFamily = FontFamily(
-    Font(R.font.inter, FontWeight.Normal),
-    Font(R.font.inter, FontWeight.Medium),
-    Font(R.font.inter, FontWeight.SemiBold),
-    Font(R.font.inter, FontWeight.Bold)
+    Font(R.font.inter_regular, FontWeight.Normal),
+    Font(R.font.inter_medium, FontWeight.Medium),
+    Font(R.font.inter_semibold, FontWeight.SemiBold),
+    Font(R.font.inter_bold, FontWeight.Bold)
 )
 
 val RubikFamily = FontFamily(
-    Font(R.font.rubik, FontWeight.Normal),
-    Font(R.font.rubik, FontWeight.Medium),
-    Font(R.font.rubik, FontWeight.SemiBold),
-    Font(R.font.rubik, FontWeight.Bold)
+    Font(R.font.rubik_regular, FontWeight.Normal),
+    Font(R.font.rubik_medium, FontWeight.Medium),
+    Font(R.font.rubik_semibold, FontWeight.SemiBold),
+    Font(R.font.rubik_bold, FontWeight.Bold)
 )
 
 // ══════════════════════════════════════════════════════════════
@@ -137,9 +142,9 @@ private fun getFontProfileSpec(profile: Int): FontProfileSpec = when (profile) {
         numericWeight = FontWeight.Medium,
         numericBoldWeight = FontWeight.Bold
     )
-    else -> FontProfileSpec(  // FONT_PROFILE_QUICKSAND (default, 40% bolder)
+    else -> FontProfileSpec(  // FONT_PROFILE_QUICKSAND (default)
         titleFamily = QuicksandFamily,
-        titleWeight = FontWeight.ExtraBold,     // was Bold (700) → ExtraBold (800)
+        titleWeight = FontWeight.Bold,           // Quicksand max is Bold (700)
         subtitleFamily = WorkSansFamily,
         subtitleWeight = FontWeight.Bold,        // was Medium (500) → Bold (700)
         numericFamily = NunitoSansFamily,

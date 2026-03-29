@@ -51,7 +51,7 @@
     <string name="font_profile_title">Profil Fonturi</string>
     <string name="font_profile_subtitle">Alege stilul tipografic preferat</string>
     <string name="font_profile_1_name">Quicksand+</string>
-    <string name="font_profile_1_desc">Quicksand ExtraBold · Work Sans Bold · Nunito Sans</string>
+    <string name="font_profile_1_desc">Quicksand Bold · Work Sans Bold · Nunito Sans</string>
     <string name="font_profile_2_name">Kanit</string>
     <string name="font_profile_2_desc">Kanit ExtraBold · Open Sans SemiBold · Lato Bold</string>
     <string name="font_profile_3_name">Claritate Maximă</string>
