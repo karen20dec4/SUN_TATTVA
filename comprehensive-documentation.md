@@ -15,7 +15,7 @@
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
 - Current: **2.26**
-- Next versions: **2.26**, **2.27**, **2.28**, ...
+- Next versions: **2.27**, **2.28**, **2.29**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
