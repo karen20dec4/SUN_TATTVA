@@ -1,6 +1,8 @@
 package com.android.sun.ui.components
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -101,8 +103,14 @@ fun MoonPhaseCard(
             // Expandable Full Moon influence period + future full moons list
             AnimatedVisibility(
                 visible = isFullMoonExpanded,
-                enter = expandVertically() + fadeIn(),
-                exit = shrinkVertically() + fadeOut()
+                enter = expandVertically(
+                    animationSpec = tween(durationMillis = 350, easing = FastOutSlowInEasing),
+                    expandFrom = Alignment.Top
+                ) + fadeIn(animationSpec = tween(durationMillis = 300, delayMillis = 80)),
+                exit = shrinkVertically(
+                    animationSpec = tween(durationMillis = 280, easing = FastOutSlowInEasing),
+                    shrinkTowards = Alignment.Top
+                ) + fadeOut(animationSpec = tween(durationMillis = 200))
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     FullMoonInfluencePeriod(
@@ -131,8 +139,14 @@ fun MoonPhaseCard(
                 // Expandable yearly Shivaratri list
                 AnimatedVisibility(
                     visible = isShivaratriExpanded,
-                    enter = expandVertically() + fadeIn(),
-                    exit = shrinkVertically() + fadeOut()
+                    enter = expandVertically(
+                        animationSpec = tween(durationMillis = 350, easing = FastOutSlowInEasing),
+                        expandFrom = Alignment.Top
+                    ) + fadeIn(animationSpec = tween(durationMillis = 300, delayMillis = 80)),
+                    exit = shrinkVertically(
+                        animationSpec = tween(durationMillis = 280, easing = FastOutSlowInEasing),
+                        shrinkTowards = Alignment.Top
+                    ) + fadeOut(animationSpec = tween(durationMillis = 200))
                 ) {
                     ShivaratriYearlyList(
                         yearlyDates = moonPhase.yearlyShivaratri,

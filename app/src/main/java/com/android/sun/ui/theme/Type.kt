@@ -2,126 +2,146 @@ package com.android.sun.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.android.sun.R
 
 /**
  * Tipografie pentru aplicația SUN
- * Font monospace pentru ore (HH:MM:SS) pentru alinierea corectă
+ *
+ * Quicksand Bold     → Titluri principale (display, headline, title)
+ * Work Sans Medium   → Subtitluri și label-uri (label, body)
+ * Nunito Sans        → Date numerice, ore (countdown, timestamps)
+ * Monospace           → Coduri Tattva (G, O, A, U, L)
  */
 
+// ── Custom Font Families ──────────────────────────────────────
+val QuicksandFamily = FontFamily(
+    Font(R.font.quicksand, FontWeight.Bold)
+)
+
+val WorkSansFamily = FontFamily(
+    Font(R.font.work_sans, FontWeight.Medium)
+)
+
+val NunitoSansFamily = FontFamily(
+    Font(R.font.nunito_sans, FontWeight.Normal)
+)
+
+// ── Material 3 Typography ─────────────────────────────────────
 val Typography = Typography(
-    // Display styles (pentru titluri mari)
+    // Display styles — Quicksand Bold (titluri mari)
     displayLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
+        fontFamily = QuicksandFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 57.sp,
         lineHeight = 64.sp,
         letterSpacing = (-0.25).sp
     ),
     displayMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
+        fontFamily = QuicksandFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 45.sp,
         lineHeight = 52.sp,
         letterSpacing = 0.sp
     ),
     displaySmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
+        fontFamily = QuicksandFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 36.sp,
         lineHeight = 44.sp,
         letterSpacing = 0.sp
     ),
     
-    // Headline styles (pentru titluri secțiuni)
+    // Headline styles — Quicksand Bold (titluri secțiuni)
     headlineLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = QuicksandFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
         lineHeight = 40.sp,
         letterSpacing = 0.sp
     ),
     headlineMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = QuicksandFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 28.sp,
         lineHeight = 36.sp,
         letterSpacing = 0.sp
     ),
     headlineSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = QuicksandFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
         lineHeight = 32.sp,
         letterSpacing = 0.sp
     ),
     
-    // Title styles (pentru titluri cards)
+    // Title styles — Quicksand Bold (titluri carduri)
     titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = QuicksandFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
     titleMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = QuicksandFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.15.sp
     ),
     titleSmall = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = QuicksandFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp
     ),
     
-    // Body styles (pentru text normal)
+    // Body styles — Work Sans Medium (text normal / subtitluri)
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
+        fontFamily = WorkSansFamily,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     bodyMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
+        fontFamily = WorkSansFamily,
+        fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.25.sp
     ),
     bodySmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
+        fontFamily = WorkSansFamily,
+        fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.4.sp
     ),
     
-    // Label styles (pentru labels și butoane)
+    // Label styles — Work Sans Medium (label-uri și butoane)
     labelLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = WorkSansFamily,
+        fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp
     ),
     labelMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = WorkSansFamily,
+        fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     ),
     labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = WorkSansFamily,
+        fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
@@ -129,11 +149,11 @@ val Typography = Typography(
 )
 
 /**
- * Font monospace pentru afișarea orelor (HH:MM:SS)
- * Asigură aliniere perfectă a cifrelor
+ * Nunito Sans — date numerice, ore, countdown-uri
+ * Cifre cu lățime uniformă pentru aliniere perfectă
  */
 val MonospaceTextStyle = TextStyle(
-    fontFamily = FontFamily.Monospace,
+    fontFamily = NunitoSansFamily,
     fontWeight = FontWeight.Normal,
     fontSize = 16.sp,
     lineHeight = 24.sp,
@@ -141,10 +161,10 @@ val MonospaceTextStyle = TextStyle(
 )
 
 /**
- * Style pentru titlurile Tattva/SubTattva/Planet
+ * Quicksand Bold — titluri Tattva/SubTattva/Planet
  */
 val TattvaNameStyle = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = QuicksandFamily,
     fontWeight = FontWeight.Bold,
     fontSize = 20.sp,
     lineHeight = 28.sp,
@@ -152,10 +172,10 @@ val TattvaNameStyle = TextStyle(
 )
 
 /**
- * Style pentru codurile Tattva (G, O, A, U, L)
+ * Nunito Sans — coduri Tattva (G, O, A, U, L)
  */
 val TattvaCodeStyle = TextStyle(
-    fontFamily = FontFamily.Monospace,
+    fontFamily = NunitoSansFamily,
     fontWeight = FontWeight.Bold,
     fontSize = 24.sp,
     lineHeight = 32.sp,
