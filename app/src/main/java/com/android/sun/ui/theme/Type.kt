@@ -18,14 +18,14 @@ import com.android.sun.R
  *   Cifre:     Nunito Sans SemiBold (600) / ExtraBold (800)
  *
  * Profil 2 „Kanit":
- *   Titluri:   Kanit Bold / ExtraBold
- *   Subtitluri: Open Sans SemiBold
- *   Cifre:     Lato Bold
+ *   Titluri:   Kanit Bold (700)
+ *   Subtitluri: Open Sans Medium (500)
+ *   Cifre:     Lato SemiBold (600)
  *
  * Profil 3 „Claritate Maximă":
- *   Titluri:   Public Sans Bold (+ ExtraBold 800, Black 900 available)
- *   Subtitluri: Inter SemiBold
- *   Cifre:     Rubik Bold
+ *   Titluri:   Public Sans SemiBold (600)
+ *   Subtitluri: Inter Medium (500)
+ *   Cifre:     Rubik Normal (400) / SemiBold (600)
  *
  * All fonts use separate STATIC .ttf files per weight (not variable fonts)
  * to ensure Android Compose correctly differentiates FontWeight variants.
@@ -79,6 +79,7 @@ val OpenSansFamily = FontFamily(
 )
 
 val LatoFamily = FontFamily(
+    Font(R.font.lato_semibold, FontWeight.SemiBold),
     Font(R.font.lato_bold, FontWeight.Bold)
 )
 
@@ -126,21 +127,21 @@ private data class FontProfileSpec(
 private fun getFontProfileSpec(profile: Int): FontProfileSpec = when (profile) {
     FONT_PROFILE_KANIT -> FontProfileSpec(
         titleFamily = KanitFamily,
-        titleWeight = FontWeight.ExtraBold,
+        titleWeight = FontWeight.Bold,
         subtitleFamily = OpenSansFamily,
-        subtitleWeight = FontWeight.SemiBold,
+        subtitleWeight = FontWeight.Medium,
         numericFamily = LatoFamily,
-        numericWeight = FontWeight.Bold,
-        numericBoldWeight = FontWeight.Bold
+        numericWeight = FontWeight.SemiBold,
+        numericBoldWeight = FontWeight.SemiBold
     )
     FONT_PROFILE_PUBLIC_SANS -> FontProfileSpec(
         titleFamily = PublicSansFamily,
-        titleWeight = FontWeight.Bold,
+        titleWeight = FontWeight.SemiBold,
         subtitleFamily = InterFamily,
-        subtitleWeight = FontWeight.SemiBold,
+        subtitleWeight = FontWeight.Medium,
         numericFamily = RubikFamily,
-        numericWeight = FontWeight.Medium,
-        numericBoldWeight = FontWeight.Bold
+        numericWeight = FontWeight.Normal,
+        numericBoldWeight = FontWeight.SemiBold
     )
     else -> FontProfileSpec(  // FONT_PROFILE_QUICKSAND (default)
         titleFamily = QuicksandFamily,

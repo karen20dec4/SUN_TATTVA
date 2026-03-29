@@ -53,9 +53,9 @@
     <string name="font_profile_1_name">Quicksand+</string>
     <string name="font_profile_1_desc">Quicksand Bold · Work Sans Bold · Nunito Sans</string>
     <string name="font_profile_2_name">Kanit</string>
-    <string name="font_profile_2_desc">Kanit ExtraBold · Open Sans SemiBold · Lato Bold</string>
+    <string name="font_profile_2_desc">Kanit Bold · Open Sans Medium · Lato SemiBold</string>
     <string name="font_profile_3_name">Claritate Maximă</string>
-    <string name="font_profile_3_desc">Public Sans Bold · Inter SemiBold · Rubik Bold</string>
+    <string name="font_profile_3_desc">Public Sans SemiBold · Inter Medium · Rubik SemiBold</string>
     <string name="notification_until">până la</string>
     <string name="section_about">Despre</string>
     <string name="version">Versiune</string>
