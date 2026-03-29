@@ -153,6 +153,7 @@ fun MoonPhaseCard(
 /**
  * Displays the 18h influence period of the full moon
  * ✅ Responsive: single line display with auto-sizing text
+ * ✅ Always shows a background for visibility
  * Format: "1 Apr 11:11  ────  2 Apr 23:11"
  */
 @Composable
@@ -160,8 +161,14 @@ private fun FullMoonInfluencePeriod(
     fullMoonPeak: Calendar,
     isHighlighted: Boolean = false
 ) {
-    val highlightBg = Color(0xFF423e48)
-    val highlightText = Color(0xFFd0ccd1)
+    // Active influence: more prominent dark background with accent border
+    val activeBg = Color(0xFF2E1A47)       // Deep purple/indigo
+    val activeText = Color(0xFFE1BEE7)     // Light purple text
+    val activeBorder = Color(0xFFCE93D8)   // Purple accent border
+    
+    // Inactive: subtle contrasting background
+    val inactiveBg = Color(0xFF37474F)     // Blue-grey dark  
+    val inactiveText = Color(0xFFB0BEC5)   // Light blue-grey text
     
     // Calculate 18h before and after peak
     val influenceStart = fullMoonPeak.clone() as Calendar
@@ -177,7 +184,8 @@ private fun FullMoonInfluencePeriod(
     val startText = dateFormat.format(influenceStart.time)
     val endText = dateFormat.format(influenceEnd.time)
     
-    val textColor = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+    val bgColor = if (isHighlighted) activeBg else inactiveBg
+    val textColor = if (isHighlighted) activeText else inactiveText
     
     Row(
         modifier = Modifier
@@ -186,16 +194,26 @@ private fun FullMoonInfluencePeriod(
                 if (isHighlighted) {
                     Modifier
                         .background(
-                            color = highlightBg,
-                            shape = RoundedCornerShape(6.dp)
+                            color = bgColor,
+                            shape = RoundedCornerShape(8.dp)
                         )
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .then(
+                            Modifier.padding(1.dp)
+                                .background(
+                                    color = activeBorder.copy(alpha = 0.3f),
+                                    shape = RoundedCornerShape(7.dp)
+                                )
+                        )
                 } else {
                     Modifier
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .background(
+                            color = bgColor,
+                            shape = RoundedCornerShape(8.dp)
+                        )
                 }
-            ),
-        horizontalArrangement = Arrangement.End,
+            )
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         // ✅ Single Text element to guarantee single-line display

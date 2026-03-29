@@ -10,12 +10,12 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
-- **Current Version:** 2.22 (versionCode 16)
+- **Current Version:** 2.23 (versionCode 17)
 
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
-- Current: **2.22**
-- Next versions: **2.23**, **2.24**, **2.25**, ...
+- Current: **2.23**
+- Next versions: **2.24**, **2.25**, **2.26**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
@@ -126,6 +126,7 @@ The 18h influence period is calculated based on the Moon-Sun relative angular sp
 **MoonPhaseCard UI:**
 - Rows display in order: Tripura Sundari → Full Moon → Shivaratri → New Moon
 - Full Moon row is expandable: shows 18h influence period (peak ± 18h) + next 12 full moon dates with cyan highlight for nearest
+- (v2.23+) Full Moon influence period always has a visible background (dark blue-grey when inactive, deep purple when active/highlighted) for prominence
 - Shivaratri row is expandable: shows next 12 Shivaratri periods (across years if needed) with cyan highlight for next date. Past dates (after 6:00 AM on morning date) are filtered out.
 - All rows use uniform 16sp bold titleMedium font
 
@@ -177,6 +178,8 @@ NavHost (startDestination = "main")
 - Uses `AlarmManager.setExactAndAllowWhileIdle()` to update at exact Tattva/Planet transitions
 - Includes 5-minute safety net loop as fallback for Doze mode / OEM restrictions
 - Responds to location/settings changes via BroadcastReceiver
+- (v2.23+) Uses `TimeZoneUtils.getLocationTimeZone()` for DST-aware time display and offset suffix
+- (v2.23+) Uses localized "until"/"până la" text from string resources (`R.string.notification_until`)
 
 **Notification Channels:**
 - `tattva_persistent_channel` - Tattva element updates

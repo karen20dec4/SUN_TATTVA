@@ -21,6 +21,7 @@ import com.android.sun.domain.calculator.PlanetType
 import com.android.sun.data.repository.AstroRepository
 import com.android.sun.data.repository.LocationPreferences
 import com.android.sun.data.preferences.SettingsPreferences
+import com.android.sun.util.TimeZoneUtils
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -192,7 +193,16 @@ class TattvaNotificationService : Service() {
             )
 
             val notificationManager = getSystemService(NotificationManager::class.java)
-            val gmtSuffix = "(${if (timeZone >= 0) "+" else ""}${String.format("%.1f", timeZone)})"
+            
+            // ✅ DST-aware timezone: use location name to resolve proper timezone ID
+            val locationName = locationPrefs.getSavedLocationName()
+            val locationTimeZone = TimeZoneUtils.getLocationTimeZone(locationName, timeZone)
+            val actualOffsetMs = locationTimeZone.getOffset(System.currentTimeMillis())
+            val actualOffsetHours = actualOffsetMs / 3600000.0
+            val gmtSuffix = "(${if (actualOffsetHours >= 0) "+" else ""}${String.format("%.1f", actualOffsetHours)})"
+            
+            // ✅ Localized "until" / "pana la"
+            val untilText = getString(R.string.notification_until)
 
             val now = System.currentTimeMillis()
             var nextChangeMs = Long.MAX_VALUE
@@ -200,9 +210,9 @@ class TattvaNotificationService : Service() {
             // 1. NOTIFICARE TATTVA
             if (showTattva) {
                 val type = astroData.tattva.tattva
-                val endTime = formatTime(astroData.tattva.endTime, timeZone)
+                val endTime = formatTime(astroData.tattva.endTime, locationTimeZone)
                 val emoji = getTattvaEmoji(type)
-                val tattvaText = "$emoji - until $endTime $gmtSuffix"
+                val tattvaText = "$emoji - $untilText $endTime $gmtSuffix"
                 
                 val notification = createDetailedNotification(
 					tattvaText, 
@@ -228,9 +238,9 @@ class TattvaNotificationService : Service() {
             // 2. NOTIFICARE ORA PLANETARĂ
             if (showPlanet) {
                 val planet = astroData.planet.planet
-                val endTime = formatTime(astroData.planet.endTime, timeZone)
+                val endTime = formatTime(astroData.planet.endTime, locationTimeZone)
                 val emoji = getPlanetEmoji(planet)
-                val planetText = "$emoji - until $endTime $gmtSuffix"
+                val planetText = "$emoji - $untilText $endTime $gmtSuffix"
                 
                 val notification = createDetailedNotification(
 					planetText, 
@@ -350,10 +360,9 @@ class TattvaNotificationService : Service() {
         }
     }
 
-    private fun formatTime(calendar: Calendar, timeZone: Double): String {
+    private fun formatTime(calendar: Calendar, tz: TimeZone): String {
         val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val offsetMillis = (timeZone * 3600 * 1000).toInt()
-        sdf.timeZone = SimpleTimeZone(offsetMillis, "Location")
+        sdf.timeZone = tz
         return sdf.format(calendar.time)
     }
 
