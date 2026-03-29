@@ -111,7 +111,7 @@ fun MoonPhaseCard(
                     )
                     
                     if (moonPhase.futureFullMoons.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                         FullMoonYearlyList(
                             futureFullMoons = moonPhase.futureFullMoons,
                             nextFullMoon = moonPhase.nextFullMoon
@@ -212,7 +212,7 @@ private fun FullMoonInfluencePeriod(
                         )
                 }
             )
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+            .padding(horizontal = 12.dp, vertical = 10.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {

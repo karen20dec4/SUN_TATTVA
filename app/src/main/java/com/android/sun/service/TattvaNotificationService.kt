@@ -201,8 +201,13 @@ class TattvaNotificationService : Service() {
             val actualOffsetHours = actualOffsetMs / 3600000.0
             val gmtSuffix = "(${if (actualOffsetHours >= 0) "+" else ""}${String.format("%.1f", actualOffsetHours)})"
             
-            // ✅ Localized "until" / "pana la"
-            val untilText = getString(R.string.notification_until)
+            // ✅ Localized "until" / "pana la" - use app language, not system locale
+            val language = settingsPreferences.getLanguage()
+            val locale = java.util.Locale(language)
+            val config = android.content.res.Configuration(resources.configuration)
+            config.setLocale(locale)
+            val localizedContext = createConfigurationContext(config)
+            val untilText = localizedContext.getString(R.string.notification_until)
 
             val now = System.currentTimeMillis()
             var nextChangeMs = Long.MAX_VALUE

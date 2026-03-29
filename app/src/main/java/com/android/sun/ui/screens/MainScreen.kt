@@ -329,9 +329,12 @@ private fun CompactInfoCard(
                             timeZone = locationTimeZone
                         }
                         
-                        val gmtOffsetHours = astroData.timeZone.toInt()
-                        val gmtOffsetMinutes = ((kotlin.math.abs(astroData.timeZone) % 1) * 60).toInt()
-                        val gmtSign = if (astroData.timeZone >= 0) "+" else "-"
+                        // ✅ DST-aware offset: use locationTimeZone.getOffset() instead of static astroData.timeZone
+                        val actualOffsetMs = locationTimeZone.getOffset(System.currentTimeMillis())
+                        val actualOffsetTotalMinutes = actualOffsetMs / (1000 * 60)
+                        val gmtOffsetHours = actualOffsetTotalMinutes / 60
+                        val gmtOffsetMinutes = kotlin.math.abs(actualOffsetTotalMinutes % 60)
+                        val gmtSign = if (actualOffsetTotalMinutes >= 0) "+" else "-"
                         val gmtOffsetFormatted = String.format("GMT%s%02d:%02d", gmtSign, kotlin.math.abs(gmtOffsetHours), gmtOffsetMinutes)
                         
                         Row(
