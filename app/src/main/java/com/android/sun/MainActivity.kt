@@ -107,6 +107,7 @@ fun AppNavigation(
     val isTattvaNotification by settingsPreferences.tattvaNotification.collectAsState()
 	val isPlanetaryHourNotification by settingsPreferences.planetaryHourNotification.collectAsState()
 	val currentLanguage by settingsPreferences.language.collectAsState()
+	val fontProfile by settingsPreferences.fontProfile.collectAsState()
 	
 	val context = LocalContext.current
 	val navController = rememberNavController()
