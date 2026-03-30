@@ -49,16 +49,11 @@ val QuicksandFamily = FontFamily(
 )
 
 val WorkSansFamily = FontFamily(
-    Font(R.font.work_sans_medium, FontWeight.Medium),
-    Font(R.font.work_sans_semibold, FontWeight.SemiBold),
     Font(R.font.work_sans_bold, FontWeight.Bold)
 )
 
 val NunitoSansFamily = FontFamily(
-    Font(R.font.nunito_sans_regular, FontWeight.Normal),
-    Font(R.font.nunito_sans_medium, FontWeight.Medium),
     Font(R.font.nunito_sans_semibold, FontWeight.SemiBold),
-    Font(R.font.nunito_sans_bold, FontWeight.Bold),
     Font(R.font.nunito_sans_extrabold, FontWeight.ExtraBold)
 )
 
@@ -67,20 +62,15 @@ val NunitoSansFamily = FontFamily(
 // ══════════════════════════════════════════════════════════════
 
 val KanitFamily = FontFamily(
-    Font(R.font.kanit_bold, FontWeight.Bold),
-    Font(R.font.kanit_extrabold, FontWeight.ExtraBold)
+    Font(R.font.kanit_bold, FontWeight.Bold)
 )
 
 val OpenSansFamily = FontFamily(
-    Font(R.font.open_sans_regular, FontWeight.Normal),
-    Font(R.font.open_sans_medium, FontWeight.Medium),
-    Font(R.font.open_sans_semibold, FontWeight.SemiBold),
-    Font(R.font.open_sans_bold, FontWeight.Bold)
+    Font(R.font.open_sans_medium, FontWeight.Medium)
 )
 
 val LatoFamily = FontFamily(
-    Font(R.font.lato_semibold, FontWeight.SemiBold),
-    Font(R.font.lato_bold, FontWeight.Bold)
+    Font(R.font.lato_semibold, FontWeight.SemiBold)
 )
 
 // ══════════════════════════════════════════════════════════════
@@ -88,26 +78,16 @@ val LatoFamily = FontFamily(
 // ══════════════════════════════════════════════════════════════
 
 val PublicSansFamily = FontFamily(
-    Font(R.font.public_sans_regular, FontWeight.Normal),
-    Font(R.font.public_sans_medium, FontWeight.Medium),
-    Font(R.font.public_sans_semibold, FontWeight.SemiBold),
-    Font(R.font.public_sans_bold, FontWeight.Bold),
-    Font(R.font.public_sans_extrabold, FontWeight.ExtraBold),
-    Font(R.font.public_sans_black, FontWeight.Black)
+    Font(R.font.public_sans_semibold, FontWeight.SemiBold)
 )
 
 val InterFamily = FontFamily(
-    Font(R.font.inter_regular, FontWeight.Normal),
-    Font(R.font.inter_medium, FontWeight.Medium),
-    Font(R.font.inter_semibold, FontWeight.SemiBold),
-    Font(R.font.inter_bold, FontWeight.Bold)
+    Font(R.font.inter_medium, FontWeight.Medium)
 )
 
 val RubikFamily = FontFamily(
     Font(R.font.rubik_regular, FontWeight.Normal),
-    Font(R.font.rubik_medium, FontWeight.Medium),
-    Font(R.font.rubik_semibold, FontWeight.SemiBold),
-    Font(R.font.rubik_bold, FontWeight.Bold)
+    Font(R.font.rubik_semibold, FontWeight.SemiBold)
 )
 
 // ══════════════════════════════════════════════════════════════
