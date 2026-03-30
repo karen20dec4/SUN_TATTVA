@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -163,15 +164,6 @@ fun SettingsScreen(
                 )
                 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                
-                // SECTIUNEA: NOTIFICARI
-                Text(
-                    text = stringResource(R.string.section_notifications),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
                 
                 if (! hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     Card(
@@ -513,6 +505,8 @@ private fun NotificationGroupCard(
                             } else {
                                 MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                             },
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.padding(bottom = 4.dp)
                         )
                         Checkbox(

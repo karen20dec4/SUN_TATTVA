@@ -37,6 +37,7 @@ fun MoonPhaseCard(
 ) {
     var isFullMoonExpanded by remember { mutableStateOf(false) }
     var isShivaratriExpanded by remember { mutableStateOf(false) }
+    var isTripuraSundariExpanded by remember { mutableStateOf(false) }
     
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -84,11 +85,34 @@ fun MoonPhaseCard(
                 thickness = 1.dp
             )
             
-            // Tripura Sundari
+            // Tripura Sundari (clickable to expand)
             MoonEventRow(
                 label = stringResource(R.string.tripura_sundari_label),
-                date = moonPhase.nextTripuraSundari
+                date = moonPhase.nextTripuraSundari,
+                onClick = { isTripuraSundariExpanded = !isTripuraSundariExpanded },
+                showExpandArrow = true,
+                isExpanded = isTripuraSundariExpanded
             )
+            
+            // Expandable Tripura Sundari future dates list
+            AnimatedVisibility(
+                visible = isTripuraSundariExpanded,
+                enter = expandVertically(
+                    animationSpec = tween(durationMillis = 350, easing = FastOutSlowInEasing),
+                    expandFrom = Alignment.Top
+                ) + fadeIn(animationSpec = tween(durationMillis = 300, delayMillis = 80)),
+                exit = shrinkVertically(
+                    animationSpec = tween(durationMillis = 280, easing = FastOutSlowInEasing),
+                    shrinkTowards = Alignment.Top
+                ) + fadeOut(animationSpec = tween(durationMillis = 200))
+            ) {
+                if (moonPhase.futureTripuraSundari.isNotEmpty()) {
+                    TripuraSundariYearlyList(
+                        futureTripuraSundari = moonPhase.futureTripuraSundari,
+                        nextTripuraSundari = moonPhase.nextTripuraSundari
+                    )
+                }
+            }
             
             // Full Moon (highlighted when in influence period, clickable to expand)
             MoonEventRow(
@@ -328,6 +352,96 @@ private fun FullMoonYearlyList(
             }
             
             if (index < futureFullMoons.size - 1) {
+                Spacer(modifier = Modifier.height(2.dp))
+            }
+        }
+    }
+}
+
+/**
+ * Expandable list of future Tripura Sundari dates.
+ * - First (nearest) date is highlighted with cyan
+ * - Shows date + year for each Tripura Sundari
+ * - Alternating backgrounds for readability
+ * - Same visual style as FullMoonYearlyList
+ */
+@Composable
+private fun TripuraSundariYearlyList(
+    futureTripuraSundari: List<Calendar>,
+    nextTripuraSundari: Calendar
+) {
+    val nextHighlightBg = Color(0xFFB2EBF2) // Light cyan
+    val nextHighlightText = Color(0xFF004D40) // Dark teal
+    val primaryRowBg = MaterialTheme.colorScheme.surfaceVariant
+    val secondaryRowBg = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+    
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp)
+    ) {
+        HorizontalDivider(
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.15f),
+            thickness = 0.5.dp,
+            modifier = Modifier.padding(horizontal = 4.dp)
+        )
+        
+        Spacer(modifier = Modifier.height(4.dp))
+        
+        futureTripuraSundari.forEachIndexed { index, tripuraDate ->
+            val dateFormat = SimpleDateFormat("d MMM - HH:mm", Locale.getDefault())
+            dateFormat.timeZone = tripuraDate.timeZone
+            val yearFormat = SimpleDateFormat("yyyy", Locale.getDefault())
+            yearFormat.timeZone = tripuraDate.timeZone
+            
+            val dateText = dateFormat.format(tripuraDate.time)
+            val yearText = yearFormat.format(tripuraDate.time)
+            
+            val isNext = isSameDate(tripuraDate, nextTripuraSundari)
+            
+            val rowBg = when {
+                isNext -> nextHighlightBg
+                index % 2 == 0 -> primaryRowBg
+                else -> secondaryRowBg
+            }
+            
+            val textColor = when {
+                isNext -> nextHighlightText
+                else -> MaterialTheme.colorScheme.onSurfaceVariant
+            }
+            
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = rowBg,
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(horizontal = 16.dp, vertical = 6.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = dateText,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = textColor,
+                    maxLines = 1,
+                    softWrap = false
+                )
+                Text(
+                    text = yearText,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = textColor,
+                    maxLines = 1,
+                    softWrap = false
+                )
+            }
+            
+            if (index < futureTripuraSundari.size - 1) {
                 Spacer(modifier = Modifier.height(2.dp))
             }
         }

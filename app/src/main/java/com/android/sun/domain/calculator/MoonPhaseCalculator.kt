@@ -63,9 +63,13 @@ class MoonPhaseCalculator(
         // ✅ Calculate next 12 full moon dates
         val futureFullMoons = calculateNextFullMoons(currentTime, 12)
         
+        // ✅ Calculate next 12 Tripura Sundari dates
+        val futureTripuraSundari = calculateNextTripuraSundariDates(currentTime, 12)
+        
         com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Next Shivaratri: ${formatDate(nextShivaratriTime)}")
         com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Future Shivaratri dates: ${yearlyShivaratri.size}")
         com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Future Full Moons: ${futureFullMoons.size}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Future Tripura Sundari: ${futureTripuraSundari.size}")
         
         return MoonPhaseResult(
             phaseAngle = diff,
@@ -76,7 +80,8 @@ class MoonPhaseCalculator(
             isInFullMoonInfluence = isInFullMoonInfluence,
             nextShivaratri = nextShivaratri,
             yearlyShivaratri = yearlyShivaratri,
-            futureFullMoons = futureFullMoons
+            futureFullMoons = futureFullMoons,
+            futureTripuraSundari = futureTripuraSundari
         )
     }
 
@@ -340,6 +345,34 @@ class MoonPhaseCalculator(
     }
 
     /**
+     * Calculate the next N Tripura Sundari dates starting from referenceTime.
+     * Tripura Sundari occurs at phase angle 154.2833° — approximately once per synodic month.
+     * Returns future Tripura Sundari peak times.
+     */
+    private fun calculateNextTripuraSundariDates(referenceTime: Calendar, count: Int): List<Calendar> {
+        val minDaysBetweenPhases = 25
+        val results = mutableListOf<Calendar>()
+        
+        var currentSearch = referenceTime.clone() as Calendar
+        
+        for (i in 0 until count + 3) {
+            if (results.size >= count) break
+            
+            val tripuraTime = findNextPhase(currentSearch, 154.2833)
+            
+            // Only add if it's in the future
+            if (tripuraTime.timeInMillis > referenceTime.timeInMillis) {
+                results.add(tripuraTime)
+            }
+            
+            currentSearch = tripuraTime.clone() as Calendar
+            currentSearch.add(Calendar.DAY_OF_MONTH, minDaysBetweenPhases)
+        }
+        
+        return results.take(count)
+    }
+
+    /**
      * Helper to compare two Calendar dates (same day)
      */
     private fun isSameDay(cal1: Calendar, cal2: Calendar): Boolean {
@@ -370,7 +403,8 @@ data class MoonPhaseResult(
     val isInFullMoonInfluence: Boolean = false,
     val nextShivaratri: ShivaratriDate? = null,
     val yearlyShivaratri: List<ShivaratriDate> = emptyList(),
-    val futureFullMoons: List<Calendar> = emptyList()
+    val futureFullMoons: List<Calendar> = emptyList(),
+    val futureTripuraSundari: List<Calendar> = emptyList()
 )
 
 data class ShivaratriDate(
