@@ -60,6 +60,10 @@ class MoonPhaseCalculator(
         val nextShivaratri = calculateShivaratriNight(nextShivaratriTime)
         val yearlyShivaratri = calculateNextShivaratriPeriods(currentTime, 12)
         
+        // ✅ Check if we're currently in a Shivaratri night period
+        // Shivaratri night: from evening (~18:00) to morning 6:00 AM
+        val isInShivaratriPeriod = isCurrentlyInShivaratriPeriod(currentTime, nextShivaratri, yearlyShivaratri)
+        
         // ✅ Calculate next 12 full moon dates
         val futureFullMoons = calculateNextFullMoons(currentTime, 12)
         
@@ -70,6 +74,7 @@ class MoonPhaseCalculator(
         com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Future Shivaratri dates: ${yearlyShivaratri.size}")
         com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Future Full Moons: ${futureFullMoons.size}")
         com.android.sun.util.AppLog.d("MoonPhaseCalculator", "Future Tripura Sundari: ${futureTripuraSundari.size}")
+        com.android.sun.util.AppLog.d("MoonPhaseCalculator", "In Shivaratri period: $isInShivaratriPeriod")
         
         return MoonPhaseResult(
             phaseAngle = diff,
@@ -78,6 +83,7 @@ class MoonPhaseCalculator(
             nextFullMoon = nextFullMoon,
             nextNewMoon = nextNewMoon,
             isInFullMoonInfluence = isInFullMoonInfluence,
+            isInShivaratriPeriod = isInShivaratriPeriod,
             nextShivaratri = nextShivaratri,
             yearlyShivaratri = yearlyShivaratri,
             futureFullMoons = futureFullMoons,
@@ -380,6 +386,55 @@ class MoonPhaseCalculator(
                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
     }
 
+    /**
+     * Check if current time is within a Shivaratri night period.
+     * Shivaratri night: evening date from 18:00 to morning date 06:00.
+     * Also checks if the current day IS the evening date (day of Shivaratri).
+     */
+    private fun isCurrentlyInShivaratriPeriod(
+        currentTime: Calendar,
+        nextShivaratri: ShivaratriDate?,
+        yearlyShivaratri: List<ShivaratriDate>
+    ): Boolean {
+        if (nextShivaratri == null) return false
+        
+        // Check the next Shivaratri and all yearly dates
+        val allDates = listOf(nextShivaratri) + yearlyShivaratri
+        
+        for (shivaratri in allDates) {
+            // Evening start: 18:00 on evening date
+            val eveningStart = shivaratri.eveningDate.clone() as Calendar
+            eveningStart.set(Calendar.HOUR_OF_DAY, 18)
+            eveningStart.set(Calendar.MINUTE, 0)
+            eveningStart.set(Calendar.SECOND, 0)
+            
+            // Morning end: 06:00 on morning date
+            val morningEnd = shivaratri.morningDate.clone() as Calendar
+            morningEnd.set(Calendar.HOUR_OF_DAY, 6)
+            morningEnd.set(Calendar.MINUTE, 0)
+            morningEnd.set(Calendar.SECOND, 0)
+            
+            // Check if current time is within this Shivaratri night
+            if (currentTime.timeInMillis >= eveningStart.timeInMillis &&
+                currentTime.timeInMillis <= morningEnd.timeInMillis) {
+                return true
+            }
+            
+            // Also check: if today IS the evening date (Shivaratri starts tonight)
+            if (isSameDay(currentTime, shivaratri.eveningDate)) {
+                return true
+            }
+            
+            // Also check: if today IS the morning date (Shivaratri ends this morning at 6 AM)
+            if (isSameDay(currentTime, shivaratri.morningDate) &&
+                currentTime.get(Calendar.HOUR_OF_DAY) < 6) {
+                return true
+            }
+        }
+        
+        return false
+    }
+
     private fun formatDate(cal: Calendar): String {
         return String.format(
             "%04d-%02d-%02d %02d:%02d:%02d %s",
@@ -401,6 +456,7 @@ data class MoonPhaseResult(
     val nextFullMoon:  Calendar,
     val nextNewMoon: Calendar,
     val isInFullMoonInfluence: Boolean = false,
+    val isInShivaratriPeriod: Boolean = false,
     val nextShivaratri: ShivaratriDate? = null,
     val yearlyShivaratri: List<ShivaratriDate> = emptyList(),
     val futureFullMoons: List<Calendar> = emptyList(),

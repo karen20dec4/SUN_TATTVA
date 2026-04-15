@@ -156,6 +156,7 @@ fun MoonPhaseCard(
             if (moonPhase.nextShivaratri != null) {
                 ShivaratriRow(
                     shivaratri = moonPhase.nextShivaratri,
+                    isHighlighted = moonPhase.isInShivaratriPeriod,
                     onClick = { isShivaratriExpanded = !isShivaratriExpanded },
                     isExpanded = isShivaratriExpanded
                 )
@@ -449,12 +450,14 @@ private fun TripuraSundariYearlyList(
 }
 
 /**
- * Shivaratri row with expand arrow
+ * Shivaratri row with expand arrow and highlight marker
  * Format: "Shivaratri:    17 Mar / 18 Mar ▾"
+ * ✅ When highlighted (on Shivaratri day), shows same styling as full moon highlight
  */
 @Composable
 private fun ShivaratriRow(
     shivaratri: ShivaratriDate,
+    isHighlighted: Boolean = false,
     onClick: () -> Unit,
     isExpanded: Boolean
 ) {
@@ -464,10 +467,25 @@ private fun ShivaratriRow(
     val eveningText = dateFormat.format(shivaratri.eveningDate.time)
     val morningText = dateFormat.format(shivaratri.morningDate.time)
     
+    val highlightBg = Color(0xFF423e48)
+    val highlightText = Color(0xFFd0ccd1)
+    
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .then(
+                if (isHighlighted) {
+                    Modifier
+                        .background(
+                            color = highlightBg,
+                            shape = RoundedCornerShape(6.dp)
+                        )
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                } else {
+                    Modifier
+                }
+            ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -476,7 +494,7 @@ private fun ShivaratriRow(
             style = MaterialTheme.typography.titleMedium,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 1
         )
         
@@ -491,7 +509,7 @@ private fun ShivaratriRow(
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
                 softWrap = false
             )
@@ -499,7 +517,7 @@ private fun ShivaratriRow(
             Icon(
                 imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                 contentDescription = if (isExpanded) stringResource(R.string.collapse) else stringResource(R.string.expand),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                tint = if (isHighlighted) highlightText else MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(18.dp)
             )
         }

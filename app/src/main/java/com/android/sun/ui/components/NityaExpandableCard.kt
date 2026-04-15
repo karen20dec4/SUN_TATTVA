@@ -3,6 +3,11 @@ package com.android.sun.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -14,20 +19,41 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sun.R
 import com.android.sun.domain.calculator.NityaResult
+import java.util.Calendar
+import kotlinx.coroutines.delay
 
 /**
  * Card SIMPLU pentru Nitya - o singură linie
- * Afișează: Nitya | 14/15 - Jwalamalini 92%
+ * Afișează: Nitya | 14/15 - Jwalamalini 18h 3m
  */
 @Composable
 fun NityaExpandableCard(
     currentNitya: NityaResult,
     modifier: Modifier = Modifier
 ) {
-    // Calcul procent RĂMAS
-    val tithiStartDegree = (currentNitya.difference / 12.0).toInt() * 12.0
-    val progressInTithi = currentNitya.difference - tithiStartDegree
-    val percentRemaining = ((12.0 - progressInTithi) / 12.0 * 100).toInt()
+    // Live countdown - update every minute
+    var currentTime by remember { mutableStateOf(Calendar.getInstance()) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(60_000) // Update every minute
+            currentTime = Calendar.getInstance()
+        }
+    }
+
+    // Calculate time remaining until end of current Nitya
+    val timeRemaining = currentNitya.endTime.timeInMillis - currentTime.timeInMillis
+    val countdownText = if (timeRemaining <= 0) {
+        "0m"
+    } else {
+        val totalSeconds = timeRemaining / 1000L
+        val hoursRemaining = totalSeconds / 3600L
+        val minutesRemaining = (totalSeconds % 3600L) / 60L
+        when {
+            hoursRemaining > 0 -> String.format("%dh %dm", hoursRemaining, minutesRemaining)
+            minutesRemaining > 0 -> String.format("%dm", minutesRemaining)
+            else -> String.format("%ds", totalSeconds % 60L)
+        }
+    }
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -65,9 +91,9 @@ fun NityaExpandableCard(
                     .padding(end = 8.dp)
             )
 
-            // Dreapta: Procent - fără wrap, cu lățime minimă (încapă și 100%)
+            // Dreapta: Timp rămas - format "18h 3m" ca la Nakshatra
             Text(
-                text = "$percentRemaining%",
+                text = countdownText,
                 style = MaterialTheme.typography.bodyLarge,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
@@ -75,7 +101,7 @@ fun NityaExpandableCard(
                 maxLines = 1,
                 softWrap = false,
                 textAlign = TextAlign.End,
-                modifier = Modifier.widthIn(min = 44.dp)
+                modifier = Modifier.widthIn(min = 56.dp)
             )
         }
     }
