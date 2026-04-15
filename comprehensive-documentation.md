@@ -10,12 +10,12 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
-- **Current Version:** 2.35 (versionCode 29)
+- **Current Version:** 2.36 (versionCode 30)
 
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
-- Current: **2.35**
-- Next versions: **2.35**, **2.36**, **2.37**, ...
+- Current: **2.36**
+- Next versions: **2.37**, **2.38**, **2.39**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
@@ -208,6 +208,8 @@ Scheduled events:
 |----------------------------|------------------------------------------------|
 | Dark Theme                 | Toggle dark/light mode                         |
 | Language                   | Toggle Romanian (OFF) / English (ON)           |
+| Ora de Vară / DST          | (v2.35+) Manual toggle for Daylight Saving Time. When ON, +1h is added to all calculations. Replaces automatic IANA DST detection (which was unreliable for GPS locations). |
+| Font Profile               | (v2.36+) 4 profiles: Roboto (default), Quicksand+, Kanit, Claritate Maximă |
 | Tattva Notification        | Persistent status bar Tattva notification       |
 | Planetary Hour Notification| Persistent status bar planetary hour notification|
 | Full Moon Notification     | Alert before/during full moon                  |
@@ -244,9 +246,11 @@ Display-friendly wrapper containing: name, color, emoji, start/end times, remain
 - `nextFullMoon: Calendar` - Time of next full moon
 - `nextNewMoon: Calendar` - Time of next new moon
 - `isInFullMoonInfluence: Boolean` - Whether currently within 18h of full moon peak
+- `isInShivaratriPeriod: Boolean` - (v2.35+) Whether currently in Shivaratri period (evening 18:00 to morning 06:00)
 - `nextShivaratri: ShivaratriDate` - Next Shivaratri (eveningDate/morningDate)
 - `yearlyShivaratri: List<ShivaratriDate>` - Next 12 Shivaratri periods (past ones filtered after 6 AM on morning date, spans across year boundary)
 - `futureFullMoons: List<Calendar>` - Next 12 full moon peak times (computed using ephemeris search)
+- `futureTripuraSundari: List<Calendar>` - (v2.34+) Next 12 Tripura Sundari dates at phase angle 154.2833°
 
 ### NakshatraResult
 - `nakshatra: NakshatraType` - Current Nakshatra enum (27 types with deity/symbol/animal/planet/nature)
@@ -288,7 +292,18 @@ The app uses a dual-timezone approach:
 
 When the phone and location timezones differ, a "Local time" line is shown in the header.
 
-All Swiss Ephemeris calculations are performed in UTC and then converted to the location's timezone for display. DST (Daylight Saving Time) is handled via `TimeZoneUtils.getLocationTimeZone()`.
+All Swiss Ephemeris calculations are performed in UTC and then converted to the location's timezone for display.
+
+### DST (Daylight Saving Time) - v2.35+
+
+**Problem:** Automatic IANA-based DST detection was unreliable for GPS-added locations.
+
+**Solution:** DST is now controlled **manually** via a Settings toggle:
+- `TimeZoneUtils.getLocationTimeZone(timeZoneOffset)` always returns a `SimpleTimeZone` with a static offset (no automatic DST)
+- The `locationName` parameter was removed (v2.36) since IANA resolution is no longer used
+- When the "Ora de Vară" (DST) switch is ON in Settings, `MainViewModel` and `TattvaNotificationService` add +1h to the timezone offset before passing it to calculations
+- This affects ALL cards: Tattva, Moon (Tripura Sundari, Full Moon, Shivaratri), Planets, Nakshatra, Nitya
+- GMT offset displayed in debug areas reflects the actual offset (base + DST if enabled)
 
 ---
 
@@ -350,6 +365,28 @@ All hardcoded Romanian enum values (zodiac signs, planet names, nakshatra detail
 
 ---
 
+## Typography & Font Profiles (v2.36+)
+
+The app has **4 selectable font profiles** in Settings:
+
+| Profile | Name             | Titles              | Subtitles          | Numeric Data           |
+|---------|------------------|----------------------|--------------------|------------------------|
+| 0       | Roboto (Original)| System Default Medium| System Default Normal| System Default Normal/Medium |
+| 1       | Quicksand+       | Quicksand Bold       | Work Sans Bold     | Nunito Sans SemiBold/ExtraBold |
+| 2       | Kanit            | Kanit Bold           | Open Sans Medium   | Lato SemiBold          |
+| 3       | Claritate Maximă | Public Sans SemiBold | Inter Medium       | Rubik Normal/SemiBold  |
+
+- **Default:** Profile 0 (Roboto) — uses Android's built-in `FontFamily.Default`
+- **Storage:** `SharedPreferences` key `font_profile` (int 0–3)
+- **Implementation:** `buildTypography(profile)` returns a `Typography` instance, `LocalFontProfile` CompositionLocal available
+- All custom font families use separate static `.ttf` files per weight (11 files total, ~2.8MB)
+
+### Nitya Card (v2.35+)
+
+The Nitya card displays remaining time in hours and minutes format (`"18h 3m"`) instead of percentage remaining, matching the Nakshatra card format.
+
+---
+
 ## UI Text Overflow Prevention
 
 All `Row` composables with side-by-side text must follow these rules to prevent overlapping on narrow screens:
@@ -373,4 +410,4 @@ All `Row` composables with side-by-side text must follow these rules to prevent 
 
 ---
 
-*Last updated: March 2026 - Version 2.17*
+*Last updated: April 2026 - Version 2.36*
