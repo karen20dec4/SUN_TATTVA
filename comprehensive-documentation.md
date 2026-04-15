@@ -10,12 +10,12 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
-- **Current Version:** 2.36 (versionCode 30)
+- **Current Version:** 2.37 (versionCode 31)
 
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
-- Current: **2.36**
-- Next versions: **2.37**, **2.38**, **2.39**, ...
+- Current: **2.37**
+- Next versions: **2.38**, **2.39**, **2.40**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
@@ -410,4 +410,7 @@ All `Row` composables with side-by-side text must follow these rules to prevent 
 
 ---
 
-*Last updated: April 2026 - Version 2.36*
+*Last updated: April 2026 - Version 2.37*
+
+### v2.37 Changes
+- **Fix compilation errors in AstroRepository.kt:** Added missing `timeFormat` local variable in `generateTattvaDaySchedule()` method, added proper imports for `AppLog`, `TattvaColors`, `TimeZoneUtils` to replace fully-qualified references.
