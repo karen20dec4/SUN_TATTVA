@@ -8,6 +8,7 @@ import com.android.sun.data.model. LocationData
 import com.android.sun.data.repository.AstroRepository
 import com.android.sun.data.repository.LocationPreferences
 import com.android.sun.data.repository.LocationRepository
+import com.android.sun.data.preferences.SettingsPreferences
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +25,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val astroRepository = AstroRepository(application)
     private val locationRepository = LocationRepository(application)
     private val locationPreferences = LocationPreferences(application)
-    private val settingsPrefs = com.android.sun.data.preferences.SettingsPreferences(application)
+    private val settingsPrefs = SettingsPreferences(application)
 
     // State pentru date astrologice
     private val _astroData = MutableStateFlow<AstroData?>(null)
