@@ -184,7 +184,10 @@ class TattvaNotificationService : Service() {
         }
 
         try {
-            val timeZone = locationPrefs.getSavedTimeZone()
+            val baseTimeZone = locationPrefs.getSavedTimeZone()
+            // ✅ DST: Aplică ora de vară (+1h) dacă e activat
+            val dstOffset = if (settingsPreferences.getDstEnabled()) 1.0 else 0.0
+            val timeZone = baseTimeZone + dstOffset
             val astroData = repository.calculateAstroData(
                 locationPrefs.getSavedLatitude(),
                 locationPrefs.getSavedLongitude(),
@@ -194,7 +197,7 @@ class TattvaNotificationService : Service() {
 
             val notificationManager = getSystemService(NotificationManager::class.java)
             
-            // ✅ DST-aware timezone: use location name to resolve proper timezone ID
+            // ✅ Timezone uses the DST-adjusted offset directly
             val locationName = locationPrefs.getSavedLocationName()
             val locationTimeZone = TimeZoneUtils.getLocationTimeZone(locationName, timeZone)
             val actualOffsetMs = locationTimeZone.getOffset(System.currentTimeMillis())

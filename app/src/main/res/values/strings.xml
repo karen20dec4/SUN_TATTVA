@@ -27,6 +27,8 @@
     <string name="language_subtitle">Română este limba curentă</string>
     <string name="language_ro">Română</string>
     <string name="language_en">English</string>
+    <string name="dst_title">Ora de vară</string>
+    <string name="dst_subtitle">+1h față de ora de iarnă</string>
     <string name="section_notifications">Notificări</string>
     <string name="notification_permission_required">Permisiune notificări necesară</string>
     <string name="tap_to_enable_notifications">Apasă pentru a activa notificările</string>

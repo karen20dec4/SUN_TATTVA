@@ -185,7 +185,7 @@ private fun CompactInfoCard(
 
     val tattvaColor = astroData.tattva.toTattvaInfo().color
     
-    // ✅ DST-aware timezone from TimeZoneUtils
+    // ✅ v2.35: SimpleTimeZone with static offset (DST managed manually from Settings)
     val locationTimeZone = com.android.sun.util.TimeZoneUtils.getLocationTimeZone(astroData.locationName, astroData.timeZone)
     
     val phoneTimeZone = TimeZone.getDefault()

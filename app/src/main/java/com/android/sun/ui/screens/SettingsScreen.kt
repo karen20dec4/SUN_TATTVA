@@ -74,9 +74,11 @@ fun SettingsScreen(
     onCustomSoundUriChange: (String, String?) -> Unit = { _, _ -> },
     currentLanguage: String,
     onLanguageChange: (String) -> Unit,
+    isDstEnabled: Boolean,
+    onDstChange: (Boolean) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
-) 
+)
 {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
@@ -161,6 +163,15 @@ fun SettingsScreen(
                     onCheckedChange = { isEnglish ->
                         onLanguageChange(if (isEnglish) "en" else "ro")
                     }
+                )
+
+                // DST (Summer Time) Toggle
+                SettingsSwitchItem(
+                    icon = Icons.Default.Star,
+                    title = stringResource(R.string.dst_title),
+                    subtitle = stringResource(R.string.dst_subtitle),
+                    checked = isDstEnabled,
+                    onCheckedChange = onDstChange
                 )
                 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))

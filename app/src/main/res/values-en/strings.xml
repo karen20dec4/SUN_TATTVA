@@ -27,6 +27,8 @@
     <string name="language_subtitle">English is current language</string>
     <string name="language_ro">Română</string>
     <string name="language_en">English</string>
+    <string name="dst_title">Summer Time</string>
+    <string name="dst_subtitle">+1h from winter time</string>
     <string name="section_notifications">Notifications</string>
     <string name="notification_permission_required">Notification permission required</string>
     <string name="tap_to_enable_notifications">Tap to enable notifications</string>

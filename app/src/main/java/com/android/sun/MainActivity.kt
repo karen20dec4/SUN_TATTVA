@@ -108,6 +108,7 @@ fun AppNavigation(
 	val isPlanetaryHourNotification by settingsPreferences.planetaryHourNotification.collectAsState()
 	val currentLanguage by settingsPreferences.language.collectAsState()
 	val fontProfile by settingsPreferences.fontProfile.collectAsState()
+	val isDstEnabled by settingsPreferences.isDstEnabled.collectAsState()
 	
 	val context = LocalContext.current
 	val navController = rememberNavController()
@@ -218,6 +219,12 @@ fun AppNavigation(
 				currentLanguage = currentLanguage,
 				onLanguageChange = { lang ->
 					settingsPreferences.setLanguage(lang)
+				},
+				isDstEnabled = isDstEnabled,
+				onDstChange = { enabled ->
+					settingsPreferences.setDstEnabled(enabled)
+					// Recalculate astro data with new DST setting
+					mainViewModel.refresh()
 				},
 				isFullMoonNotification = isFullMoonNotification,
 				onFullMoonNotificationChange = { enabled ->

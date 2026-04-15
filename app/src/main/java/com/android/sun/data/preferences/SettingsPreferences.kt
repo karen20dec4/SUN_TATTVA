@@ -69,6 +69,22 @@ class SettingsPreferences(context: Context) {
     }
     
     // ═══════════════════════════════════════════════════════════════════
+    // ORA DE VARĂ / SUMMER TIME (DST)
+    // ═══════════════════════════════════════════════════════════════════
+    
+    private val _isDstEnabled = MutableStateFlow(getDstEnabled())
+    val isDstEnabled: StateFlow<Boolean> = _isDstEnabled.asStateFlow()
+    
+    fun getDstEnabled(): Boolean {
+        return prefs.getBoolean(KEY_DST_ENABLED, false)
+    }
+    
+    fun setDstEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_DST_ENABLED, enabled).apply()
+        _isDstEnabled.value = enabled
+    }
+    
+    // ═══════════════════════════════════════════════════════════════════
     // NOTIFICĂRI LUNA PLINĂ (18h înainte și după)
     // ═══════════════════════════════════════════════════════════════════
     
@@ -270,6 +286,7 @@ class SettingsPreferences(context: Context) {
         private const val KEY_LANGUAGE = "language_preference"
         private const val KEY_FONT_PROFILE = "font_profile"
         private const val KEY_DARK_THEME = "dark_theme"
+        private const val KEY_DST_ENABLED = "dst_enabled"
         private const val KEY_FULL_MOON_NOTIFICATION = "full_moon_notification"
         private const val KEY_TRIPURA_SUNDARI_NOTIFICATION = "tripura_sundari_notification"
         private const val KEY_NEW_MOON_NOTIFICATION = "new_moon_notification"

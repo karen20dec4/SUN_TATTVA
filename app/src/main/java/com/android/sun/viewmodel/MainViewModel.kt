@@ -24,6 +24,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val astroRepository = AstroRepository(application)
     private val locationRepository = LocationRepository(application)
     private val locationPreferences = LocationPreferences(application)
+    private val settingsPrefs = com.android.sun.data.preferences.SettingsPreferences(application)
 
     // State pentru date astrologice
     private val _astroData = MutableStateFlow<AstroData?>(null)
@@ -182,16 +183,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 			try {
 				val location = _currentLocation.value
 				
+				// ✅ DST: Aplică ora de vară (+1h) dacă e activat
+				val dstOffset = if (settingsPrefs.getDstEnabled()) 1.0 else 0.0
+				val adjustedTimeZone = location.timeZone + dstOffset
+				
 				com.android.sun.util.AppLog.d("MainViewModel", "───────────────────────────────────────")
 				com.android.sun.util.AppLog.d("MainViewModel", "🔵 calculateAstroData() START")
 				com.android.sun.util.AppLog.d("MainViewModel", "🔵 Using location: ${location.name}")
 				com.android.sun.util.AppLog.d("MainViewModel", "🔵   Lat: ${location.latitude}, Lon: ${location.longitude}")
-				com.android.sun.util.AppLog.d("MainViewModel", "🔵   TimeZone: ${location.timeZone}")
+				com.android.sun.util.AppLog.d("MainViewModel", "🔵   TimeZone: ${location.timeZone} (base) + DST: $dstOffset = $adjustedTimeZone")
 				
 				val data = astroRepository.calculateAstroData(
 					latitude = location.latitude,
 					longitude = location.longitude,
-					timeZone = location.timeZone,
+					timeZone = adjustedTimeZone,
 					locationName = location.name,
 					isGPSLocation = location.isCurrentLocation
 				)
