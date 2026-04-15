@@ -32,8 +32,8 @@ class AstroRepository(private val context: Context) {
      * Pentru orașe cunoscute, folosim timezone ID-uri corecte
      * Pentru alte locații, folosim offset-ul furnizat (fără DST)
      */
-    private fun getLocationTimeZone(locationName: String, timeZoneOffset: Double): java.util.TimeZone {
-        return com.android.sun.util.TimeZoneUtils.getLocationTimeZone(locationName, timeZoneOffset)
+    private fun getLocationTimeZone(timeZoneOffset: Double): java.util.TimeZone {
+        return com.android.sun.util.TimeZoneUtils.getLocationTimeZone(timeZoneOffset)
     }
 
     /**
@@ -194,7 +194,7 @@ class AstroRepository(private val context: Context) {
         )
 
         // ✅ FIX DST: Folosim timezone-ul cu suport pentru DST
-        val locationTimeZone = getLocationTimeZone(locationName, timeZone)
+        val locationTimeZone = getLocationTimeZone(timeZone)
         
         // ✅ Creăm MoonPhaseCalculator cu timezone-ul locației
         val moonPhaseCalculator = MoonPhaseCalculator(astroCalculator, locationTimeZone)
@@ -411,10 +411,7 @@ class AstroRepository(private val context: Context) {
         val tattvaList = mutableListOf<TattvaDayItem>()
         
         // ✅ FIX DST: Folosim timezone cu suport pentru DST
-        val locationTimeZone = getLocationTimeZone(locationName, timeZone)
-        
-        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-        timeFormat.timeZone = locationTimeZone  // ✅ IMPORTANT! 
+        val locationTimeZone = getLocationTimeZone(timeZone) 
         
         com.android.sun.util.AppLog.d("TattvaDebug", "============================================")
         com.android.sun.util.AppLog.d("TattvaDebug", "🚀 FIXED: Using exact 1440sec/Tattva, 288sec/SubTattva")

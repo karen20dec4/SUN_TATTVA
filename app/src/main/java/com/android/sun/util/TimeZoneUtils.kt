@@ -15,11 +15,10 @@ object TimeZoneUtils {
     /**
      * Obține TimeZone-ul pentru o locație bazat pe offset static.
      *
-     * @param locationName Numele locației (nu mai este folosit pentru rezolvare IANA)
      * @param timeZoneOffset Offset-ul timezone-ului în ore (ex: 2.0 pentru UTC+2, 3.0 pentru UTC+3)
      * @return SimpleTimeZone cu offset-ul dat (fără DST automat)
      */
-    fun getLocationTimeZone(locationName: String, timeZoneOffset: Double): TimeZone {
+    fun getLocationTimeZone(timeZoneOffset: Double): TimeZone {
         val offsetMillis = (timeZoneOffset * 3600.0 * 1000.0).toInt()
         return SimpleTimeZone(offsetMillis, "Location")
     }

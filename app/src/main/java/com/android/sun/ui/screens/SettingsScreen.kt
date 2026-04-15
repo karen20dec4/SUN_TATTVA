@@ -750,6 +750,14 @@ private fun FontProfileCard(
                 modifier = Modifier.padding(bottom = 12.dp)
             )
             
+            // Profile 0 (Roboto - default)
+            FontProfileOption(
+                name = stringResource(R.string.font_profile_0_name),
+                description = stringResource(R.string.font_profile_0_desc),
+                isSelected = fontProfile == 0,
+                onSelect = { onFontProfileChange(0) }
+            )
+            Spacer(modifier = Modifier.height(6.dp))
             // Profile 1
             FontProfileOption(
                 name = stringResource(R.string.font_profile_1_name),

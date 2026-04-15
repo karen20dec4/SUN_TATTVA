@@ -52,6 +52,8 @@
     <string name="tattva_sound_phone_vibrate">📳 Phone is on vibrate — you won\'t hear the sound</string>
     <string name="font_profile_title">Font Profile</string>
     <string name="font_profile_subtitle">Choose your preferred typography style</string>
+    <string name="font_profile_0_name">Roboto (Original)</string>
+    <string name="font_profile_0_desc">Default Android font — clean and familiar</string>
     <string name="font_profile_1_name">Quicksand+</string>
     <string name="font_profile_1_desc">Quicksand Bold · Work Sans Bold · Nunito Sans</string>
     <string name="font_profile_2_name">Kanit</string>

@@ -10,7 +10,12 @@ import androidx.compose.ui.unit.sp
 import com.android.sun.R
 
 /**
- * Tipografie pentru aplicația SUN — 3 profiluri selectabile din Settings
+ * Tipografie pentru aplicația SUN — 4 profiluri selectabile din Settings
+ *
+ * Profil 0 „Roboto" (Default):
+ *   Titluri:   System Default (Roboto) Medium (500)
+ *   Subtitluri: System Default (Roboto) Normal (400)
+ *   Cifre:     System Default (Roboto) Normal (400) / Medium (500)
  *
  * Profil 1 „Quicksand+":
  *   Titluri:   Quicksand  Bold (700) — max weight for this font
@@ -32,12 +37,13 @@ import com.android.sun.R
  */
 
 // ── Font Profile IDs ──────────────────────────────────────────
+const val FONT_PROFILE_ROBOTO = 0
 const val FONT_PROFILE_QUICKSAND = 1
 const val FONT_PROFILE_KANIT = 2
 const val FONT_PROFILE_PUBLIC_SANS = 3
 
 // ── CompositionLocal for current font profile ─────────────────
-val LocalFontProfile = staticCompositionLocalOf { FONT_PROFILE_QUICKSAND }
+val LocalFontProfile = staticCompositionLocalOf { FONT_PROFILE_ROBOTO }
 
 // ══════════════════════════════════════════════════════════════
 //  PROFIL 1  —  Quicksand + Work Sans + Nunito Sans (40% bolder)
@@ -105,6 +111,15 @@ private data class FontProfileSpec(
 )
 
 private fun getFontProfileSpec(profile: Int): FontProfileSpec = when (profile) {
+    FONT_PROFILE_QUICKSAND -> FontProfileSpec(
+        titleFamily = QuicksandFamily,
+        titleWeight = FontWeight.Bold,           // Quicksand max is Bold (700)
+        subtitleFamily = WorkSansFamily,
+        subtitleWeight = FontWeight.Bold,        // was Medium (500) → Bold (700)
+        numericFamily = NunitoSansFamily,
+        numericWeight = FontWeight.SemiBold,     // was Normal (400) → SemiBold (600)
+        numericBoldWeight = FontWeight.ExtraBold // was Bold (700) → ExtraBold (800)
+    )
     FONT_PROFILE_KANIT -> FontProfileSpec(
         titleFamily = KanitFamily,
         titleWeight = FontWeight.Bold,
@@ -123,14 +138,14 @@ private fun getFontProfileSpec(profile: Int): FontProfileSpec = when (profile) {
         numericWeight = FontWeight.Normal,
         numericBoldWeight = FontWeight.SemiBold
     )
-    else -> FontProfileSpec(  // FONT_PROFILE_QUICKSAND (default)
-        titleFamily = QuicksandFamily,
-        titleWeight = FontWeight.Bold,           // Quicksand max is Bold (700)
-        subtitleFamily = WorkSansFamily,
-        subtitleWeight = FontWeight.Bold,        // was Medium (500) → Bold (700)
-        numericFamily = NunitoSansFamily,
-        numericWeight = FontWeight.SemiBold,     // was Normal (400) → SemiBold (600)
-        numericBoldWeight = FontWeight.ExtraBold // was Bold (700) → ExtraBold (800)
+    else -> FontProfileSpec(  // FONT_PROFILE_ROBOTO (default — system Roboto)
+        titleFamily = FontFamily.Default,
+        titleWeight = FontWeight.Medium,
+        subtitleFamily = FontFamily.Default,
+        subtitleWeight = FontWeight.Normal,
+        numericFamily = FontFamily.Default,
+        numericWeight = FontWeight.Normal,
+        numericBoldWeight = FontWeight.Medium
     )
 }
 
@@ -258,8 +273,8 @@ fun buildTypography(profile: Int): Typography {
     )
 }
 
-// Default typography (Profile 1) — for backwards compat
-val Typography = buildTypography(FONT_PROFILE_QUICKSAND)
+// Default typography (Profile 0 — Roboto) — for backwards compat
+val Typography = buildTypography(FONT_PROFILE_ROBOTO)
 
 // ══════════════════════════════════════════════════════════════
 //  Extra TextStyles — profile-aware via Composable accessors
@@ -308,6 +323,6 @@ fun buildTattvaCodeStyle(profile: Int): TextStyle {
 }
 
 // ── Static defaults for non-Composable contexts ───────────────
-val MonospaceTextStyle = buildMonospaceTextStyle(FONT_PROFILE_QUICKSAND)
-val TattvaNameStyle = buildTattvaNameStyle(FONT_PROFILE_QUICKSAND)
-val TattvaCodeStyle = buildTattvaCodeStyle(FONT_PROFILE_QUICKSAND)
+val MonospaceTextStyle = buildMonospaceTextStyle(FONT_PROFILE_ROBOTO)
+val TattvaNameStyle = buildTattvaNameStyle(FONT_PROFILE_ROBOTO)
+val TattvaCodeStyle = buildTattvaCodeStyle(FONT_PROFILE_ROBOTO)

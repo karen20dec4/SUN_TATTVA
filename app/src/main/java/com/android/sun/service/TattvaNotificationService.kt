@@ -198,8 +198,7 @@ class TattvaNotificationService : Service() {
             val notificationManager = getSystemService(NotificationManager::class.java)
             
             // ✅ Timezone uses the DST-adjusted offset directly
-            val locationName = locationPrefs.getSavedLocationName()
-            val locationTimeZone = TimeZoneUtils.getLocationTimeZone(locationName, timeZone)
+            val locationTimeZone = TimeZoneUtils.getLocationTimeZone(timeZone)
             val actualOffsetMs = locationTimeZone.getOffset(System.currentTimeMillis())
             val actualOffsetHours = actualOffsetMs / 3600000.0
             val gmtSuffix = "(${if (actualOffsetHours >= 0) "+" else ""}${String.format("%.1f", actualOffsetHours)})"

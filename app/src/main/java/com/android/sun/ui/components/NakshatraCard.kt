@@ -49,7 +49,7 @@ fun NakshatraCard(
     var isExpanded by remember { mutableStateOf(false) }
     
     // ✅ FIX DST: Folosim timezone cu suport pentru DST
-    val locationTimeZone = com.android.sun.util.TimeZoneUtils.getLocationTimeZone(locationName, timeZone)
+    val locationTimeZone = com.android.sun.util.TimeZoneUtils.getLocationTimeZone(timeZone)
     
     Card(
         modifier = modifier

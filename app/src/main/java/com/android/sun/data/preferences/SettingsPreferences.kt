@@ -37,19 +37,19 @@ class SettingsPreferences(context: Context) {
     }
     
     // ═══════════════════════════════════════════════════════════════════
-    // FONT PROFILE (1 = Quicksand+, 2 = Kanit, 3 = Claritate Maximă)
+    // FONT PROFILE (0 = Roboto, 1 = Quicksand+, 2 = Kanit, 3 = Claritate Maximă)
     // ═══════════════════════════════════════════════════════════════════
     
     private val _fontProfile = MutableStateFlow(getFontProfile())
     val fontProfile: StateFlow<Int> = _fontProfile.asStateFlow()
     
     fun getFontProfile(): Int {
-        return prefs.getInt(KEY_FONT_PROFILE, 1)
+        return prefs.getInt(KEY_FONT_PROFILE, 0)
     }
     
     fun setFontProfile(profile: Int) {
-        prefs.edit().putInt(KEY_FONT_PROFILE, profile.coerceIn(1, 3)).apply()
-        _fontProfile.value = profile.coerceIn(1, 3)
+        prefs.edit().putInt(KEY_FONT_PROFILE, profile.coerceIn(0, 3)).apply()
+        _fontProfile.value = profile.coerceIn(0, 3)
     }
     
     // ═══════════════════════════════════════════════════════════════════

@@ -54,7 +54,7 @@ fun AllDayScreen(
     val listState = rememberLazyListState()
     
     // ✅ FIX DST: Folosim timezone cu suport pentru DST
-    val locationTimeZone = com.android.sun.util.TimeZoneUtils.getLocationTimeZone(locationName, timeZone)
+    val locationTimeZone = com.android.sun.util.TimeZoneUtils.getLocationTimeZone(timeZone)
     
     val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.US).apply {
         this.timeZone = locationTimeZone

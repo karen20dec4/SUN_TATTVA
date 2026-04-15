@@ -364,7 +364,7 @@ fun AppNavigation(
                 
                 // Format sunrise and sunset times with DST support
                 // Use the same timezone logic as in the repository
-                val locationTimeZone = com.android.sun.util.TimeZoneUtils.getLocationTimeZone(astroData!!.locationName, astroData!!.timeZone)
+                val locationTimeZone = com.android.sun.util.TimeZoneUtils.getLocationTimeZone(astroData!!.timeZone)
                 val timeFormat = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).apply {
                     this.timeZone = locationTimeZone
                 }
