@@ -10,12 +10,12 @@
 - **Language:** Kotlin
 - **UI Framework:** Jetpack Compose + Material 3
 - **Ephemeris Engine:** Swiss Ephemeris (swisseph.jar)
-- **Current Version:** 2.37 (versionCode 31)
+- **Current Version:** 2.39 (versionCode 33)
 
 ### ⚠️ Version Increment Rule
 **IMPORTANT:** The version MUST be incremented by 0.01 with every modification/release.
-- Current: **2.37**
-- Next versions: **2.38**, **2.39**, **2.40**, ...
+- Current: **2.39**
+- Next versions: **2.40**, **2.41**, **2.42**, ...
 - Update both `versionName` and `versionCode` in `app/build.gradle.kts`
 - Increment `versionCode` by 1 and `versionName` by 0.01 for each set of changes
 
@@ -410,7 +410,14 @@ All `Row` composables with side-by-side text must follow these rules to prevent 
 
 ---
 
-*Last updated: April 2026 - Version 2.37*
+*Last updated: April 2026 - Version 2.39*
 
 ### v2.37 Changes
 - **Fix compilation errors in AstroRepository.kt:** Added missing `timeFormat` local variable in `generateTattvaDaySchedule()` method, added proper imports for `AppLog`, `TattvaColors`, `TimeZoneUtils` to replace fully-qualified references.
+
+### v2.39 Changes
+- **Fix SubTattva card closes when sub-element changes automatically.** Root cause: `calculateAstroData()` always set `_isLoading = true`, which caused `MainScreen` to unmount `LazyColumn` and show a spinner — resetting `isExpanded = false` in `CombinedTattvaCard`. Fix: added `silent: Boolean = false` parameter to `calculateAstroData()`. When `silent = true`, `_isLoading` is never touched, so the UI is updated in-place without rebuilding the composition tree. `startRealtimeUpdates()` now calls `calculateAstroData(silent = true)` for all auto-recalculations (tattva/sub-tattva expiry). Manual refresh (`refresh()`, location change, init) still uses `silent = false` and shows the spinner as expected. See `MainViewModel.kt`.
+
+### v2.38 Changes
+- **Fix SubTattva not advancing to next sub-element when timer reaches 00:00.** The realtime loop in `MainViewModel.startRealtimeUpdates()` previously triggered `calculateAstroData()` only when the **main Tattva** expired (every ~24 min). As a consequence, after a sub-tattva countdown reached 0, the displayed sub-tattva name/color did not change until the parent Tattva expired (or until the user pressed Refresh). The bug was visible in both foreground and background. Fix: also detect `subTattva.endTime` expiration and recalculate. See `MainViewModel.kt` (`tattvaExpired || subTattvaExpired`).
+- **Long-press to copy on Moon card.** Long-pressing the Tripura Sundari, Full Moon or Shivaratri rows in `MoonPhaseCard` now copies a formatted plain-text summary to the system clipboard (suitable for pasting into Telegram, WhatsApp, etc.) and shows a Toast confirmation. A short haptic feedback fires on long-press. Tap (short click) keeps the existing expand/collapse behavior. New strings: `copied_to_clipboard`, `copy_header_*`, `copy_label_*`, `copy_shivaratri_evening_morning` (RO + EN). Implemented via `combinedClickable` + `ClipboardManager`.

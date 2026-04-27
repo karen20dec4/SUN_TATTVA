@@ -1,10 +1,16 @@
 package com.android.sun.ui.components
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -14,6 +20,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -38,6 +47,60 @@ fun MoonPhaseCard(
     var isFullMoonExpanded by remember { mutableStateOf(false) }
     var isShivaratriExpanded by remember { mutableStateOf(false) }
     var isTripuraSundariExpanded by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+    val haptic = LocalHapticFeedback.current
+    val toastCopied = stringResource(R.string.copied_to_clipboard)
+    val labelTripura = stringResource(R.string.tripura_sundari_label)
+    val labelFullMoon = stringResource(R.string.full_moon_label)
+    val labelShivaratri = stringResource(R.string.shivaratri_label)
+    val headerTripura = stringResource(R.string.copy_header_tripura_sundari)
+    val headerFullMoon = stringResource(R.string.copy_header_full_moon)
+    val headerShivaratri = stringResource(R.string.copy_header_shivaratri)
+    val labelNext = stringResource(R.string.copy_label_next)
+    val labelPeak = stringResource(R.string.copy_label_peak)
+    val labelUpcoming = stringResource(R.string.copy_label_upcoming)
+    val labelInfluenceFmt = stringResource(R.string.copy_label_influence)
+    val labelEveningMorningFmt = stringResource(R.string.copy_shivaratri_evening_morning)
+
+    val onLongClickTripura: () -> Unit = {
+        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+        val text = buildTripuraSundariCopyText(
+            header = headerTripura,
+            nextLabel = labelNext,
+            upcomingLabel = labelUpcoming,
+            nextDate = moonPhase.nextTripuraSundari,
+            futureDates = moonPhase.futureTripuraSundari
+        )
+        copyToClipboard(context, labelTripura, text, toastCopied)
+    }
+    val onLongClickFullMoon: () -> Unit = {
+        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+        val text = buildFullMoonCopyText(
+            header = headerFullMoon,
+            peakLabel = labelPeak,
+            influenceFmt = labelInfluenceFmt,
+            upcomingLabel = labelUpcoming,
+            peakDate = moonPhase.nextFullMoon,
+            futureDates = moonPhase.futureFullMoons
+        )
+        copyToClipboard(context, labelFullMoon, text, toastCopied)
+    }
+    val onLongClickShivaratri: () -> Unit = {
+        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+        val sh = moonPhase.nextShivaratri
+        if (sh != null) {
+            val text = buildShivaratriCopyText(
+                header = headerShivaratri,
+                nextLabel = labelNext,
+                upcomingLabel = labelUpcoming,
+                eveningMorningFmt = labelEveningMorningFmt,
+                next = sh,
+                yearly = moonPhase.yearlyShivaratri
+            )
+            copyToClipboard(context, labelShivaratri, text, toastCopied)
+        }
+    }
     
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -85,11 +148,12 @@ fun MoonPhaseCard(
                 thickness = 1.dp
             )
             
-            // Tripura Sundari (clickable to expand)
+            // Tripura Sundari (clickable to expand, long-press to copy)
             MoonEventRow(
                 label = stringResource(R.string.tripura_sundari_label),
                 date = moonPhase.nextTripuraSundari,
                 onClick = { isTripuraSundariExpanded = !isTripuraSundariExpanded },
+                onLongClick = onLongClickTripura,
                 showExpandArrow = true,
                 isExpanded = isTripuraSundariExpanded
             )
@@ -114,12 +178,13 @@ fun MoonPhaseCard(
                 }
             }
             
-            // Full Moon (highlighted when in influence period, clickable to expand)
+            // Full Moon (highlighted when in influence period, clickable to expand, long-press to copy)
             MoonEventRow(
                 label = stringResource(R.string.full_moon_label),
                 date = moonPhase.nextFullMoon,
                 isHighlighted = moonPhase.isInFullMoonInfluence,
                 onClick = { isFullMoonExpanded = !isFullMoonExpanded },
+                onLongClick = onLongClickFullMoon,
                 showExpandArrow = true,
                 isExpanded = isFullMoonExpanded
             )
@@ -158,6 +223,7 @@ fun MoonPhaseCard(
                     shivaratri = moonPhase.nextShivaratri,
                     isHighlighted = moonPhase.isInShivaratriPeriod,
                     onClick = { isShivaratriExpanded = !isShivaratriExpanded },
+                    onLongClick = onLongClickShivaratri,
                     isExpanded = isShivaratriExpanded
                 )
                 
@@ -454,11 +520,13 @@ private fun TripuraSundariYearlyList(
  * Format: "Shivaratri:    17 Mar / 18 Mar ▾"
  * ✅ When highlighted (on Shivaratri day), shows same styling as full moon highlight
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ShivaratriRow(
     shivaratri: ShivaratriDate,
     isHighlighted: Boolean = false,
     onClick: () -> Unit,
+    onLongClick: (() -> Unit)? = null,
     isExpanded: Boolean
 ) {
     val dateFormat = SimpleDateFormat("d MMM", Locale.getDefault())
@@ -473,7 +541,10 @@ private fun ShivaratriRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick
+            )
             .then(
                 if (isHighlighted) {
                     Modifier
@@ -626,12 +697,14 @@ private fun ShivaratriYearlyList(
  * ✅ Uniform 16sp bold font matching header
  * ✅ Optional expand arrow for expandable rows
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MoonEventRow(
     label: String,
     date: Calendar,
     isHighlighted: Boolean = false,
     onClick: (() -> Unit)? = null,
+    onLongClick: (() -> Unit)? = null,
     showExpandArrow: Boolean = false,
     isExpanded: Boolean = false
 ) {
@@ -646,10 +719,13 @@ private fun MoonEventRow(
         modifier = Modifier
             .fillMaxWidth()
             .then(
-                if (onClick != null) {
-                    Modifier.clickable { onClick() }
-                } else {
-                    Modifier
+                when {
+                    onClick != null && onLongClick != null -> Modifier.combinedClickable(
+                        onClick = onClick,
+                        onLongClick = onLongClick
+                    )
+                    onClick != null -> Modifier.clickable { onClick() }
+                    else -> Modifier
                 }
             )
             .then(
@@ -711,4 +787,125 @@ private fun MoonEventRow(
 private fun isSameDate(cal1: Calendar, cal2: Calendar): Boolean {
     return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
            cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
+}
+
+// =====================================================================
+// Long-press copy helpers (v2.38+)
+// =====================================================================
+
+/**
+ * Copies the given text to the system clipboard and shows a Toast confirmation.
+ */
+private fun copyToClipboard(
+    context: Context,
+    label: String,
+    text: String,
+    toastMessage: String
+) {
+    try {
+        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(ClipData.newPlainText(label, text))
+        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+    } catch (e: Exception) {
+        com.android.sun.util.AppLog.e("MoonPhaseCard", "Clipboard copy failed", e)
+    }
+}
+
+private fun formatDateLong(cal: Calendar): String {
+    val fmt = SimpleDateFormat("EEEE, d MMMM yyyy - HH:mm", Locale.getDefault())
+    fmt.timeZone = cal.timeZone
+    return fmt.format(cal.time)
+}
+
+private fun formatDateShort(cal: Calendar): String {
+    val fmt = SimpleDateFormat("d MMM yyyy - HH:mm", Locale.getDefault())
+    fmt.timeZone = cal.timeZone
+    return fmt.format(cal.time)
+}
+
+private fun formatDateInfluence(cal: Calendar): String {
+    val fmt = SimpleDateFormat("d MMM HH:mm", Locale.getDefault())
+    fmt.timeZone = cal.timeZone
+    return fmt.format(cal.time)
+}
+
+private fun formatDateDayOnly(cal: Calendar): String {
+    val fmt = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
+    fmt.timeZone = cal.timeZone
+    return fmt.format(cal.time)
+}
+
+private fun buildTripuraSundariCopyText(
+    header: String,
+    nextLabel: String,
+    upcomingLabel: String,
+    nextDate: Calendar,
+    futureDates: List<Calendar>
+): String {
+    val sb = StringBuilder()
+    sb.append(header).append('\n')
+    sb.append(String.format(nextLabel, formatDateLong(nextDate))).append('\n')
+    if (futureDates.isNotEmpty()) {
+        sb.append('\n').append(upcomingLabel).append('\n')
+        futureDates.forEach { d ->
+            sb.append("• ").append(formatDateShort(d)).append('\n')
+        }
+    }
+    return sb.toString().trimEnd()
+}
+
+private fun buildFullMoonCopyText(
+    header: String,
+    peakLabel: String,
+    influenceFmt: String,
+    upcomingLabel: String,
+    peakDate: Calendar,
+    futureDates: List<Calendar>
+): String {
+    val sb = StringBuilder()
+    sb.append(header).append('\n')
+    sb.append(String.format(peakLabel, formatDateLong(peakDate))).append('\n')
+    val influenceStart = (peakDate.clone() as Calendar).apply { add(Calendar.HOUR_OF_DAY, -18) }
+    val influenceEnd = (peakDate.clone() as Calendar).apply { add(Calendar.HOUR_OF_DAY, 18) }
+    sb.append(
+        String.format(influenceFmt, formatDateInfluence(influenceStart), formatDateInfluence(influenceEnd))
+    ).append('\n')
+    if (futureDates.isNotEmpty()) {
+        sb.append('\n').append(upcomingLabel).append('\n')
+        futureDates.forEach { d ->
+            sb.append("• ").append(formatDateShort(d)).append('\n')
+        }
+    }
+    return sb.toString().trimEnd()
+}
+
+private fun buildShivaratriCopyText(
+    header: String,
+    nextLabel: String,
+    upcomingLabel: String,
+    eveningMorningFmt: String,
+    next: ShivaratriDate,
+    yearly: List<ShivaratriDate>
+): String {
+    val sb = StringBuilder()
+    sb.append(header).append('\n')
+    val nextText = String.format(
+        eveningMorningFmt,
+        formatDateDayOnly(next.eveningDate),
+        formatDateDayOnly(next.morningDate)
+    )
+    sb.append(String.format(nextLabel, nextText)).append('\n')
+    if (yearly.isNotEmpty()) {
+        sb.append('\n').append(upcomingLabel).append('\n')
+        yearly.forEach { d ->
+            sb.append("• ").append(
+                String.format(
+                    eveningMorningFmt,
+                    formatDateDayOnly(d.eveningDate),
+                    formatDateDayOnly(d.morningDate)
+                )
+            ).append('\n')
+        }
+    }
+    return sb.toString().trimEnd()
 }

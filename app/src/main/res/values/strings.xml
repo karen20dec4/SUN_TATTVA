@@ -80,6 +80,18 @@
     <string name="shivaratri_label">Shivaratri:</string>
     <string name="new_moon_label">Lună nouă:</string>
 
+    <!-- Copy / Clipboard -->
+    <string name="copied_to_clipboard">Copiat în clipboard</string>
+    <string name="copy_hint_long_press">Ține apăsat pentru a copia</string>
+    <string name="copy_header_tripura_sundari">🌙 Tripura Sundari</string>
+    <string name="copy_header_full_moon">🌕 Lună plină</string>
+    <string name="copy_header_shivaratri">🕉️ Shivaratri</string>
+    <string name="copy_label_next">Următoarea: %1$s</string>
+    <string name="copy_label_peak">Vârf: %1$s</string>
+    <string name="copy_label_influence">Perioadă influență (±18h): %1$s ──── %2$s</string>
+    <string name="copy_label_upcoming">Următoarele date:</string>
+    <string name="copy_shivaratri_evening_morning">%1$s (seara) / %2$s (dimineața)</string>
+
     <!-- All Day Screen -->
     <string name="calendar">CALENDAR</string>
     <string name="cycle_label">Ciclu %1$d</string>

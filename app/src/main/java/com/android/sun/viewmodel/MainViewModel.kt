@@ -174,11 +174,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
 
 	/**
-	 * Calculează datele astrologice pentru locația curentă
+	 * Calculează datele astrologice pentru locația curentă.
+	 * @param silent Dacă true, nu setează isLoading (evită distrugerea UI-ului la recalculări automate).
+	 *               Folosit de startRealtimeUpdates() pentru a nu reseta starea UI (ex: isExpanded pe SubTattva).
 	 */
-	fun calculateAstroData() {
+	fun calculateAstroData(silent: Boolean = false) {
 		viewModelScope.launch {
-			_isLoading.value = true
+			// ✅ v2.39: silent=true => fără spinner, UI-ul (isExpanded etc.) rămâne intact
+			if (!silent) _isLoading.value = true
 			_error.value = null
 			
 			try {
@@ -189,7 +192,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 				val adjustedTimeZone = location.timeZone + dstOffset
 				
 				com.android.sun.util.AppLog.d("MainViewModel", "───────────────────────────────────────")
-				com.android.sun.util.AppLog.d("MainViewModel", "🔵 calculateAstroData() START")
+				com.android.sun.util.AppLog.d("MainViewModel", "🔵 calculateAstroData(silent=$silent) START")
 				com.android.sun.util.AppLog.d("MainViewModel", "🔵 Using location: ${location.name}")
 				com.android.sun.util.AppLog.d("MainViewModel", "🔵   Lat: ${location.latitude}, Lon: ${location.longitude}")
 				com.android.sun.util.AppLog.d("MainViewModel", "🔵   TimeZone: ${location.timeZone} (base) + DST: $dstOffset = $adjustedTimeZone")
@@ -223,8 +226,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 				e.printStackTrace()
 			}
 			
-			_isLoading.value = false
-			com.android.sun.util.AppLog.d("MainViewModel", "🔵 isLoading set to false")
+			if (!silent) {
+				_isLoading.value = false
+				com.android.sun.util.AppLog.d("MainViewModel", "🔵 isLoading set to false")
+			}
 		}
 	}
 
@@ -254,12 +259,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 if (currentData != null) {
                     val currentTime = Calendar.getInstance()
                     
-                    // Recalculează doar când tattva principală expiră
+                    // Recalculează când Tattva principală SAU SubTattva expiră
+                    // ✅ FIX v2.38: SubTattva (4.8 min) trebuie să declanșeze recalcul,
+                    // altfel după ce ajunge la 0 nu se mai schimbă în următoarea
+                    // până când expiră Tattva principală (până la 24 min mai târziu).
+                    // ✅ FIX v2.39: silent=true => fără spinner, isExpanded pe sub-tattva rămâne intact
                     val tattvaExpired = currentTime.timeInMillis >= currentData.tattva.endTime.timeInMillis
+                    val subTattvaExpired = currentTime.timeInMillis >= currentData.subTattva.endTime.timeInMillis
                     
-                    if (tattvaExpired) {
-                        com.android.sun.util.AppLog.d("MainViewModel", "⏰ Tattva expired, recalculating...")
-                        calculateAstroData()
+                    if (tattvaExpired || subTattvaExpired) {
+                        com.android.sun.util.AppLog.d(
+                            "MainViewModel",
+                            "⏰ Expired (tattva=$tattvaExpired, subTattva=$subTattvaExpired), recalculating silently..."
+                        )
+                        calculateAstroData(silent = true)
                     }
                     
                     // Detectează schimbarea de tattva DUPĂ ce recalcularea a actualizat _astroData
